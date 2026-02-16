@@ -18,4 +18,20 @@ export interface Course {
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;
+  tags?: string[];
+  instructorName?: string;
+  categoryName?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  parentId?: string;
+  displayOrder: number;
+  createdAt: string;
+  updatedAt: string;
+  children?: Category[];
+  coursesCount?: number;
 }

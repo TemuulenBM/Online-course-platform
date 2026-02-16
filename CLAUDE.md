@@ -193,3 +193,41 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Constants: `common/constants/throttle.constants.ts` — controller-уудад `@Throttle()` decorator-т дахин ашиглана
 
 **Config файлууд**: `config/throttle.config.ts` (`registerAs('throttle')`) — env variables: `THROTTLE_SHORT_TTL`, `THROTTLE_SHORT_LIMIT`, `THROTTLE_AUTH_LIMIT` гэх мэт
+
+### Courses Module (Phase 2)
+
+**Endpoints** (`/api/v1/courses`):
+- `POST /courses` — Шинэ сургалт үүсгэх (TEACHER, ADMIN)
+- `GET /courses` — Сургалтуудын жагсаалт pagination-тэй (@Public, PUBLISHED only)
+- `GET /courses/my` — Миний сургалтууд (TEACHER, ADMIN, бүх status)
+- `GET /courses/slug/:slug` — Slug-аар сургалт авах (@Public, PUBLISHED only)
+- `GET /courses/:id` — ID-аар сургалт авах (@Public, PUBLISHED only)
+- `PATCH /courses/:id` — Сургалт шинэчлэх (эзэмшигч/ADMIN)
+- `PATCH /courses/:id/publish` — DRAFT→PUBLISHED (эзэмшигч/ADMIN)
+- `PATCH /courses/:id/archive` — PUBLISHED→ARCHIVED (эзэмшигч/ADMIN)
+- `DELETE /courses/:id` — Сургалт устгах (ADMIN only)
+
+**Endpoints** (`/api/v1/categories`):
+- `POST /categories` — Ангилал үүсгэх (ADMIN)
+- `GET /categories` — Ангиллуудын жагсаалт мод бүтцээр (@Public)
+- `GET /categories/:id` — Ангиллын дэлгэрэнгүй + coursesCount (@Public)
+- `PATCH /categories/:id` — Ангилал шинэчлэх (ADMIN)
+- `DELETE /categories/:id` — Ангилал устгах (ADMIN)
+
+**Export хийсэн service-ууд**: `CourseRepository`, `CategoryRepository`
+
+**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+- Categories нь Courses модуль дотор — тусдаа модуль биш, тус controller-тэй
+- Status flow: DRAFT → PUBLISHED → ARCHIVED (нэг чиглэлтэй, буцаахгүй)
+- Public endpoint дээр зөвхөн PUBLISHED — use-case түвшинд шүүнэ
+- Эзэмшигч/admin эрхийн шалгалт — use-case түвшинд (guard биш)
+- Slug utility: `common/utils/slug.util.ts` — `generateSlug()` + `generateUniqueSlug()`
+- Prisma Decimal → number хөрвүүлэлт entity constructor дотор
+- Redis кэшлэлт: `course:{id}` (TTL 15 мин), `category:tree` key
+- Кэш invalidate: сургалт шинэчлэх/устгах/нийтлэх/архивлах үед
+- Hard delete — Phase 3 (Enrollment, Progress) хүртэл soft delete шаардлагагүй
+- Route дараалал: `/courses/my`, `/courses/slug/:slug` нь `/courses/:id`-ээс ӨМНӨ
+
+**Тест**: 14 test suite, 54 unit тест (use-case + controller + cache service)

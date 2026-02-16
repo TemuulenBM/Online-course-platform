@@ -21,8 +21,8 @@ import { RedisModule } from './common/redis/redis.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 import { UsersModule } from './modules/users/users.module';
+import { CoursesModule } from './modules/courses/courses.module';
 // Module imports will be added as modules are implemented
-// import { CoursesModule } from './modules/courses/courses.module';
 // import { LessonsModule } from './modules/lessons/lessons.module';
 // import { ContentModule } from './modules/content/content.module';
 // import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
@@ -55,6 +55,7 @@ import { UsersModule } from './modules/users/users.module';
     RedisModule,
     UsersModule,
     AuthModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [

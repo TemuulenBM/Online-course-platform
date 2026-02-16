@@ -1,0 +1,922 @@
+{
+  "info": {
+    "name": "OCP — Courses Module",
+    "description": "Online Course Platform — Courses Module API\n\nPhase 2: Courses + Categories CRUD endpoints\n\n## Хэрэглэх дараалал\n1. Auth → Register + Login (token авах)\n2. Categories → Create categories\n3. Courses → Create → Update → Publish → Archive → Delete\n\n## Variables\n- `baseUrl`: API-н URL (default: http://localhost:3001/api/v1)\n- `teacherToken`: TEACHER role-тэй хэрэглэгчийн JWT\n- `adminToken`: ADMIN role-тэй хэрэглэгчийн JWT\n- `courseId`: Сургалтын ID\n- `categoryId`: Ангиллын ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "teacherToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseSlug",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth (Setup)",
+      "description": "Token авахад ашиглах auth endpoint-ууд. Эхлээд бүртгүүлж, дараа нь login хийж token авна.",
+      "item": [
+        {
+          "name": "Register Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const data = pm.response.json().data;",
+                  "    pm.collectionVariables.set('teacherToken', data.accessToken);",
+                  "    pm.test('Teacher бүртгэгдлээ', () => pm.expect(data.user.email).to.include('teacher'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Teacher1234\",\n  \"firstName\": \"Teacher\",\n  \"lastName\": \"Test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Багш хэрэглэгч бүртгүүлэх. Бүртгүүлсний дараа DB-д role-г TEACHER болгох шаардлагатай."
+          }
+        },
+        {
+          "name": "Register Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const data = pm.response.json().data;",
+                  "    pm.collectionVariables.set('adminToken', data.accessToken);",
+                  "    pm.test('Admin бүртгэгдлээ', () => pm.expect(data.user.email).to.include('admin'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Admin12345\",\n  \"firstName\": \"Admin\",\n  \"lastName\": \"Test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Админ хэрэглэгч бүртгүүлэх. Бүртгүүлсний дараа DB-д role-г ADMIN болгох шаардлагатай."
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json().data;",
+                  "pm.collectionVariables.set('teacherToken', data.accessToken);",
+                  "pm.test('Teacher нэвтэрлээ', () => {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    pm.expect(data.accessToken).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Teacher1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Багш хэрэглэгчээр нэвтрэх. Token автоматаар teacherToken variable-д хадгалагдана."
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json().data;",
+                  "pm.collectionVariables.set('adminToken', data.accessToken);",
+                  "pm.test('Admin нэвтэрлээ', () => {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    pm.expect(data.accessToken).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Admin12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Админ хэрэглэгчээр нэвтрэх. Token автоматаар adminToken variable-д хадгалагдана."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "description": "Ангиллын CRUD endpoint-ууд.\n\n- POST, PATCH, DELETE: ADMIN only\n- GET: Public",
+      "item": [
+        {
+          "name": "Create Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Ангилал амжилттай үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('id');",
+                  "    pm.expect(resp.data).to.have.property('slug');",
+                  "});",
+                  "pm.collectionVariables.set('categoryId', resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Web Development\",\n  \"description\": \"Вэб хөгжүүлэлтийн сургалтууд\",\n  \"displayOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Шинэ ангилал үүсгэх.\n\n**Эрх:** ADMIN only\n\n**Body:**\n- `name` (required, unique) — Ангиллын нэр\n- `description` (optional) — Тайлбар\n- `parentId` (optional) — Эцэг ангиллын ID (мод бүтэц)\n- `displayOrder` (optional, default 0) — Эрэмбэ"
+          }
+        },
+        {
+          "name": "Create Subcategory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Дэд ангилал үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.parentId).to.equal(pm.collectionVariables.get('categoryId'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Frontend Frameworks\",\n  \"description\": \"React, Vue, Angular гэх мэт\",\n  \"parentId\": \"{{categoryId}}\",\n  \"displayOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Дэд ангилал үүсгэх (parentId ашиглан мод бүтэц)."
+          }
+        },
+        {
+          "name": "List Categories (Tree)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Ангиллуудын жагсаалт буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Мод бүтэцтэй (children)', () => {",
+                  "    const hasChildren = resp.data.some(c => c.children && c.children.length > 0);",
+                  "    // Дэд ангилал байвал children массивтай байна",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Бүх ангиллуудыг мод бүтцээр (top-level + children) буцаана.\n\n**Эрх:** Public (JWT шаардлагагүй)"
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Ангиллын дэлгэрэнгүй буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('id');",
+                  "    pm.expect(resp.data).to.have.property('coursesCount');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Ангиллын дэлгэрэнгүй мэдээлэл + coursesCount.\n\n**Эрх:** Public"
+          }
+        },
+        {
+          "name": "Update Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Ангилал шинэчлэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.name).to.equal('Web Development Updated');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Web Development Updated\",\n  \"description\": \"Шинэчлэгдсэн тайлбар\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Ангилал шинэчлэх.\n\n**Эрх:** ADMIN only\n\n**Body:** name, description, parentId, displayOrder (бүгд optional)"
+          }
+        },
+        {
+          "name": "Delete Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Ангилал устгагдлаа (204)', () => {",
+                  "    pm.expect(pm.response.code).to.equal(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Ангилал устгах.\n\n**Эрх:** ADMIN only\n\n**Анхааруулга:** Хэрэв ангилалд сургалт хамааруулсан бол 409 Conflict буцаана."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "description": "Сургалтын CRUD endpoint-ууд.\n\nStatus flow: `draft` → `published` → `archived` (нэг чиглэлтэй)",
+      "item": [
+        {
+          "name": "Create Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт амжилттай үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.status).to.equal('draft');",
+                  "    pm.expect(resp.data).to.have.property('slug');",
+                  "    pm.expect(resp.data).to.have.property('tags');",
+                  "    pm.expect(resp.data).to.have.property('instructorName');",
+                  "    pm.expect(resp.data).to.have.property('categoryName');",
+                  "});",
+                  "pm.collectionVariables.set('courseId', resp.data.id);",
+                  "pm.collectionVariables.set('courseSlug', resp.data.slug);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"NestJS Мастер Сургалт\",\n  \"description\": \"NestJS фреймворкоор бүрэн API хөгжүүлэх сургалт\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\",\n  \"language\": \"mn\",\n  \"price\": 49900,\n  \"tags\": [\"nestjs\", \"backend\", \"typescript\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "Шинэ сургалт үүсгэх. Автоматаар `draft` статустай үүснэ.\n\n**Эрх:** TEACHER, ADMIN\n\n**Body:**\n- `title` (required) — Гарчиг\n- `description` (required) — Тайлбар\n- `categoryId` (required) — Ангиллын ID\n- `difficulty` (required) — `beginner` | `intermediate` | `advanced`\n- `language` (optional, default \"en\") — Хэл\n- `price` (optional) — Үнэ\n- `tags` (optional) — Tag-уудын массив\n\n**Slug:** Гарчигаас автоматаар үүснэ, давхардал байвал `-1`, `-2` гэх мэт дугаарлагдана."
+          }
+        },
+        {
+          "name": "List Courses (Public)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалтуудын жагсаалт буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('data');",
+                  "    pm.expect(resp.data).to.have.property('meta');",
+                  "    pm.expect(resp.data.meta).to.have.property('total');",
+                  "    pm.expect(resp.data.meta).to.have.property('page');",
+                  "    pm.expect(resp.data.meta).to.have.property('limit');",
+                  "    pm.expect(resp.data.meta).to.have.property('totalPages');",
+                  "});",
+                  "pm.test('Зөвхөн published сургалтууд', () => {",
+                  "    resp.data.data.forEach(course => {",
+                  "        pm.expect(course.status).to.equal('published');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"],
+              "query": [
+                { "key": "page", "value": "1", "description": "Хуудасны дугаар (default 1)" },
+                { "key": "limit", "value": "20", "description": "Хуудасны хэмжээ (default 20)" },
+                { "key": "status", "value": "published", "description": "Статус шүүлт (default published)", "disabled": true },
+                { "key": "difficulty", "value": "beginner", "description": "Түвшин шүүлт", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "description": "Ангиллаар шүүх", "disabled": true },
+                { "key": "search", "value": "nestjs", "description": "Хайлт (title, description)", "disabled": true }
+              ]
+            },
+            "description": "Сургалтуудын жагсаалт pagination-тэй.\n\n**Эрх:** Public (JWT шаардлагагүй)\n\n**Default:** Зөвхөн `published` статустай сургалтуудыг буцаана.\n\n**Query параметрүүд:**\n- `page` — Хуудасны дугаар\n- `limit` — Хуудасны хэмжээ\n- `status` — Статус шүүлт\n- `difficulty` — Түвшин шүүлт\n- `categoryId` — Ангиллаар шүүх\n- `instructorId` — Багшаар шүүх\n- `search` — Хайлт"
+          }
+        },
+        {
+          "name": "List My Courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Миний сургалтууд буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('data');",
+                  "    pm.expect(resp.data).to.have.property('meta');",
+                  "});",
+                  "pm.test('Бүх статустай сургалтууд', () => {",
+                  "    // /my endpoint нь draft, published, archived бүгдийг буцаана",
+                  "    pm.expect(resp.data.data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            },
+            "description": "Нэвтэрсэн багшийн бүх сургалтууд (бүх status: draft, published, archived).\n\n**Эрх:** TEACHER, ADMIN"
+          }
+        },
+        {
+          "name": "Get Course by Slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Slug-аар сургалт олдлоо', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.slug).to.equal(pm.collectionVariables.get('courseSlug'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/slug/{{courseSlug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "slug", "{{courseSlug}}"]
+            },
+            "description": "Slug-аар сургалт авах. Зөвхөн `published` статустай сургалтыг буцаана.\n\n**Эрх:** Public\n\n**Тайлбар:** Draft/archived сургалтыг slug-аар авахад 404 буцаана."
+          }
+        },
+        {
+          "name": "Get Course by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('ID-аар сургалт олдлоо', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.id).to.equal(pm.collectionVariables.get('courseId'));",
+                  "});",
+                  "pm.test('Бүрэн мэдээлэлтэй', () => {",
+                  "    pm.expect(resp.data).to.have.property('tags');",
+                  "    pm.expect(resp.data).to.have.property('instructorName');",
+                  "    pm.expect(resp.data).to.have.property('categoryName');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            },
+            "description": "ID-аар сургалтын дэлгэрэнгүй мэдээлэл.\n\n**Эрх:** Public\n\n**Тайлбар:** Зөвхөн `published` статустай сургалтыг буцаана. Draft/archived = 404.\n\nRedis кэштэй (TTL 15 мин)."
+          }
+        },
+        {
+          "name": "Update Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт шинэчлэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.price).to.equal(39900);",
+                  "});",
+                  "// Slug шинэчлэгдсэн бол хадгалах",
+                  "if (resp.data && resp.data.slug) {",
+                  "    pm.collectionVariables.set('courseSlug', resp.data.slug);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"NestJS Мастер Сургалт - 2026\",\n  \"price\": 39900,\n  \"discountPrice\": 29900,\n  \"tags\": [\"nestjs\", \"backend\", \"typescript\", \"api\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            },
+            "description": "Сургалт шинэчлэх.\n\n**Эрх:** Эзэмшигч (instructor) эсвэл ADMIN\n\n**Body:** Бүх талбар optional\n- `title` — Гарчиг (өөрчлөгдвөл slug автомат шинэчлэгдэнэ)\n- `description` — Тайлбар\n- `categoryId` — Ангилал солих\n- `price` — Үнэ\n- `discountPrice` — Хямдралтай үнэ\n- `difficulty` — Түвшин\n- `language` — Хэл\n- `thumbnailUrl` — Зургийн URL\n- `tags` — Tag-ууд\n\n**Кэш:** Шинэчлэх үед Redis кэш invalidate хийгдэнэ."
+          }
+        },
+        {
+          "name": "Publish Course (draft → published)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт нийтлэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.status).to.equal('published');",
+                  "    pm.expect(resp.data.publishedAt).to.not.be.null;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            },
+            "description": "Сургалтыг нийтлэх: `draft` → `published`.\n\n**Эрх:** Эзэмшигч эсвэл ADMIN\n\n**Алдааны хариу:**\n- 404: Сургалт олдсонгүй\n- 403: Эрх хүрэхгүй\n- 409: Зөвхөн ноорог (draft) сургалтыг нийтлэх боломжтой"
+          }
+        },
+        {
+          "name": "Archive Course (published → archived)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт архивлагдлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.status).to.equal('archived');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/archive",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "archive"]
+            },
+            "description": "Сургалтыг архивлах: `published` → `archived`.\n\n**Эрх:** Эзэмшигч эсвэл ADMIN\n\n**Алдааны хариу:**\n- 404: Сургалт олдсонгүй\n- 403: Эрх хүрэхгүй\n- 409: Зөвхөн нийтлэгдсэн (published) сургалтыг архивлах боломжтой"
+          }
+        },
+        {
+          "name": "Delete Course (Admin only)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Сургалт устгагдлаа (204)', () => {",
+                  "    pm.expect(pm.response.code).to.equal(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            },
+            "description": "Сургалт устгах (hard delete).\n\n**Эрх:** ADMIN only\n\n**Хариу:** 204 No Content (body хоосон)\n\n**Тайлбар:** Tags, prerequisites cascade устгагдана. TEACHER role-тэй хэрэглэгч 403 авна."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "description": "Алдааны тестүүд — буруу хүсэлтүүдийн хариуг шалгах",
+      "item": [
+        {
+          "name": "Create Course — Invalid difficulty",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('400 Bad Request буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test\",\n  \"description\": \"Test\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"INVALID_VALUE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "Буруу difficulty утга илгээхэд 400 Bad Request буцаана.\n\nЗөвхөн `beginner`, `intermediate`, `advanced` (lowercase) хүлээн авна."
+          }
+        },
+        {
+          "name": "Create Course — Missing required fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('400 Bad Request буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Only title\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "Шаардлагатай талбарууд (description, categoryId, difficulty) дутуу байхад 400 буцаана."
+          }
+        },
+        {
+          "name": "Create Course — No auth token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('401 Unauthorized буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test\",\n  \"description\": \"Test\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "JWT токенгүйгээр хүсэлт илгээхэд 401 Unauthorized буцаана."
+          }
+        },
+        {
+          "name": "Publish — Already published (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('409 Conflict буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            },
+            "description": "Аль хэдийн нийтлэгдсэн/архивлагдсан сургалтыг дахин нийтлэхэд 409 Conflict.\n\nStatus flow: `draft` → `published` → `archived` (нэг чиглэлтэй)"
+          }
+        },
+        {
+          "name": "Delete — Teacher forbidden (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('403 Forbidden буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            },
+            "description": "TEACHER role-тэй хэрэглэгч сургалт устгахыг оролдоход 403 Forbidden.\n\nЗөвхөн ADMIN устгах боломжтой."
+          }
+        },
+        {
+          "name": "Get Course — Not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('404 Not Found буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/00000000-0000-0000-0000-000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "00000000-0000-0000-0000-000000000000"]
+            },
+            "description": "Байхгүй сургалтыг авахыг оролдоход 404 Not Found."
+          }
+        },
+        {
+          "name": "Delete Category — Has courses (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('409 Conflict буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Сургалт хамааруулсан ангиллыг устгахыг оролдоход 409 Conflict.\n\nЭхлээд бүх сургалтыг устгах эсвэл өөр ангилал руу шилжүүлэх шаардлагатай."
+          }
+        }
+      ]
+    }
+  ]
+}

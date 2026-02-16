@@ -1,1 +1,2 @@
-// Controllers will be exported here
+export * from './controllers/courses.controller';
+export * from './controllers/categories.controller';
