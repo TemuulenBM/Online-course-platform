@@ -19,45 +19,97 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Online course platform (planning phase — no source code yet). The `files/` directory contains architecture diagrams, database schemas, and design documents (some in Mongolian).
+Turborepo monorepo бүхий онлайн сургалтын платформ. `@ocp/` namespace, pnpm workspaces.
 
-## Planned Technology Stack
+## Commands
 
-- **Frontend Web**: Next.js with TypeScript, Tailwind CSS, React Query, Zustand, Server Components
-- **Frontend Mobile**: React Native with Expo
-- **Backend**: NestJS (modular architecture)
-- **Primary DB**: PostgreSQL (structured data — users, enrollments, payments, progress, certificates) via Prisma ORM
-- **Document DB**: MongoDB (flexible schema — course content, quiz questions/answers, discussions, comments, reviews, assignment submissions)
-- **Cache/Queue**: Redis (sessions, API cache, rate limiting) + Bull Queue (background jobs)
-- **Search**: Elasticsearch (course discovery, full-text search, autocomplete)
-- **File Storage**: Cloudflare R2 / S3 (videos, documents, images, certificates) + Cloudflare CDN
-- **Video Processing**: Cloudflare Stream / Mux (transcoding, HLS/DASH streaming)
-- **Payments**: Stripe (subscriptions, invoicing, refunds)
-- **Auth**: JWT + refresh tokens, OAuth (Google/Facebook), 2FA
-- **Live Classes**: WebRTC via Agora SDK
-- **Monitoring**: Winston/Pino logging, Prometheus + Grafana, Sentry error tracking
+```bash
+# Development
+pnpm dev                    # Start all apps (api :3001, web :3000)
+pnpm dev --filter @ocp/api  # Start API only
+pnpm dev --filter @ocp/web  # Start web only
 
-## Architecture
+# Build
+pnpm build                  # Build all
+pnpm build --filter @ocp/api
+
+# Lint & Test
+pnpm lint
+pnpm test
+pnpm --filter @ocp/api test             # All API tests
+pnpm --filter @ocp/api test -- --watch  # Watch mode
+pnpm --filter @ocp/api test:e2e         # E2E tests
+
+# Database
+pnpm docker:up              # Start PostgreSQL, MongoDB, Redis, Elasticsearch
+pnpm docker:down
+pnpm db:generate             # Generate Prisma client
+pnpm db:migrate              # Run migrations (uses prisma.config.ts)
+
+# Formatting
+pnpm format                  # Prettier on all files
+```
+
+## Tech Stack
+
+- **Web**: Next.js 15 + TypeScript + Tailwind CSS 4 + React Query + Zustand
+- **API**: NestJS 10 + Prisma 6 (PostgreSQL) + Mongoose (MongoDB)
+- **Mobile**: React Native + Expo 52 + Expo Router
+- **Infra**: Redis (cache/queue via Bull), Elasticsearch (search)
+- **External**: Stripe, SendGrid, Twilio, Agora SDK, Cloudflare R2/Stream
+
+## Monorepo Structure
+
+```
+apps/
+  api/          # NestJS backend — port 3001, prefix /api/v1
+  web/          # Next.js App Router — port 3000
+  mobile/       # React Native Expo app
+packages/
+  typescript-config/   # Shared tsconfig (base, nestjs, nextjs, react-native, library)
+  eslint-config/       # Shared ESLint rules
+  shared-types/        # TypeScript interfaces shared across all apps
+  validation/          # Zod schemas shared across all apps
+  api-client/          # Axios-based API client
+  ui-components/       # Shared React UI components
+tools/                 # Dev scripts (seed, module generator)
+files/                 # Architecture docs & design documents
+```
+
+## NestJS Backend Architecture
+
+### DDD Module Structure
+Each of the 15 modules in `apps/api/src/modules/` follows this pattern:
+```
+modules/{name}/
+  domain/           # Entities, value objects, domain events
+  application/      # Use cases (business logic)
+  infrastructure/   # Repositories (Prisma/Mongoose), external services
+  interface/        # Controllers (REST endpoints)
+  dto/              # Request/response DTOs with validation
+  tests/            # unit/ and integration/
+  {name}.module.ts  # NestJS module definition
+```
+
+### Modules (15 total)
+auth, users, courses, lessons, content, enrollments, progress, quizzes, certificates, discussions, notifications, payments, analytics, admin, live-classes
+
+### Key Directories
+- `apps/api/src/common/` — Shared guards (JWT, Roles), decorators (@CurrentUser, @Roles, @Public), interceptors, filters, pipes, utils
+- `apps/api/src/config/` — NestJS `registerAs` configs: app, database, mongodb, redis, jwt, s3, stripe, elasticsearch, mail
+- `apps/api/prisma/` — `schema.prisma` (models) + `prisma.config.ts` (migration URL config, Prisma 7 pattern)
 
 ### Dual-Database Pattern
-PostgreSQL holds relational/transactional data; MongoDB holds flexible-schema content. They are linked by UUID references — MongoDB documents store `course_id`, `lesson_id`, `quiz_id`, `user_id` etc. as `"uuid-from-postgresql"` strings. Typical access pattern: query PostgreSQL for metadata first, then fetch rich content from MongoDB.
-
-### NestJS Module Structure
-The backend is organized into these module groups:
-- **Core**: Auth (JWT, OAuth, 2FA), User (profiles, roles: student/teacher/admin)
-- **Course Management**: Course (CRUD, categories, pricing, enrollment), Lesson (types, sequencing, prerequisites), Content (upload, S3, CDN)
-- **Learning**: Progress (completion tracking, streaks), Quiz (question bank, auto-grading, multiple types), Certificate (PDF generation, QR verification)
-- **Engagement**: Discussion (forums, Q&A, moderation), Live Class (WebRTC, scheduling, recording, attendance), Notification (email/SMS/push/in-app)
-- **Business**: Payment (Stripe, subscriptions, refunds), Analytics (user behavior, revenue reports), Admin (user management, content approval, audit logs)
+PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-schema content. Linked by UUID references. Typical pattern: query PostgreSQL for metadata, then fetch rich content from MongoDB.
 
 ### Key Data Flows
-- Progress events are published to Redis message queue, consumed by analytics and notification workers
-- Video uploads go to S3/R2, trigger transcoding via Cloudflare Stream/Mux, webhook notifies Content module when done
-- Payment webhooks from Stripe trigger enrollment creation and invoice generation
-- Certificate generation is queued as a background job (Bull Queue)
+- Progress events → Redis message queue → analytics/notification workers
+- Video uploads → S3/R2 → Cloudflare Stream transcoding → webhook → Content module
+- Stripe payment webhooks → enrollment creation + invoice generation
+- Certificate generation → Bull Queue background job
 
 ## Reference Documents
 
 - [architecture.mmd](files/architecture.mmd) — Full system architecture (Mermaid graph)
 - [database-diagram.mermaid](files/database-diagram.mermaid) — PostgreSQL ER diagram (20+ tables)
-- [mongodb-collections.md](files/mongodb-collections.md) — MongoDB collection schemas with examples and cross-DB query patterns
+- [mongodb-collections.md](files/mongodb-collections.md) — MongoDB collection schemas with cross-DB query patterns
