@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Rules
 
-1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Код доторх comment, variable нэр зэрэг нь англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
+1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Variable нэр англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
+7. **Код дотор монголоор бичих**: Хөгжүүлэлтийн явцад бүх comment, JSDoc/TSDoc docblock, тайлбар зэргийг ЗААВАЛ монгол хэлээр бичнэ. Variable болон function нэрс англиар байна, харин тэдгээрийн тайлбар, comment-ууд монголоор байна.
 2. **Commit message монголоор бичих**: Commit message-ийг ЗААВАЛ монгол хэлээр бичнэ.
 3. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
 4. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
@@ -17,6 +18,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Phase 6: Live Class Module
    - Phase 7: React Native Mobile App
 6. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
+8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
+9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
 
 ## Project Overview
 
@@ -114,3 +117,32 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - [architecture.mmd](files/architecture.mmd) — Full system architecture (Mermaid graph)
 - [database-diagram.mermaid](files/database-diagram.mermaid) — PostgreSQL ER diagram (20+ tables)
 - [mongodb-collections.md](files/mongodb-collections.md) — MongoDB collection schemas with cross-DB query patterns
+
+## Implemented Modules
+
+<!-- Модуль бүрэн дууссаны дараа энд нэмнэ: endpoint-ууд, export service-ууд, хамаарал, онцлог шийдвэрүүд -->
+
+### Auth Module (Phase 1)
+
+**Endpoints** (`/api/v1/auth`):
+- `POST /register` — Шинэ хэрэглэгч бүртгүүлэх (public)
+- `POST /login` — Нэвтрэх (public)
+- `POST /refresh` — Токен шинэчлэх (public)
+- `POST /logout` — Системээс гарах (JWT required)
+- `POST /forgot-password` — Нууц үг сэргээх хүсэлт (public)
+- `POST /reset-password` — Нууц үг шинэчлэх (public)
+- `GET /me` — Одоогийн хэрэглэгчийн мэдээлэл (JWT required)
+
+**Export хийсэн service-ууд**: `UserRepository`, `TokenService`
+
+**Хамаарал**: `PrismaModule` (@Global), `PassportModule`, `JwtModule`, `ConfigModule`
+
+**Онцлог шийдвэрүүд**:
+- JWT access token (15 мин) + Refresh token (7 хоног) — Token rotation хэрэглэнэ
+- Refresh token-ийг SHA-256 хэшлэж хадгална (bcrypt биш — хурдны учир)
+- User enumeration хамгаалалт: login болон forgot-password дээр ижил хариу буцаана
+- Нууц үг шинэчлэхэд бүх сесси болон refresh token цуцлагдана
+- `PrismaModule` нь `@Global()` — бусад модулиуд дахин import хийх шаардлагагүй
+- firstName/lastName RegisterDto-д байгаа ч User хүснэгтэд хадгалагдахгүй (UserProfile нь Users модульд ирнэ)
+
+**Тест**: 7 test suite, 22 unit тест (use-case + controller)

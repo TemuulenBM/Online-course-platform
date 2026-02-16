@@ -10,8 +10,13 @@ import mongodbConfig from './config/mongodb.config';
 import redisConfig from './config/redis.config';
 import jwtConfig from './config/jwt.config';
 
+// Common modules
+import { PrismaModule } from './common/prisma/prisma.module';
+
+// Feature modules
+import { AuthModule } from './modules/auth/auth.module';
+
 // Module imports will be added as modules are implemented
-// import { AuthModule } from './modules/auth/auth.module';
 // import { UsersModule } from './modules/users/users.module';
 // import { CoursesModule } from './modules/courses/courses.module';
 // import { LessonsModule } from './modules/lessons/lessons.module';
@@ -33,6 +38,8 @@ import jwtConfig from './config/jwt.config';
       isGlobal: true,
       load: [appConfig, databaseConfig, mongodbConfig, redisConfig, jwtConfig],
     }),
+    PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
