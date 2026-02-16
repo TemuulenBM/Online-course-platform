@@ -20,6 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 6. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
 8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
 9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
+10. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
 
 ## Project Overview
 
@@ -231,3 +232,33 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/courses/my`, `/courses/slug/:slug` нь `/courses/:id`-ээс ӨМНӨ
 
 **Тест**: 14 test suite, 54 unit тест (use-case + controller + cache service)
+
+### Lessons Module (Phase 2)
+
+**Endpoints** (`/api/v1/lessons`):
+- `POST /lessons` — Шинэ хичээл үүсгэх (TEACHER, ADMIN)
+- `GET /lessons/course/:courseId` — Сургалтын хичээлүүдийн жагсаалт (@Public, published only)
+- `PATCH /lessons/reorder` — Хичээлүүдийн дарааллыг өөрчлөх (TEACHER, ADMIN)
+- `GET /lessons/:id` — Хичээлийн дэлгэрэнгүй (@Public, published only)
+- `PATCH /lessons/:id` — Хичээл шинэчлэх (эзэмшигч/ADMIN)
+- `PATCH /lessons/:id/publish` — Нийтлэлт toggle (эзэмшигч/ADMIN)
+- `DELETE /lessons/:id` — Хичээл устгах (эзэмшигч/ADMIN)
+
+**Export хийсэн service-ууд**: `LessonRepository`
+
+**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global), `CoursesModule` (CourseRepository ашиглах)
+
+**Онцлог шийдвэрүүд**:
+- Зөвхөн PostgreSQL metadata — MongoDB контент Content модульд хамаарна
+- `orderIndex` автоматаар тавигдана (max+1), reorder endpoint-ээр өөрчлөгдөнө
+- Pagination байхгүй — хичээлүүд (10-100) цөөн тул бүгдийг нэг дор авна
+- `courseId` update хийхгүй — хичээлийг сургалт хооронд зөөхгүй
+- `isPublished` boolean toggle — Course-ийн DRAFT→PUBLISHED биш
+- Эрхийн шалгалт: use-case түвшинд, Course.instructorId-г шалгана
+- Redis кэшлэлт: `lesson:{id}`, `lessons:course:{courseId}` (TTL 15 мин)
+- Зөвхөн published жагсаалтыг кэшлэнэ, owner/admin DB-ээс шууд
+- `LessonType` enum: VIDEO, TEXT, QUIZ, ASSIGNMENT, LIVE
+- Cascade delete: Course устгахад хичээлүүд автоматаар устна
+- Route дараалал: `/lessons/course/:courseId`, `/lessons/reorder` нь `/lessons/:id`-ээс ӨМНӨ
+
+**Тест**: 9 test suite, 45 unit тест (use-case + controller + cache service)

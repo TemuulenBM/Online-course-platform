@@ -22,8 +22,8 @@ import { AuthModule } from './modules/auth/auth.module';
 
 import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { LessonsModule } from './modules/lessons/lessons.module';
 // Module imports will be added as modules are implemented
-// import { LessonsModule } from './modules/lessons/lessons.module';
 // import { ContentModule } from './modules/content/content.module';
 // import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
 // import { ProgressModule } from './modules/progress/progress.module';
@@ -56,6 +56,7 @@ import { CoursesModule } from './modules/courses/courses.module';
     UsersModule,
     AuthModule,
     CoursesModule,
+    LessonsModule,
   ],
   controllers: [AppController],
   providers: [

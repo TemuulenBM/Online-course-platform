@@ -1,1 +1,2 @@
-// Infrastructure repositories and services will be exported here
+export * from './repositories/lesson.repository';
+export * from './services/lesson-cache.service';

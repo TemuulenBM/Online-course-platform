@@ -110,6 +110,14 @@ enum CourseStatus {
   ARCHIVED
 }
 
+enum LessonType {
+  VIDEO
+  TEXT
+  QUIZ
+  ASSIGNMENT
+  LIVE
+}
+
 model Category {
   id           String     @id @default(uuid())
   name         String     @unique
@@ -150,6 +158,7 @@ model Course {
   tags          CourseTag[]
   prerequisites Prerequisite[] @relation("CoursePrerequisites")
   requiredBy    Prerequisite[] @relation("RequiredCoursePrerequisites")
+  lessons       Lesson[]
 
   @@index([instructorId])
   @@index([categoryId])
@@ -181,4 +190,23 @@ model Prerequisite {
 
   @@unique([courseId, requiredCourseId])
   @@map("prerequisites")
+}
+
+model Lesson {
+  id              String     @id @default(uuid())
+  courseId         String     @map("course_id")
+  title           String
+  orderIndex      Int        @map("order_index")
+  lessonType      LessonType @default(VIDEO) @map("lesson_type")
+  durationMinutes Int        @default(0) @map("duration_minutes")
+  isPreview       Boolean    @default(false) @map("is_preview")
+  isPublished     Boolean    @default(true) @map("is_published")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId])
+  @@index([courseId, orderIndex])
+  @@map("lessons")
 }

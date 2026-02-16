@@ -1,1 +1,1 @@
-// Domain entities, value objects, and events will be exported here
+export * from './entities/lesson.entity';

@@ -1,1 +1,1 @@
-// Controllers will be exported here
+export * from './controllers/lessons.controller';
