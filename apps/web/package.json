@@ -1,0 +1,33 @@
+{
+  "name": "@ocp/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rm -rf .next"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tanstack/react-query": "^5.62.0",
+    "zustand": "^5.0.0",
+    "@ocp/shared-types": "workspace:*",
+    "@ocp/validation": "workspace:*",
+    "@ocp/api-client": "workspace:*",
+    "@ocp/ui-components": "workspace:*"
+  },
+  "devDependencies": {
+    "@ocp/typescript-config": "workspace:*",
+    "@ocp/eslint-config": "workspace:*",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.0"
+  }
+}

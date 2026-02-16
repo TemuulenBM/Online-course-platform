@@ -1,0 +1,19 @@
+{
+  "name": "@ocp/ui-components",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@ocp/typescript-config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

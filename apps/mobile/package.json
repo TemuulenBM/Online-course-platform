@@ -1,0 +1,33 @@
+{
+  "name": "@ocp/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "build": "echo 'Mobile build requires EAS CLI'",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "lint": "eslint src/",
+    "clean": "rm -rf .expo"
+  },
+  "dependencies": {
+    "expo": "~52.0.0",
+    "expo-router": "~4.0.0",
+    "expo-status-bar": "~2.0.0",
+    "react": "^19.0.0",
+    "react-native": "~0.76.0",
+    "react-native-safe-area-context": "~5.0.0",
+    "react-native-screens": "~4.4.0",
+    "@tanstack/react-query": "^5.62.0",
+    "zustand": "^5.0.0",
+    "@ocp/shared-types": "workspace:*",
+    "@ocp/validation": "workspace:*",
+    "@ocp/api-client": "workspace:*"
+  },
+  "devDependencies": {
+    "@ocp/typescript-config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

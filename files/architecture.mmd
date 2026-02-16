@@ -1,0 +1,218 @@
+graph TB
+    subgraph CLIENT["CLIENT LAYER - Хэрэглэгчийн давхарга"]
+        WEB["Next.js Web App<br/>━━━━━━━━━━━━━━<br/>TypeScript + Tailwind<br/>React Query + Zustand<br/>Server Components<br/>SEO Optimized"]
+        MOBILE["React Native Mobile<br/>━━━━━━━━━━━━━━<br/>Expo Framework<br/>Offline Support<br/>Push Notifications<br/>Biometric Auth"]
+    end
+
+    subgraph GATEWAY["API GATEWAY - Шлүүзийн давхарга"]
+        LB["Load Balancer<br/>━━━━━━━━━━━━━━<br/>Nginx / AWS ALB<br/>SSL Termination<br/>Health Checks"]
+        AG["API Gateway<br/>━━━━━━━━━━━━━━<br/>JWT Validation<br/>Rate Limiting<br/>CORS Config<br/>Request Routing"]
+    end
+
+    subgraph APPLICATION["APPLICATION LAYER - NestJS Бизнес Логик"]
+        
+        subgraph CORE["Core Modules"]
+            AUTH["Auth Module<br/>━━━━━━━━━━━━━━<br/>JWT Strategy<br/>Refresh Tokens<br/>OAuth (Google/FB)<br/>2FA Support"]
+            USER["User Module<br/>━━━━━━━━━━━━━━<br/>Profile CRUD<br/>Role Management<br/>Student/Teacher/Admin<br/>Preferences"]
+        end
+        
+        subgraph COURSE["Course Management"]
+            CRS["Course Module<br/>━━━━━━━━━━━━━━<br/>Course CRUD<br/>Categories & Tags<br/>Pricing & Discounts<br/>Enrollment"]
+            LSN["Lesson Module<br/>━━━━━━━━━━━━━━<br/>Lesson Types<br/>Sequencing<br/>Prerequisites<br/>Lock/Unlock"]
+            CNT["Content Module<br/>━━━━━━━━━━━━━━<br/>Video Upload<br/>File Management<br/>S3 Integration<br/>CDN Distribution"]
+        end
+        
+        subgraph LEARNING["Learning Features"]
+            PRG["Progress Module<br/>━━━━━━━━━━━━━━<br/>Completion Tracking<br/>Time Spent<br/>Learning Path<br/>Streaks"]
+            QUZ["Quiz Module<br/>━━━━━━━━━━━━━━<br/>Question Bank<br/>Auto Grading<br/>Multiple Types<br/>Retake Logic"]
+            CRT["Certificate Module<br/>━━━━━━━━━━━━━━<br/>PDF Generation<br/>QR Verification<br/>Email Delivery<br/>Templates"]
+        end
+        
+        subgraph ENGAGE["Engagement"]
+            DSC["Discussion Module<br/>━━━━━━━━━━━━━━<br/>Forums & Q&A<br/>Comments<br/>Upvoting<br/>Moderation"]
+            LIV["Live Class Module<br/>━━━━━━━━━━━━━━<br/>WebRTC/Agora<br/>Scheduling<br/>Recording<br/>Attendance"]
+            NOT["Notification Module<br/>━━━━━━━━━━━━━━<br/>Email & SMS<br/>Push Notifications<br/>In-app Alerts<br/>Preferences"]
+        end
+        
+        subgraph BUSINESS["Business Logic"]
+            PAY["Payment Module<br/>━━━━━━━━━━━━━━<br/>Stripe Integration<br/>Subscriptions<br/>Invoicing<br/>Refunds"]
+            ANA["Analytics Module<br/>━━━━━━━━━━━━━━<br/>User Behavior<br/>Course Stats<br/>Revenue Reports<br/>Dashboards"]
+            ADM["Admin Module<br/>━━━━━━━━━━━━━━<br/>User Management<br/>Content Approval<br/>System Config<br/>Audit Logs"]
+        end
+    end
+
+    subgraph INFRA["INFRASTRUCTURE SERVICES"]
+        MQ["Message Queue<br/>━━━━━━━━━━━━━━<br/>Redis Pub/Sub<br/>Bull Queue<br/>Background Jobs<br/>Event Driven"]
+        CACHE["Cache Layer<br/>━━━━━━━━━━━━━━<br/>Redis<br/>Session Storage<br/>API Cache<br/>Rate Limit Data"]
+        SRCH["Search Engine<br/>━━━━━━━━━━━━━━<br/>Elasticsearch<br/>Full-text Search<br/>Course Discovery<br/>Auto-complete"]
+    end
+
+    subgraph DATA["DATA LAYER - Өгөгдлийн сан"]
+        subgraph DB["Primary Databases"]
+            PG["PostgreSQL<br/>━━━━━━━━━━━━━━<br/>Users & Auth<br/>Enrollments<br/>Payments<br/>Progress<br/>Certificates<br/><br/>Primary + Replicas<br/>Connection Pooling"]
+            MG["MongoDB<br/>━━━━━━━━━━━━━━<br/>Course Content<br/>Lesson Materials<br/>Discussions<br/>Quiz Questions<br/><br/>Replica Set<br/>Flexible Schema"]
+        end
+        
+        subgraph STORAGE["File Storage"]
+            S3["S3 / Cloudflare R2<br/>━━━━━━━━━━━━━━<br/>Videos (Original)<br/>Videos (Transcoded)<br/>Documents & PDFs<br/>Images & Avatars<br/>Certificates<br/><br/>Lifecycle Rules<br/>Versioning Enabled"]
+            CDN["CDN - Cloudflare<br/>━━━━━━━━━━━━━━<br/>Global Distribution<br/>Edge Caching<br/>Video Streaming<br/>Static Assets<br/>DDoS Protection"]
+        end
+    end
+
+    subgraph EXTERNAL["EXTERNAL SERVICES"]
+        MAIL["Email Service<br/>━━━━━━━━━━━━━━<br/>SendGrid / SES<br/>Transactional<br/>Notifications<br/>Marketing"]
+        VID["Video Processing<br/>━━━━━━━━━━━━━━<br/>Cloudflare Stream<br/>Mux<br/>Transcoding<br/>HLS/DASH Streaming"]
+        PAYG["Payment Gateway<br/>━━━━━━━━━━━━━━<br/>Stripe<br/>PayPal<br/>Local Payments<br/>Webhooks"]
+        SMS["SMS Service<br/>━━━━━━━━━━━━━━<br/>Twilio<br/>OTP Verification<br/>Notifications"]
+        WEBRTC["WebRTC Service<br/>━━━━━━━━━━━━━━<br/>Agora SDK<br/>Video Calls<br/>Screen Share<br/>Recording"]
+    end
+
+    subgraph MONITOR["MONITORING & LOGGING"]
+        LOG["Logging<br/>━━━━━━━━━━━━━━<br/>Winston/Pino<br/>ELK Stack<br/>Error Tracking<br/>Audit Trail"]
+        MON["Monitoring<br/>━━━━━━━━━━━━━━<br/>Prometheus<br/>Grafana Dashboards<br/>Health Checks<br/>Alerts"]
+        ERR["Error Tracking<br/>━━━━━━━━━━━━━━<br/>Sentry<br/>Real-time Alerts<br/>Stack Traces<br/>User Impact"]
+    end
+
+    %% Client to Gateway
+    WEB -->|HTTPS| LB
+    MOBILE -->|HTTPS| LB
+    LB -->|Route| AG
+
+    %% Gateway to Core Modules
+    AG -->|Authenticate| AUTH
+    AG -->|Route| USER
+    
+    %% Gateway to Course Modules
+    AG -->|Route| CRS
+    AG -->|Route| LSN
+    AG -->|Route| CNT
+    
+    %% Gateway to Learning Modules
+    AG -->|Route| PRG
+    AG -->|Route| QUZ
+    AG -->|Route| CRT
+    
+    %% Gateway to Engagement
+    AG -->|Route| DSC
+    AG -->|Route| LIV
+    AG -->|Route| NOT
+    
+    %% Gateway to Business
+    AG -->|Route| PAY
+    AG -->|Route| ANA
+    AG -->|Route| ADM
+
+    %% Core Module Connections
+    AUTH -->|Store Session| CACHE
+    AUTH -->|Store User| PG
+    USER -->|Cache Profile| CACHE
+    USER -->|Store Data| PG
+    
+    %% Course Module Connections
+    CRS -->|Cache Courses| CACHE
+    CRS -->|Store Metadata| PG
+    CRS -->|Store Content| MG
+    CRS -->|Index| SRCH
+    
+    LSN -->|Store Lessons| PG
+    LSN -->|Store Content| MG
+    LSN -->|Index| SRCH
+    
+    CNT -->|Upload Files| S3
+    CNT -->|Store Refs| MG
+    CNT -->|Process Video| VID
+    
+    %% Learning Module Connections
+    PRG -->|Store Progress| PG
+    PRG -->|Publish Events| MQ
+    PRG -->|Cache Stats| CACHE
+    
+    QUZ -->|Store Questions| MG
+    QUZ -->|Store Attempts| PG
+    QUZ -->|Queue Grading| MQ
+    
+    CRT -->|Store Records| PG
+    CRT -->|Upload PDF| S3
+    CRT -->|Queue Job| MQ
+    
+    %% Engagement Connections
+    DSC -->|Store Posts| MG
+    DSC -->|Cache Threads| CACHE
+    
+    LIV -->|Store Sessions| PG
+    LIV -->|WebRTC| WEBRTC
+    LIV -->|Record| VID
+    
+    NOT -->|Queue Email| MQ
+    NOT -->|Queue SMS| MQ
+    NOT -->|Queue Push| MQ
+    NOT -->|Store Prefs| PG
+    
+    %% Business Module Connections
+    PAY -->|Store Orders| PG
+    PAY -->|Process Payment| PAYG
+    PAY -->|Publish Events| MQ
+    PAY -->|Create Invoice| S3
+    
+    ANA -->|Store Events| PG
+    ANA -->|Aggregate| CACHE
+    
+    ADM -->|Manage Users| PG
+    ADM -->|Audit Log| LOG
+    
+    %% Message Queue to Workers
+    MQ -->|Email Jobs| MAIL
+    MQ -->|SMS Jobs| SMS
+    MQ -->|Certificate Jobs| CRT
+    MQ -->|Analytics Jobs| ANA
+    
+    %% Storage to CDN
+    S3 -->|Distribute| CDN
+    
+    %% CDN to Clients
+    CDN -.->|Serve Assets| WEB
+    CDN -.->|Serve Assets| MOBILE
+    
+    %% Monitoring Connections
+    AG -->|Metrics| MON
+    AG -->|Errors| ERR
+    AG -->|Logs| LOG
+    
+    AUTH -->|Metrics| MON
+    AUTH -->|Errors| ERR
+    
+    PAY -->|Metrics| MON
+    PAY -->|Errors| ERR
+    PAY -->|Audit| LOG
+    
+    PG -->|Metrics| MON
+    MG -->|Metrics| MON
+    CACHE -->|Metrics| MON
+    
+    %% External Service Connections
+    VID -.->|Webhook| CNT
+    PAYG -.->|Webhook| PAY
+
+    classDef clientClass fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
+    classDef gatewayClass fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    classDef coreClass fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef courseClass fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    classDef learningClass fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef engageClass fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef businessClass fill:#fff9c4,stroke:#f9a825,stroke-width:2px,color:#000
+    classDef infraClass fill:#ffe0b2,stroke:#e65100,stroke-width:2px,color:#000
+    classDef dataClass fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
+    classDef externalClass fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
+    classDef monitorClass fill:#b2dfdb,stroke:#00695c,stroke-width:2px,color:#000
+
+    class WEB,MOBILE clientClass
+    class LB,AG gatewayClass
+    class AUTH,USER coreClass
+    class CRS,LSN,CNT courseClass
+    class PRG,QUZ,CRT learningClass
+    class DSC,LIV,NOT engageClass
+    class PAY,ANA,ADM businessClass
+    class MQ,CACHE,SRCH infraClass
+    class PG,MG,S3,CDN dataClass
+    class MAIL,VID,PAYG,SMS,WEBRTC externalClass
+    class LOG,MON,ERR monitorClass

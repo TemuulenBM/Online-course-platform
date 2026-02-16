@@ -1,0 +1,13 @@
+{
+  "name": "@ocp/tools",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "seed": "ts-node scripts/seed.ts",
+    "generate-module": "ts-node scripts/generate-module.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.0",
+    "typescript": "^5.6.0"
+  }
+}

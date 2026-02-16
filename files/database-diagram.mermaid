@@ -1,0 +1,322 @@
+erDiagram
+    %% ========================================
+    %% POSTGRESQL TABLES - Structured Data
+    %% ========================================
+    
+    USERS {
+        uuid id PK
+        string email UK "Unique, not null"
+        string password_hash "bcrypt hashed"
+        enum role "student, teacher, admin"
+        boolean email_verified "default false"
+        timestamp created_at
+        timestamp updated_at
+        timestamp last_login_at
+    }
+    
+    USER_PROFILES {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        string first_name
+        string last_name
+        string avatar_url
+        text bio
+        string country
+        string timezone
+        json preferences "JSON object"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    SESSIONS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        string token "JWT token hash"
+        timestamp expires_at
+        string ip_address
+        text user_agent
+        timestamp created_at
+    }
+    
+    REFRESH_TOKENS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        string token "Hashed refresh token"
+        timestamp expires_at
+        boolean revoked "default false"
+        timestamp created_at
+    }
+    
+    PASSWORD_RESETS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        string token "Hashed reset token"
+        timestamp expires_at
+        boolean used "default false"
+        timestamp created_at
+    }
+    
+    COURSES {
+        uuid id PK
+        string title
+        string slug UK "URL-friendly unique"
+        text description
+        uuid instructor_id FK "→ USERS"
+        uuid category_id FK "→ CATEGORIES"
+        decimal price "nullable"
+        decimal discount_price "nullable"
+        enum difficulty "beginner, intermediate, advanced"
+        string language "default 'en'"
+        enum status "draft, published, archived"
+        string thumbnail_url
+        integer duration_minutes "Total course duration"
+        timestamp published_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    CATEGORIES {
+        uuid id PK
+        string name UK
+        string slug UK
+        text description
+        uuid parent_id FK "Self-reference for subcategories"
+        integer display_order
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    COURSE_TAGS {
+        uuid id PK
+        uuid course_id FK "→ COURSES"
+        string tag_name
+        timestamp created_at
+    }
+    
+    PREREQUISITES {
+        uuid id PK
+        uuid course_id FK "→ COURSES"
+        uuid required_course_id FK "→ COURSES"
+        timestamp created_at
+    }
+    
+    LESSONS {
+        uuid id PK
+        uuid course_id FK "→ COURSES"
+        string title
+        integer order_index "Lesson sequence"
+        enum lesson_type "video, text, quiz, assignment, live"
+        integer duration_minutes
+        boolean is_preview "Free preview allowed"
+        boolean is_published "default true"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ENROLLMENTS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        uuid course_id FK "→ COURSES"
+        enum status "active, completed, cancelled, expired"
+        timestamp enrolled_at
+        timestamp expires_at "nullable for lifetime access"
+        timestamp completed_at "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    USER_PROGRESS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        uuid lesson_id FK "→ LESSONS"
+        integer progress_percentage "0-100"
+        boolean completed "default false"
+        integer time_spent_seconds
+        integer last_position_seconds "For video lessons"
+        timestamp completed_at "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    QUIZZES {
+        uuid id PK
+        uuid lesson_id FK "→ LESSONS"
+        string title
+        text description
+        integer time_limit_minutes "nullable"
+        integer passing_score_percentage "default 70"
+        boolean randomize_questions "default false"
+        boolean randomize_options "default false"
+        integer max_attempts "nullable for unlimited"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    QUIZ_ATTEMPTS {
+        uuid id PK
+        uuid quiz_id FK "→ QUIZZES"
+        uuid user_id FK "→ USERS"
+        integer score
+        integer max_score
+        boolean passed
+        timestamp started_at
+        timestamp submitted_at
+        timestamp created_at
+    }
+    
+    CERTIFICATES {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        uuid course_id FK "→ COURSES"
+        string certificate_number UK "AUTO-GENERATED"
+        string pdf_url
+        string qr_code_url
+        string verification_code UK
+        timestamp issued_at
+        timestamp created_at
+    }
+    
+    ORDERS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        uuid course_id FK "→ COURSES, nullable for subscriptions"
+        decimal amount
+        string currency "default 'USD'"
+        enum status "pending, paid, failed, refunded"
+        string payment_method "stripe, paypal, etc"
+        string external_payment_id "Stripe/LemonSqueezy ID"
+        json metadata "Payment gateway response"
+        timestamp paid_at "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    SUBSCRIPTIONS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        enum plan_type "monthly, yearly"
+        enum status "active, cancelled, expired, past_due"
+        timestamp current_period_start
+        timestamp current_period_end
+        string external_subscription_id "Stripe/LemonSqueezy ID"
+        boolean cancel_at_period_end "default false"
+        timestamp cancelled_at "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    INVOICES {
+        uuid id PK
+        uuid order_id FK "→ ORDERS"
+        string invoice_number UK
+        decimal amount
+        string currency
+        string pdf_url
+        timestamp created_at
+    }
+    
+    LIVE_SESSIONS {
+        uuid id PK
+        uuid lesson_id FK "→ LESSONS"
+        uuid instructor_id FK "→ USERS"
+        string title
+        text description
+        timestamp scheduled_start
+        timestamp scheduled_end
+        timestamp actual_start "nullable"
+        timestamp actual_end "nullable"
+        string meeting_url
+        string meeting_id "Jitsi/100ms ID"
+        string recording_url "nullable"
+        enum status "scheduled, live, ended, cancelled"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    SESSION_ATTENDEES {
+        uuid id PK
+        uuid live_session_id FK "→ LIVE_SESSIONS"
+        uuid user_id FK "→ USERS"
+        timestamp joined_at
+        timestamp left_at "nullable"
+        integer duration_minutes
+        timestamp created_at
+    }
+    
+    NOTIFICATIONS {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        enum type "email, push, in_app, sms"
+        string title
+        text message
+        json data "Additional context"
+        boolean read "default false"
+        timestamp sent_at
+        timestamp read_at "nullable"
+        timestamp created_at
+    }
+    
+    NOTIFICATION_PREFERENCES {
+        uuid id PK
+        uuid user_id FK "→ USERS"
+        boolean email_enabled "default true"
+        boolean push_enabled "default true"
+        boolean sms_enabled "default false"
+        json channel_preferences "Granular settings per notification type"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ANALYTICS_EVENTS {
+        uuid id PK
+        uuid user_id FK "→ USERS, nullable"
+        string event_name "page_view, video_play, quiz_start, etc"
+        string event_category
+        json properties "Event metadata"
+        string session_id
+        string ip_address
+        text user_agent
+        timestamp created_at
+    }
+    
+    %% ========================================
+    %% RELATIONSHIPS - PostgreSQL
+    %% ========================================
+    
+    USERS ||--o{ USER_PROFILES : has
+    USERS ||--o{ SESSIONS : has
+    USERS ||--o{ REFRESH_TOKENS : has
+    USERS ||--o{ PASSWORD_RESETS : has
+    USERS ||--o{ COURSES : instructs
+    USERS ||--o{ ENROLLMENTS : enrolls
+    USERS ||--o{ USER_PROGRESS : tracks
+    USERS ||--o{ QUIZ_ATTEMPTS : attempts
+    USERS ||--o{ CERTIFICATES : earns
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ SUBSCRIPTIONS : subscribes
+    USERS ||--o{ LIVE_SESSIONS : hosts
+    USERS ||--o{ SESSION_ATTENDEES : attends
+    USERS ||--o{ NOTIFICATIONS : receives
+    USERS ||--|| NOTIFICATION_PREFERENCES : configures
+    USERS ||--o{ ANALYTICS_EVENTS : generates
+    
+    CATEGORIES ||--o{ COURSES : categorizes
+    CATEGORIES ||--o{ CATEGORIES : "has subcategories"
+    
+    COURSES ||--o{ COURSE_TAGS : tagged
+    COURSES ||--o{ PREREQUISITES : requires
+    COURSES ||--o{ PREREQUISITES : "required by"
+    COURSES ||--o{ LESSONS : contains
+    COURSES ||--o{ ENROLLMENTS : "enrolled in"
+    COURSES ||--o{ CERTIFICATES : awards
+    COURSES ||--o{ ORDERS : "purchased via"
+    
+    LESSONS ||--o{ USER_PROGRESS : tracked
+    LESSONS ||--|| QUIZZES : "may have"
+    LESSONS ||--|| LIVE_SESSIONS : "may have"
+    
+    QUIZZES ||--o{ QUIZ_ATTEMPTS : attempted
+    
+    LIVE_SESSIONS ||--o{ SESSION_ATTENDEES : attended
+    
+    ORDERS ||--|| INVOICES : generates
