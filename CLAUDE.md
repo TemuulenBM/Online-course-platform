@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Rules
 
-1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Код доторх comment, variable нэр, commit message зэрэг нь англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
-2. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
-3. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
-4. **Модулиудыг дараалалтай хөгжүүлэх**: `files/Дараалал.docx` дээрх дарааллыг баримтлана:
+1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Код доторх comment, variable нэр зэрэг нь англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
+2. **Commit message монголоор бичих**: Commit message-ийг ЗААВАЛ монгол хэлээр бичнэ.
+3. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
+4. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
+5. **Модулиудыг дараалалтай хөгжүүлэх**: `files/Дараалал.docx` дээрх дарааллыг баримтлана:
    - Phase 1: Auth Module → User Module
    - Phase 2: Course Module → Lesson Module → Content Module
    - Phase 3: Enrollment → Progress → Quiz → Certificate Module
@@ -15,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Phase 5: Payment → Analytics → Admin Module
    - Phase 6: Live Class Module
    - Phase 7: React Native Mobile App
-5. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
+6. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
 
 ## Project Overview
 
