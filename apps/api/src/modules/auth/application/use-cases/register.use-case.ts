@@ -3,12 +3,14 @@ import { UserRepository } from '../../infrastructure/repositories/user.repositor
 import { TokenService } from '../../infrastructure/services/token.service';
 import { SessionRepository } from '../../infrastructure/repositories/session.repository';
 import { RefreshTokenRepository } from '../../infrastructure/repositories/refresh-token.repository';
+import { UserProfileRepository } from '../../../users/infrastructure/repositories/user-profile.repository';
 import { RegisterDto } from '../../dto/register.dto';
 import { hashPassword } from '../../../../common/utils/hash.util';
 
 /**
  * Бүртгүүлэх use case.
- * Имэйл давхардал шалгаж, нууц үг хэшлэж, хэрэглэгч үүсгэж, токенууд буцаана.
+ * Имэйл давхардал шалгаж, нууц үг хэшлэж, хэрэглэгч үүсгэж,
+ * профайл үүсгэж, токенууд буцаана.
  */
 @Injectable()
 export class RegisterUseCase {
@@ -19,6 +21,7 @@ export class RegisterUseCase {
     private readonly tokenService: TokenService,
     private readonly sessionRepository: SessionRepository,
     private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly userProfileRepository: UserProfileRepository,
   ) {}
 
   async execute(dto: RegisterDto, ipAddress?: string, userAgent?: string) {
@@ -35,6 +38,13 @@ export class RegisterUseCase {
     const user = await this.userRepository.create({
       email: dto.email.toLowerCase(),
       passwordHash,
+    });
+
+    // Профайл үүсгэх (firstName, lastName хадгалах)
+    await this.userProfileRepository.create({
+      userId: user.id,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
     });
 
     // Access token үүсгэх

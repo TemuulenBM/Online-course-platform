@@ -25,6 +25,9 @@ import { PasswordResetRepository } from './infrastructure/repositories/password-
 import { TokenService } from './infrastructure/services/token.service';
 import { JwtStrategy } from './infrastructure/services/jwt.strategy';
 
+// Users модулиас
+import { UsersModule } from '../users/users.module';
+
 /**
  * Auth модуль.
  * Бүртгэл, нэвтрэлт, токен шинэчлэл, нууц үг сэргээх,
@@ -32,6 +35,7 @@ import { JwtStrategy } from './infrastructure/services/jwt.strategy';
  */
 @Module({
   imports: [
+    UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],

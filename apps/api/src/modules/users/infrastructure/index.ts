@@ -1,1 +1,2 @@
-// Infrastructure repositories and services will be exported here
+export { UserProfileRepository } from './repositories/user-profile.repository';
+export { UserCacheService } from './services/user-cache.service';

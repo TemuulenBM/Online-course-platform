@@ -1,0 +1,632 @@
+{
+  "info": {
+    "name": "OCP — Auth & Users Module",
+    "description": "Онлайн сургалтын платформын Auth болон Users модулийн API collection.\n\nBase URL: http://localhost:3001/api/v1\n\n## Ашиглах заавар\n1. Эхлээд Register эсвэл Login хийж token авна\n2. Token автоматаар `accessToken` variable-д хадгалагдана\n3. Бусад endpoint-ууд автоматаар Bearer token ашиглана",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "resetToken",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Баталгаажуулалтын endpoint-ууд: бүртгэл, нэвтрэлт, токен шинэчлэл, нууц үг сэргээх, гарах",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const res = pm.response.json();",
+                  "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "    pm.collectionVariables.set('userId', res.data.user.id);",
+                  "    pm.test('Амжилттай бүртгүүллээ', () => {",
+                  "        pm.expect(res.data).to.have.property('accessToken');",
+                  "        pm.expect(res.data).to.have.property('refreshToken');",
+                  "        pm.expect(res.data.user).to.have.property('id');",
+                  "        pm.expect(res.data.user).to.have.property('email');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Шинэ хэрэглэгч бүртгүүлэх.\n\n**Rate limit**: 5 req/min (AUTH_THROTTLE)\n\n**Validation**:\n- email: Valid email (заавал)\n- password: Min 8 тэмдэгт (заавал)\n- firstName: Заавал\n- lastName: Заавал"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "    pm.collectionVariables.set('userId', res.data.user.id);",
+                  "    pm.test('Амжилттай нэвтэрлээ', () => {",
+                  "        pm.expect(res.data).to.have.property('accessToken');",
+                  "        pm.expect(res.data).to.have.property('refreshToken');",
+                  "        pm.expect(res.data.user.email).to.eql('test@example.com');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Хэрэглэгч нэвтрэх.\n\n**Rate limit**: 5 req/min (AUTH_THROTTLE)\n\n**Validation**:\n- email: Valid email (заавал)\n- password: Min 8 тэмдэгт (заавал)\n\n**User enumeration хамгаалалт**: Имэйл олдоогүй ч \"Имэйл эсвэл нууц үг буруу\" гэсэн ижил хариу буцаана."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('refreshToken', res.data.refreshToken);",
+                  "    pm.test('Токен амжилттай шинэчлэгдлээ', () => {",
+                  "        pm.expect(res.data).to.have.property('accessToken');",
+                  "        pm.expect(res.data).to.have.property('refreshToken');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            },
+            "description": "Access token хугацаа дууссан үед refresh token ашиглаж шинэ токен авах.\n\n**Token rotation**: Хуучин refresh token хүчингүй болж, шинэ хос (access + refresh) буцаана."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User (me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Хэрэглэгчийн мэдээлэл авлаа', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data).to.have.property('email');",
+                  "        pm.expect(res.data).to.have.property('role');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Одоогийн нэвтэрсэн хэрэглэгчийн мэдээлэл авах.\n\n**JWT шаардлагатай**: Bearer token header-т илгээх."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Амжилттай гарлаа', () => {",
+                  "        const res = pm.response.json();",
+                  "        pm.expect(res.data.message).to.eql('Амжилттай гарлаа');",
+                  "    });",
+                  "    pm.collectionVariables.set('accessToken', '');",
+                  "    pm.collectionVariables.set('refreshToken', '');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Системээс гарах. Refresh token цуцлагдана.\n\n**JWT шаардлагатай**: Bearer token header-т илгээх."
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Хүсэлт илгээгдлээ (status 200)', () => {",
+                  "    pm.expect(pm.response.code).to.eql(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Нууц үг сэргээх линк имэйлээр илгээх хүсэлт.\n\n**Rate limit**: 3 req/min (PASSWORD_RESET_THROTTLE)\n\n**User enumeration хамгаалалт**: Имэйл олдоогүй ч амжилттай хариу буцаана."
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Нууц үг шинэчлэгдлээ (status 200)', () => {",
+                  "    pm.expect(pm.response.code).to.eql(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"]
+            },
+            "description": "Нууц үг шинэчлэх (forgot-password-оос авсан токеноор).\n\n**Rate limit**: 3 req/min (PASSWORD_RESET_THROTTLE)\n\n**Validation**:\n- token: Заавал\n- password: Min 8 тэмдэгт (заавал)\n\n**Анхааруулга**: Нууц үг шинэчлэхэд бүх сесси + refresh token цуцлагдана."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users — Profile",
+      "description": "Хэрэглэгчийн профайл endpoint-ууд. Бүгд JWT шаардлагатай.",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Профайл авлаа', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data).to.have.property('userId');",
+                  "        pm.expect(res.data).to.have.property('firstName');",
+                  "        pm.expect(res.data).to.have.property('lastName');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me", "profile"]
+            },
+            "description": "Нэвтэрсэн хэрэглэгчийн профайл авах.\n\n**Кэш**: Redis-ээс эхлээд, байхгүй бол DB (TTL 15 мин).\n\n**Анхааруулга**: Бүртгүүлэх үед профайл автоматаар үүссэн байна (firstName, lastName хадгалагдсан)."
+          },
+          "response": []
+        },
+        {
+          "name": "Create My Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Профайл үүслээ', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data).to.have.property('userId');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"bio\": \"Сургалтын платформын хэрэглэгч\",\n  \"country\": \"Mongolia\",\n  \"timezone\": \"Asia/Ulaanbaatar\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me", "profile"]
+            },
+            "description": "Профайл гараар үүсгэх (бүртгүүлэх үед автоматаар үүссэн бол 409 буцаана).\n\n**Validation**:\n- firstName: Max 100 тэмдэгт (сонголттой)\n- lastName: Max 100 тэмдэгт (сонголттой)\n- bio: Max 1000 тэмдэгт (сонголттой)\n- country: Max 100 тэмдэгт (сонголттой)\n- timezone: Max 50 тэмдэгт (сонголттой)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Профайл шинэчлэгдлээ', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data.bio).to.eql('Шинэчлэгдсэн bio');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Шинэчлэгдсэн bio\",\n  \"country\": \"Mongolia\",\n  \"timezone\": \"Asia/Ulaanbaatar\",\n  \"preferences\": {\n    \"language\": \"mn\",\n    \"theme\": \"dark\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me", "profile"]
+            },
+            "description": "Нэвтэрсэн хэрэглэгчийн профайл шинэчлэх.\n\n**Кэш**: Шинэчлэх үед Redis кэш invalidate хийгдэнэ.\n\n**Validation**:\n- firstName: Max 100 тэмдэгт (сонголттой)\n- lastName: Max 100 тэмдэгт (сонголттой)\n- bio: Max 1000 тэмдэгт (сонголттой)\n- country: Max 100 тэмдэгт (сонголттой)\n- timezone: Max 50 тэмдэгт (сонголттой)\n- preferences: JSON object (сонголттой)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Profile by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Хэрэглэгчийн профайл авлаа', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data).to.have.property('userId');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "profile"]
+            },
+            "description": "Бусад хэрэглэгчийн профайл харах (public profile).\n\n**Кэш**: Redis-ээс эхлээд, байхгүй бол DB (TTL 15 мин)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users — Admin",
+      "description": "Админ эрхийн endpoint-ууд. ADMIN role шаардлагатай.",
+      "item": [
+        {
+          "name": "List Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Хэрэглэгчдийн жагсаалт', () => {",
+                  "        pm.expect(res.data).to.have.property('data');",
+                  "        pm.expect(res.data).to.have.property('meta');",
+                  "        pm.expect(res.data.meta).to.have.property('total');",
+                  "        pm.expect(res.data.meta).to.have.property('page');",
+                  "        pm.expect(res.data.meta).to.have.property('limit');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Хуудасны дугаар (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Хуудас бүрийн тоо (default: 20, max: 100)"
+                },
+                {
+                  "key": "role",
+                  "value": "STUDENT",
+                  "description": "Эрхээр шүүх: STUDENT | TEACHER | ADMIN",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Бүх хэрэглэгчдийн жагсаалт (pagination + role filter).\n\n**Эрх**: ADMIN only (STUDENT/TEACHER → 403 Forbidden)\n\n**Query params**:\n- page: Хуудасны дугаар (default: 1, min: 1)\n- limit: Хуудас бүрийн тоо (default: 20, min: 1, max: 100)\n- role: Эрхээр шүүх — STUDENT | TEACHER | ADMIN (сонголттой)"
+          },
+          "response": []
+        },
+        {
+          "name": "List Users (filter by role)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=20&role=TEACHER",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "role",
+                  "value": "TEACHER"
+                }
+              ]
+            },
+            "description": "TEACHER эрхтэй хэрэглэгчдийг шүүж жагсаах.\n\n**Эрх**: ADMIN only"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.test('Эрх солигдлоо', () => {",
+                  "        pm.expect(res.data).to.have.property('id');",
+                  "        pm.expect(res.data).to.have.property('role');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"TEACHER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/role",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "role"]
+            },
+            "description": "Хэрэглэгчийн эрх солих.\n\n**Эрх**: ADMIN only\n\n**Validation**:\n- role: STUDENT | TEACHER | ADMIN (заавал)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Хэрэглэгч устгагдлаа (204)', () => {",
+                  "    pm.expect(pm.response.code).to.eql(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            },
+            "description": "Хэрэглэгч устгах (cascade delete — профайл, refresh token бүгд устна).\n\n**Эрх**: ADMIN only\n\n**Response**: 204 No Content (хариу body байхгүй)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

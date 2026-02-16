@@ -1,1 +1,1 @@
-// Controllers will be exported here
+export { UsersController } from './controllers/users.controller';

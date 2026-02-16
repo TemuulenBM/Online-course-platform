@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { Request } from 'express';
 import { RegisterDto } from '../../dto/register.dto';
 import { LoginDto } from '../../dto/login.dto';
@@ -26,6 +27,7 @@ import { GetCurrentUserUseCase } from '../../application/use-cases/get-current-u
 import { Public } from '../../../../common/decorators/public.decorator';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { AUTH_THROTTLE, PASSWORD_RESET_THROTTLE } from '../../../../common/constants/throttle.constants';
 
 /**
  * Баталгаажуулалтын controller.
@@ -48,6 +50,7 @@ export class AuthController {
 
   @Public()
   @Post('register')
+  @Throttle(AUTH_THROTTLE)
   @ApiOperation({ summary: 'Шинэ хэрэглэгч бүртгүүлэх' })
   @ApiResponse({ status: 201, description: 'Амжилттай бүртгүүллээ', type: AuthResponseDto })
   @ApiResponse({ status: 409, description: 'Имэйл бүртгэлтэй байна' })
@@ -57,6 +60,7 @@ export class AuthController {
 
   @Public()
   @Post('login')
+  @Throttle(AUTH_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Хэрэглэгч нэвтрэх' })
   @ApiResponse({ status: 200, description: 'Амжилттай нэвтэрлээ', type: AuthResponseDto })
@@ -88,6 +92,7 @@ export class AuthController {
 
   @Public()
   @Post('forgot-password')
+  @Throttle(PASSWORD_RESET_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Нууц үг сэргээх хүсэлт' })
   @ApiResponse({ status: 200, description: 'Хүсэлт илгээгдлээ' })
@@ -97,6 +102,7 @@ export class AuthController {
 
   @Public()
   @Post('reset-password')
+  @Throttle(PASSWORD_RESET_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Нууц үг шинэчлэх' })
   @ApiResponse({ status: 200, description: 'Нууц үг амжилттай шинэчлэгдлээ' })

@@ -5,6 +5,7 @@ import { UserRepository } from '../../infrastructure/repositories/user.repositor
 import { TokenService } from '../../infrastructure/services/token.service';
 import { SessionRepository } from '../../infrastructure/repositories/session.repository';
 import { RefreshTokenRepository } from '../../infrastructure/repositories/refresh-token.repository';
+import { UserProfileRepository } from '../../../users/infrastructure/repositories/user-profile.repository';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { RegisterDto } from '../../dto/register.dto';
 
@@ -14,6 +15,7 @@ describe('RegisterUseCase', () => {
   let tokenService: jest.Mocked<TokenService>;
   let sessionRepository: jest.Mocked<SessionRepository>;
   let refreshTokenRepository: jest.Mocked<RefreshTokenRepository>;
+  let userProfileRepository: jest.Mocked<UserProfileRepository>;
 
   const mockUser = new UserEntity({
     id: 'user-id-1',
@@ -58,6 +60,12 @@ describe('RegisterUseCase', () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: UserProfileRepository,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -66,6 +74,7 @@ describe('RegisterUseCase', () => {
     tokenService = module.get(TokenService);
     sessionRepository = module.get(SessionRepository);
     refreshTokenRepository = module.get(RefreshTokenRepository);
+    userProfileRepository = module.get(UserProfileRepository);
   });
 
   it('амжилттай бүртгүүлэх', async () => {

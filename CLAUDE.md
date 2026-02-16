@@ -99,8 +99,9 @@ modules/{name}/
 auth, users, courses, lessons, content, enrollments, progress, quizzes, certificates, discussions, notifications, payments, analytics, admin, live-classes
 
 ### Key Directories
-- `apps/api/src/common/` — Shared guards (JWT, Roles), decorators (@CurrentUser, @Roles, @Public), interceptors, filters, pipes, utils
-- `apps/api/src/config/` — NestJS `registerAs` configs: app, database, mongodb, redis, jwt, s3, stripe, elasticsearch, mail
+- `apps/api/src/common/` — Shared guards (JWT, Roles), decorators (@CurrentUser, @Roles, @Public), interceptors, filters, pipes, utils, redis (@Global RedisModule + RedisService), prisma (@Global PrismaModule)
+- `apps/api/src/common/constants/` — Дахин ашиглах constants (throttle limits гэх мэт)
+- `apps/api/src/config/` — NestJS `registerAs` configs: app, database, mongodb, redis, jwt, throttle, s3, stripe, elasticsearch, mail
 - `apps/api/prisma/` — `schema.prisma` (models) + `prisma.config.ts` (migration URL config, Prisma 7 pattern)
 
 ### Dual-Database Pattern
@@ -135,7 +136,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 
 **Export хийсэн service-ууд**: `UserRepository`, `TokenService`
 
-**Хамаарал**: `PrismaModule` (@Global), `PassportModule`, `JwtModule`, `ConfigModule`
+**Хамаарал**: `PrismaModule` (@Global), `PassportModule`, `JwtModule`, `ConfigModule`, `UsersModule`
 
 **Онцлог шийдвэрүүд**:
 - JWT access token (15 мин) + Refresh token (7 хоног) — Token rotation хэрэглэнэ
@@ -143,6 +144,52 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - User enumeration хамгаалалт: login болон forgot-password дээр ижил хариу буцаана
 - Нууц үг шинэчлэхэд бүх сесси болон refresh token цуцлагдана
 - `PrismaModule` нь `@Global()` — бусад модулиуд дахин import хийх шаардлагагүй
-- firstName/lastName RegisterDto-д байгаа ч User хүснэгтэд хадгалагдахгүй (UserProfile нь Users модульд ирнэ)
+- firstName/lastName RegisterDto-д байгаа — Users модуль хэрэгжсэний дараа UserProfile-д хадгалагдана
+- Auth модуль `UsersModule`-г import хийж `UserProfileRepository`-г ашиглана (register үед profile үүсгэх)
 
 **Тест**: 7 test suite, 22 unit тест (use-case + controller)
+
+### Users Module (Phase 1)
+
+**Endpoints** (`/api/v1/users`):
+- `GET /me/profile` — Миний профайл авах (JWT required)
+- `POST /me/profile` — Миний профайл үүсгэх (JWT required)
+- `PATCH /me/profile` — Миний профайл шинэчлэх (JWT required)
+- `GET /:id/profile` — Хэрэглэгчийн профайл авах (JWT required)
+- `GET /` — Хэрэглэгчдийн жагсаалт pagination-тэй (ADMIN only)
+- `PATCH /:id/role` — Хэрэглэгчийн эрх солих (ADMIN only)
+- `DELETE /:id` — Хэрэглэгч устгах (ADMIN only)
+
+**Export хийсэн service-ууд**: `UserProfileRepository`
+
+**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+- UserProfile нь User-тэй one-to-one хамаарал (`@unique` on userId)
+- Redis кэшлэлт: профайл авах үед Redis-ээс эхлээд, байхгүй бол DB (TTL 15 мин, `user:profile:{userId}` key)
+- Профайл шинэчлэх/устгах үед кэш invalidate хийгдэнэ
+- Auth модулийн RegisterUseCase-д profile үүсгэлт нэмэгдсэн (firstName, lastName хадгалагдана)
+- `RedisModule` нь `@Global()` — common/redis/ дотор, ioredis ашиглана
+- Admin endpoint-ууд `@Roles('ADMIN')` + `RolesGuard`-аар хамгаалагдсан
+- Профайл шинэчлэхэд өөрийн эсвэл admin эрхийн шалгалт (`ForbiddenException`)
+
+**Тест**: 8 test suite, 25 unit тест (use-case + controller + cache service)
+
+### API Gateway тохиргоо
+
+**Middleware** (`main.ts`):
+- `helmet()` — Security headers (X-Frame-Options, X-Content-Type-Options, CSP гэх мэт)
+- `compression()` — Response compression
+- `enableCors()` — Origin хязгаарлалт (`app.url` config-оос), credentials: true
+- `useGlobalPipes(ValidationPipe)` — whitelist + transform
+- `useGlobalFilters(AllExceptionsFilter, HttpExceptionFilter)` — Бүх алдааг нэг хэлбэрээр буцаах
+- `useGlobalInterceptors(LoggingInterceptor, TransformInterceptor)` — Лог + `{ success, data }` wrapper
+
+**Rate Limiting** (`@nestjs/throttler`):
+- Global: 3 давхар хязгаарлалт (short: 3 req/sec, medium: 20 req/10sec, long: 100 req/min)
+- `ThrottlerModule.forRootAsync` — `throttle.config.ts`-ээс ConfigService-ээр уншина (env-ээр тохируулах боломжтой)
+- `APP_GUARD` → `ThrottlerGuard` бүх endpoint-д автомат ажиллана
+- Auth endpoint-д хатуу хязгаарлалт: `AUTH_THROTTLE` (5 req/min), `PASSWORD_RESET_THROTTLE` (3 req/min)
+- Constants: `common/constants/throttle.constants.ts` — controller-уудад `@Throttle()` decorator-т дахин ашиглана
+
+**Config файлууд**: `config/throttle.config.ts` (`registerAs('throttle')`) — env variables: `THROTTLE_SHORT_TTL`, `THROTTLE_SHORT_LIMIT`, `THROTTLE_AUTH_LIMIT` гэх мэт
