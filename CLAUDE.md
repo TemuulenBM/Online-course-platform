@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 6. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
 8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
 9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
-10. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
+10. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `files/postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
 
 ## Project Overview
 
@@ -262,3 +262,31 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/lessons/course/:courseId`, `/lessons/reorder` нь `/lessons/:id`-ээс ӨМНӨ
 
 **Тест**: 9 test suite, 45 unit тест (use-case + controller + cache service)
+
+### Content Module (Phase 2)
+
+**Endpoints** (`/api/v1/content`):
+- `POST /content/text` — Текст контент тавих (TEACHER, ADMIN)
+- `POST /content/video` — Видео контент тавих (TEACHER, ADMIN)
+- `GET /content/lesson/:lessonId` — Хичээлийн контент авах (@Public, published only)
+- `PATCH /content/lesson/:lessonId` — Контент шинэчлэх (эзэмшигч/ADMIN)
+- `DELETE /content/lesson/:lessonId` — Контент устгах (эзэмшигч/ADMIN)
+- `POST /content/lesson/:lessonId/upload` — Файл upload (TEACHER, ADMIN)
+
+**Export хийсэн service-ууд**: `ContentRepository`
+
+**Хамаарал**: `MongooseModule`, `LessonsModule` (LessonRepository), `RedisModule` (@Global), `PrismaModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+- MongoDB-г анх удаа ашигласан модуль — `MongooseModule.forRootAsync()` app.module.ts-д нэмэгдсэн
+- Нэг хичээлд нэг content document (`lessonId` unique index) — original doc-ийн per-course nested бүтцийг хялбарчилсан
+- `IStorageService` interface + `LocalStorageService` — DI token `STORAGE_SERVICE`-ээр inject, ирээдүйд S3/R2 руу солих боломжтой
+- `contentType` нь lesson.lessonType-тэй таарах ёстой — mismatch бол BadRequestException
+- Set endpoint нь upsert семантиктай — контент байвал шинэчлэх, байхгүй бол үүсгэх
+- Upload endpoint-д fileType query param: `video | thumbnail | attachment | subtitle`
+- Redis кэш: `content:lesson:{lessonId}` (TTL 15 мин)
+- Static file serving: `main.ts`-д `useStaticAssets` нэмэгдсэн (`/uploads/` prefix)
+- `storage.config.ts` config нэмэгдсэн (provider, localUploadDir, maxFileSizeMb)
+- Mongoose schema: `course_content` collection, timestamps автомат
+
+**Тест**: 7 test suite, 38 unit тест (use-case + controller + cache service)

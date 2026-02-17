@@ -1,0 +1,996 @@
+{
+  "info": {
+    "name": "OCP — Content Module",
+    "description": "Online Course Platform — Content Module API\n\nPhase 2: Хичээлийн контент (видео metadata, текст, хавсралт файлууд) удирдах CRUD + файл upload\n\n## Хэрэглэх дараалал\n1. Auth → Register Teacher + Login (token авах)\n2. Course Setup → Сургалт үүсгэх + нийтлэх\n3. Lesson Setup → Хичээл үүсгэх (video + text)\n4. Content → Set Text → Set Video → Get → Update → Upload → Delete\n\n## Урьдчилсан нөхцөл\n- DB-д TEACHER role-тэй хэрэглэгч бүртгэлтэй байх\n- DB-д ADMIN role-тэй хэрэглэгч бүртгэлтэй байх\n- MongoDB container ажиллаж байх (pnpm docker:up)\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `teacherToken`: TEACHER JWT\n- `otherTeacherToken`: Өөр TEACHER JWT (403 тест)\n- `adminToken`: ADMIN JWT\n- `courseId`: Сургалтын ID\n- `categoryId`: Ангиллын ID\n- `videoLessonId`: Видео хичээлийн ID\n- `textLessonId`: Текст хичээлийн ID\n- `contentId`: Контентийн MongoDB _id",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "teacherToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "otherTeacherToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "videoLessonId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "textLessonId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "contentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth (Setup)",
+      "description": "Token авахад ашиглах auth endpoint-ууд.",
+      "item": [
+        {
+          "name": "Register Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const data = pm.response.json().data;",
+                  "    pm.collectionVariables.set('teacherToken', data.accessToken);",
+                  "    pm.test('Teacher бүртгэгдлээ', () => pm.expect(data.user.email).to.include('teacher'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"content-teacher@test.com\",\n  \"password\": \"Teacher1234\",\n  \"firstName\": \"Content\",\n  \"lastName\": \"Teacher\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Багш хэрэглэгч бүртгүүлэх.\n\n**Бүртгүүлсний дараа:** DB-д role-г TEACHER болгох:\n```sql\nUPDATE users SET role = 'TEACHER' WHERE email = 'content-teacher@test.com';\n```"
+          }
+        },
+        {
+          "name": "Register Other Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const data = pm.response.json().data;",
+                  "    pm.collectionVariables.set('otherTeacherToken', data.accessToken);",
+                  "    pm.test('Other Teacher бүртгэгдлээ', () => pm.expect(data.user.email).to.include('other'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"other-content-teacher@test.com\",\n  \"password\": \"Teacher1234\",\n  \"firstName\": \"Other\",\n  \"lastName\": \"Teacher\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Өөр багш хэрэглэгч бүртгүүлэх (403 Forbidden тестэд ашиглана).\n\n**Бүртгүүлсний дараа:** DB-д role-г TEACHER болгох:\n```sql\nUPDATE users SET role = 'TEACHER' WHERE email = 'other-content-teacher@test.com';\n```"
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json().data;",
+                  "pm.collectionVariables.set('teacherToken', data.accessToken);",
+                  "pm.test('Teacher нэвтэрлээ', () => {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    pm.expect(data.accessToken).to.be.a('string');",
+                  "    pm.expect(data.user.role).to.equal('TEACHER');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"content-teacher@test.com\",\n  \"password\": \"Teacher1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Багш хэрэглэгчээр нэвтрэх. Token автоматаар teacherToken variable-д хадгалагдана."
+          }
+        },
+        {
+          "name": "Login Other Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json().data;",
+                  "pm.collectionVariables.set('otherTeacherToken', data.accessToken);",
+                  "pm.test('Other Teacher нэвтэрлээ', () => {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    pm.expect(data.user.role).to.equal('TEACHER');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"other-content-teacher@test.com\",\n  \"password\": \"Teacher1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Өөр багш хэрэглэгчээр нэвтрэх (403 тестэд ашиглана)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course & Lesson Setup",
+      "description": "Контент тестлэхээс өмнө сургалт + хичээл үүсгэх. Ангилал аль хэдийн үүсгэсэн байх ёстой (Courses Module collection).",
+      "item": [
+        {
+          "name": "Create Category (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "if (resp.success) {",
+                  "    pm.collectionVariables.set('categoryId', resp.data.id);",
+                  "    pm.test('Ангилал үүсгэгдлээ', () => pm.expect(resp.data).to.have.property('id'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Content Testing\",\n  \"description\": \"Контент модуль тестийн ангилал\",\n  \"displayOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Ангилал үүсгэх (ADMIN). Хэрэв Courses Module collection дээр аль хэдийн үүсгэсэн бол categoryId variable-д ID-г гараар оруулж алгасаж болно."
+          }
+        },
+        {
+          "name": "Create Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт амжилттай үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.status).to.equal('draft');",
+                  "});",
+                  "pm.collectionVariables.set('courseId', resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Контент тестийн сургалт\",\n  \"description\": \"Content модулийн endpoint-уудыг шалгах сургалт\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\",\n  \"language\": \"mn\",\n  \"price\": 29900\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            },
+            "description": "Контент нэмэхийн тулд эхлээд сургалт үүсгэнэ."
+          }
+        },
+        {
+          "name": "Publish Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Сургалт нийтлэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.status).to.equal('published');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            },
+            "description": "Сургалтыг нийтлэх (draft → published)."
+          }
+        },
+        {
+          "name": "Create Video Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Видео хичээл үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.lessonType).to.equal('video');",
+                  "});",
+                  "pm.collectionVariables.set('videoLessonId', resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Видео хичээл — Танилцуулга\",\n  \"courseId\": \"{{courseId}}\",\n  \"lessonType\": \"video\",\n  \"durationMinutes\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons"]
+            },
+            "description": "Видео хичээл үүсгэх. Контент модуль энэ хичээлд видео metadata тавина."
+          }
+        },
+        {
+          "name": "Create Text Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Текст хичээл үүсгэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.lessonType).to.equal('text');",
+                  "});",
+                  "pm.collectionVariables.set('textLessonId', resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Текст хичээл — Суурь ойлголтууд\",\n  \"courseId\": \"{{courseId}}\",\n  \"lessonType\": \"text\",\n  \"durationMinutes\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons"]
+            },
+            "description": "Текст хичээл үүсгэх. Контент модуль энэ хичээлд HTML/markdown текст тавина."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content — CRUD",
+      "description": "Хичээлийн контент удирдах бүх CRUD endpoint-ууд.\n\n- POST /content/text: Текст контент тавих (TEACHER/ADMIN)\n- POST /content/video: Видео контент тавих (TEACHER/ADMIN)\n- GET /content/lesson/:lessonId: Контент авах (Public)\n- PATCH /content/lesson/:lessonId: Контент шинэчлэх (Owner/ADMIN)\n- DELETE /content/lesson/:lessonId: Контент устгах (Owner/ADMIN)\n- POST /content/lesson/:lessonId/upload: Файл upload (TEACHER/ADMIN)",
+      "item": [
+        {
+          "name": "Set Text Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Текст контент амжилттай тавигдлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('id');",
+                  "    pm.expect(resp.data.contentType).to.equal('text');",
+                  "    pm.expect(resp.data.textContent).to.be.an('object');",
+                  "    pm.expect(resp.data.textContent.html).to.include('Танилцуулга');",
+                  "    pm.expect(resp.data.textContent.readingTimeMinutes).to.equal(5);",
+                  "});",
+                  "pm.collectionVariables.set('contentId', resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{textLessonId}}\",\n  \"html\": \"<h1>Танилцуулга</h1><p>Тавтай морил! Энэ хичээлээр суурь ойлголтуудыг сурна.</p>\",\n  \"markdown\": \"# Танилцуулга\\n\\nТавтай морил! Энэ хичээлээр суурь ойлголтуудыг сурна.\",\n  \"readingTimeMinutes\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "text"]
+            },
+            "description": "Текст контент тавих (upsert — байхгүй бол үүсгэх, байвал солих).\n\n**Эрх:** TEACHER, ADMIN (course эзэмшигч)\n\n**Body:**\n- `lessonId` (required, UUID) — Хичээлийн ID\n- `html` (required) — HTML форматтай контент\n- `markdown` (optional) — Markdown форматтай контент\n- `readingTimeMinutes` (optional) — Унших хугацаа (минут)\n\n**Тайлбар:** Хичээлийн lessonType `text` байх ёстой, биш бол 400 Bad Request."
+          }
+        },
+        {
+          "name": "Set Video Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Видео контент амжилттай тавигдлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data).to.have.property('id');",
+                  "    pm.expect(resp.data.contentType).to.equal('video');",
+                  "    pm.expect(resp.data.videoContent).to.be.an('object');",
+                  "    pm.expect(resp.data.videoContent.durationSeconds).to.equal(600);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{videoLessonId}}\",\n  \"videoUrl\": \"https://example.com/videos/intro.mp4\",\n  \"thumbnailUrl\": \"https://example.com/thumbs/intro.jpg\",\n  \"durationSeconds\": 600\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/video",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "video"]
+            },
+            "description": "Видео контент metadata тавих (upsert).\n\n**Эрх:** TEACHER, ADMIN (course эзэмшигч)\n\n**Body:**\n- `lessonId` (required, UUID) — Хичээлийн ID\n- `videoUrl` (optional) — Видео файлын URL\n- `thumbnailUrl` (optional) — Thumbnail зургийн URL\n- `durationSeconds` (optional) — Видеоны хугацаа (секунд)\n\n**Тайлбар:** Хичээлийн lessonType `video` байх ёстой, биш бол 400 Bad Request."
+          }
+        },
+        {
+          "name": "Get Content by Lesson ID (Text)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Текст контент амжилттай буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.lessonId).to.equal(pm.collectionVariables.get('textLessonId'));",
+                  "    pm.expect(resp.data.contentType).to.equal('text');",
+                  "    pm.expect(resp.data).to.have.property('textContent');",
+                  "    pm.expect(resp.data).to.have.property('attachments');",
+                  "    pm.expect(resp.data).to.have.property('createdAt');",
+                  "    pm.expect(resp.data).to.have.property('updatedAt');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}"]
+            },
+            "description": "Хичээлийн контент авах.\n\n**Эрх:** Public (JWT шаардлагагүй)\n\nRedis кэштэй (TTL 15 мин). Кэшнээс эхлээд, байхгүй бол MongoDB-ээс авна.\n\nОлдоогүй бол 404 Not Found."
+          }
+        },
+        {
+          "name": "Get Content by Lesson ID (Video)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Видео контент амжилттай буцлаа', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.lessonId).to.equal(pm.collectionVariables.get('videoLessonId'));",
+                  "    pm.expect(resp.data.contentType).to.equal('video');",
+                  "    pm.expect(resp.data).to.have.property('videoContent');",
+                  "    pm.expect(resp.data.videoContent).to.have.property('videoUrl');",
+                  "    pm.expect(resp.data.videoContent).to.have.property('thumbnailUrl');",
+                  "    pm.expect(resp.data.videoContent).to.have.property('durationSeconds');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{videoLessonId}}"]
+            },
+            "description": "Видео хичээлийн контент авах.\n\n**Эрх:** Public\n\nvideoContent object дотор videoUrl, thumbnailUrl, durationSeconds, transcodedVersions, subtitles багтана."
+          }
+        },
+        {
+          "name": "Update Text Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Текст контент шинэчлэгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.textContent.html).to.include('Шинэчлэгдсэн');",
+                  "    pm.expect(resp.data.textContent.readingTimeMinutes).to.equal(10);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"html\": \"<h1>Шинэчлэгдсэн танилцуулга</h1><p>Шинэ контент нэмэгдлээ.</p>\",\n  \"readingTimeMinutes\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}"]
+            },
+            "description": "Контент шинэчлэх (partial update).\n\n**Эрх:** Course эзэмшигч эсвэл ADMIN\n\n**Body:** Бүх талбар optional\n- `html` — HTML контент\n- `markdown` — Markdown контент\n- `readingTimeMinutes` — Унших хугацаа\n- `videoUrl` — Видео URL\n- `thumbnailUrl` — Thumbnail URL\n- `durationSeconds` — Видео хугацаа\n\n**Кэш:** Шинэчлэх үед Redis кэш invalidate хийгдэнэ."
+          }
+        },
+        {
+          "name": "Upload Attachment File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Файл амжилттай upload хийгдлээ', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.attachments).to.be.an('array');",
+                  "    pm.expect(resp.data.attachments.length).to.be.at.least(1);",
+                  "});",
+                  "pm.test('Хавсралт файлын мэдээлэл зөв', () => {",
+                  "    const attachment = resp.data.attachments[resp.data.attachments.length - 1];",
+                  "    pm.expect(attachment).to.have.property('filename');",
+                  "    pm.expect(attachment).to.have.property('url');",
+                  "    pm.expect(attachment).to.have.property('sizeBytes');",
+                  "    pm.expect(attachment).to.have.property('mimeType');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}/upload?fileType=attachment",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}", "upload"],
+              "query": [
+                { "key": "fileType", "value": "attachment", "description": "Файлын төрөл: video | thumbnail | attachment | subtitle" }
+              ]
+            },
+            "description": "Файл upload хийх.\n\n**Эрх:** TEACHER, ADMIN (course эзэмшигч)\n\n**Form data:** `file` — Upload хийх файл (max 100MB)\n\n**Query параметр:** `fileType` — Файлын төрөл:\n- `video` — Видео файл → videoContent.videoUrl руу хадгална\n- `thumbnail` — Thumbnail зураг → videoContent.thumbnailUrl руу хадгална\n- `attachment` — Хавсралт файл → attachments массивт нэмнэ\n- `subtitle` — Хадмал файл → videoContent.subtitles руу нэмнэ\n\n**Тайлбар:** Контент байхгүй бол автоматаар үүсгэнэ (upsert). Файл local disk-д хадгалагдана (`./uploads/content/{lessonId}/`)."
+          }
+        },
+        {
+          "name": "Verify Content After Upload",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const resp = pm.response.json();",
+                  "pm.test('Upload хийсний дараа контент зөв', () => {",
+                  "    pm.expect(resp.success).to.be.true;",
+                  "    pm.expect(resp.data.attachments).to.be.an('array');",
+                  "    pm.expect(resp.data.attachments.length).to.be.at.least(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}"]
+            },
+            "description": "Upload хийсний дараа контентийг дахин авч шалгах — attachments массивт файл нэмэгдсэн байх ёстой."
+          }
+        },
+        {
+          "name": "Delete Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Контент устгагдлаа (204)', () => {",
+                  "    pm.expect(pm.response.code).to.equal(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}"]
+            },
+            "description": "Контент устгах.\n\n**Эрх:** Course эзэмшигч эсвэл ADMIN\n\n**Хариу:** 204 No Content\n\nMongoDB document устгагдана. Хавсралт файлуудыг StorageService.delete()-ээр устгана.\n\nRedis кэш invalidate хийгдэнэ."
+          }
+        },
+        {
+          "name": "Verify Delete (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Устгасан контент олдсонгүй (404)', () => {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}"]
+            },
+            "description": "Контент устгасны дараа дахин авахад 404 Not Found буцаана."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "description": "Алдааны тестүүд — буруу хүсэлтүүд, эрхийн шалгалт, олдоогүй нөхцлүүд.",
+      "item": [
+        {
+          "name": "Set Content — No auth (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('401 Unauthorized буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{textLessonId}}\",\n  \"html\": \"<p>Test</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "text"]
+            },
+            "description": "JWT токенгүйгээр контент тавихад 401 Unauthorized буцаана."
+          }
+        },
+        {
+          "name": "Set Content — Missing lessonId (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('400 Bad Request буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"html\": \"<p>Test</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "text"]
+            },
+            "description": "Шаардлагатай `lessonId` талбар дутуу байхад 400 Bad Request."
+          }
+        },
+        {
+          "name": "Set Content — Invalid lessonId (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('400 Bad Request буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"not-a-valid-uuid\",\n  \"html\": \"<p>Test</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "text"]
+            },
+            "description": "Буруу UUID форматтай lessonId илгээхэд 400 Bad Request."
+          }
+        },
+        {
+          "name": "Set Content — Lesson not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('404 Not Found буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"00000000-0000-0000-0000-000000000000\",\n  \"html\": \"<p>Test</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "text"]
+            },
+            "description": "Байхгүй хичээлд контент тавихад 404 Not Found."
+          }
+        },
+        {
+          "name": "Set Video on Text Lesson — Type mismatch (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('400 Bad Request — төрөл таарахгүй', () => {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{textLessonId}}\",\n  \"videoUrl\": \"https://example.com/video.mp4\",\n  \"durationSeconds\": 300\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/video",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "video"]
+            },
+            "description": "Текст хичээлд видео контент тавихад 400 Bad Request.\n\nХичээлийн lessonType ба контентийн төрөл таарах ёстой:\n- `text` хичээл → `POST /content/text`\n- `video` хичээл → `POST /content/video`"
+          }
+        },
+        {
+          "name": "Update Content — Non-owner teacher (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('403 Forbidden буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{otherTeacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"html\": \"<p>Hacked content</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{videoLessonId}}"]
+            },
+            "description": "Өөр багш (course эзэмшигч биш) контент засахыг оролдоход 403 Forbidden.\n\nUse-case түвшинд `courseInstructorId !== userId` шалгалт хийгдэнэ."
+          }
+        },
+        {
+          "name": "Delete Content — Non-owner teacher (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('403 Forbidden буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{otherTeacherToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{videoLessonId}}"]
+            },
+            "description": "Өөр багш контент устгахыг оролдоход 403 Forbidden."
+          }
+        },
+        {
+          "name": "Get Content — Not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('404 Not Found буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/00000000-0000-0000-0000-000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "00000000-0000-0000-0000-000000000000"]
+            },
+            "description": "Байхгүй хичээлийн контент авахад 404 Not Found."
+          }
+        },
+        {
+          "name": "Upload — No auth (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('401 Unauthorized буцлаа', () => {",
+                  "    pm.expect(pm.response.code).to.equal(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}/upload?fileType=attachment",
+              "host": ["{{baseUrl}}"],
+              "path": ["content", "lesson", "{{textLessonId}}", "upload"],
+              "query": [
+                { "key": "fileType", "value": "attachment" }
+              ]
+            },
+            "description": "JWT токенгүйгээр файл upload хийхэд 401 Unauthorized буцаана."
+          }
+        }
+      ]
+    }
+  ]
+}
