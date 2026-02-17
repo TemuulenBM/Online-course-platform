@@ -78,11 +78,7 @@ describe('LessonsController', () => {
       const result = await controller.create('user-id-1', 'TEACHER', dto);
 
       expect(result).toEqual(mockLessonResponse);
-      expect(createLessonUseCase.execute).toHaveBeenCalledWith(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      expect(createLessonUseCase.execute).toHaveBeenCalledWith('user-id-1', 'TEACHER', dto);
     });
   });
 
@@ -92,12 +88,7 @@ describe('LessonsController', () => {
       listLessonsUseCase.execute.mockResolvedValue(mockListResult);
 
       const query = {};
-      const result = await controller.listByCourse(
-        'course-id-1',
-        query,
-        'user-id-1',
-        'TEACHER',
-      );
+      const result = await controller.listByCourse('course-id-1', query, 'user-id-1', 'TEACHER');
 
       expect(result).toEqual(mockListResult);
       expect(listLessonsUseCase.execute).toHaveBeenCalledWith('course-id-1', {
@@ -121,11 +112,7 @@ describe('LessonsController', () => {
       };
       await controller.reorder('user-id-1', 'TEACHER', dto);
 
-      expect(reorderLessonsUseCase.execute).toHaveBeenCalledWith(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      expect(reorderLessonsUseCase.execute).toHaveBeenCalledWith('user-id-1', 'TEACHER', dto);
     });
   });
 
@@ -145,12 +132,7 @@ describe('LessonsController', () => {
       updateLessonUseCase.execute.mockResolvedValue(mockLesson);
 
       const dto = { title: 'Шинэчлэгдсэн нэр' };
-      const result = await controller.update(
-        'lesson-id-1',
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      const result = await controller.update('lesson-id-1', 'user-id-1', 'TEACHER', dto);
 
       expect(result).toEqual(mockLessonResponse);
       expect(updateLessonUseCase.execute).toHaveBeenCalledWith(
@@ -166,11 +148,7 @@ describe('LessonsController', () => {
     it('PATCH /lessons/:id/publish — нийтлэлт солих', async () => {
       togglePublishLessonUseCase.execute.mockResolvedValue(mockLesson);
 
-      const result = await controller.togglePublish(
-        'lesson-id-1',
-        'user-id-1',
-        'TEACHER',
-      );
+      const result = await controller.togglePublish('lesson-id-1', 'user-id-1', 'TEACHER');
 
       expect(result).toEqual(mockLessonResponse);
       expect(togglePublishLessonUseCase.execute).toHaveBeenCalledWith(

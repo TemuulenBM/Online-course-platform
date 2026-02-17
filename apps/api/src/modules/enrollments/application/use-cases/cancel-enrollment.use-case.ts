@@ -46,7 +46,11 @@ export class CancelEnrollmentUseCase {
       status: 'cancelled',
     });
 
-    await this.enrollmentCacheService.invalidateAll(enrollmentId, enrollment.userId, enrollment.courseId);
+    await this.enrollmentCacheService.invalidateAll(
+      enrollmentId,
+      enrollment.userId,
+      enrollment.courseId,
+    );
     this.logger.log(`Элсэлт цуцлагдлаа: ${enrollmentId}`);
     return cancelled;
   }

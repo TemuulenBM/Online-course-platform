@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-  BadRequestException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { ReorderLessonsUseCase } from '../../application/use-cases/reorder-lessons.use-case';
 import { CourseRepository } from '../../../courses/infrastructure/repositories/course.repository';
 import { LessonRepository } from '../../infrastructure/repositories/lesson.repository';
@@ -81,10 +77,7 @@ describe('ReorderLessonsUseCase', () => {
 
   it('хичээлүүдийн дараалал амжилттай өөрчлөх', async () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
-    lessonRepository.findIdsByCourseId.mockResolvedValue([
-      'lesson-id-1',
-      'lesson-id-2',
-    ]);
+    lessonRepository.findIdsByCourseId.mockResolvedValue(['lesson-id-1', 'lesson-id-2']);
     lessonRepository.reorder.mockResolvedValue(undefined);
     lessonCacheService.invalidateCourseLessons.mockResolvedValue(undefined);
     lessonCacheService.invalidateLesson.mockResolvedValue(undefined);
@@ -101,18 +94,18 @@ describe('ReorderLessonsUseCase', () => {
   it('сургалт олдоогүй үед NotFoundException', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('user-id-1', 'TEACHER', reorderDto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('user-id-1', 'TEACHER', reorderDto)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('эрх хүрэхгүй үед ForbiddenException', async () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
 
     /** Өөр хэрэглэгч, STUDENT эрхтэй */
-    await expect(
-      useCase.execute('other-user-id', 'STUDENT', reorderDto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('other-user-id', 'STUDENT', reorderDto)).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('бусад сургалтын хичээл оруулсан үед BadRequestException', async () => {
@@ -120,17 +113,14 @@ describe('ReorderLessonsUseCase', () => {
     /** Зөвхөн lesson-id-1 энэ сургалтад хамаарна, lesson-id-2 хамаарахгүй */
     lessonRepository.findIdsByCourseId.mockResolvedValue(['lesson-id-1']);
 
-    await expect(
-      useCase.execute('user-id-1', 'TEACHER', reorderDto),
-    ).rejects.toThrow(BadRequestException);
+    await expect(useCase.execute('user-id-1', 'TEACHER', reorderDto)).rejects.toThrow(
+      BadRequestException,
+    );
   });
 
   it('кэш invalidate шалгалт — сургалтын болон дан хичээлийн кэшүүд устгагдах', async () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
-    lessonRepository.findIdsByCourseId.mockResolvedValue([
-      'lesson-id-1',
-      'lesson-id-2',
-    ]);
+    lessonRepository.findIdsByCourseId.mockResolvedValue(['lesson-id-1', 'lesson-id-2']);
     lessonRepository.reorder.mockResolvedValue(undefined);
     lessonCacheService.invalidateCourseLessons.mockResolvedValue(undefined);
     lessonCacheService.invalidateLesson.mockResolvedValue(undefined);
@@ -138,16 +128,10 @@ describe('ReorderLessonsUseCase', () => {
     await useCase.execute('user-id-1', 'TEACHER', reorderDto);
 
     /** Сургалтын хичээлүүдийн кэш устгагдсан байх ёстой */
-    expect(lessonCacheService.invalidateCourseLessons).toHaveBeenCalledWith(
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateCourseLessons).toHaveBeenCalledWith('course-id-1');
     /** Дан хичээл бүрийн кэш устгагдсан байх ёстой */
-    expect(lessonCacheService.invalidateLesson).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
-    expect(lessonCacheService.invalidateLesson).toHaveBeenCalledWith(
-      'lesson-id-2',
-    );
+    expect(lessonCacheService.invalidateLesson).toHaveBeenCalledWith('lesson-id-1');
+    expect(lessonCacheService.invalidateLesson).toHaveBeenCalledWith('lesson-id-2');
     expect(lessonCacheService.invalidateLesson).toHaveBeenCalledTimes(2);
   });
 });

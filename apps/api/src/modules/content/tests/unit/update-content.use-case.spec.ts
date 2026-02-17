@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateContentUseCase } from '../../application/use-cases/update-content.use-case';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
@@ -150,29 +147,19 @@ describe('UpdateContentUseCase', () => {
       readingTimeMinutes: 10,
     };
 
-    const result = await useCase.execute(
-      'lesson-id-1',
-      'user-id-1',
-      'TEACHER',
-      dto,
-    );
+    const result = await useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', dto);
 
     expect(result).toEqual(updatedTextContent);
     expect(lessonRepository.findById).toHaveBeenCalledWith('lesson-id-1');
     expect(contentRepository.findByLessonId).toHaveBeenCalledWith('lesson-id-1');
-    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith(
-      'lesson-id-1',
-      {
-        textContent: {
-          html: '<p>Updated</p>',
-          markdown: '# Updated',
-          readingTimeMinutes: 10,
-        },
+    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith('lesson-id-1', {
+      textContent: {
+        html: '<p>Updated</p>',
+        markdown: '# Updated',
+        readingTimeMinutes: 10,
       },
-    );
-    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
+    });
+    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith('lesson-id-1');
   });
 
   it('видео контент амжилттай шинэчлэх', async () => {
@@ -186,26 +173,18 @@ describe('UpdateContentUseCase', () => {
       durationSeconds: 1500,
     };
 
-    const result = await useCase.execute(
-      'lesson-id-2',
-      'user-id-1',
-      'TEACHER',
-      dto,
-    );
+    const result = await useCase.execute('lesson-id-2', 'user-id-1', 'TEACHER', dto);
 
     expect(result).toEqual(updatedVideoContent);
-    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith(
-      'lesson-id-2',
-      {
-        videoContent: {
-          videoUrl: 'https://example.com/video-updated.mp4',
-          thumbnailUrl: 'https://example.com/thumb.jpg',
-          durationSeconds: 1500,
-          transcodedVersions: [],
-          subtitles: [],
-        },
+    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith('lesson-id-2', {
+      videoContent: {
+        videoUrl: 'https://example.com/video-updated.mp4',
+        thumbnailUrl: 'https://example.com/thumb.jpg',
+        durationSeconds: 1500,
+        transcodedVersions: [],
+        subtitles: [],
       },
-    );
+    });
   });
 
   it('хичээл олдоогүй үед NotFoundException', async () => {
@@ -213,9 +192,9 @@ describe('UpdateContentUseCase', () => {
 
     const dto = { html: '<p>Updated</p>' };
 
-    await expect(
-      useCase.execute('nonexistent-id', 'user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent-id', 'user-id-1', 'TEACHER', dto)).rejects.toThrow(
+      NotFoundException,
+    );
     expect(contentRepository.findByLessonId).not.toHaveBeenCalled();
   });
 
@@ -225,9 +204,9 @@ describe('UpdateContentUseCase', () => {
 
     const dto = { html: '<p>Updated</p>' };
 
-    await expect(
-      useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', dto)).rejects.toThrow(
+      NotFoundException,
+    );
     expect(contentRepository.updateByLessonId).not.toHaveBeenCalled();
   });
 
@@ -236,9 +215,9 @@ describe('UpdateContentUseCase', () => {
 
     const dto = { html: '<p>Updated</p>' };
 
-    await expect(
-      useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER', dto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER', dto)).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(contentRepository.findByLessonId).not.toHaveBeenCalled();
   });
 });

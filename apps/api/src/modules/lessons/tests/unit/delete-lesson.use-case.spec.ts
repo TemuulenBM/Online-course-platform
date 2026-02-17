@@ -60,27 +60,24 @@ describe('DeleteLessonUseCase', () => {
 
     expect(lessonRepository.findById).toHaveBeenCalledWith('lesson-id-1');
     expect(lessonRepository.delete).toHaveBeenCalledWith('lesson-id-1');
-    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith(
-      'lesson-id-1',
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith('lesson-id-1', 'course-id-1');
   });
 
   it('хичээл олдоогүй үед NotFoundException', async () => {
     lessonRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
     expect(lessonRepository.delete).not.toHaveBeenCalled();
   });
 
   it('эрх хүрэхгүй үед ForbiddenException', async () => {
     lessonRepository.findById.mockResolvedValue(mockLesson);
 
-    await expect(
-      useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER')).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(lessonRepository.delete).not.toHaveBeenCalled();
   });
 
@@ -91,10 +88,7 @@ describe('DeleteLessonUseCase', () => {
 
     await useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER');
 
-    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith(
-      'lesson-id-1',
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith('lesson-id-1', 'course-id-1');
     expect(lessonCacheService.invalidateAll).toHaveBeenCalledTimes(1);
   });
 });

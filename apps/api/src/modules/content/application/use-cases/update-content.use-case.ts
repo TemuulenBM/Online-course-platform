@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
 import { ContentCacheService } from '../../infrastructure/services/content-cache.service';
@@ -37,10 +32,7 @@ export class UpdateContentUseCase {
       throw new NotFoundException('Хичээл олдсонгүй');
     }
 
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException(
         'Зөвхөн хичээлийн эзэмшигч эсвэл админ контент шинэчлэх боломжтой',
       );
@@ -60,26 +52,20 @@ export class UpdateContentUseCase {
       updateData.textContent = {
         html: textDto.html ?? existing.textContent?.html,
         markdown: textDto.markdown ?? existing.textContent?.markdown,
-        readingTimeMinutes:
-          textDto.readingTimeMinutes ?? existing.textContent?.readingTimeMinutes,
+        readingTimeMinutes: textDto.readingTimeMinutes ?? existing.textContent?.readingTimeMinutes,
       };
     } else if (existing.contentType === 'video') {
       const videoDto = dto as UpdateVideoContentDto;
       updateData.videoContent = {
         videoUrl: videoDto.videoUrl ?? existing.videoContent?.videoUrl,
-        thumbnailUrl:
-          videoDto.thumbnailUrl ?? existing.videoContent?.thumbnailUrl,
-        durationSeconds:
-          videoDto.durationSeconds ?? existing.videoContent?.durationSeconds,
+        thumbnailUrl: videoDto.thumbnailUrl ?? existing.videoContent?.thumbnailUrl,
+        durationSeconds: videoDto.durationSeconds ?? existing.videoContent?.durationSeconds,
         transcodedVersions: existing.videoContent?.transcodedVersions ?? [],
         subtitles: existing.videoContent?.subtitles ?? [],
       };
     }
 
-    const content = await this.contentRepository.updateByLessonId(
-      lessonId,
-      updateData,
-    );
+    const content = await this.contentRepository.updateByLessonId(lessonId, updateData);
 
     await this.contentCacheService.invalidateContent(lessonId);
     this.logger.log(`Контент шинэчлэгдлээ: lessonId=${lessonId}`);

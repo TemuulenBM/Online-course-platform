@@ -68,43 +68,50 @@ describe('PublishCourseUseCase', () => {
     const result = await useCase.execute('course-id-1', 'user-id-1', 'TEACHER');
 
     expect(result.status).toBe('published');
-    expect(courseRepository.update).toHaveBeenCalledWith('course-id-1', expect.objectContaining({
-      status: 'published',
-    }));
+    expect(courseRepository.update).toHaveBeenCalledWith(
+      'course-id-1',
+      expect.objectContaining({
+        status: 'published',
+      }),
+    );
     expect(courseCacheService.invalidateCourse).toHaveBeenCalledWith('course-id-1');
   });
 
   it('PUBLISHED сургалтыг дахин нийтлэх боломжгүй', async () => {
-    const publishedCourse = new CourseEntity({ ...mockDraftCourse, status: 'published', publishedAt: new Date() });
+    const publishedCourse = new CourseEntity({
+      ...mockDraftCourse,
+      status: 'published',
+      publishedAt: new Date(),
+    });
     courseRepository.findById.mockResolvedValue(publishedCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('course-id-1', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      ConflictException,
+    );
   });
 
   it('ARCHIVED сургалтыг нийтлэх боломжгүй', async () => {
     const archivedCourse = new CourseEntity({ ...mockDraftCourse, status: 'archived' });
     courseRepository.findById.mockResolvedValue(archivedCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('course-id-1', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      ConflictException,
+    );
   });
 
   it('эрхгүй хэрэглэгч нийтлэх оролдлого', async () => {
     courseRepository.findById.mockResolvedValue(mockDraftCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'other-user', 'TEACHER'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('course-id-1', 'other-user', 'TEACHER')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('сургалт олдоогүй', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

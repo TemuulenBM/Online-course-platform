@@ -49,9 +49,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Бат\",\n  \"lastName\": \"Дорж\"\n}"
@@ -81,9 +79,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Бат\",\n  \"lastName\": \"Дорж\"\n}"
@@ -117,9 +113,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
@@ -149,9 +143,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"wrongpassword\"\n}"
@@ -184,9 +176,7 @@
       ],
       "request": {
         "method": "GET",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
-        ],
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
         "url": {
           "raw": "{{baseUrl}}/auth/me",
           "host": ["{{baseUrl}}"],
@@ -200,9 +190,7 @@
         {
           "listen": "test",
           "script": {
-            "exec": [
-              "pm.test('401 Unauthorized буцсан', () => pm.response.to.have.status(401));"
-            ],
+            "exec": ["pm.test('401 Unauthorized буцсан', () => pm.response.to.have.status(401));"],
             "type": "text/javascript"
           }
         }
@@ -238,9 +226,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
@@ -271,9 +257,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"test@example.com\"\n}"
@@ -304,9 +288,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"password\": \"newpassword123\"\n}"
@@ -336,9 +318,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
-        ],
+        "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
         "url": {
           "raw": "{{baseUrl}}/auth/logout",
           "host": ["{{baseUrl}}"],
@@ -366,9 +346,7 @@
       ],
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{}"

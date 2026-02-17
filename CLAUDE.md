@@ -5,11 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Rules
 
 1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Variable нэр англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
-7. **Код дотор монголоор бичих**: Хөгжүүлэлтийн явцад бүх comment, JSDoc/TSDoc docblock, тайлбар зэргийг ЗААВАЛ монгол хэлээр бичнэ. Variable болон function нэрс англиар байна, харин тэдгээрийн тайлбар, comment-ууд монголоор байна.
-2. **Commit message монголоор бичих**: Commit message-ийг ЗААВАЛ монгол хэлээр бичнэ.
-3. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
-4. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
-5. **Модулиудыг дараалалтай хөгжүүлэх**: `files/Дараалал.docx` дээрх дарааллыг баримтлана:
+2. **Код дотор монголоор бичих**: Хөгжүүлэлтийн явцад бүх comment, JSDoc/TSDoc docblock, тайлбар зэргийг ЗААВАЛ монгол хэлээр бичнэ. Variable болон function нэрс англиар байна, харин тэдгээрийн тайлбар, comment-ууд монголоор байна.
+3. **Commit message монголоор бичих**: Commit message-ийг ЗААВАЛ монгол хэлээр бичнэ.
+4. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
+5. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
+6. **Модулиудыг дараалалтай хөгжүүлэх**: `files/Дараалал.docx` дээрх дарааллыг баримтлана:
    - Phase 1: Auth Module → User Module
    - Phase 2: Course Module → Lesson Module → Content Module
    - Phase 3: Enrollment → Progress → Quiz → Certificate Module
@@ -17,7 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Phase 5: Payment → Analytics → Admin Module
    - Phase 6: Live Class Module
    - Phase 7: React Native Mobile App
-6. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
+7. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
 8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
 9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
 10. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `files/postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
@@ -84,7 +84,9 @@ files/                 # Architecture docs & design documents
 ## NestJS Backend Architecture
 
 ### DDD Module Structure
+
 Each of the 15 modules in `apps/api/src/modules/` follows this pattern:
+
 ```
 modules/{name}/
   domain/           # Entities, value objects, domain events
@@ -97,18 +99,22 @@ modules/{name}/
 ```
 
 ### Modules (15 total)
+
 auth, users, courses, lessons, content, enrollments, progress, quizzes, certificates, discussions, notifications, payments, analytics, admin, live-classes
 
 ### Key Directories
+
 - `apps/api/src/common/` — Shared guards (JWT, Roles), decorators (@CurrentUser, @Roles, @Public), interceptors, filters, pipes, utils, redis (@Global RedisModule + RedisService), prisma (@Global PrismaModule)
 - `apps/api/src/common/constants/` — Дахин ашиглах constants (throttle limits гэх мэт)
 - `apps/api/src/config/` — NestJS `registerAs` configs: app, database, mongodb, redis, jwt, throttle, s3, stripe, elasticsearch, mail
 - `apps/api/prisma/` — `schema.prisma` (models) + `prisma.config.ts` (migration URL config, Prisma 7 pattern)
 
 ### Dual-Database Pattern
+
 PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-schema content. Linked by UUID references. Typical pattern: query PostgreSQL for metadata, then fetch rich content from MongoDB.
 
 ### Key Data Flows
+
 - Progress events → Redis message queue → analytics/notification workers
 - Video uploads → S3/R2 → Cloudflare Stream transcoding → webhook → Content module
 - Stripe payment webhooks → enrollment creation + invoice generation
@@ -127,6 +133,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Auth Module (Phase 1)
 
 **Endpoints** (`/api/v1/auth`):
+
 - `POST /register` — Шинэ хэрэглэгч бүртгүүлэх (public)
 - `POST /login` — Нэвтрэх (public)
 - `POST /refresh` — Токен шинэчлэх (public)
@@ -140,6 +147,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `PrismaModule` (@Global), `PassportModule`, `JwtModule`, `ConfigModule`, `UsersModule`
 
 **Онцлог шийдвэрүүд**:
+
 - JWT access token (15 мин) + Refresh token (7 хоног) — Token rotation хэрэглэнэ
 - Refresh token-ийг SHA-256 хэшлэж хадгална (bcrypt биш — хурдны учир)
 - User enumeration хамгаалалт: login болон forgot-password дээр ижил хариу буцаана
@@ -153,6 +161,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Users Module (Phase 1)
 
 **Endpoints** (`/api/v1/users`):
+
 - `GET /me/profile` — Миний профайл авах (JWT required)
 - `POST /me/profile` — Миний профайл үүсгэх (JWT required)
 - `PATCH /me/profile` — Миний профайл шинэчлэх (JWT required)
@@ -166,6 +175,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
 
 **Онцлог шийдвэрүүд**:
+
 - UserProfile нь User-тэй one-to-one хамаарал (`@unique` on userId)
 - Redis кэшлэлт: профайл авах үед Redis-ээс эхлээд, байхгүй бол DB (TTL 15 мин, `user:profile:{userId}` key)
 - Профайл шинэчлэх/устгах үед кэш invalidate хийгдэнэ
@@ -179,6 +189,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### API Gateway тохиргоо
 
 **Middleware** (`main.ts`):
+
 - `helmet()` — Security headers (X-Frame-Options, X-Content-Type-Options, CSP гэх мэт)
 - `compression()` — Response compression
 - `enableCors()` — Origin хязгаарлалт (`app.url` config-оос), credentials: true
@@ -187,6 +198,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - `useGlobalInterceptors(LoggingInterceptor, TransformInterceptor)` — Лог + `{ success, data }` wrapper
 
 **Rate Limiting** (`@nestjs/throttler`):
+
 - Global: 3 давхар хязгаарлалт (short: 3 req/sec, medium: 20 req/10sec, long: 100 req/min)
 - `ThrottlerModule.forRootAsync` — `throttle.config.ts`-ээс ConfigService-ээр уншина (env-ээр тохируулах боломжтой)
 - `APP_GUARD` → `ThrottlerGuard` бүх endpoint-д автомат ажиллана
@@ -198,6 +210,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Courses Module (Phase 2)
 
 **Endpoints** (`/api/v1/courses`):
+
 - `POST /courses` — Шинэ сургалт үүсгэх (TEACHER, ADMIN)
 - `GET /courses` — Сургалтуудын жагсаалт pagination-тэй (@Public, PUBLISHED only)
 - `GET /courses/my` — Миний сургалтууд (TEACHER, ADMIN, бүх status)
@@ -209,6 +222,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - `DELETE /courses/:id` — Сургалт устгах (ADMIN only)
 
 **Endpoints** (`/api/v1/categories`):
+
 - `POST /categories` — Ангилал үүсгэх (ADMIN)
 - `GET /categories` — Ангиллуудын жагсаалт мод бүтцээр (@Public)
 - `GET /categories/:id` — Ангиллын дэлгэрэнгүй + coursesCount (@Public)
@@ -220,6 +234,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
 
 **Онцлог шийдвэрүүд**:
+
 - Categories нь Courses модуль дотор — тусдаа модуль биш, тус controller-тэй
 - Status flow: DRAFT → PUBLISHED → ARCHIVED (нэг чиглэлтэй, буцаахгүй)
 - Public endpoint дээр зөвхөн PUBLISHED — use-case түвшинд шүүнэ
@@ -236,6 +251,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Lessons Module (Phase 2)
 
 **Endpoints** (`/api/v1/lessons`):
+
 - `POST /lessons` — Шинэ хичээл үүсгэх (TEACHER, ADMIN)
 - `GET /lessons/course/:courseId` — Сургалтын хичээлүүдийн жагсаалт (@Public, published only)
 - `PATCH /lessons/reorder` — Хичээлүүдийн дарааллыг өөрчлөх (TEACHER, ADMIN)
@@ -249,6 +265,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global), `CoursesModule` (CourseRepository ашиглах)
 
 **Онцлог шийдвэрүүд**:
+
 - Зөвхөн PostgreSQL metadata — MongoDB контент Content модульд хамаарна
 - `orderIndex` автоматаар тавигдана (max+1), reorder endpoint-ээр өөрчлөгдөнө
 - Pagination байхгүй — хичээлүүд (10-100) цөөн тул бүгдийг нэг дор авна
@@ -266,6 +283,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Content Module (Phase 2)
 
 **Endpoints** (`/api/v1/content`):
+
 - `POST /content/text` — Текст контент тавих (TEACHER, ADMIN)
 - `POST /content/video` — Видео контент тавих (TEACHER, ADMIN)
 - `GET /content/lesson/:lessonId` — Хичээлийн контент авах (@Public, published only)
@@ -278,6 +296,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `MongooseModule`, `LessonsModule` (LessonRepository), `RedisModule` (@Global), `PrismaModule` (@Global)
 
 **Онцлог шийдвэрүүд**:
+
 - MongoDB-г анх удаа ашигласан модуль — `MongooseModule.forRootAsync()` app.module.ts-д нэмэгдсэн
 - Нэг хичээлд нэг content document (`lessonId` unique index) — original doc-ийн per-course nested бүтцийг хялбарчилсан
 - `IStorageService` interface + `LocalStorageService` — DI token `STORAGE_SERVICE`-ээр inject, ирээдүйд S3/R2 руу солих боломжтой
@@ -294,6 +313,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Enrollments Module (Phase 3)
 
 **Endpoints** (`/api/v1/enrollments`):
+
 - `POST /enrollments` — Сургалтад элсэх (JWT required)
 - `GET /enrollments/my` — Миний элсэлтүүд pagination-тэй (JWT required)
 - `GET /enrollments/course/:courseId` — Сургалтын оюутнуудын жагсаалт (TEACHER, ADMIN)
@@ -308,6 +328,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 **Хамаарал**: `CoursesModule` (CourseRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
 
 **Онцлог шийдвэрүүд**:
+
 - Зөвхөн PostgreSQL — MongoDB шаардлагагүй
 - `@@unique([userId, courseId])` — Нэг хэрэглэгчид нэг сургалтад нэг элсэлт
 - Зөвхөн PUBLISHED сургалтад элсэх боломжтой

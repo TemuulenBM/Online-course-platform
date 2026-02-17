@@ -107,9 +107,7 @@ describe('CreateCourseUseCase', () => {
 
   it('slug давхардсан үед дугаар нэмэх', async () => {
     categoryRepository.findById.mockResolvedValue(mockCategory);
-    courseRepository.slugExists
-      .mockResolvedValueOnce(true)
-      .mockResolvedValueOnce(false);
+    courseRepository.slugExists.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
     courseRepository.create.mockResolvedValue(mockCourse);
 
     const dto = {

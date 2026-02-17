@@ -12,10 +12,7 @@ export class GetLessonUseCase {
 
   constructor(private readonly lessonCacheService: LessonCacheService) {}
 
-  async execute(
-    lessonId: string,
-    publishedOnly: boolean = true,
-  ): Promise<LessonEntity> {
+  async execute(lessonId: string, publishedOnly: boolean = true): Promise<LessonEntity> {
     const lesson = await this.lessonCacheService.getLesson(lessonId);
     if (!lesson) {
       throw new NotFoundException('Хичээл олдсонгүй');

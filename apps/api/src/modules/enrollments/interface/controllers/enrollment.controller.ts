@@ -51,10 +51,7 @@ export class EnrollmentController {
   @Post()
   @ApiOperation({ summary: 'Сургалтад элсэх' })
   @ApiResponse({ status: 201, description: 'Амжилттай элслээ' })
-  async enroll(
-    @CurrentUser('id') userId: string,
-    @Body() dto: EnrollDto,
-  ) {
+  async enroll(@CurrentUser('id') userId: string, @Body() dto: EnrollDto) {
     const enrollment = await this.enrollUseCase.execute(userId, dto);
     return enrollment.toResponse();
   }
@@ -86,10 +83,7 @@ export class EnrollmentController {
   /** Элсэлтийн статус шалгах */
   @Get('check/:courseId')
   @ApiOperation({ summary: 'Элсэлтийн статус шалгах' })
-  async checkEnrollment(
-    @CurrentUser('id') userId: string,
-    @Param('courseId') courseId: string,
-  ) {
+  async checkEnrollment(@CurrentUser('id') userId: string, @Param('courseId') courseId: string) {
     return this.checkEnrollmentUseCase.execute(userId, courseId);
   }
 

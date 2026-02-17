@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { CourseRepository } from '../../../courses/infrastructure/repositories/course.repository';
 import { LessonRepository } from '../../infrastructure/repositories/lesson.repository';
 import { LessonCacheService } from '../../infrastructure/services/lesson-cache.service';
@@ -36,17 +31,12 @@ export class CreateLessonUseCase {
     }
 
     /** Эрхийн шалгалт: сургалтын эзэмшигч эсвэл админ */
-    if (
-      course.instructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (course.instructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException('Энэ сургалтад хичээл нэмэх эрхгүй');
     }
 
     /** Дараагийн orderIndex авах */
-    const orderIndex = await this.lessonRepository.getNextOrderIndex(
-      dto.courseId,
-    );
+    const orderIndex = await this.lessonRepository.getNextOrderIndex(dto.courseId);
 
     /** Хичээл үүсгэх */
     const lesson = await this.lessonRepository.create({
@@ -62,9 +52,7 @@ export class CreateLessonUseCase {
     /** Кэш invalidate */
     await this.lessonCacheService.invalidateCourseLessons(dto.courseId);
 
-    this.logger.log(
-      `Хичээл үүсгэгдлээ: ${lesson.id} (${lesson.title}) — сургалт: ${dto.courseId}`,
-    );
+    this.logger.log(`Хичээл үүсгэгдлээ: ${lesson.id} (${lesson.title}) — сургалт: ${dto.courseId}`);
     return lesson;
   }
 }

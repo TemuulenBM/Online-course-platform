@@ -52,10 +52,7 @@ export class LessonRepository {
   }
 
   /** Сургалтын хичээлүүдийг orderIndex-ээр эрэмбэлж авна */
-  async findByCourseId(
-    courseId: string,
-    publishedOnly?: boolean,
-  ): Promise<LessonEntity[]> {
+  async findByCourseId(courseId: string, publishedOnly?: boolean): Promise<LessonEntity[]> {
     const where: Prisma.LessonWhereInput = { courseId };
     if (publishedOnly) {
       where.isPublished = true;
@@ -88,11 +85,9 @@ export class LessonRepository {
     if (data.title !== undefined) updateData.title = data.title;
     if (data.lessonType !== undefined)
       updateData.lessonType = data.lessonType.toUpperCase() as LessonType;
-    if (data.durationMinutes !== undefined)
-      updateData.durationMinutes = data.durationMinutes;
+    if (data.durationMinutes !== undefined) updateData.durationMinutes = data.durationMinutes;
     if (data.isPreview !== undefined) updateData.isPreview = data.isPreview;
-    if (data.isPublished !== undefined)
-      updateData.isPublished = data.isPublished;
+    if (data.isPublished !== undefined) updateData.isPublished = data.isPublished;
 
     const lesson = await this.prisma.lesson.update({
       where: { id },

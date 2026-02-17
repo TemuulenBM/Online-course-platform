@@ -63,9 +63,7 @@ describe('ContentCacheService', () => {
       expect(result!.id).toBe('content-id-1');
       expect(result!.lessonId).toBe('lesson-id-1');
       expect(result!.contentType).toBe('text');
-      expect(redisService.get).toHaveBeenCalledWith(
-        'content:lesson:lesson-id-1',
-      );
+      expect(redisService.get).toHaveBeenCalledWith('content:lesson:lesson-id-1');
       /** MongoDB руу хандаагүй байх ёстой */
       expect(contentRepository.findByLessonId).not.toHaveBeenCalled();
     });
@@ -79,12 +77,8 @@ describe('ContentCacheService', () => {
 
       expect(result).toBeDefined();
       expect(result!.id).toBe('content-id-1');
-      expect(redisService.get).toHaveBeenCalledWith(
-        'content:lesson:lesson-id-1',
-      );
-      expect(contentRepository.findByLessonId).toHaveBeenCalledWith(
-        'lesson-id-1',
-      );
+      expect(redisService.get).toHaveBeenCalledWith('content:lesson:lesson-id-1');
+      expect(contentRepository.findByLessonId).toHaveBeenCalledWith('lesson-id-1');
       /** Кэшлэгдсэн байх ёстой (TTL: 900 секунд) */
       expect(redisService.set).toHaveBeenCalledWith(
         'content:lesson:lesson-id-1',
@@ -111,9 +105,7 @@ describe('ContentCacheService', () => {
 
       await service.invalidateContent('lesson-id-1');
 
-      expect(redisService.del).toHaveBeenCalledWith(
-        'content:lesson:lesson-id-1',
-      );
+      expect(redisService.del).toHaveBeenCalledWith('content:lesson:lesson-id-1');
     });
   });
 });

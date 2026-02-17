@@ -46,9 +46,14 @@ export class EnrollUseCase {
     /** 4. Prerequisites шалгах */
     const prerequisiteIds = await this.enrollmentRepository.getPrerequisiteCourseIds(dto.courseId);
     if (prerequisiteIds.length > 0) {
-      const hasCompleted = await this.enrollmentRepository.hasCompletedCourses(userId, prerequisiteIds);
+      const hasCompleted = await this.enrollmentRepository.hasCompletedCourses(
+        userId,
+        prerequisiteIds,
+      );
       if (!hasCompleted) {
-        throw new BadRequestException('Урьдчилсан шаардлага хангагдаагүй байна. Шаардлагатай сургалтуудыг дуусгана уу');
+        throw new BadRequestException(
+          'Урьдчилсан шаардлага хангагдаагүй байна. Шаардлагатай сургалтуудыг дуусгана уу',
+        );
       }
     }
 
@@ -59,7 +64,9 @@ export class EnrollUseCase {
         completedAt: null,
       });
       await this.enrollmentCacheService.invalidateAll(existing.id, userId, dto.courseId);
-      this.logger.log(`Дахин элсэлт: ${existing.id} — хэрэглэгч: ${userId}, сургалт: ${dto.courseId}`);
+      this.logger.log(
+        `Дахин элсэлт: ${existing.id} — хэрэглэгч: ${userId}, сургалт: ${dto.courseId}`,
+      );
       return reEnrolled;
     }
 
@@ -69,7 +76,9 @@ export class EnrollUseCase {
       courseId: dto.courseId,
     });
 
-    this.logger.log(`Элсэлт үүсгэгдлээ: ${enrollment.id} — хэрэглэгч: ${userId}, сургалт: ${dto.courseId}`);
+    this.logger.log(
+      `Элсэлт үүсгэгдлээ: ${enrollment.id} — хэрэглэгч: ${userId}, сургалт: ${dto.courseId}`,
+    );
     return enrollment;
   }
 }

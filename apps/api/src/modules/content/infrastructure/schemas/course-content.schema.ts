@@ -97,5 +97,4 @@ export class CourseContent {
 }
 
 export type CourseContentDocument = HydratedDocument<CourseContent>;
-export const CourseContentSchema =
-  SchemaFactory.createForClass(CourseContent);
+export const CourseContentSchema = SchemaFactory.createForClass(CourseContent);

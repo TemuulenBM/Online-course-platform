@@ -22,7 +22,11 @@ export class DeleteEnrollmentUseCase {
     }
 
     await this.enrollmentRepository.delete(enrollmentId);
-    await this.enrollmentCacheService.invalidateAll(enrollmentId, enrollment.userId, enrollment.courseId);
+    await this.enrollmentCacheService.invalidateAll(
+      enrollmentId,
+      enrollment.userId,
+      enrollment.courseId,
+    );
     this.logger.log(`Элсэлт устгагдлаа: ${enrollmentId}`);
   }
 }

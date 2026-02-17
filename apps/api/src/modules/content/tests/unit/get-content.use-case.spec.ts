@@ -110,9 +110,7 @@ describe('GetContentUseCase', () => {
   it('хичээл олдоогүй үед NotFoundException', async () => {
     lessonRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute('nonexistent-id')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('nonexistent-id')).rejects.toThrow(NotFoundException);
     /** Контент хайгаагүй байх ёстой */
     expect(contentCacheService.getContent).not.toHaveBeenCalled();
   });
@@ -121,9 +119,7 @@ describe('GetContentUseCase', () => {
     lessonRepository.findById.mockResolvedValue(mockUnpublishedLesson);
 
     /** currentUserId, currentUserRole өгөөгүй — public хандалт */
-    await expect(useCase.execute('lesson-id-2')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('lesson-id-2')).rejects.toThrow(NotFoundException);
     /** Контент хайгаагүй байх ёстой */
     expect(contentCacheService.getContent).not.toHaveBeenCalled();
   });

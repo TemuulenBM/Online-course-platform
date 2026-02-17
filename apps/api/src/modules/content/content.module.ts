@@ -3,10 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LessonsModule } from '../lessons/lessons.module';
 
 // Schema
-import {
-  CourseContent,
-  CourseContentSchema,
-} from './infrastructure/schemas/course-content.schema';
+import { CourseContent, CourseContentSchema } from './infrastructure/schemas/course-content.schema';
 
 // Controller
 import { ContentController } from './interface/controllers/content.controller';
@@ -31,9 +28,7 @@ import { STORAGE_SERVICE } from './infrastructure/services/storage/storage.inter
  */
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: CourseContent.name, schema: CourseContentSchema },
-    ]),
+    MongooseModule.forFeature([{ name: CourseContent.name, schema: CourseContentSchema }]),
     LessonsModule,
   ],
   controllers: [ContentController],

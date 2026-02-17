@@ -102,16 +102,16 @@ describe('ListCourseEnrollmentsUseCase', () => {
   it('сургалт олдоогүй NotFoundException', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id', 'TEACHER', {}),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id', 'TEACHER', {})).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('эрхгүй хэрэглэгч ForbiddenException', async () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'other-user-id', 'TEACHER', {}),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('course-id-1', 'other-user-id', 'TEACHER', {})).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

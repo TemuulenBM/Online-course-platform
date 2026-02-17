@@ -3,7 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "main": "index.js",
-  "files": ["*.js"],
+  "files": [
+    "*.js",
+    "*.mjs"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./base.mjs": "./base.mjs",
+    "./nestjs.mjs": "./nestjs.mjs",
+    "./nextjs.mjs": "./nextjs.mjs",
+    "./react-native.mjs": "./react-native.mjs"
+  },
   "devDependencies": {
     "eslint": "^9.0.0",
     "@typescript-eslint/parser": "^8.0.0",

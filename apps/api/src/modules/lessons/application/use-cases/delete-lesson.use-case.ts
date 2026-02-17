@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { LessonRepository } from '../../infrastructure/repositories/lesson.repository';
 import { LessonCacheService } from '../../infrastructure/services/lesson-cache.service';
 
@@ -20,11 +15,7 @@ export class DeleteLessonUseCase {
     private readonly lessonCacheService: LessonCacheService,
   ) {}
 
-  async execute(
-    lessonId: string,
-    currentUserId: string,
-    currentUserRole: string,
-  ): Promise<void> {
+  async execute(lessonId: string, currentUserId: string, currentUserRole: string): Promise<void> {
     /** Хичээл олох */
     const lesson = await this.lessonRepository.findById(lessonId);
     if (!lesson) {
@@ -32,10 +23,7 @@ export class DeleteLessonUseCase {
     }
 
     /** Эрхийн шалгалт */
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException('Энэ хичээлийг устгах эрхгүй');
     }
 

@@ -15,13 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiConsumes,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../../common/guards/roles.guard';
 import { Roles } from '../../../../common/decorators/roles.decorator';
@@ -35,10 +29,7 @@ import { SetContentUseCase } from '../../application/use-cases/set-content.use-c
 import { GetContentUseCase } from '../../application/use-cases/get-content.use-case';
 import { UpdateContentUseCase } from '../../application/use-cases/update-content.use-case';
 import { DeleteContentUseCase } from '../../application/use-cases/delete-content.use-case';
-import {
-  UploadFileUseCase,
-  FileType,
-} from '../../application/use-cases/upload-file.use-case';
+import { UploadFileUseCase, FileType } from '../../application/use-cases/upload-file.use-case';
 
 /**
  * Контент controller.
@@ -83,11 +74,7 @@ export class ContentController {
     @CurrentUser('role') role: string,
     @Body() dto: SetVideoContentDto,
   ) {
-    const content = await this.setContentUseCase.executeVideo(
-      userId,
-      role,
-      dto,
-    );
+    const content = await this.setContentUseCase.executeVideo(userId, role, dto);
     return content.toResponse();
   }
 
@@ -118,12 +105,7 @@ export class ContentController {
     @CurrentUser('role') role: string,
     @Body() dto: UpdateTextContentDto,
   ) {
-    const content = await this.updateContentUseCase.execute(
-      lessonId,
-      userId,
-      role,
-      dto,
-    );
+    const content = await this.updateContentUseCase.execute(lessonId, userId, role, dto);
     return content.toResponse();
   }
 
@@ -149,8 +131,7 @@ export class ContentController {
       limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
       storage: diskStorage({
         destination: './uploads/temp',
-        filename: (_req, file, cb) =>
-          cb(null, `${Date.now()}-${file.originalname}`),
+        filename: (_req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
       }),
     }),
   )
@@ -164,13 +145,7 @@ export class ContentController {
     @UploadedFile() file: Express.Multer.File,
     @Query('fileType') fileType: FileType,
   ) {
-    const content = await this.uploadFileUseCase.execute(
-      lessonId,
-      userId,
-      role,
-      file,
-      fileType,
-    );
+    const content = await this.uploadFileUseCase.execute(lessonId, userId, role, file, fileType);
     return content.toResponse();
   }
 }

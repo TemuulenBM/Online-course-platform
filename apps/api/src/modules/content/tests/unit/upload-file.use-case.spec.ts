@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-  BadRequestException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { UploadFileUseCase } from '../../application/use-cases/upload-file.use-case';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
@@ -79,7 +75,10 @@ describe('UploadFileUseCase', () => {
     videoContent: new VideoContentVO({
       videoUrl: 'https://example.com/video.mp4',
       subtitles: [
-        { language: 'mn', url: 'https://storage.example.com/content/lesson-id-1/subtitle/lesson-mn.vtt' },
+        {
+          language: 'mn',
+          url: 'https://storage.example.com/content/lesson-id-1/subtitle/lesson-mn.vtt',
+        },
       ],
     }),
     createdAt: new Date(),
@@ -257,15 +256,12 @@ describe('UploadFileUseCase', () => {
     );
 
     expect(result).toBeDefined();
-    expect(contentRepository.addAttachment).toHaveBeenCalledWith(
-      'lesson-id-1',
-      {
-        filename: 'test-doc.pdf',
-        url: 'https://storage.example.com/content/lesson-id-1/attachment/test-doc.pdf',
-        sizeBytes: 2048,
-        mimeType: 'application/pdf',
-      },
-    );
+    expect(contentRepository.addAttachment).toHaveBeenCalledWith('lesson-id-1', {
+      filename: 'test-doc.pdf',
+      url: 'https://storage.example.com/content/lesson-id-1/attachment/test-doc.pdf',
+      sizeBytes: 2048,
+      mimeType: 'application/pdf',
+    });
   });
 
   it('subtitle файл амжилттай нэмэх', async () => {
@@ -293,9 +289,7 @@ describe('UploadFileUseCase', () => {
       'lesson-id-1',
       expect.objectContaining({
         videoContent: expect.objectContaining({
-          subtitles: expect.arrayContaining([
-            expect.objectContaining({ language: 'mn' }),
-          ]),
+          subtitles: expect.arrayContaining([expect.objectContaining({ language: 'mn' })]),
         }),
       }),
     );
@@ -305,13 +299,7 @@ describe('UploadFileUseCase', () => {
     lessonRepository.findById.mockResolvedValue(null);
 
     await expect(
-      useCase.execute(
-        'nonexistent-id',
-        'user-id-1',
-        'TEACHER',
-        mockVideoFile,
-        'video',
-      ),
+      useCase.execute('nonexistent-id', 'user-id-1', 'TEACHER', mockVideoFile, 'video'),
     ).rejects.toThrow(NotFoundException);
     expect(storageService.upload).not.toHaveBeenCalled();
   });
@@ -320,13 +308,7 @@ describe('UploadFileUseCase', () => {
     lessonRepository.findById.mockResolvedValue(mockVideoLesson);
 
     await expect(
-      useCase.execute(
-        'lesson-id-1',
-        'other-user-id',
-        'TEACHER',
-        mockVideoFile,
-        'video',
-      ),
+      useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER', mockVideoFile, 'video'),
     ).rejects.toThrow(ForbiddenException);
     expect(storageService.upload).not.toHaveBeenCalled();
   });
@@ -334,13 +316,7 @@ describe('UploadFileUseCase', () => {
   it('файл байхгүй үед BadRequestException', async () => {
     /** null файл дамжуулна */
     await expect(
-      useCase.execute(
-        'lesson-id-1',
-        'user-id-1',
-        'TEACHER',
-        null as any,
-        'video',
-      ),
+      useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', null as any, 'video'),
     ).rejects.toThrow(BadRequestException);
     expect(lessonRepository.findById).not.toHaveBeenCalled();
   });

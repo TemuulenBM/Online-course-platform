@@ -1,12 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsNotEmpty,
-  IsUUID,
-  IsOptional,
-  IsInt,
-  Min,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsOptional, IsInt, Min } from 'class-validator';
 
 /** Текст контент тавих DTO */
 export class SetTextContentDto {

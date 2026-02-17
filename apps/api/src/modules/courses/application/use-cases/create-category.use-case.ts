@@ -35,9 +35,7 @@ export class CreateCategoryUseCase {
 
     // Slug үүсгэх
     const baseSlug = generateSlug(dto.name);
-    const slug = await generateUniqueSlug(baseSlug, (s) =>
-      this.categoryRepository.slugExists(s),
-    );
+    const slug = await generateUniqueSlug(baseSlug, (s) => this.categoryRepository.slugExists(s));
 
     const category = await this.categoryRepository.create({
       name: dto.name,

@@ -45,7 +45,11 @@ export class CategoriesController {
   @UseGuards(RolesGuard)
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Ангилал үүсгэх (Зөвхөн Админ)' })
-  @ApiResponse({ status: 201, description: 'Ангилал амжилттай үүсгэгдлээ', type: CategoryResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Ангилал амжилттай үүсгэгдлээ',
+    type: CategoryResponseDto,
+  })
   @ApiResponse({ status: 409, description: 'Энэ нэртэй ангилал аль хэдийн байна' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
   async create(@Body() dto: CreateCategoryDto) {
@@ -75,7 +79,11 @@ export class CategoriesController {
   @UseGuards(RolesGuard)
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Ангилал шинэчлэх (Зөвхөн Админ)' })
-  @ApiResponse({ status: 200, description: 'Ангилал амжилттай шинэчлэгдлээ', type: CategoryResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Ангилал амжилттай шинэчлэгдлээ',
+    type: CategoryResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Ангилал олдсонгүй' })
   @ApiResponse({ status: 409, description: 'Энэ нэртэй ангилал аль хэдийн байна' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })

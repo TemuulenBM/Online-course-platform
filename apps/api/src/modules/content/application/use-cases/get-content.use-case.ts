@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentCacheService } from '../../infrastructure/services/content-cache.service';
 import { ContentEntity } from '../../domain/entities/content.entity';
@@ -35,8 +31,7 @@ export class GetContentUseCase {
     // Public хандалтад зөвхөн нийтлэгдсэн хичээлийн контент
     const isOwnerOrAdmin =
       options?.currentUserId &&
-      (lesson.courseInstructorId === options.currentUserId ||
-        options.currentUserRole === 'ADMIN');
+      (lesson.courseInstructorId === options.currentUserId || options.currentUserRole === 'ADMIN');
 
     if (!lesson.isPublished && !isOwnerOrAdmin) {
       throw new NotFoundException('Хичээл олдсонгүй');

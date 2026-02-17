@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Post,
-  Get,
-  Body,
-  HttpCode,
-  HttpStatus,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpCode, HttpStatus, Req, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Request } from 'express';
@@ -27,7 +18,10 @@ import { GetCurrentUserUseCase } from '../../application/use-cases/get-current-u
 import { Public } from '../../../../common/decorators/public.decorator';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
-import { AUTH_THROTTLE, PASSWORD_RESET_THROTTLE } from '../../../../common/constants/throttle.constants';
+import {
+  AUTH_THROTTLE,
+  PASSWORD_RESET_THROTTLE,
+} from '../../../../common/constants/throttle.constants';
 
 /**
  * Баталгаажуулалтын controller.

@@ -68,13 +68,13 @@ pnpm dev
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all apps in development mode |
-| `pnpm build` | Build all apps |
-| `pnpm lint` | Lint all apps |
-| `pnpm test` | Run all tests |
-| `pnpm docker:up` | Start Docker services |
-| `pnpm docker:down` | Stop Docker services |
-| `pnpm db:generate` | Generate Prisma client |
-| `pnpm db:migrate` | Run database migrations |
+| Command            | Description                        |
+| ------------------ | ---------------------------------- |
+| `pnpm dev`         | Start all apps in development mode |
+| `pnpm build`       | Build all apps                     |
+| `pnpm lint`        | Lint all apps                      |
+| `pnpm test`        | Run all tests                      |
+| `pnpm docker:up`   | Start Docker services              |
+| `pnpm docker:down` | Stop Docker services               |
+| `pnpm db:generate` | Generate Prisma client             |
+| `pnpm db:migrate`  | Run database migrations            |

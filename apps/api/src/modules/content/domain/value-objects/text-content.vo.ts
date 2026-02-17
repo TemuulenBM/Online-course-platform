@@ -8,11 +8,7 @@ export class TextContentVO {
   readonly markdown: string;
   readonly readingTimeMinutes: number;
 
-  constructor(props: {
-    html?: string;
-    markdown?: string;
-    readingTimeMinutes?: number;
-  }) {
+  constructor(props: { html?: string; markdown?: string; readingTimeMinutes?: number }) {
     this.html = props.html ?? '';
     this.markdown = props.markdown ?? '';
     this.readingTimeMinutes = props.readingTimeMinutes ?? 0;

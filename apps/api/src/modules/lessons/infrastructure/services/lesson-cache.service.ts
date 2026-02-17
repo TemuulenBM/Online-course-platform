@@ -27,10 +27,9 @@ export class LessonCacheService {
   async getLesson(lessonId: string): Promise<LessonEntity | null> {
     const cacheKey = `${LESSON_CACHE_PREFIX}${lessonId}`;
 
-    const cached =
-      await this.redisService.get<
-        ReturnType<LessonEntity['toResponse']> & { courseInstructorId?: string }
-      >(cacheKey);
+    const cached = await this.redisService.get<
+      ReturnType<LessonEntity['toResponse']> & { courseInstructorId?: string }
+    >(cacheKey);
     if (cached) {
       this.logger.debug(`Кэшнээс хичээл олдлоо: ${lessonId}`);
       return new LessonEntity({
@@ -54,19 +53,12 @@ export class LessonCacheService {
   }
 
   /** Сургалтын нийтлэгдсэн хичээлүүд авах — кэш эхлээд, байхгүй бол DB */
-  async getPublishedLessonsByCourse(
-    courseId: string,
-  ): Promise<LessonEntity[]> {
+  async getPublishedLessonsByCourse(courseId: string): Promise<LessonEntity[]> {
     const cacheKey = `${LESSONS_COURSE_CACHE_PREFIX}${courseId}`;
 
-    const cached =
-      await this.redisService.get<ReturnType<LessonEntity['toResponse']>[]>(
-        cacheKey,
-      );
+    const cached = await this.redisService.get<ReturnType<LessonEntity['toResponse']>[]>(cacheKey);
     if (cached) {
-      this.logger.debug(
-        `Кэшнээс сургалтын хичээлүүд олдлоо: ${courseId}`,
-      );
+      this.logger.debug(`Кэшнээс сургалтын хичээлүүд олдлоо: ${courseId}`);
       return cached.map(
         (item) =>
           new LessonEntity({
@@ -101,16 +93,11 @@ export class LessonCacheService {
   async invalidateCourseLessons(courseId: string): Promise<void> {
     const cacheKey = `${LESSONS_COURSE_CACHE_PREFIX}${courseId}`;
     await this.redisService.del(cacheKey);
-    this.logger.debug(
-      `Сургалтын хичээлүүдийн кэш устгагдлаа: ${courseId}`,
-    );
+    this.logger.debug(`Сургалтын хичээлүүдийн кэш устгагдлаа: ${courseId}`);
   }
 
   /** Хичээл болон сургалтын кэшийг хамт устгах (update/delete үед) */
   async invalidateAll(lessonId: string, courseId: string): Promise<void> {
-    await Promise.all([
-      this.invalidateLesson(lessonId),
-      this.invalidateCourseLessons(courseId),
-    ]);
+    await Promise.all([this.invalidateLesson(lessonId), this.invalidateCourseLessons(courseId)]);
   }
 }

@@ -51,10 +51,7 @@ export class UploadFileUseCase {
       throw new NotFoundException('Хичээл олдсонгүй');
     }
 
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException(
         'Зөвхөн хичээлийн эзэмшигч эсвэл админ файл upload хийх боломжтой',
       );
@@ -62,10 +59,7 @@ export class UploadFileUseCase {
 
     // Файлыг хадгалах
     const storagePath = `content/${lessonId}/${fileType}/${Date.now()}-${file.originalname}`;
-    const { url, sizeBytes } = await this.storageService.upload(
-      file,
-      storagePath,
-    );
+    const { url, sizeBytes } = await this.storageService.upload(file, storagePath);
 
     // Контент олох эсвэл үүсгэх
     let content = await this.contentRepository.findByLessonId(lessonId);
@@ -118,10 +112,7 @@ export class UploadFileUseCase {
         const langMatch = file.originalname.match(/-(\w{2})\.\w+$/);
         const language = langMatch ? langMatch[1] : 'unknown';
 
-        const subtitles = [
-          ...(content.videoContent?.subtitles ?? []),
-          { language, url },
-        ];
+        const subtitles = [...(content.videoContent?.subtitles ?? []), { language, url }];
         await this.contentRepository.updateByLessonId(lessonId, {
           videoContent: {
             videoUrl: content.videoContent?.videoUrl,
@@ -139,9 +130,7 @@ export class UploadFileUseCase {
     const updated = await this.contentRepository.findByLessonId(lessonId);
     await this.contentCacheService.invalidateContent(lessonId);
 
-    this.logger.log(
-      `Файл upload хийгдлээ: lessonId=${lessonId}, fileType=${fileType}`,
-    );
+    this.logger.log(`Файл upload хийгдлээ: lessonId=${lessonId}, fileType=${fileType}`);
 
     return updated!;
   }

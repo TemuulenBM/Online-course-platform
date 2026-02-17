@@ -44,9 +44,7 @@ export class UpdateCategoryUseCase {
     let newSlug: string | undefined;
     if (dto.name && dto.name !== category.name) {
       const baseSlug = generateSlug(dto.name);
-      newSlug = await generateUniqueSlug(baseSlug, (s) =>
-        this.categoryRepository.slugExists(s),
-      );
+      newSlug = await generateUniqueSlug(baseSlug, (s) => this.categoryRepository.slugExists(s));
     }
 
     const updated = await this.categoryRepository.update(categoryId, {

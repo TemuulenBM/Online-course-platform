@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-  BadRequestException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { SetContentUseCase } from '../../application/use-cases/set-content.use-case';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
@@ -139,9 +135,7 @@ describe('SetContentUseCase', () => {
         readingTimeMinutes: 5,
       },
     });
-    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
+    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith('lesson-id-1');
   });
 
   it('видео контент амжилттай тавих', async () => {
@@ -180,9 +174,9 @@ describe('SetContentUseCase', () => {
       html: '<p>Test</p>',
     };
 
-    await expect(
-      useCase.executeText('user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.executeText('user-id-1', 'TEACHER', dto)).rejects.toThrow(
+      NotFoundException,
+    );
     expect(contentRepository.create).not.toHaveBeenCalled();
   });
 
@@ -194,9 +188,9 @@ describe('SetContentUseCase', () => {
       html: '<p>Test</p>',
     };
 
-    await expect(
-      useCase.executeText('other-user-id', 'TEACHER', dto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.executeText('other-user-id', 'TEACHER', dto)).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(contentRepository.create).not.toHaveBeenCalled();
   });
 
@@ -209,9 +203,9 @@ describe('SetContentUseCase', () => {
       html: '<p>Test</p>',
     };
 
-    await expect(
-      useCase.executeText('user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(BadRequestException);
+    await expect(useCase.executeText('user-id-1', 'TEACHER', dto)).rejects.toThrow(
+      BadRequestException,
+    );
     expect(contentRepository.create).not.toHaveBeenCalled();
   });
 
@@ -234,17 +228,14 @@ describe('SetContentUseCase', () => {
     expect(result).toEqual(mockTextContent);
     /** create биш updateByLessonId дуудагдсан */
     expect(contentRepository.create).not.toHaveBeenCalled();
-    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith(
-      'lesson-id-1',
-      {
-        contentType: 'text',
-        textContent: {
-          html: '<p>Updated</p>',
-          markdown: '# Updated',
-          readingTimeMinutes: 10,
-        },
+    expect(contentRepository.updateByLessonId).toHaveBeenCalledWith('lesson-id-1', {
+      contentType: 'text',
+      textContent: {
+        html: '<p>Updated</p>',
+        markdown: '# Updated',
+        readingTimeMinutes: 10,
       },
-    );
+    });
   });
 
   it('кэш invalidate дуудагдсан эсэх', async () => {
@@ -261,9 +252,7 @@ describe('SetContentUseCase', () => {
     await useCase.executeText('user-id-1', 'TEACHER', dto);
 
     /** Контент тавигдсаны дараа кэш invalidate хийгдсэн */
-    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
+    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith('lesson-id-1');
     expect(contentCacheService.invalidateContent).toHaveBeenCalledTimes(1);
   });
 });

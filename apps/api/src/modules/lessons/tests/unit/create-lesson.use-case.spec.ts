@@ -100,9 +100,7 @@ describe('CreateLessonUseCase', () => {
 
     expect(result).toEqual(mockLesson);
     expect(courseRepository.findById).toHaveBeenCalledWith('course-id-1');
-    expect(lessonRepository.getNextOrderIndex).toHaveBeenCalledWith(
-      'course-id-1',
-    );
+    expect(lessonRepository.getNextOrderIndex).toHaveBeenCalledWith('course-id-1');
     expect(lessonRepository.create).toHaveBeenCalledWith({
       courseId: 'course-id-1',
       title: 'React-ийн суурь ойлголтууд',
@@ -112,9 +110,7 @@ describe('CreateLessonUseCase', () => {
       isPreview: false,
       isPublished: true,
     });
-    expect(lessonCacheService.invalidateCourseLessons).toHaveBeenCalledWith(
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateCourseLessons).toHaveBeenCalledWith('course-id-1');
   });
 
   it('сургалт олдоогүй үед NotFoundException', async () => {
@@ -126,9 +122,7 @@ describe('CreateLessonUseCase', () => {
       lessonType: 'video',
     };
 
-    await expect(
-      useCase.execute('user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('user-id-1', 'TEACHER', dto)).rejects.toThrow(NotFoundException);
     expect(lessonRepository.create).not.toHaveBeenCalled();
   });
 
@@ -141,9 +135,9 @@ describe('CreateLessonUseCase', () => {
       lessonType: 'video',
     };
 
-    await expect(
-      useCase.execute('other-user-id', 'TEACHER', dto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('other-user-id', 'TEACHER', dto)).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(lessonRepository.create).not.toHaveBeenCalled();
   });
 

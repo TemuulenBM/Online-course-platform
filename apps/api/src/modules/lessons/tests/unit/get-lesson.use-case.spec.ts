@@ -53,9 +53,7 @@ describe('GetLessonUseCase', () => {
   it('хичээл олдоогүй үед NotFoundException', async () => {
     lessonCacheService.getLesson.mockResolvedValue(null);
 
-    await expect(useCase.execute('nonexistent')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('nonexistent')).rejects.toThrow(NotFoundException);
   });
 
   it('нийтлэгдээгүй хичээл publishedOnly=true үед NotFoundException', async () => {
@@ -65,9 +63,7 @@ describe('GetLessonUseCase', () => {
     });
     lessonCacheService.getLesson.mockResolvedValue(unpublishedLesson);
 
-    await expect(useCase.execute('lesson-id-1', true)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('lesson-id-1', true)).rejects.toThrow(NotFoundException);
   });
 
   it('нийтлэгдээгүй хичээл publishedOnly=false үед амжилттай буцаах', async () => {

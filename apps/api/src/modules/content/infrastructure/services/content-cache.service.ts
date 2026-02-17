@@ -29,10 +29,7 @@ export class ContentCacheService {
   async getContent(lessonId: string): Promise<ContentEntity | null> {
     const cacheKey = `${CONTENT_CACHE_PREFIX}${lessonId}`;
 
-    const cached =
-      await this.redisService.get<ReturnType<ContentEntity['toResponse']>>(
-        cacheKey,
-      );
+    const cached = await this.redisService.get<ReturnType<ContentEntity['toResponse']>>(cacheKey);
     if (cached) {
       this.logger.debug(`Кэшнээс контент олдлоо: ${lessonId}`);
       return this.fromCache(cached);
@@ -40,11 +37,7 @@ export class ContentCacheService {
 
     const content = await this.contentRepository.findByLessonId(lessonId);
     if (content) {
-      await this.redisService.set(
-        cacheKey,
-        content.toResponse(),
-        CONTENT_CACHE_TTL,
-      );
+      await this.redisService.set(cacheKey, content.toResponse(), CONTENT_CACHE_TTL);
       this.logger.debug(`Контент кэшлэгдлээ: ${lessonId}`);
     }
 
@@ -59,9 +52,7 @@ export class ContentCacheService {
   }
 
   /** Кэшлэгдсэн өгөгдлөөс ContentEntity үүсгэнэ */
-  private fromCache(
-    cached: ReturnType<ContentEntity['toResponse']>,
-  ): ContentEntity {
+  private fromCache(cached: ReturnType<ContentEntity['toResponse']>): ContentEntity {
     let videoContent: VideoContentVO | undefined;
     if (cached.videoContent) {
       videoContent = new VideoContentVO(cached.videoContent);
@@ -72,9 +63,7 @@ export class ContentCacheService {
       textContent = new TextContentVO(cached.textContent);
     }
 
-    const attachments = (cached.attachments ?? []).map(
-      (a) => new AttachmentVO(a),
-    );
+    const attachments = (cached.attachments ?? []).map((a) => new AttachmentVO(a));
 
     return new ContentEntity({
       id: cached.id,

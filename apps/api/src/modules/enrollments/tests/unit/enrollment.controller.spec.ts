@@ -72,7 +72,10 @@ describe('EnrollmentController', () => {
   });
 
   it('GET /enrollments/my — миний элсэлтүүд', async () => {
-    const mockResult = { data: [mockEnrollment.toResponse()], meta: { total: 1, page: 1, limit: 20, totalPages: 1 } };
+    const mockResult = {
+      data: [mockEnrollment.toResponse()],
+      meta: { total: 1, page: 1, limit: 20, totalPages: 1 },
+    };
     listMyUseCase.execute.mockResolvedValue(mockResult);
 
     const result = await controller.listMyEnrollments('user-id-1', { page: 1, limit: 20 });
@@ -82,17 +85,35 @@ describe('EnrollmentController', () => {
   });
 
   it('GET /enrollments/course/:courseId — сургалтын оюутнууд', async () => {
-    const mockResult = { data: [mockEnrollment.toResponse()], meta: { total: 1, page: 1, limit: 20, totalPages: 1 } };
+    const mockResult = {
+      data: [mockEnrollment.toResponse()],
+      meta: { total: 1, page: 1, limit: 20, totalPages: 1 },
+    };
     listCourseUseCase.execute.mockResolvedValue(mockResult);
 
-    const result = await controller.listCourseEnrollments('course-id-1', 'user-id-1', 'TEACHER', {});
+    const result = await controller.listCourseEnrollments(
+      'course-id-1',
+      'user-id-1',
+      'TEACHER',
+      {},
+    );
 
     expect(result).toEqual(mockResult);
-    expect(listCourseUseCase.execute).toHaveBeenCalledWith('course-id-1', 'user-id-1', 'TEACHER', {});
+    expect(listCourseUseCase.execute).toHaveBeenCalledWith(
+      'course-id-1',
+      'user-id-1',
+      'TEACHER',
+      {},
+    );
   });
 
   it('GET /enrollments/check/:courseId — шалгах', async () => {
-    const mockResult = { enrolled: true, status: 'active', enrollmentId: 'enrollment-id-1', enrolledAt: now };
+    const mockResult = {
+      enrolled: true,
+      status: 'active',
+      enrollmentId: 'enrollment-id-1',
+      enrolledAt: now,
+    };
     checkUseCase.execute.mockResolvedValue(mockResult);
 
     const result = await controller.checkEnrollment('user-id-1', 'course-id-1');

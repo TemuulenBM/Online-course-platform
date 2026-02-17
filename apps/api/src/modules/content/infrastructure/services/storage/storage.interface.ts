@@ -5,10 +5,7 @@
  */
 export interface IStorageService {
   /** Файл upload хийж, URL болон хэмжээ буцаана */
-  upload(
-    file: Express.Multer.File,
-    path: string,
-  ): Promise<{ url: string; sizeBytes: number }>;
+  upload(file: Express.Multer.File, path: string): Promise<{ url: string; sizeBytes: number }>;
 
   /** Файл устгана */
   delete(path: string): Promise<void>;

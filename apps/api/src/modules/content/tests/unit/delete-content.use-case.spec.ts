@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteContentUseCase } from '../../application/use-cases/delete-content.use-case';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
@@ -45,9 +42,7 @@ describe('DeleteContentUseCase', () => {
       videoUrl: 'https://example.com/video.mp4',
       thumbnailUrl: 'https://example.com/thumb.jpg',
       durationSeconds: 1200,
-      subtitles: [
-        { language: 'mn', url: 'https://example.com/sub-mn.vtt' },
-      ],
+      subtitles: [{ language: 'mn', url: 'https://example.com/sub-mn.vtt' }],
     }),
     attachments: [
       new AttachmentVO({
@@ -124,12 +119,8 @@ describe('DeleteContentUseCase', () => {
 
     expect(lessonRepository.findById).toHaveBeenCalledWith('lesson-id-1');
     expect(contentRepository.findByLessonId).toHaveBeenCalledWith('lesson-id-1');
-    expect(contentRepository.deleteByLessonId).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
-    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith(
-      'lesson-id-1',
-    );
+    expect(contentRepository.deleteByLessonId).toHaveBeenCalledWith('lesson-id-1');
+    expect(contentCacheService.invalidateContent).toHaveBeenCalledWith('lesson-id-1');
   });
 
   it('файл устгалт дуудагдсан (storageService.delete)', async () => {
@@ -142,21 +133,13 @@ describe('DeleteContentUseCase', () => {
     await useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER');
 
     /** Видео файл устгагдсан */
-    expect(storageService.delete).toHaveBeenCalledWith(
-      'https://example.com/video.mp4',
-    );
+    expect(storageService.delete).toHaveBeenCalledWith('https://example.com/video.mp4');
     /** Thumbnail устгагдсан */
-    expect(storageService.delete).toHaveBeenCalledWith(
-      'https://example.com/thumb.jpg',
-    );
+    expect(storageService.delete).toHaveBeenCalledWith('https://example.com/thumb.jpg');
     /** Хадмал файл устгагдсан */
-    expect(storageService.delete).toHaveBeenCalledWith(
-      'https://example.com/sub-mn.vtt',
-    );
+    expect(storageService.delete).toHaveBeenCalledWith('https://example.com/sub-mn.vtt');
     /** Хавсралт файл устгагдсан */
-    expect(storageService.delete).toHaveBeenCalledWith(
-      'https://example.com/notes.pdf',
-    );
+    expect(storageService.delete).toHaveBeenCalledWith('https://example.com/notes.pdf');
     /** Нийт 4 файл устгагдсан */
     expect(storageService.delete).toHaveBeenCalledTimes(4);
   });
@@ -164,9 +147,9 @@ describe('DeleteContentUseCase', () => {
   it('хичээл олдоогүй үед NotFoundException', async () => {
     lessonRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent-id', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent-id', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
     expect(contentRepository.findByLessonId).not.toHaveBeenCalled();
   });
 
@@ -174,18 +157,18 @@ describe('DeleteContentUseCase', () => {
     lessonRepository.findById.mockResolvedValue(mockLesson);
     contentRepository.findByLessonId.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
     expect(contentRepository.deleteByLessonId).not.toHaveBeenCalled();
   });
 
   it('эрх хүрэхгүй үед ForbiddenException', async () => {
     lessonRepository.findById.mockResolvedValue(mockLesson);
 
-    await expect(
-      useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER')).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(contentRepository.findByLessonId).not.toHaveBeenCalled();
   });
 });

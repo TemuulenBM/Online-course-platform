@@ -32,11 +32,7 @@ export class SetContentUseCase {
     currentUserRole: string,
     dto: SetTextContentDto,
   ): Promise<ContentEntity> {
-    const lesson = await this.validateAndAuthorize(
-      dto.lessonId,
-      currentUserId,
-      currentUserRole,
-    );
+    const lesson = await this.validateAndAuthorize(dto.lessonId, currentUserId, currentUserRole);
 
     // Хичээлийн төрөл шалгах — text хичээлд л текст контент тавих боломжтой
     if (lesson.lessonType !== 'text') {
@@ -81,11 +77,7 @@ export class SetContentUseCase {
     currentUserRole: string,
     dto: SetVideoContentDto,
   ): Promise<ContentEntity> {
-    const lesson = await this.validateAndAuthorize(
-      dto.lessonId,
-      currentUserId,
-      currentUserRole,
-    );
+    const lesson = await this.validateAndAuthorize(dto.lessonId, currentUserId, currentUserRole);
 
     if (lesson.lessonType !== 'video') {
       throw new BadRequestException(
@@ -134,13 +126,8 @@ export class SetContentUseCase {
       throw new NotFoundException('Хичээл олдсонгүй');
     }
 
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
-      throw new ForbiddenException(
-        'Зөвхөн хичээлийн эзэмшигч эсвэл админ контент тавих боломжтой',
-      );
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
+      throw new ForbiddenException('Зөвхөн хичээлийн эзэмшигч эсвэл админ контент тавих боломжтой');
     }
 
     return lesson;

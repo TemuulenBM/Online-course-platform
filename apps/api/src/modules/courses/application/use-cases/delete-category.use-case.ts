@@ -24,9 +24,7 @@ export class DeleteCategoryUseCase {
     // Сургалт хамааруулсан бол устгах боломжгүй
     const coursesCount = await this.categoryRepository.countCourses(categoryId);
     if (coursesCount > 0) {
-      throw new ConflictException(
-        'Энэ ангилалд сургалтууд хамааруулсан тул устгах боломжгүй',
-      );
+      throw new ConflictException('Энэ ангилалд сургалтууд хамааруулсан тул устгах боломжгүй');
     }
 
     await this.categoryRepository.delete(categoryId);

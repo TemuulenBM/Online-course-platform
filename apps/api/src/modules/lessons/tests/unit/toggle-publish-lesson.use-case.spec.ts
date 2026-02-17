@@ -46,9 +46,7 @@ describe('TogglePublishLessonUseCase', () => {
       ],
     }).compile();
 
-    useCase = module.get<TogglePublishLessonUseCase>(
-      TogglePublishLessonUseCase,
-    );
+    useCase = module.get<TogglePublishLessonUseCase>(TogglePublishLessonUseCase);
     lessonRepository = module.get(LessonRepository);
     lessonCacheService = module.get(LessonCacheService);
   });
@@ -68,10 +66,7 @@ describe('TogglePublishLessonUseCase', () => {
     expect(lessonRepository.update).toHaveBeenCalledWith('lesson-id-1', {
       isPublished: false,
     });
-    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith(
-      'lesson-id-1',
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith('lesson-id-1', 'course-id-1');
   });
 
   it('нийтлэгдээгүй хичээлийг нийтлэх (false → true)', async () => {
@@ -98,18 +93,18 @@ describe('TogglePublishLessonUseCase', () => {
   it('хичээл олдоогүй үед NotFoundException', async () => {
     lessonRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
     expect(lessonRepository.update).not.toHaveBeenCalled();
   });
 
   it('эрх хүрэхгүй үед ForbiddenException', async () => {
     lessonRepository.findById.mockResolvedValue(mockLesson);
 
-    await expect(
-      useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('lesson-id-1', 'other-user-id', 'TEACHER')).rejects.toThrow(
+      ForbiddenException,
+    );
     expect(lessonRepository.update).not.toHaveBeenCalled();
   });
 });

@@ -1,10 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {
-  CourseContent,
-  CourseContentDocument,
-} from '../schemas/course-content.schema';
+import { CourseContent, CourseContentDocument } from '../schemas/course-content.schema';
 import { ContentEntity } from '../../domain/entities/content.entity';
 import { VideoContentVO } from '../../domain/value-objects/video-content.vo';
 import { TextContentVO } from '../../domain/value-objects/text-content.vo';
@@ -112,26 +109,15 @@ export class ContentRepository {
     },
   ): Promise<ContentEntity | null> {
     const doc = await this.contentModel
-      .findOneAndUpdate(
-        { lessonId },
-        { $push: { attachments: attachment } },
-        { new: true },
-      )
+      .findOneAndUpdate({ lessonId }, { $push: { attachments: attachment } }, { new: true })
       .exec();
     return doc ? this.toEntity(doc) : null;
   }
 
   /** Хавсралт устгах (filename-аар) */
-  async removeAttachment(
-    lessonId: string,
-    filename: string,
-  ): Promise<ContentEntity | null> {
+  async removeAttachment(lessonId: string, filename: string): Promise<ContentEntity | null> {
     const doc = await this.contentModel
-      .findOneAndUpdate(
-        { lessonId },
-        { $pull: { attachments: { filename } } },
-        { new: true },
-      )
+      .findOneAndUpdate({ lessonId }, { $pull: { attachments: { filename } } }, { new: true })
       .exec();
     return doc ? this.toEntity(doc) : null;
   }

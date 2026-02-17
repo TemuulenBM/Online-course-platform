@@ -27,9 +27,7 @@ export class CreateCourseUseCase {
 
     // Slug үүсгэх
     const baseSlug = generateSlug(dto.title);
-    const slug = await generateUniqueSlug(baseSlug, (s) =>
-      this.courseRepository.slugExists(s),
-    );
+    const slug = await generateUniqueSlug(baseSlug, (s) => this.courseRepository.slugExists(s));
 
     // Сургалт үүсгэх (status = DRAFT автоматаар)
     const course = await this.courseRepository.create({

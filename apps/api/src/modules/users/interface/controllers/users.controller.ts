@@ -20,7 +20,10 @@ import { CreateUserProfileDto } from '../../dto/create-user-profile.dto';
 import { UpdateUserProfileDto } from '../../dto/update-user-profile.dto';
 import { UpdateUserRoleDto } from '../../dto/update-user-role.dto';
 import { ListUsersQueryDto } from '../../dto/list-users-query.dto';
-import { UserProfileResponseDto, UserWithProfileResponseDto } from '../../dto/user-profile-response.dto';
+import {
+  UserProfileResponseDto,
+  UserWithProfileResponseDto,
+} from '../../dto/user-profile-response.dto';
 import { CreateUserProfileUseCase } from '../../application/use-cases/create-user-profile.use-case';
 import { GetUserProfileUseCase } from '../../application/use-cases/get-user-profile.use-case';
 import { UpdateUserProfileUseCase } from '../../application/use-cases/update-user-profile.use-case';
@@ -57,19 +60,24 @@ export class UsersController {
 
   @Post('me/profile')
   @ApiOperation({ summary: 'Миний профайл үүсгэх' })
-  @ApiResponse({ status: 201, description: 'Профайл амжилттай үүсгэгдлээ', type: UserProfileResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Профайл амжилттай үүсгэгдлээ',
+    type: UserProfileResponseDto,
+  })
   @ApiResponse({ status: 409, description: 'Профайл аль хэдийн үүсгэгдсэн' })
-  async createMyProfile(
-    @CurrentUser('id') userId: string,
-    @Body() dto: CreateUserProfileDto,
-  ) {
+  async createMyProfile(@CurrentUser('id') userId: string, @Body() dto: CreateUserProfileDto) {
     const profile = await this.createUserProfileUseCase.execute(userId, dto);
     return profile.toResponse();
   }
 
   @Patch('me/profile')
   @ApiOperation({ summary: 'Миний профайл шинэчлэх' })
-  @ApiResponse({ status: 200, description: 'Профайл амжилттай шинэчлэгдлээ', type: UserProfileResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Профайл амжилттай шинэчлэгдлээ',
+    type: UserProfileResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Профайл олдсонгүй' })
   async updateMyProfile(
     @CurrentUser('id') userId: string,
@@ -106,10 +114,7 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'Эрх амжилттай өөрчлөгдлөө' })
   @ApiResponse({ status: 404, description: 'Хэрэглэгч олдсонгүй' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
-  async updateUserRole(
-    @Param('id') userId: string,
-    @Body() dto: UpdateUserRoleDto,
-  ) {
+  async updateUserRole(@Param('id') userId: string, @Body() dto: UpdateUserRoleDto) {
     return this.updateUserRoleUseCase.execute(userId, dto.role);
   }
 

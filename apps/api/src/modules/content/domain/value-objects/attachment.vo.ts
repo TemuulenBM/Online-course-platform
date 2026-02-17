@@ -8,12 +8,7 @@ export class AttachmentVO {
   readonly sizeBytes: number;
   readonly mimeType: string;
 
-  constructor(props: {
-    filename: string;
-    url: string;
-    sizeBytes?: number;
-    mimeType?: string;
-  }) {
+  constructor(props: { filename: string; url: string; sizeBytes?: number; mimeType?: string }) {
     this.filename = props.filename;
     this.url = props.url;
     this.sizeBytes = props.sizeBytes ?? 0;

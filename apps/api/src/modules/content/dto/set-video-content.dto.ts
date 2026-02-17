@@ -1,11 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsUUID,
-  IsOptional,
-  IsInt,
-  Min,
-} from 'class-validator';
+import { IsString, IsUUID, IsOptional, IsInt, Min } from 'class-validator';
 
 /** Видео контент тавих DTO */
 export class SetVideoContentDto {

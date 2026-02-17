@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@ocp/typescript-config": "workspace:*",
+    "@ocp/eslint-config": "workspace:*",
     "@types/react": "^19.0.0",
     "typescript": "^5.6.0"
   }

@@ -1,10 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Inject, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { ContentRepository } from '../../infrastructure/repositories/content.repository';
 import { ContentCacheService } from '../../infrastructure/services/content-cache.service';
@@ -29,21 +23,14 @@ export class DeleteContentUseCase {
     private readonly storageService: IStorageService,
   ) {}
 
-  async execute(
-    lessonId: string,
-    currentUserId: string,
-    currentUserRole: string,
-  ): Promise<void> {
+  async execute(lessonId: string, currentUserId: string, currentUserRole: string): Promise<void> {
     // Хичээл олох + эрх шалгах
     const lesson = await this.lessonRepository.findById(lessonId);
     if (!lesson) {
       throw new NotFoundException('Хичээл олдсонгүй');
     }
 
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException(
         'Зөвхөн хичээлийн эзэмшигч эсвэл админ контент устгах боломжтой',
       );

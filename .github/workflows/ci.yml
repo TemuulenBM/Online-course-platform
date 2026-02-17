@@ -1,0 +1,193 @@
+# =============================================================================
+# CI Pipeline — Push/PR бүрт lint, test, build шалгалт автомат ажиллана
+# Бүх шалгалт ногоон байж л merge хийх боломжтой
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9.15.4'
+
+jobs:
+  # ─── Lint шалгалт ───
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: pnpm суулгах
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Node.js тохируулах
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Dependencies суулгах
+        run: pnpm install --frozen-lockfile
+
+      - name: ESLint шалгалт
+        run: pnpm lint
+
+      - name: Prettier format шалгалт
+        run: npx prettier --check "**/*.{ts,tsx,js,jsx,json,md}"
+
+  # ─── Unit тест ───
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ocp_user
+          POSTGRES_PASSWORD: ocp_password
+          POSTGRES_DB: online_course_platform_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ocp_user -d online_course_platform_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      mongodb:
+        image: mongo:7
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ocp_user
+          MONGO_INITDB_ROOT_PASSWORD: ocp_password
+          MONGO_INITDB_DATABASE: online_course_platform_test
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "echo 'db.runCommand({ping:1})' | mongosh --quiet"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://ocp_user:ocp_password@localhost:5432/online_course_platform_test
+      MONGODB_URI: mongodb://ocp_user:ocp_password@localhost:27017/online_course_platform_test?authSource=admin
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ''
+      JWT_SECRET: test-jwt-secret-ci
+      JWT_REFRESH_SECRET: test-jwt-refresh-secret-ci
+      JWT_ACCESS_EXPIRATION: 15m
+      JWT_REFRESH_EXPIRATION: 7d
+      APP_PORT: 3001
+      APP_URL: http://localhost:3000
+      NODE_ENV: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: pnpm суулгах
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Node.js тохируулах
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Dependencies суулгах
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma client generate
+        run: pnpm db:generate
+
+      - name: Database migration ажиллуулах
+        run: pnpm --filter @ocp/api exec prisma migrate deploy --config prisma/prisma.config.ts
+
+      - name: Unit тест ажиллуулах
+        run: pnpm test
+
+  # ─── Build шалгалт ───
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: pnpm суулгах
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Node.js тохируулах
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Dependencies суулгах
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma client generate
+        run: pnpm db:generate
+        env:
+          DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
+
+      - name: Build (API + packages)
+        run: pnpm build --filter @ocp/api
+
+  # ─── Docker image build шалгалт (PR дээр) ───
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker Buildx тохируулах
+        uses: docker/setup-buildx-action@v3
+
+      - name: API Docker image build шалгах
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Web Docker image build шалгах
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

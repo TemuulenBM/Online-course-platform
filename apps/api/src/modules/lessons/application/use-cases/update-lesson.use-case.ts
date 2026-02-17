@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { LessonRepository } from '../../infrastructure/repositories/lesson.repository';
 import { LessonCacheService } from '../../infrastructure/services/lesson-cache.service';
 import { LessonEntity } from '../../domain/entities/lesson.entity';
@@ -35,10 +30,7 @@ export class UpdateLessonUseCase {
     }
 
     /** Эрхийн шалгалт: сургалтын эзэмшигч эсвэл админ */
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
       throw new ForbiddenException('Энэ хичээлийг засах эрхгүй');
     }
 

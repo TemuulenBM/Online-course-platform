@@ -108,14 +108,11 @@ describe('LessonCacheService', () => {
       const cachedList = [mockLesson.toResponse()];
       redisService.get.mockResolvedValue(cachedList);
 
-      const result =
-        await service.getPublishedLessonsByCourse('course-id-1');
+      const result = await service.getPublishedLessonsByCourse('course-id-1');
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe('lesson-id-1');
-      expect(redisService.get).toHaveBeenCalledWith(
-        'lessons:course:course-id-1',
-      );
+      expect(redisService.get).toHaveBeenCalledWith('lessons:course:course-id-1');
       /** DB руу хандаагүй байх ёстой */
       expect(lessonRepository.findByCourseId).not.toHaveBeenCalled();
     });
@@ -125,15 +122,11 @@ describe('LessonCacheService', () => {
       lessonRepository.findByCourseId.mockResolvedValue([mockLesson]);
       redisService.set.mockResolvedValue(undefined);
 
-      const result =
-        await service.getPublishedLessonsByCourse('course-id-1');
+      const result = await service.getPublishedLessonsByCourse('course-id-1');
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe('lesson-id-1');
-      expect(lessonRepository.findByCourseId).toHaveBeenCalledWith(
-        'course-id-1',
-        true,
-      );
+      expect(lessonRepository.findByCourseId).toHaveBeenCalledWith('course-id-1', true);
       /** Кэшлэгдсэн байх ёстой (TTL: 900 секунд) */
       expect(redisService.set).toHaveBeenCalledWith(
         'lessons:course:course-id-1',
@@ -159,9 +152,7 @@ describe('LessonCacheService', () => {
 
       await service.invalidateCourseLessons('course-id-1');
 
-      expect(redisService.del).toHaveBeenCalledWith(
-        'lessons:course:course-id-1',
-      );
+      expect(redisService.del).toHaveBeenCalledWith('lessons:course:course-id-1');
     });
   });
 
@@ -174,9 +165,7 @@ describe('LessonCacheService', () => {
       /** Хичээлийн кэш устгагдсан */
       expect(redisService.del).toHaveBeenCalledWith('lesson:lesson-id-1');
       /** Сургалтын хичээлүүдийн кэш устгагдсан */
-      expect(redisService.del).toHaveBeenCalledWith(
-        'lessons:course:course-id-1',
-      );
+      expect(redisService.del).toHaveBeenCalledWith('lessons:course:course-id-1');
       /** Нийт 2 удаа del дуудагдсан */
       expect(redisService.del).toHaveBeenCalledTimes(2);
     });

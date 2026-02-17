@@ -27,7 +27,8 @@ export class UserCacheService {
     const cacheKey = `${CACHE_KEY_PREFIX}${userId}`;
 
     // Redis кэшээс хайх
-    const cached = await this.redisService.get<ReturnType<UserProfileEntity['toResponse']>>(cacheKey);
+    const cached =
+      await this.redisService.get<ReturnType<UserProfileEntity['toResponse']>>(cacheKey);
     if (cached) {
       this.logger.debug(`Кэшнээс профайл олдлоо: ${userId}`);
       return new UserProfileEntity({

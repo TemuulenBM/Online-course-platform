@@ -35,8 +35,7 @@ export class ListLessonsUseCase {
     /** Эзэмшигч эсвэл админ эсэх тодорхойлох */
     const isOwnerOrAdmin =
       options.currentUserId &&
-      (course.instructorId === options.currentUserId ||
-        options.currentUserRole === 'ADMIN');
+      (course.instructorId === options.currentUserId || options.currentUserRole === 'ADMIN');
 
     /** Public хандалтад сургалт PUBLISHED байх ёстой */
     if (!isOwnerOrAdmin && course.status !== 'published') {
@@ -45,17 +44,13 @@ export class ListLessonsUseCase {
 
     /** publishedOnly тодорхойлох */
     const publishedOnly =
-      options.publishedOnly !== undefined
-        ? options.publishedOnly
-        : !isOwnerOrAdmin;
+      options.publishedOnly !== undefined ? options.publishedOnly : !isOwnerOrAdmin;
 
     /** Хичээлүүд авах */
     let lessons;
     if (publishedOnly) {
       /** Нийтлэгдсэн хичээлүүд — кэшээс */
-      lessons = await this.lessonCacheService.getPublishedLessonsByCourse(
-        courseId,
-      );
+      lessons = await this.lessonCacheService.getPublishedLessonsByCourse(courseId);
     } else {
       /** Бүх хичээлүүд — DB-ээс шууд */
       lessons = await this.lessonRepository.findByCourseId(courseId, false);

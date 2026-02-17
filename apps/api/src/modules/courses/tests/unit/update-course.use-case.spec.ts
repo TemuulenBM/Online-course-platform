@@ -93,17 +93,17 @@ describe('UpdateCourseUseCase', () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
 
     const dto = { description: 'Хууль бусаар засах' };
-    await expect(
-      useCase.execute('course-id-1', 'other-user', 'TEACHER', dto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('course-id-1', 'other-user', 'TEACHER', dto)).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('сургалт олдоогүй', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'TEACHER', {}),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'TEACHER', {})).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('ангилал олдоогүй үед алдаа', async () => {
@@ -111,8 +111,8 @@ describe('UpdateCourseUseCase', () => {
     categoryRepository.findById.mockResolvedValue(null);
 
     const dto = { categoryId: 'nonexistent-cat' };
-    await expect(
-      useCase.execute('course-id-1', 'user-id-1', 'TEACHER', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('course-id-1', 'user-id-1', 'TEACHER', dto)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

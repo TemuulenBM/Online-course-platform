@@ -110,9 +110,9 @@ describe('UpdateUserProfileUseCase', () => {
     };
 
     // STUDENT эрхтэй хэрэглэгч бусдын профайл шинэчлэхийг оролдох
-    await expect(
-      useCase.execute('user-id-1', 'other-user-id', 'STUDENT', dto),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('user-id-1', 'other-user-id', 'STUDENT', dto)).rejects.toThrow(
+      ForbiddenException,
+    );
 
     expect(userProfileRepository.findByUserId).not.toHaveBeenCalled();
     expect(userProfileRepository.update).not.toHaveBeenCalled();
@@ -126,9 +126,9 @@ describe('UpdateUserProfileUseCase', () => {
       firstName: 'Батболд',
     };
 
-    await expect(
-      useCase.execute('user-id-1', 'user-id-1', 'STUDENT', dto),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('user-id-1', 'user-id-1', 'STUDENT', dto)).rejects.toThrow(
+      NotFoundException,
+    );
 
     expect(userProfileRepository.update).not.toHaveBeenCalled();
     expect(userCacheService.invalidate).not.toHaveBeenCalled();

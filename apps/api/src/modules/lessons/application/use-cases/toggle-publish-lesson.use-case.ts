@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { LessonRepository } from '../../infrastructure/repositories/lesson.repository';
 import { LessonCacheService } from '../../infrastructure/services/lesson-cache.service';
 import { LessonEntity } from '../../domain/entities/lesson.entity';
@@ -33,13 +28,8 @@ export class TogglePublishLessonUseCase {
     }
 
     /** Эрхийн шалгалт */
-    if (
-      lesson.courseInstructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
-      throw new ForbiddenException(
-        'Энэ хичээлийн нийтлэлтийг өөрчлөх эрхгүй',
-      );
+    if (lesson.courseInstructorId !== currentUserId && currentUserRole !== 'ADMIN') {
+      throw new ForbiddenException('Энэ хичээлийн нийтлэлтийг өөрчлөх эрхгүй');
     }
 
     /** Toggle: true → false, false → true */
@@ -50,9 +40,7 @@ export class TogglePublishLessonUseCase {
     /** Кэш invalidate */
     await this.lessonCacheService.invalidateAll(lessonId, lesson.courseId);
 
-    this.logger.log(
-      `Хичээлийн нийтлэлт солигдлоо: ${lessonId} → ${!lesson.isPublished}`,
-    );
+    this.logger.log(`Хичээлийн нийтлэлт солигдлоо: ${lessonId} → ${!lesson.isPublished}`);
     return updated;
   }
 }

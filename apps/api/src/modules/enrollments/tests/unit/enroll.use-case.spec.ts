@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  BadRequestException,
-  ConflictException,
-} from '@nestjs/common';
+import { NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { EnrollUseCase } from '../../application/use-cases/enroll.use-case';
 import { EnrollmentRepository } from '../../infrastructure/repositories/enrollment.repository';
 import { EnrollmentCacheService } from '../../infrastructure/services/enrollment-cache.service';
@@ -114,26 +110,26 @@ describe('EnrollUseCase', () => {
   it('сургалт олдоогүй үед NotFoundException', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('user-id-1', { courseId: 'nonexistent' }),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('user-id-1', { courseId: 'nonexistent' })).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('нийтлэгдээгүй сургалтад элсэхэд BadRequestException', async () => {
     courseRepository.findById.mockResolvedValue(mockDraftCourse);
 
-    await expect(
-      useCase.execute('user-id-1', { courseId: 'course-id-1' }),
-    ).rejects.toThrow(BadRequestException);
+    await expect(useCase.execute('user-id-1', { courseId: 'course-id-1' })).rejects.toThrow(
+      BadRequestException,
+    );
   });
 
   it('аль хэдийн элссэн (active) үед ConflictException', async () => {
     courseRepository.findById.mockResolvedValue(mockPublishedCourse);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(mockEnrollment);
 
-    await expect(
-      useCase.execute('user-id-1', { courseId: 'course-id-1' }),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('user-id-1', { courseId: 'course-id-1' })).rejects.toThrow(
+      ConflictException,
+    );
   });
 
   it('аль хэдийн дуусгасан (completed) үед ConflictException', async () => {
@@ -145,9 +141,9 @@ describe('EnrollUseCase', () => {
     courseRepository.findById.mockResolvedValue(mockPublishedCourse);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(completedEnrollment);
 
-    await expect(
-      useCase.execute('user-id-1', { courseId: 'course-id-1' }),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('user-id-1', { courseId: 'course-id-1' })).rejects.toThrow(
+      ConflictException,
+    );
   });
 
   it('cancelled элсэлттэй үед дахин элсүүлэх (re-enroll)', async () => {
@@ -176,9 +172,9 @@ describe('EnrollUseCase', () => {
     enrollmentRepository.getPrerequisiteCourseIds.mockResolvedValue(['prereq-course-1']);
     enrollmentRepository.hasCompletedCourses.mockResolvedValue(false);
 
-    await expect(
-      useCase.execute('user-id-1', { courseId: 'course-id-1' }),
-    ).rejects.toThrow(BadRequestException);
+    await expect(useCase.execute('user-id-1', { courseId: 'course-id-1' })).rejects.toThrow(
+      BadRequestException,
+    );
   });
 
   it('prerequisite хангагдсан үед амжилттай элсэх', async () => {
@@ -191,6 +187,8 @@ describe('EnrollUseCase', () => {
     const result = await useCase.execute('user-id-1', { courseId: 'course-id-1' });
 
     expect(result).toEqual(mockEnrollment);
-    expect(enrollmentRepository.hasCompletedCourses).toHaveBeenCalledWith('user-id-1', ['prereq-course-1']);
+    expect(enrollmentRepository.hasCompletedCourses).toHaveBeenCalledWith('user-id-1', [
+      'prereq-course-1',
+    ]);
   });
 });

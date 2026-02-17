@@ -82,18 +82,14 @@ describe('ListLessonsUseCase', () => {
 
   it('нийтлэгдсэн хичээлүүдийн жагсаалт (public request) — кэшээс авах', async () => {
     courseRepository.findById.mockResolvedValue(mockCourse);
-    lessonCacheService.getPublishedLessonsByCourse.mockResolvedValue([
-      mockLesson,
-    ]);
+    lessonCacheService.getPublishedLessonsByCourse.mockResolvedValue([mockLesson]);
 
     const result = await useCase.execute('course-id-1', {});
 
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(mockLesson.toResponse());
     /** Кэш сервис дуудагдсан байх ёстой */
-    expect(
-      lessonCacheService.getPublishedLessonsByCourse,
-    ).toHaveBeenCalledWith('course-id-1');
+    expect(lessonCacheService.getPublishedLessonsByCourse).toHaveBeenCalledWith('course-id-1');
     /** Repository шууд дуудагдаагүй байх ёстой */
     expect(lessonRepository.findByCourseId).not.toHaveBeenCalled();
   });
@@ -110,22 +106,15 @@ describe('ListLessonsUseCase', () => {
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(mockLesson.toResponse());
     /** DB-ээс шууд авсан байх ёстой (publishedOnly=false) */
-    expect(lessonRepository.findByCourseId).toHaveBeenCalledWith(
-      'course-id-1',
-      false,
-    );
+    expect(lessonRepository.findByCourseId).toHaveBeenCalledWith('course-id-1', false);
     /** Кэш сервис дуудагдаагүй байх ёстой */
-    expect(
-      lessonCacheService.getPublishedLessonsByCourse,
-    ).not.toHaveBeenCalled();
+    expect(lessonCacheService.getPublishedLessonsByCourse).not.toHaveBeenCalled();
   });
 
   it('сургалт олдоогүй үед NotFoundException', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute('nonexistent-id', {})).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('nonexistent-id', {})).rejects.toThrow(NotFoundException);
   });
 
   it('хоосон жагсаалт — хоосон массив буцаах', async () => {

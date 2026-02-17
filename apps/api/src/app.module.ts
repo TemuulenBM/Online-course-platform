@@ -41,16 +41,36 @@ import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, mongodbConfig, redisConfig, jwtConfig, throttleConfig, storageConfig],
+      load: [
+        appConfig,
+        databaseConfig,
+        mongodbConfig,
+        redisConfig,
+        jwtConfig,
+        throttleConfig,
+        storageConfig,
+      ],
     }),
     // Rate limiting — хүсэлт хязгаарлалт (config-оос уншина)
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ([
-        { name: 'short', ttl: config.get<number>('throttle.short.ttl')!, limit: config.get<number>('throttle.short.limit')! },
-        { name: 'medium', ttl: config.get<number>('throttle.medium.ttl')!, limit: config.get<number>('throttle.medium.limit')! },
-        { name: 'long', ttl: config.get<number>('throttle.long.ttl')!, limit: config.get<number>('throttle.long.limit')! },
-      ]),
+      useFactory: (config: ConfigService) => [
+        {
+          name: 'short',
+          ttl: config.get<number>('throttle.short.ttl')!,
+          limit: config.get<number>('throttle.short.limit')!,
+        },
+        {
+          name: 'medium',
+          ttl: config.get<number>('throttle.medium.ttl')!,
+          limit: config.get<number>('throttle.medium.limit')!,
+        },
+        {
+          name: 'long',
+          ttl: config.get<number>('throttle.long.ttl')!,
+          limit: config.get<number>('throttle.long.limit')!,
+        },
+      ],
     }),
     // MongoDB холболт — Content модулиас эхлэн ашиглана
     MongooseModule.forRootAsync({

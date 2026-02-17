@@ -35,8 +35,7 @@ export class CreateLessonDto {
     example: 'video',
   })
   @IsEnum(['video', 'text', 'quiz', 'assignment', 'live'], {
-    message:
-      'Хичээлийн төрөл video, text, quiz, assignment, live-ийн аль нэг байх ёстой',
+    message: 'Хичээлийн төрөл video, text, quiz, assignment, live-ийн аль нэг байх ёстой',
   })
   lessonType!: string;
 

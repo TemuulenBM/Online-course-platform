@@ -62,20 +62,12 @@ describe('UpdateLessonUseCase', () => {
     lessonCacheService.invalidateAll.mockResolvedValue(undefined);
 
     const dto = { title: 'Шинэчлэгдсэн нэр', durationMinutes: 45 };
-    const result = await useCase.execute(
-      'lesson-id-1',
-      'user-id-1',
-      'TEACHER',
-      dto,
-    );
+    const result = await useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', dto);
 
     expect(result).toEqual(updatedLesson);
     expect(lessonRepository.findById).toHaveBeenCalledWith('lesson-id-1');
     expect(lessonRepository.update).toHaveBeenCalledWith('lesson-id-1', dto);
-    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith(
-      'lesson-id-1',
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith('lesson-id-1', 'course-id-1');
   });
 
   it('хичээл олдоогүй үед NotFoundException', async () => {
@@ -109,10 +101,7 @@ describe('UpdateLessonUseCase', () => {
       title: 'Шинэ нэр',
     });
 
-    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith(
-      'lesson-id-1',
-      'course-id-1',
-    );
+    expect(lessonCacheService.invalidateAll).toHaveBeenCalledWith('lesson-id-1', 'course-id-1');
     expect(lessonCacheService.invalidateAll).toHaveBeenCalledTimes(1);
   });
 
@@ -126,12 +115,7 @@ describe('UpdateLessonUseCase', () => {
     lessonCacheService.invalidateAll.mockResolvedValue(undefined);
 
     const dto = { title: 'Зөвхөн нэр солигдсон' };
-    const result = await useCase.execute(
-      'lesson-id-1',
-      'user-id-1',
-      'TEACHER',
-      dto,
-    );
+    const result = await useCase.execute('lesson-id-1', 'user-id-1', 'TEACHER', dto);
 
     expect(result.title).toBe('Зөвхөн нэр солигдсон');
     expect(lessonRepository.update).toHaveBeenCalledWith('lesson-id-1', {

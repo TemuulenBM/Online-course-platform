@@ -66,11 +66,7 @@ export class UserProfileRepository {
   }
 
   /** Хэрэглэгчдийн жагсаалт (User + Profile) pagination-тэй */
-  async findManyWithUser(options: {
-    page: number;
-    limit: number;
-    role?: Role;
-  }): Promise<{
+  async findManyWithUser(options: { page: number; limit: number; role?: Role }): Promise<{
     data: Array<{
       id: string;
       email: string;

@@ -24,11 +24,7 @@ export class UserRepository {
   }
 
   /** Шинэ хэрэглэгч үүсгэнэ */
-  async create(data: {
-    email: string;
-    passwordHash: string;
-    role?: Role;
-  }): Promise<UserEntity> {
+  async create(data: { email: string; passwordHash: string; role?: Role }): Promise<UserEntity> {
     const user = await this.prisma.user.create({
       data: {
         email: data.email,

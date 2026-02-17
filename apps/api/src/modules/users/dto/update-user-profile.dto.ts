@@ -36,7 +36,11 @@ export class UpdateUserProfileDto {
   @MaxLength(50, { message: 'Цагийн бүс хамгийн ихдээ 50 тэмдэгт байна' })
   timezone?: string;
 
-  @ApiProperty({ description: 'Хэрэглэгчийн сонголтууд', example: { language: 'mn', theme: 'dark' }, required: false })
+  @ApiProperty({
+    description: 'Хэрэглэгчийн сонголтууд',
+    example: { language: 'mn', theme: 'dark' },
+    required: false,
+  })
   @IsObject({ message: 'Сонголтууд объект байх ёстой' })
   @IsOptional()
   preferences?: Record<string, unknown>;

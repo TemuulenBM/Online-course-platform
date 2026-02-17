@@ -11,12 +11,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../../common/guards/roles.guard';
 import { Roles } from '../../../../common/decorators/roles.decorator';
@@ -148,12 +143,7 @@ export class LessonsController {
     @CurrentUser('role') role: string,
     @Body() dto: UpdateLessonDto,
   ) {
-    const lesson = await this.updateLessonUseCase.execute(
-      id,
-      userId,
-      role,
-      dto,
-    );
+    const lesson = await this.updateLessonUseCase.execute(id, userId, role, dto);
     return lesson.toResponse();
   }
 
@@ -171,11 +161,7 @@ export class LessonsController {
     @CurrentUser('id') userId: string,
     @CurrentUser('role') role: string,
   ) {
-    const lesson = await this.togglePublishLessonUseCase.execute(
-      id,
-      userId,
-      role,
-    );
+    const lesson = await this.togglePublishLessonUseCase.execute(id, userId, role);
     return lesson.toResponse();
   }
 

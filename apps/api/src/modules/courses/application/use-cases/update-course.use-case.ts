@@ -49,9 +49,7 @@ export class UpdateCourseUseCase {
     let newSlug: string | undefined;
     if (dto.title && dto.title !== course.title) {
       const baseSlug = generateSlug(dto.title);
-      newSlug = await generateUniqueSlug(baseSlug, (s) =>
-        this.courseRepository.slugExists(s),
-      );
+      newSlug = await generateUniqueSlug(baseSlug, (s) => this.courseRepository.slugExists(s));
     }
 
     // Шинэчлэх

@@ -116,7 +116,9 @@ export class EnrollmentRepository {
         take: options.limit,
         orderBy: { enrolledAt: 'desc' },
         include: {
-          user: { select: { email: true, profile: { select: { firstName: true, lastName: true } } } },
+          user: {
+            select: { email: true, profile: { select: { firstName: true, lastName: true } } },
+          },
         },
       }),
       this.prisma.enrollment.count({ where }),
@@ -164,7 +166,8 @@ export class EnrollmentRepository {
   ): Promise<EnrollmentEntity> {
     const updateData: Prisma.EnrollmentUpdateInput = {};
 
-    if (data.status !== undefined) updateData.status = data.status.toUpperCase() as EnrollmentStatus;
+    if (data.status !== undefined)
+      updateData.status = data.status.toUpperCase() as EnrollmentStatus;
     if (data.completedAt !== undefined) updateData.completedAt = data.completedAt;
 
     const enrollment = await this.prisma.enrollment.update({

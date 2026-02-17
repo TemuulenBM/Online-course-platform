@@ -41,7 +41,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"student@test.com\",\n  \"password\": \"Pass1234!\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
           }
         },
         {
@@ -66,7 +70,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Pass1234!\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
           }
         },
         {
@@ -91,7 +99,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Pass1234!\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
           }
         },
         {
@@ -111,7 +123,11 @@
           ],
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
           }
         },
         {
@@ -145,7 +161,11 @@
           "request": {
             "method": "PATCH",
             "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
-            "url": { "raw": "{{baseUrl}}/courses/{{courseId}}/publish", "host": ["{{baseUrl}}"], "path": ["courses", "{{courseId}}", "publish"] }
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            }
           }
         },
         {
@@ -204,7 +224,11 @@
               "mode": "raw",
               "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
           }
         },
         {
@@ -213,9 +237,7 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
-                ]
+                "exec": ["pm.test('Status 409', () => pm.response.to.have.status(409));"]
               }
             }
           ],
@@ -229,7 +251,11 @@
               "mode": "raw",
               "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
           }
         },
         {
@@ -238,9 +264,7 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
-                ]
+                "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"]
               }
             }
           ],
@@ -254,7 +278,11 @@
               "mode": "raw",
               "raw": "{\n  \"courseId\": \"{{draftCourseId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
           }
         },
         {
@@ -306,7 +334,11 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/check/{{courseId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "check", "{{courseId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/check/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "check", "{{courseId}}"]
+            }
           }
         },
         {
@@ -326,7 +358,11 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "{{enrollmentId}}"]
+            }
           }
         },
         {
@@ -346,7 +382,11 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/course/{{courseId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "course", "{{courseId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/course/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "course", "{{courseId}}"]
+            }
           }
         },
         {
@@ -366,7 +406,11 @@
           "request": {
             "method": "PATCH",
             "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/cancel", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}", "cancel"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "{{enrollmentId}}", "cancel"]
+            }
           }
         },
         {
@@ -394,7 +438,11 @@
               "mode": "raw",
               "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
           }
         },
         {
@@ -415,7 +463,11 @@
           "request": {
             "method": "PATCH",
             "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/complete", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}", "complete"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "{{enrollmentId}}", "complete"]
+            }
           }
         },
         {
@@ -424,16 +476,18 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
-                ]
+                "exec": ["pm.test('Status 204', () => pm.response.to.have.status(204));"]
               }
             }
           ],
           "request": {
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
-            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "{{enrollmentId}}"]
+            }
           }
         }
       ]

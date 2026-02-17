@@ -87,18 +87,10 @@ describe('ContentController', () => {
         markdown: '# Test',
         readingTimeMinutes: 5,
       };
-      const result = await controller.setTextContent(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      const result = await controller.setTextContent('user-id-1', 'TEACHER', dto);
 
       expect(result).toEqual(mockTextContentResponse);
-      expect(setContentUseCase.executeText).toHaveBeenCalledWith(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      expect(setContentUseCase.executeText).toHaveBeenCalledWith('user-id-1', 'TEACHER', dto);
     });
   });
 
@@ -112,18 +104,10 @@ describe('ContentController', () => {
         thumbnailUrl: 'https://example.com/thumb.jpg',
         durationSeconds: 1200,
       };
-      const result = await controller.setVideoContent(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      const result = await controller.setVideoContent('user-id-1', 'TEACHER', dto);
 
       expect(result).toEqual(mockVideoContentResponse);
-      expect(setContentUseCase.executeVideo).toHaveBeenCalledWith(
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      expect(setContentUseCase.executeVideo).toHaveBeenCalledWith('user-id-1', 'TEACHER', dto);
     });
   });
 
@@ -131,11 +115,7 @@ describe('ContentController', () => {
     it('GET /content/lesson/:lessonId — контент авах', async () => {
       getContentUseCase.execute.mockResolvedValue(mockTextContent);
 
-      const result = await controller.getByLessonId(
-        'lesson-id-1',
-        'user-id-1',
-        'TEACHER',
-      );
+      const result = await controller.getByLessonId('lesson-id-1', 'user-id-1', 'TEACHER');
 
       expect(result).toEqual(mockTextContentResponse);
       expect(getContentUseCase.execute).toHaveBeenCalledWith('lesson-id-1', {
@@ -153,12 +133,7 @@ describe('ContentController', () => {
         html: '<p>Updated</p>',
         markdown: '# Updated',
       };
-      const result = await controller.updateContent(
-        'lesson-id-1',
-        'user-id-1',
-        'TEACHER',
-        dto,
-      );
+      const result = await controller.updateContent('lesson-id-1', 'user-id-1', 'TEACHER', dto);
 
       expect(result).toEqual(mockTextContentResponse);
       expect(updateContentUseCase.execute).toHaveBeenCalledWith(

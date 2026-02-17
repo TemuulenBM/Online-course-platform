@@ -51,16 +51,16 @@ describe('GetEnrollmentUseCase', () => {
   it('элсэлт олдоогүй NotFoundException', async () => {
     enrollmentCacheService.getEnrollment.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'STUDENT'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'STUDENT')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('эрхгүй хэрэглэгч ForbiddenException', async () => {
     enrollmentCacheService.getEnrollment.mockResolvedValue(mockEnrollment);
 
-    await expect(
-      useCase.execute('enrollment-id-1', 'other-user-id', 'STUDENT'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('enrollment-id-1', 'other-user-id', 'STUDENT')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

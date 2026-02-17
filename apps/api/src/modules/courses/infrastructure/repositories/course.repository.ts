@@ -33,9 +33,7 @@ export class CourseRepository {
         price: data.price,
         difficulty: data.difficulty.toUpperCase() as CourseDifficulty,
         language: data.language,
-        tags: data.tags?.length
-          ? { create: data.tags.map((tagName) => ({ tagName })) }
-          : undefined,
+        tags: data.tags?.length ? { create: data.tags.map((tagName) => ({ tagName })) } : undefined,
       },
       include: {
         tags: true,
@@ -106,7 +104,8 @@ export class CourseRepository {
     if (data.categoryId !== undefined) updateData.category = { connect: { id: data.categoryId } };
     if (data.price !== undefined) updateData.price = data.price;
     if (data.discountPrice !== undefined) updateData.discountPrice = data.discountPrice;
-    if (data.difficulty !== undefined) updateData.difficulty = data.difficulty.toUpperCase() as CourseDifficulty;
+    if (data.difficulty !== undefined)
+      updateData.difficulty = data.difficulty.toUpperCase() as CourseDifficulty;
     if (data.language !== undefined) updateData.language = data.language;
     if (data.thumbnailUrl !== undefined) updateData.thumbnailUrl = data.thumbnailUrl;
     if (data.status !== undefined) updateData.status = data.status.toUpperCase() as CourseStatus;

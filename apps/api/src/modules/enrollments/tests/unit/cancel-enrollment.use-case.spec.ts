@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  ForbiddenException,
-  ConflictException,
-} from '@nestjs/common';
+import { NotFoundException, ForbiddenException, ConflictException } from '@nestjs/common';
 import { CancelEnrollmentUseCase } from '../../application/use-cases/cancel-enrollment.use-case';
 import { EnrollmentRepository } from '../../infrastructure/repositories/enrollment.repository';
 import { EnrollmentCacheService } from '../../infrastructure/services/enrollment-cache.service';
@@ -65,24 +61,26 @@ describe('CancelEnrollmentUseCase', () => {
     const result = await useCase.execute('enrollment-id-1', 'user-id-1', 'STUDENT');
 
     expect(result.status).toBe('cancelled');
-    expect(enrollmentRepository.update).toHaveBeenCalledWith('enrollment-id-1', { status: 'cancelled' });
+    expect(enrollmentRepository.update).toHaveBeenCalledWith('enrollment-id-1', {
+      status: 'cancelled',
+    });
     expect(enrollmentCacheService.invalidateAll).toHaveBeenCalled();
   });
 
   it('элсэлт олдоогүй NotFoundException', async () => {
     enrollmentRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'STUDENT'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'STUDENT')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('эрхгүй хэрэглэгч ForbiddenException', async () => {
     enrollmentRepository.findById.mockResolvedValue(mockActiveEnrollment);
 
-    await expect(
-      useCase.execute('enrollment-id-1', 'other-user-id', 'STUDENT'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('enrollment-id-1', 'other-user-id', 'STUDENT')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('идэвхтэй биш элсэлт цуцлахад ConflictException', async () => {
@@ -92,8 +90,8 @@ describe('CancelEnrollmentUseCase', () => {
     } as any);
     enrollmentRepository.findById.mockResolvedValue(completedEnrollment);
 
-    await expect(
-      useCase.execute('enrollment-id-1', 'user-id-1', 'STUDENT'),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('enrollment-id-1', 'user-id-1', 'STUDENT')).rejects.toThrow(
+      ConflictException,
+    );
   });
 });

@@ -27,7 +27,8 @@ export class EnrollmentCacheService {
   async getEnrollment(enrollmentId: string): Promise<EnrollmentEntity | null> {
     const cacheKey = `${ENROLLMENT_CACHE_PREFIX}${enrollmentId}`;
 
-    const cached = await this.redisService.get<ReturnType<EnrollmentEntity['toResponse']>>(cacheKey);
+    const cached =
+      await this.redisService.get<ReturnType<EnrollmentEntity['toResponse']>>(cacheKey);
     if (cached) {
       this.logger.debug(`Кэшнээс элсэлт олдлоо: ${enrollmentId}`);
       return new EnrollmentEntity({
@@ -53,7 +54,8 @@ export class EnrollmentCacheService {
   async checkEnrollment(userId: string, courseId: string): Promise<EnrollmentEntity | null> {
     const cacheKey = `${ENROLLMENT_CHECK_CACHE_PREFIX}${userId}:${courseId}`;
 
-    const cached = await this.redisService.get<ReturnType<EnrollmentEntity['toResponse']>>(cacheKey);
+    const cached =
+      await this.redisService.get<ReturnType<EnrollmentEntity['toResponse']>>(cacheKey);
     if (cached) {
       this.logger.debug(`Кэшнээс элсэлт шалгалт олдлоо: ${userId}:${courseId}`);
       return new EnrollmentEntity({

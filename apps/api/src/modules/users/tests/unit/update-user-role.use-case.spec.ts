@@ -66,9 +66,7 @@ describe('UpdateUserRoleUseCase', () => {
   it('хэрэглэгч олдоогүй үед алдаа буцаах', async () => {
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
 
-    await expect(useCase.execute('user-id-1', 'TEACHER' as any)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('user-id-1', 'TEACHER' as any)).rejects.toThrow(NotFoundException);
     expect(prisma.user.update).not.toHaveBeenCalled();
   });
 });

@@ -75,9 +75,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"content-teacher@test.com\",\n  \"password\": \"Teacher1234\",\n  \"firstName\": \"Content\",\n  \"lastName\": \"Teacher\"\n}"
@@ -109,9 +107,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"other-content-teacher@test.com\",\n  \"password\": \"Teacher1234\",\n  \"firstName\": \"Other\",\n  \"lastName\": \"Teacher\"\n}"
@@ -145,9 +141,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"content-teacher@test.com\",\n  \"password\": \"Teacher1234\"\n}"
@@ -180,9 +174,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"other-content-teacher@test.com\",\n  \"password\": \"Teacher1234\"\n}"
@@ -291,9 +283,7 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
             "url": {
               "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
               "host": ["{{baseUrl}}"],
@@ -587,9 +577,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
             "body": {
               "mode": "formdata",
               "formdata": [
@@ -605,7 +593,11 @@
               "host": ["{{baseUrl}}"],
               "path": ["content", "lesson", "{{textLessonId}}", "upload"],
               "query": [
-                { "key": "fileType", "value": "attachment", "description": "Файлын төрөл: video | thumbnail | attachment | subtitle" }
+                {
+                  "key": "fileType",
+                  "value": "attachment",
+                  "description": "Файлын төрөл: video | thumbnail | attachment | subtitle"
+                }
               ]
             },
             "description": "Файл upload хийх.\n\n**Эрх:** TEACHER, ADMIN (course эзэмшигч)\n\n**Form data:** `file` — Upload хийх файл (max 100MB)\n\n**Query параметр:** `fileType` — Файлын төрөл:\n- `video` — Видео файл → videoContent.videoUrl руу хадгална\n- `thumbnail` — Thumbnail зураг → videoContent.thumbnailUrl руу хадгална\n- `attachment` — Хавсралт файл → attachments массивт нэмнэ\n- `subtitle` — Хадмал файл → videoContent.subtitles руу нэмнэ\n\n**Тайлбар:** Контент байхгүй бол автоматаар үүсгэнэ (upsert). Файл local disk-д хадгалагдана (`./uploads/content/{lessonId}/`)."
@@ -657,9 +649,7 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
             "url": {
               "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}",
               "host": ["{{baseUrl}}"],
@@ -717,9 +707,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"lessonId\": \"{{textLessonId}}\",\n  \"html\": \"<p>Test</p>\"\n}"
@@ -914,9 +902,7 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{otherTeacherToken}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{otherTeacherToken}}" }],
             "url": {
               "raw": "{{baseUrl}}/content/lesson/{{videoLessonId}}",
               "host": ["{{baseUrl}}"],
@@ -983,9 +969,7 @@
               "raw": "{{baseUrl}}/content/lesson/{{textLessonId}}/upload?fileType=attachment",
               "host": ["{{baseUrl}}"],
               "path": ["content", "lesson", "{{textLessonId}}", "upload"],
-              "query": [
-                { "key": "fileType", "value": "attachment" }
-              ]
+              "query": [{ "key": "fileType", "value": "attachment" }]
             },
             "description": "JWT токенгүйгээр файл upload хийхэд 401 Unauthorized буцаана."
           }

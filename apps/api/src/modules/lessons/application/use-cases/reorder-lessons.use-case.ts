@@ -36,26 +36,17 @@ export class ReorderLessonsUseCase {
     }
 
     /** Эрхийн шалгалт */
-    if (
-      course.instructorId !== currentUserId &&
-      currentUserRole !== 'ADMIN'
-    ) {
-      throw new ForbiddenException(
-        'Энэ сургалтын хичээлүүдийн дарааллыг өөрчлөх эрхгүй',
-      );
+    if (course.instructorId !== currentUserId && currentUserRole !== 'ADMIN') {
+      throw new ForbiddenException('Энэ сургалтын хичээлүүдийн дарааллыг өөрчлөх эрхгүй');
     }
 
     /** Бүх хичээлүүд энэ сургалтад хамаарах эсэх шалгах */
-    const courseLessonIds = await this.lessonRepository.findIdsByCourseId(
-      dto.courseId,
-    );
+    const courseLessonIds = await this.lessonRepository.findIdsByCourseId(dto.courseId);
     const courseLessonIdSet = new Set(courseLessonIds);
 
     for (const item of dto.items) {
       if (!courseLessonIdSet.has(item.lessonId)) {
-        throw new BadRequestException(
-          `Хичээл (${item.lessonId}) энэ сургалтад хамаарахгүй`,
-        );
+        throw new BadRequestException(`Хичээл (${item.lessonId}) энэ сургалтад хамаарахгүй`);
       }
     }
 
@@ -71,9 +62,7 @@ export class ReorderLessonsUseCase {
     await this.lessonCacheService.invalidateCourseLessons(dto.courseId);
     /** Дан хичээлийн кэшүүд ч invalidate хийх (orderIndex өөрчлөгдсөн) */
     await Promise.all(
-      dto.items.map((item) =>
-        this.lessonCacheService.invalidateLesson(item.lessonId),
-      ),
+      dto.items.map((item) => this.lessonCacheService.invalidateLesson(item.lessonId)),
     );
 
     this.logger.log(

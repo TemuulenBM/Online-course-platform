@@ -56,13 +56,14 @@ export class CoursesController {
   @UseGuards(RolesGuard)
   @Roles('TEACHER', 'ADMIN')
   @ApiOperation({ summary: 'Шинэ сургалт үүсгэх (Багш, Админ)' })
-  @ApiResponse({ status: 201, description: 'Сургалт амжилттай үүсгэгдлээ', type: CourseResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Сургалт амжилттай үүсгэгдлээ',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Ангилал олдсонгүй' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
-  async create(
-    @CurrentUser('id') userId: string,
-    @Body() dto: CreateCourseDto,
-  ) {
+  async create(@CurrentUser('id') userId: string, @Body() dto: CreateCourseDto) {
     const course = await this.createCourseUseCase.execute(userId, dto);
     return course.toResponse();
   }
@@ -80,17 +81,18 @@ export class CoursesController {
   @Roles('TEACHER', 'ADMIN')
   @ApiOperation({ summary: 'Миний сургалтууд (Багш)' })
   @ApiResponse({ status: 200, description: 'Багшийн сургалтуудын жагсаалт' })
-  async listMyCourses(
-    @CurrentUser('id') userId: string,
-    @Query() query: ListCoursesQueryDto,
-  ) {
+  async listMyCourses(@CurrentUser('id') userId: string, @Query() query: ListCoursesQueryDto) {
     return this.listMyCoursesUseCase.execute(userId, query);
   }
 
   @Public()
   @Get('slug/:slug')
   @ApiOperation({ summary: 'Slug-аар сургалт авах' })
-  @ApiResponse({ status: 200, description: 'Сургалтын дэлгэрэнгүй мэдээлэл', type: CourseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Сургалтын дэлгэрэнгүй мэдээлэл',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Сургалт олдсонгүй' })
   async getBySlug(@Param('slug') slug: string) {
     const course = await this.getCourseBySlugUseCase.execute(slug);
@@ -100,7 +102,11 @@ export class CoursesController {
   @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Сургалтын дэлгэрэнгүй мэдээлэл' })
-  @ApiResponse({ status: 200, description: 'Сургалтын дэлгэрэнгүй мэдээлэл', type: CourseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Сургалтын дэлгэрэнгүй мэдээлэл',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Сургалт олдсонгүй' })
   async getById(@Param('id') id: string) {
     const course = await this.getCourseUseCase.execute(id);
@@ -109,7 +115,11 @@ export class CoursesController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Сургалт шинэчлэх (Эзэмшигч/Админ)' })
-  @ApiResponse({ status: 200, description: 'Сургалт амжилттай шинэчлэгдлээ', type: CourseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Сургалт амжилттай шинэчлэгдлээ',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Сургалт олдсонгүй' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
   async update(
@@ -124,7 +134,11 @@ export class CoursesController {
 
   @Patch(':id/publish')
   @ApiOperation({ summary: 'Сургалт нийтлэх (DRAFT→PUBLISHED)' })
-  @ApiResponse({ status: 200, description: 'Сургалт амжилттай нийтлэгдлээ', type: CourseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Сургалт амжилттай нийтлэгдлээ',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Сургалт олдсонгүй' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
   @ApiResponse({ status: 409, description: 'Зөвхөн ноорог сургалтыг нийтлэх боломжтой' })
@@ -139,7 +153,11 @@ export class CoursesController {
 
   @Patch(':id/archive')
   @ApiOperation({ summary: 'Сургалт архивлах (PUBLISHED→ARCHIVED)' })
-  @ApiResponse({ status: 200, description: 'Сургалт амжилттай архивлагдлаа', type: CourseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Сургалт амжилттай архивлагдлаа',
+    type: CourseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Сургалт олдсонгүй' })
   @ApiResponse({ status: 403, description: 'Эрх хүрэхгүй' })
   @ApiResponse({ status: 409, description: 'Зөвхөн нийтлэгдсэн сургалтыг архивлах боломжтой' })

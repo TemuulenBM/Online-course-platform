@@ -15,8 +15,7 @@ export class LocalStorageService implements IStorageService {
   private readonly uploadDir: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.uploadDir =
-      this.configService.get<string>('storage.localUploadDir') || './uploads';
+    this.uploadDir = this.configService.get<string>('storage.localUploadDir') || './uploads';
   }
 
   /** Файл upload хийж локал дискэнд хадгална */
@@ -28,7 +27,7 @@ export class LocalStorageService implements IStorageService {
     await fs.mkdir(fullDir, { recursive: true });
 
     const fullPath = path.join(this.uploadDir, filePath);
-    await fs.writeFile(fullPath, file.buffer || await fs.readFile(file.path));
+    await fs.writeFile(fullPath, file.buffer || (await fs.readFile(file.path)));
 
     // Multer temp файлыг устгах (diskStorage ашигласан бол)
     if (file.path) {
@@ -43,10 +42,7 @@ export class LocalStorageService implements IStorageService {
 
   /** Файл устгана */
   async delete(filePath: string): Promise<void> {
-    const fullPath = path.join(
-      this.uploadDir,
-      filePath.replace(/^\/uploads\//, ''),
-    );
+    const fullPath = path.join(this.uploadDir, filePath.replace(/^\/uploads\//, ''));
     await fs.unlink(fullPath).catch((err) => {
       this.logger.warn(`Файл устгахад алдаа: ${fullPath} — ${err.message}`);
     });

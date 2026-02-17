@@ -398,38 +398,38 @@ MongoDB-д flexible schema бүхий, nested structure-тай өгөгдлий�
 ### Хэрхэн холбогдох вэ:
 
 1. **Course агуулга авах**:
+
 ```javascript
 // 1. PostgreSQL-с курсын мэдээлэл
-const course = await prisma.course.findUnique({ 
-  where: { id: courseId } 
+const course = await prisma.course.findUnique({
+  where: { id: courseId },
 });
 
 // 2. MongoDB-с курсын агуулга
-const courseContent = await mongodb.collection('course_content')
-  .findOne({ course_id: courseId });
+const courseContent = await mongodb.collection('course_content').findOne({ course_id: courseId });
 ```
 
 2. **Хичээл үзэх**:
+
 ```javascript
 // 1. PostgreSQL-с хичээлийн мэдээлэл
-const lesson = await prisma.lesson.findUnique({ 
+const lesson = await prisma.lesson.findUnique({
   where: { id: lessonId },
-  include: { course: true }
+  include: { course: true },
 });
 
 // 2. MongoDB-с хичээлийн агуулга
-const lessonContent = await mongodb.collection('course_content')
-  .findOne(
-    { course_id: lesson.courseId },
-    { projection: { 'sections.$[].lessons.$[lesson]': 1 } }
-  );
+const lessonContent = await mongodb
+  .collection('course_content')
+  .findOne({ course_id: lesson.courseId }, { projection: { 'sections.$[].lessons.$[lesson]': 1 } });
 ```
 
 3. **Quiz оролцох**:
+
 ```javascript
 // 1. PostgreSQL-с quiz мэдээлэл
-const quiz = await prisma.quiz.findUnique({ 
-  where: { id: quizId } 
+const quiz = await prisma.quiz.findUnique({
+  where: { id: quizId }
 });
 
 // 2. MongoDB-с асуултууд

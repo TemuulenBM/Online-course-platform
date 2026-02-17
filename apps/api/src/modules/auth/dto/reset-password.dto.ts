@@ -11,7 +11,10 @@ export class ResetPasswordDto {
   @IsNotEmpty({ message: 'Токен заавал шаардлагатай' })
   token!: string;
 
-  @ApiProperty({ description: 'Шинэ нууц үг (хамгийн багадаа 8 тэмдэгт)', example: 'newpassword123' })
+  @ApiProperty({
+    description: 'Шинэ нууц үг (хамгийн багадаа 8 тэмдэгт)',
+    example: 'newpassword123',
+  })
   @IsString({ message: 'Нууц үг тэмдэгт мөр байх ёстой' })
   @MinLength(8, { message: 'Нууц үг хамгийн багадаа 8 тэмдэгт байх ёстой' })
   password!: string;

@@ -72,27 +72,31 @@ describe('ArchiveCourseUseCase', () => {
   });
 
   it('DRAFT сургалтыг архивлах боломжгүй', async () => {
-    const draftCourse = new CourseEntity({ ...mockPublishedCourse, status: 'draft', publishedAt: null });
+    const draftCourse = new CourseEntity({
+      ...mockPublishedCourse,
+      status: 'draft',
+      publishedAt: null,
+    });
     courseRepository.findById.mockResolvedValue(draftCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(ConflictException);
+    await expect(useCase.execute('course-id-1', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      ConflictException,
+    );
   });
 
   it('эрхгүй хэрэглэгч архивлах оролдлого', async () => {
     courseRepository.findById.mockResolvedValue(mockPublishedCourse);
 
-    await expect(
-      useCase.execute('course-id-1', 'other-user', 'TEACHER'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('course-id-1', 'other-user', 'TEACHER')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('сургалт олдоогүй', async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('nonexistent', 'user-id-1', 'TEACHER'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('nonexistent', 'user-id-1', 'TEACHER')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });
