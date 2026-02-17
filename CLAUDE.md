@@ -53,6 +53,11 @@ pnpm db:migrate              # Run migrations (uses prisma.config.ts)
 
 # Formatting
 pnpm format                  # Prettier on all files
+
+# Docker (Production)
+docker compose -f docker-compose.prod.yml build   # Бүх image build
+docker compose -f docker-compose.prod.yml up -d    # Production орчин ажиллуулах
+docker compose -f docker-compose.prod.yml down     # Зогсоох
 ```
 
 ## Tech Stack
@@ -61,6 +66,7 @@ pnpm format                  # Prettier on all files
 - **API**: NestJS 10 + Prisma 6 (PostgreSQL) + Mongoose (MongoDB)
 - **Mobile**: React Native + Expo 52 + Expo Router
 - **Infra**: Redis (cache/queue via Bull), Elasticsearch (search)
+- **CI/CD**: GitHub Actions, Docker (multi-stage), Nginx (reverse proxy), GHCR (container registry)
 - **External**: Stripe, SendGrid, Twilio, Agora SDK, Cloudflare R2/Stream
 
 ## Monorepo Structure
@@ -79,6 +85,8 @@ packages/
   ui-components/       # Shared React UI components
 tools/                 # Dev scripts (seed, module generator)
 files/                 # Architecture docs & design documents
+.github/workflows/     # CI/CD pipelines (ci, deploy-staging, deploy-production)
+nginx/                 # Nginx reverse proxy тохиргоо
 ```
 
 ## NestJS Backend Architecture
@@ -125,6 +133,49 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - [architecture.mmd](files/architecture.mmd) — Full system architecture (Mermaid graph)
 - [database-diagram.mermaid](files/database-diagram.mermaid) — PostgreSQL ER diagram (20+ tables)
 - [mongodb-collections.md](files/mongodb-collections.md) — MongoDB collection schemas with cross-DB query patterns
+
+## CI/CD & Docker
+
+### GitHub Actions Workflows
+
+**CI Pipeline** (`.github/workflows/ci.yml`):
+- **Trigger**: push (бүх branch), pull_request (main руу)
+- **Concurrency**: branch бүрт нэг CI — хуучин run автомат cancel
+- 4 job: `lint` (ESLint + Prettier), `test` (PostgreSQL/MongoDB/Redis services, Prisma migrate, unit тест), `build` (API build), `docker-build` (PR дээр Docker image verify)
+
+**Deploy Staging** (`.github/workflows/deploy-staging.yml`):
+- **Trigger**: push to main (PR merge-ийн дараа)
+- Docker image build → GHCR push (`ghcr.io/OWNER/ocp-api:staging`, `ocp-web:staging`) → SSH deploy → health check
+
+**Deploy Production** (`.github/workflows/deploy-production.yml`):
+- **Trigger**: workflow_dispatch (manual button), tag input optional
+- GHCR push (`production` + timestamp tag) → GitHub Environment approval → DB migration → deploy → health check
+
+### Docker
+
+- **API** (`apps/api/Dockerfile`): Multi-stage (base → deps → builder → production). Node 20 Alpine, pnpm, bcrypt build tools (python3, make, g++), Prisma generate dummy URL, non-root user (`nestjs`), `node dist/main`
+- **Web** (`apps/web/Dockerfile`): Multi-stage Next.js standalone. `next.config.ts`-д `output: 'standalone'` нэмэгдсэн
+- **docker-compose.prod.yml**: api, web, nginx, postgres, mongodb, redis — бүгд `app-network` дээр
+- **nginx** (`nginx/nginx.conf`): `/api/` → api:3001, `/uploads/` → api:3001, `/` → web:3000, `/_next/static/` immutable cache, gzip, security headers, 100M upload
+
+### Branch Protection (GitHub Rulesets)
+
+- main branch: PR заавал шаардана, 3 status check шаардлагатай (`lint`, `test`, `build`), force push хориглосон
+
+### ESLint 9 Flat Config
+
+- `packages/eslint-config/*.mjs` — base, nestjs, nextjs, react-native config-ууд (ESLint 9 flat config format)
+- App бүрт `eslint.config.mjs` — тохирох shared config import хийнэ
+- `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin` + `eslint-config-prettier`
+
+### Health Check Endpoint
+
+`GET /api/v1` — `@Public()`, JWT шаардахгүй:
+- PostgreSQL (`$queryRawUnsafe('SELECT 1')`), Redis (`set`/`get` health:check), MongoDB (`readyState`) connectivity шалгана
+- Response: `{ status: 'ok' | 'degraded', timestamp, services: { database, redis, mongodb } }`
+- `ok` → HTTP 200, `degraded` → HTTP 503 (Docker healthcheck болон deployment verify-д ашиглагдана)
+
+---
 
 ## Implemented Modules
 
