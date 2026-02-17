@@ -139,15 +139,18 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### GitHub Actions Workflows
 
 **CI Pipeline** (`.github/workflows/ci.yml`):
+
 - **Trigger**: push (бүх branch), pull_request (main руу)
 - **Concurrency**: branch бүрт нэг CI — хуучин run автомат cancel
 - 4 job: `lint` (ESLint + Prettier), `test` (PostgreSQL/MongoDB/Redis services, Prisma migrate, unit тест), `build` (API build), `docker-build` (PR дээр Docker image verify)
 
 **Deploy Staging** (`.github/workflows/deploy-staging.yml`):
+
 - **Trigger**: push to main (PR merge-ийн дараа)
 - Docker image build → GHCR push (`ghcr.io/OWNER/ocp-api:staging`, `ocp-web:staging`) → SSH deploy → health check
 
 **Deploy Production** (`.github/workflows/deploy-production.yml`):
+
 - **Trigger**: workflow_dispatch (manual button), tag input optional
 - GHCR push (`production` + timestamp tag) → GitHub Environment approval → DB migration → deploy → health check
 
@@ -171,6 +174,7 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 ### Health Check Endpoint
 
 `GET /api/v1` — `@Public()`, JWT шаардахгүй:
+
 - PostgreSQL (`$queryRawUnsafe('SELECT 1')`), Redis (`set`/`get` health:check), MongoDB (`readyState`) connectivity шалгана
 - Response: `{ status: 'ok' | 'degraded', timestamp, services: { database, redis, mongodb } }`
 - `ok` → HTTP 200, `degraded` → HTTP 503 (Docker healthcheck болон deployment verify-д ашиглагдана)
