@@ -1,0 +1,442 @@
+{
+  "info": {
+    "name": "OCP — Enrollments Module",
+    "description": "Online Course Platform — Enrollments Module API\n\nPhase 3: Элсэлтийн бүрэн CRUD + статус удирдлага\n\n## Хэрэглэх дараалал\n1. Auth → Student, Teacher, Admin нэвтрэх\n2. Setup → Ангилал + Сургалт үүсгэх + нийтлэх\n3. Enrollments → Enroll → Check → List → Cancel → Re-enroll → Complete → Delete\n\n## Урьдчилсан нөхцөл\n- DB-д STUDENT, TEACHER, ADMIN role-тэй хэрэглэгчид бүртгэлтэй байх\n- Published сургалт байх\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `studentToken`: STUDENT JWT\n- `teacherToken`: TEACHER JWT\n- `adminToken`: ADMIN JWT\n- `courseId`: Published сургалтын ID\n- `enrollmentId`: Элсэлтийн ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "draftCourseId", "value": "", "type": "string" },
+    { "key": "enrollmentId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01. Auth — Setup",
+      "item": [
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('categoryId', res.data[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Create Course (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) { pm.collectionVariables.set('courseId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Enrollment Test Course\",\n  \"description\": \"A course for enrollment testing\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/courses", "host": ["{{baseUrl}}"], "path": ["courses"] }
+          }
+        },
+        {
+          "name": "Publish Course",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": { "raw": "{{baseUrl}}/courses/{{courseId}}/publish", "host": ["{{baseUrl}}"], "path": ["courses", "{{courseId}}", "publish"] }
+          }
+        },
+        {
+          "name": "Create Draft Course (for 400 test)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) { pm.collectionVariables.set('draftCourseId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Draft Course\",\n  \"description\": \"Unpublished draft\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/courses", "host": ["{{baseUrl}}"], "path": ["courses"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Enrollments",
+      "item": [
+        {
+          "name": "POST — Enroll in course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.test('Status is active', () => pm.expect(res.data.status).to.eql('active'));",
+                  "if (res.data) { pm.collectionVariables.set('enrollmentId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+          }
+        },
+        {
+          "name": "POST — Duplicate enroll (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+          }
+        },
+        {
+          "name": "POST — Enroll in draft course (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{draftCourseId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+          }
+        },
+        {
+          "name": "GET — My enrollments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has data and meta', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "  pm.expect(res.data.meta.total).to.be.at.least(1);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET — Check enrollment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Enrolled is true', () => pm.expect(res.data.enrolled).to.eql(true));",
+                  "pm.test('Status is active', () => pm.expect(res.data.status).to.eql('active'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/check/{{courseId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "check", "{{courseId}}"] }
+          }
+        },
+        {
+          "name": "GET — Enrollment by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has course title', () => pm.expect(res.data.courseTitle).to.be.a('string'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}"] }
+          }
+        },
+        {
+          "name": "GET — Course students (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has students', () => pm.expect(res.data.meta.total).to.be.at.least(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/course/{{courseId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "course", "{{courseId}}"] }
+          }
+        },
+        {
+          "name": "PATCH — Cancel enrollment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Status cancelled', () => pm.expect(res.data.status).to.eql('cancelled'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/cancel", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}", "cancel"] }
+          }
+        },
+        {
+          "name": "POST — Re-enroll after cancel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is active', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res.data.status).to.eql('active');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/enrollments", "host": ["{{baseUrl}}"], "path": ["enrollments"] }
+          }
+        },
+        {
+          "name": "PATCH — Complete enrollment (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Status completed', () => pm.expect(res.data.status).to.eql('completed'));",
+                  "pm.test('CompletedAt set', () => pm.expect(res.data.completedAt).to.not.be.null);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}/complete", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}", "complete"] }
+          }
+        },
+        {
+          "name": "DELETE — Delete enrollment (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/enrollments/{{enrollmentId}}", "host": ["{{baseUrl}}"], "path": ["enrollments", "{{enrollmentId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -24,6 +24,7 @@ model User {
   refreshTokens  RefreshToken[]
   passwordResets PasswordReset[]
   courses        Course[]
+  enrollments    Enrollment[]
 
   @@map("users")
 }
@@ -118,6 +119,13 @@ enum LessonType {
   LIVE
 }
 
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
 model Category {
   id           String     @id @default(uuid())
   name         String     @unique
@@ -159,6 +167,7 @@ model Course {
   prerequisites Prerequisite[] @relation("CoursePrerequisites")
   requiredBy    Prerequisite[] @relation("RequiredCoursePrerequisites")
   lessons       Lesson[]
+  enrollments   Enrollment[]
 
   @@index([instructorId])
   @@index([categoryId])
@@ -209,4 +218,25 @@ model Lesson {
   @@index([courseId])
   @@index([courseId, orderIndex])
   @@map("lessons")
+}
+
+model Enrollment {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  courseId     String           @map("course_id")
+  status      EnrollmentStatus @default(ACTIVE)
+  enrolledAt  DateTime         @default(now()) @map("enrolled_at")
+  expiresAt   DateTime?        @map("expires_at")
+  completedAt DateTime?        @map("completed_at")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+  @@map("enrollments")
 }

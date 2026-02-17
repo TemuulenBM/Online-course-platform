@@ -290,3 +290,34 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Mongoose schema: `course_content` collection, timestamps автомат
 
 **Тест**: 7 test suite, 38 unit тест (use-case + controller + cache service)
+
+### Enrollments Module (Phase 3)
+
+**Endpoints** (`/api/v1/enrollments`):
+- `POST /enrollments` — Сургалтад элсэх (JWT required)
+- `GET /enrollments/my` — Миний элсэлтүүд pagination-тэй (JWT required)
+- `GET /enrollments/course/:courseId` — Сургалтын оюутнуудын жагсаалт (TEACHER, ADMIN)
+- `GET /enrollments/check/:courseId` — Элсэлтийн статус шалгах (JWT required)
+- `GET /enrollments/:id` — Элсэлтийн дэлгэрэнгүй (JWT required, өөрийн/эзэмшигч/ADMIN)
+- `PATCH /enrollments/:id/cancel` — Элсэлт цуцлах (JWT required, өөрийн/ADMIN)
+- `PATCH /enrollments/:id/complete` — Элсэлт дуусгах (ADMIN only)
+- `DELETE /enrollments/:id` — Элсэлт устгах (ADMIN only)
+
+**Export хийсэн service-ууд**: `EnrollmentRepository`
+
+**Хамаарал**: `CoursesModule` (CourseRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- `@@unique([userId, courseId])` — Нэг хэрэглэгчид нэг сургалтад нэг элсэлт
+- Зөвхөн PUBLISHED сургалтад элсэх боломжтой
+- Re-enrollment: CANCELLED/EXPIRED элсэлтийг ACTIVE руу update (шинээр үүсгэхгүй)
+- Prerequisite шалгалт: `Prerequisite` model-ээс required course ID-уудыг аваад, хэрэглэгч бүгдийг COMPLETED болсон эсэхийг шалгана
+- Төлбөр шалгахгүй (Payment модуль Phase 5-д)
+- ADMIN-only complete — Progress модуль хэрэгжсэний дараа автомат болно
+- Redis кэш: `enrollment:{id}`, `enrollment:check:{userId}:{courseId}` (TTL 15 мин)
+- Жагсаалт кэшлэхгүй — зөвхөн дан элсэлт + check кэшлэнэ
+- Эрхийн шалгалт use-case түвшинд: өөрийн элсэлт / сургалтын эзэмшигч / ADMIN
+- Route дараалал: `/enrollments/my`, `/enrollments/course/:courseId`, `/enrollments/check/:courseId` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 10 test suite, 42 unit тест (use-case + controller + cache service)

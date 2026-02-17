@@ -26,7 +26,7 @@ import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { ContentModule } from './modules/content/content.module';
-// import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
+import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
 // import { ProgressModule } from './modules/progress/progress.module';
 // import { QuizzesModule } from './modules/quizzes/quizzes.module';
 // import { CertificatesModule } from './modules/certificates/certificates.module';
@@ -66,6 +66,7 @@ import { ContentModule } from './modules/content/content.module';
     CoursesModule,
     LessonsModule,
     ContentModule,
+    EnrollmentsModule,
   ],
   controllers: [AppController],
   providers: [
