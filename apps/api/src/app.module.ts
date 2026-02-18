@@ -31,7 +31,7 @@ import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { QuizzesModule } from './modules/quizzes/quizzes.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
-// import { DiscussionsModule } from './modules/discussions/discussions.module';
+import { DiscussionsModule } from './modules/discussions/discussions.module';
 // import { NotificationsModule } from './modules/notifications/notifications.module';
 // import { PaymentsModule } from './modules/payments/payments.module';
 // import { AnalyticsModule } from './modules/analytics/analytics.module';
@@ -102,6 +102,7 @@ import { CertificatesModule } from './modules/certificates/certificates.module';
     ProgressModule,
     QuizzesModule,
     CertificatesModule,
+    DiscussionsModule,
   ],
   controllers: [AppController],
   providers: [
