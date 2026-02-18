@@ -509,3 +509,52 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/certificates/verify/:verificationCode`, `/certificates/my`, `/certificates/course/:courseId` нь `/:id`-ээс ӨМНӨ
 
 **Тест**: 11 test suite, 40 unit тест (use-case + controller + cache service + processor + pdf + qr)
+
+### Discussions Module (Phase 4)
+
+**Endpoints — Discussion Posts** (`/api/v1/discussions/posts`):
+
+- `GET /discussions/posts/course/:courseId` — Сургалтын нийтлэлүүдийн жагсаалт (@Public, pagination+filter+search+sort)
+- `POST /discussions/posts` — Нийтлэл үүсгэх (JWT required, enrolled/instructor/admin)
+- `GET /discussions/posts/:id` — Нийтлэлийн дэлгэрэнгүй (@Public, viewCount increment)
+- `PATCH /discussions/posts/:id` — Нийтлэл шинэчлэх (эзэмшигч/ADMIN, isLocked шалгалт)
+- `DELETE /discussions/posts/:id` — Нийтлэл устгах (эзэмшигч/ADMIN)
+- `POST /discussions/posts/:id/replies` — Хариулт нэмэх (enrolled/instructor/admin, isLocked шалгалт)
+- `PATCH /discussions/posts/:id/replies/:replyId` — Хариулт шинэчлэх (хариулт эзэмшигч/ADMIN)
+- `DELETE /discussions/posts/:id/replies/:replyId` — Хариулт устгах (хариулт эзэмшигч/ADMIN)
+- `POST /discussions/posts/:id/vote` — Санал өгөх up/down toggle (enrolled/instructor/admin)
+- `POST /discussions/posts/:id/accept/:replyId` — Зөв хариулт хүлээн авах (асуулт эзэмшигч/ADMIN)
+- `POST /discussions/posts/:id/pin` — Нийтлэл pin/unpin toggle (TEACHER, ADMIN)
+- `POST /discussions/posts/:id/lock` — Нийтлэл lock/unlock toggle (TEACHER, ADMIN)
+- `POST /discussions/posts/:id/flag` — Нийтлэл flag/unflag хийх (TEACHER, ADMIN)
+
+**Endpoints — Lesson Comments** (`/api/v1/discussions/comments`):
+
+- `GET /discussions/comments/lesson/:lessonId` — Хичээлийн сэтгэгдлүүдийн жагсаалт (@Public, pagination+sort)
+- `POST /discussions/comments` — Сэтгэгдэл үүсгэх (enrolled/instructor/admin)
+- `PATCH /discussions/comments/:id` — Сэтгэгдэл шинэчлэх (эзэмшигч/ADMIN)
+- `DELETE /discussions/comments/:id` — Сэтгэгдэл устгах (эзэмшигч/ADMIN)
+- `POST /discussions/comments/:id/replies` — Сэтгэгдэлд хариулт нэмэх (enrolled/instructor/admin)
+- `POST /discussions/comments/:id/upvote` — Upvote toggle (enrolled/instructor/admin)
+
+**Export хийсэн service-ууд**: `DiscussionPostRepository`, `LessonCommentRepository`
+
+**Хамаарал**: `MongooseModule` (discussion_posts, lesson_comments), `CoursesModule` (CourseRepository), `LessonsModule` (LessonRepository), `EnrollmentsModule` (EnrollmentRepository), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- **MongoDB-only модуль** — PostgreSQL таблиц нэмэгдээгүй, UUID reference-ээр PostgreSQL-тэй холбогдоно
+- 2 MongoDB collection: `discussion_posts` (Форум/Q&A) + `lesson_comments` (Хичээлийн сэтгэгдэл)
+- 2 Controller: `DiscussionPostsController` (13 endpoint) + `LessonCommentsController` (6 endpoint)
+- Vote tracking: `voters: [{ userId, voteType }]` массив embed — давхар vote-оос хамгаална. `toResponse(currentUserId)`-д voters нуугдана, зөвхөн `userVote` буцаана
+- Upvote (lesson comments): Зөвхөн upvote (downvote-гүй), `upvoterIds` массив toggle. `toResponse(currentUserId)`-д upvoterIds нуугдана, зөвхөн `hasUpvoted` буцаана
+- `isInstructorReply` авто-илрүүлэлт — `CourseRepository.findById()` → `instructorId === userId`
+- View count: Энгийн `$inc` increment, per-user tracking байхгүй
+- Enrollment-based authorization: use-case түвшинд enrolled/instructor/admin шалгалт
+- Pin/Lock/Flag toggle: `TEACHER` болон `ADMIN` зөвхөн хийх боломжтой
+- Accept answer: `postType=question` зөвхөн, хуучин accepted answer автомат unset
+- Delete reply: accepted answer устгавал `isAnswered` reset хийгдэнэ
+- Redis кэш: `discussion:post:{id}`, `comment:{id}` (TTL 900s / 15 мин). Жагсаалт кэшлэхгүй
+- Route дараалал: `course/:courseId` нь `:id`-ээс ӨМНӨ; `lesson/:lessonId` нь `:id`-ээс ӨМНӨ
+
+**Тест**: 16 test suite, ~75 unit тест (use-case + controller + cache service)

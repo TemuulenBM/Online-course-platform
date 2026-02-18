@@ -1,0 +1,928 @@
+{
+  "info": {
+    "name": "OCP — Discussions Module",
+    "description": "Online Course Platform — Discussions Module API\n\nPhase 4: Хэлэлцүүлгийн нийтлэл (Discussion Posts) + Хичээлийн сэтгэгдэл (Lesson Comments)\n\n## Хэрэглэх дараалал\n1. Auth → Student, Teacher, Admin нэвтрэх\n2. Setup → Сургалт + хичээл үүсгэх + нийтлэх + элсэлт\n3. Discussion Posts → Create → List → Get → Update → Reply → Vote → Accept → Pin → Lock → Flag → Delete\n4. Lesson Comments → Create → List → Update → Reply → Upvote → Delete\n\n## Урьдчилсан нөхцөл\n- DB-д STUDENT, TEACHER, ADMIN role-тэй хэрэглэгчид бүртгэлтэй байх\n- Published сургалт + published хичээлүүд байх\n- Student enrollment ACTIVE байх\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `studentToken`: STUDENT JWT\n- `teacherToken`: TEACHER JWT\n- `adminToken`: ADMIN JWT\n- `courseId`: Published сургалтын ID\n- `lessonId`: Хичээлийн ID\n- `postId`: Нийтлэлийн ID\n- `replyId`: Хариултын ID\n- `commentId`: Сэтгэгдлийн ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" },
+    { "key": "lessonId", "value": "", "type": "string" },
+    { "key": "postId", "value": "", "type": "string" },
+    { "key": "replyId", "value": "", "type": "string" },
+    { "key": "commentId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01. Auth — Setup",
+      "item": [
+        {
+          "name": "Register Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"disc-student@test.com\",\n  \"password\": \"Test12345\",\n  \"firstName\": \"Discussion\",\n  \"lastName\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"disc-teacher@test.com\",\n  \"password\": \"Test12345\",\n  \"firstName\": \"Discussion\",\n  \"lastName\": \"Teacher\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"disc-student@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"disc-teacher@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Setup — Course + Lesson + Enrollment",
+      "item": [
+        {
+          "name": "Create Category (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('categoryId', res.data.id);",
+                  "  pm.test('Category created', () => pm.expect(res.data.id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Discussion Test\",\n  \"description\": \"Хэлэлцүүлгийн тест ангилал\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Course (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('courseId', res.data.id);",
+                  "  pm.test('Course created', () => pm.expect(res.data.id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Discussion Test Course\",\n  \"description\": \"Хэлэлцүүлгийн тест сургалт\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            }
+          }
+        },
+        {
+          "name": "Publish Course (Teacher)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Create Lesson (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('lessonId', res.data.id);",
+                  "  pm.test('Lesson created', () => pm.expect(res.data.id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"title\": \"Discussion Test Lesson\",\n  \"lessonType\": \"text\",\n  \"durationMinutes\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons"]
+            }
+          }
+        },
+        {
+          "name": "Publish Lesson (Teacher)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/lessons/{{lessonId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons", "{{lessonId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Enroll Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Discussion Posts",
+      "item": [
+        {
+          "name": "EP1 — Create Post (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post created', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.id).to.be.a('string');",
+                  "  pm.expect(res.data.title).to.eql('React hooks хэрхэн ажилладаг вэ?');",
+                  "});",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('postId', res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"postType\": \"question\",\n  \"title\": \"React hooks хэрхэн ажилладаг вэ?\",\n  \"content\": \"useEffect hook-ийн тухай тайлбарлана уу\",\n  \"contentHtml\": \"<p>useEffect hook-ийн тухай тайлбарлана уу</p>\",\n  \"tags\": [\"react\", \"hooks\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts"]
+            }
+          }
+        },
+        {
+          "name": "EP2 — List Course Posts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Posts listed with pagination', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.total).to.be.a('number');",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/course/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "course", "{{courseId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP3 — Get Post Detail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post detail returned', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.title).to.be.a('string');",
+                  "  pm.expect(res.data.id).to.eql(pm.collectionVariables.get('postId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP4 — Update Post (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post updated', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.title).to.eql('Шинэчилсэн гарчиг');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Шинэчилсэн гарчиг\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP5 — Add Reply (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Reply added', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.replies).to.be.an('array');",
+                  "  pm.expect(res.data.replies.length).to.be.greaterThan(0);",
+                  "});",
+                  "if (res.data && res.data.replies && res.data.replies.length > 0) {",
+                  "  const lastReply = res.data.replies[res.data.replies.length - 1];",
+                  "  pm.collectionVariables.set('replyId', lastReply.replyId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"useEffect нь React component mount/update/unmount lifecycle-д ажиллана\",\n  \"contentHtml\": \"<p>useEffect нь React component mount/update/unmount lifecycle-д ажиллана</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/replies",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "replies"]
+            }
+          }
+        },
+        {
+          "name": "EP6 — Update Reply (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Reply updated', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  const reply = res.data.replies.find(r => r.replyId === pm.collectionVariables.get('replyId'));",
+                  "  pm.expect(reply.content).to.include('Шинэчилсэн');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Шинэчилсэн хариулт: useEffect dependency array-тай хэрэглэнэ\",\n  \"contentHtml\": \"<p>Шинэчилсэн хариулт: useEffect dependency array-тай хэрэглэнэ</p>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/replies/{{replyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "replies", "{{replyId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP7 — Vote Post (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Vote registered', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data).to.have.property('userVote');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"voteType\": \"up\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/vote",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "vote"]
+            }
+          }
+        },
+        {
+          "name": "EP8 — Accept Answer (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Answer accepted', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.isAnswered).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/accept/{{replyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "accept", "{{replyId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP9 — Pin Post (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post pinned', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.isPinned).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/pin",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "pin"]
+            }
+          }
+        },
+        {
+          "name": "EP10 — Lock Post (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post locked', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.isLocked).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/lock",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "lock"]
+            }
+          }
+        },
+        {
+          "name": "EP10b — Unlock Post (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post unlocked', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.isLocked).to.be.false;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/lock",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "lock"]
+            }
+          }
+        },
+        {
+          "name": "EP11 — Flag Post (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Post flagged', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.isFlagged).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isFlagged\": true,\n  \"flagReason\": \"Зохисгүй агуулга\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/flag",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "flag"]
+            }
+          }
+        },
+        {
+          "name": "EP12 — Delete Reply (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Reply deleted (204)', () => {",
+                  "  pm.expect(pm.response.code).to.eql(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}/replies/{{replyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}", "replies", "{{replyId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP13 — Delete Post (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Post deleted (204)', () => {",
+                  "  pm.expect(pm.response.code).to.eql(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "posts", "{{postId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Lesson Comments",
+      "item": [
+        {
+          "name": "EP14 — Create Comment (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Comment created', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.id).to.be.a('string');",
+                  "  pm.expect(res.data.content).to.eql('Энэ хичээлийг маш сайн тайлбарласан байна');",
+                  "});",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('commentId', res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{lessonId}}\",\n  \"content\": \"Энэ хичээлийг маш сайн тайлбарласан байна\",\n  \"timestampSeconds\": 120\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments"]
+            }
+          }
+        },
+        {
+          "name": "EP15 — List Lesson Comments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Comments listed with pagination', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.total).to.be.a('number');",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments/lesson/{{lessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments", "lesson", "{{lessonId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP16 — Update Comment (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Comment updated', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.content).to.include('Шинэчилсэн');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Шинэчилсэн сэтгэгдэл: Маш сайн хичээл байлаа\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments/{{commentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments", "{{commentId}}"]
+            }
+          }
+        },
+        {
+          "name": "EP17 — Add Comment Reply (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Comment reply added', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.replies).to.be.an('array');",
+                  "  pm.expect(res.data.replies.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Баярлалаа! Дараагийн хичээлд илүү дэлгэрэнгүй тайлбарлана\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments/{{commentId}}/replies",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments", "{{commentId}}", "replies"]
+            }
+          }
+        },
+        {
+          "name": "EP18 — Upvote Comment (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Upvote toggled', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data).to.have.property('hasUpvoted');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments/{{commentId}}/upvote",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments", "{{commentId}}", "upvote"]
+            }
+          }
+        },
+        {
+          "name": "EP19 — Delete Comment (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Comment deleted (204)', () => {",
+                  "  pm.expect(pm.response.code).to.eql(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/discussions/comments/{{commentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["discussions", "comments", "{{commentId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,1 +1,22 @@
-// Application use cases will be exported here
+/** Discussion Post use cases */
+export { CreatePostUseCase } from './use-cases/create-post.use-case';
+export { ListCoursePostsUseCase } from './use-cases/list-course-posts.use-case';
+export { GetPostUseCase } from './use-cases/get-post.use-case';
+export { UpdatePostUseCase } from './use-cases/update-post.use-case';
+export { DeletePostUseCase } from './use-cases/delete-post.use-case';
+export { AddReplyUseCase } from './use-cases/add-reply.use-case';
+export { UpdateReplyUseCase } from './use-cases/update-reply.use-case';
+export { DeleteReplyUseCase } from './use-cases/delete-reply.use-case';
+export { VotePostUseCase } from './use-cases/vote-post.use-case';
+export { AcceptAnswerUseCase } from './use-cases/accept-answer.use-case';
+export { PinPostUseCase } from './use-cases/pin-post.use-case';
+export { LockPostUseCase } from './use-cases/lock-post.use-case';
+export { FlagPostUseCase } from './use-cases/flag-post.use-case';
+
+/** Lesson Comment use cases */
+export { CreateCommentUseCase } from './use-cases/create-comment.use-case';
+export { ListLessonCommentsUseCase } from './use-cases/list-lesson-comments.use-case';
+export { UpdateCommentUseCase } from './use-cases/update-comment.use-case';
+export { DeleteCommentUseCase } from './use-cases/delete-comment.use-case';
+export { AddCommentReplyUseCase } from './use-cases/add-comment-reply.use-case';
+export { UpvoteCommentUseCase } from './use-cases/upvote-comment.use-case';
