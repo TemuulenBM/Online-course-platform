@@ -20,7 +20,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 7. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
 8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
 9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
-10. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `files/postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
+10. **Commit хийхийн өмнө Prettier format ажиллуулах**: Код commit хийхийн өмнө ЗААВАЛ `pnpm format` ажиллуулж бүх файлыг форматлана. CI pipeline дээр Prettier шалгалт байгаа тул форматлаагүй код push хийвэл lint алдаа гарна.
+11. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `files/postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
 
 ## Project Overview
 
@@ -397,3 +398,37 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/enrollments/my`, `/enrollments/course/:courseId`, `/enrollments/check/:courseId` нь `/:id`-ээс ӨМНӨ
 
 **Тест**: 10 test suite, 42 unit тест (use-case + controller + cache service)
+
+### Progress Module (Phase 3)
+
+**Endpoints** (`/api/v1/progress`):
+
+- `GET /progress/my` — Миний ахицуудын жагсаалт pagination-тэй (JWT required)
+- `GET /progress/course/:courseId` — Сургалтын ахицын нэгтгэл (JWT required)
+- `GET /progress/lessons/:lessonId` — Хичээлийн ахиц авах (JWT required)
+- `POST /progress/lessons/:lessonId` — Хичээлийн ахиц шинэчлэх (JWT required)
+- `POST /progress/lessons/:lessonId/complete` — Хичээл дуусгах (JWT required)
+- `PATCH /progress/lessons/:lessonId/position` — Видеоны байрлал шинэчлэх (JWT required)
+- `DELETE /progress/:id` — Ахиц устгах (ADMIN only)
+
+**Export хийсэн service-ууд**: `ProgressRepository`
+
+**Хамаарал**: `EnrollmentsModule` (EnrollmentRepository), `LessonsModule` (LessonRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- `@@unique([userId, lessonId])` — Нэг хэрэглэгчид нэг хичээлд нэг ахиц
+- Upsert семантик: progress байвал шинэчлэх, байхгүй бол үүсгэх
+- **Auto-complete enrollment**: Бүх published хичээл дуусахад enrollment автоматаар COMPLETED болно (`CompleteLessonUseCase` дотор)
+- `timeSpentSeconds` additive: Шинэ зарцуулсан хугацааг хуучин дээр нэмнэ
+- Видео progressPercentage автоматаар тооцоолно: `Math.min(100, Math.round((lastPositionSeconds / (durationMinutes * 60)) * 100))`
+- TEXT/QUIZ/ASSIGNMENT хичээлд зөвхөн 0% (эхлээгүй) эсвэл 100% (complete) — дунд шат байхгүй
+- Зөвхөн published хичээлд, ACTIVE элсэлттэй хэрэглэгчид ахиц бүртгэнэ
+- Redis кэш: `progress:lesson:{userId}:{lessonId}`, `progress:course:{userId}:{courseId}` (TTL 15 мин)
+- Enrollment кэш invalidation: auto-complete үед `enrollment:{id}`, `enrollment:check:{userId}:{courseId}` түлхүүрүүд устгагдана
+- GetLessonProgress-д ахиц олдоогүй бол default утга буцаана (0%, false) — NotFoundException биш
+- GetCourseProgress: нэгтгэл буцаана (totalLessons, completedLessons, courseProgressPercentage, totalTimeSpentSeconds, lessons[])
+- Route дараалал: `/progress/my`, `/progress/course/:courseId` нь `/progress/lessons/:lessonId`-ээс ӨМНӨ
+
+**Тест**: 9 test suite, 37 unit тест (use-case + controller + cache service)

@@ -1,0 +1,718 @@
+{
+  "info": {
+    "name": "OCP — Progress Module",
+    "description": "Online Course Platform — Progress Module API\n\nPhase 3: Хэрэглэгчийн хичээл тус бүрийн ахиц хянах, сургалтын нийт явцыг тооцоолох\n\n## Хэрэглэх дараалал\n1. Auth → Student, Teacher, Admin нэвтрэх\n2. Setup → Сургалт + хичээлүүд үүсгэх + нийтлэх + элсэлт\n3. Progress → Update → Position → Get → Complete → Auto-complete enrollment → Delete\n\n## Урьдчилсан нөхцөл\n- DB-д STUDENT, TEACHER, ADMIN role-тэй хэрэглэгчид бүртгэлтэй байх\n- Published сургалт + published хичээлүүд байх\n- Student элсэлт ACTIVE байх\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `studentToken`: STUDENT JWT\n- `teacherToken`: TEACHER JWT\n- `adminToken`: ADMIN JWT\n- `courseId`: Published сургалтын ID\n- `videoLessonId`: VIDEO хичээлийн ID\n- `textLessonId`: TEXT хичээлийн ID\n- `progressId`: Ахицын ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" },
+    { "key": "videoLessonId", "value": "", "type": "string" },
+    { "key": "textLessonId", "value": "", "type": "string" },
+    { "key": "progressId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01. Auth — Setup",
+      "item": [
+        {
+          "name": "Register Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"progress-student@test.com\",\n  \"password\": \"Pass1234!\",\n  \"firstName\": \"Progress\",\n  \"lastName\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"progress-student@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"progress-teacher@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"progress-admin@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('categoryId', res.data[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Course (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) { pm.collectionVariables.set('courseId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Progress Test Course\",\n  \"description\": \"A course for progress testing\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/courses", "host": ["{{baseUrl}}"], "path": ["courses"] }
+          }
+        },
+        {
+          "name": "Publish Course",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Create Video Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) { pm.collectionVariables.set('videoLessonId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"title\": \"Video Lesson 1\",\n  \"lessonType\": \"video\",\n  \"durationMinutes\": 30,\n  \"isPreview\": false\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/lessons", "host": ["{{baseUrl}}"], "path": ["lessons"] }
+          }
+        },
+        {
+          "name": "Create Text Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) { pm.collectionVariables.set('textLessonId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"title\": \"Text Lesson 1\",\n  \"lessonType\": \"text\",\n  \"durationMinutes\": 10,\n  \"isPreview\": false\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/lessons", "host": ["{{baseUrl}}"], "path": ["lessons"] }
+          }
+        },
+        {
+          "name": "Enroll Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Progress — Update",
+      "item": [
+        {
+          "name": "POST — Update lesson progress",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has progress data', () => {",
+                  "  pm.expect(res.data.progressPercentage).to.eql(30);",
+                  "  pm.expect(res.data.timeSpentSeconds).to.eql(120);",
+                  "  pm.expect(res.data.completed).to.eql(false);",
+                  "});",
+                  "if (res.data) { pm.collectionVariables.set('progressId', res.data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progressPercentage\": 30,\n  \"timeSpentSeconds\": 120\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}"]
+            }
+          }
+        },
+        {
+          "name": "POST — Additive timeSpent",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('timeSpentSeconds is additive (180)', () => {",
+                  "  pm.expect(res.data.timeSpentSeconds).to.eql(180);",
+                  "});",
+                  "pm.test('progressPercentage updated to 50', () => {",
+                  "  pm.expect(res.data.progressPercentage).to.eql(50);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progressPercentage\": 50,\n  \"timeSpentSeconds\": 60\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}"]
+            }
+          }
+        },
+        {
+          "name": "POST — Not enrolled (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 403', () => pm.response.to.have.status(403));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progressPercentage\": 30,\n  \"timeSpentSeconds\": 60\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Progress — Video Position",
+      "item": [
+        {
+          "name": "PATCH — Update video position",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Video position updated', () => {",
+                  "  pm.expect(res.data.lastPositionSeconds).to.eql(900);",
+                  "  pm.expect(res.data.progressPercentage).to.eql(50);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lastPositionSeconds\": 900,\n  \"timeSpentSeconds\": 300\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}/position",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}", "position"]
+            }
+          }
+        },
+        {
+          "name": "PATCH — Text lesson position (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lastPositionSeconds\": 100\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{textLessonId}}/position",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{textLessonId}}", "position"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Progress — Read",
+      "item": [
+        {
+          "name": "GET — Lesson progress",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has progress fields', () => {",
+                  "  pm.expect(res.data).to.have.property('progressPercentage');",
+                  "  pm.expect(res.data).to.have.property('completed');",
+                  "  pm.expect(res.data).to.have.property('timeSpentSeconds');",
+                  "  pm.expect(res.data).to.have.property('lastPositionSeconds');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}"]
+            }
+          }
+        },
+        {
+          "name": "GET — Course progress summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has course summary fields', () => {",
+                  "  pm.expect(res.data.totalLessons).to.be.at.least(1);",
+                  "  pm.expect(res.data).to.have.property('completedLessons');",
+                  "  pm.expect(res.data).to.have.property('courseProgressPercentage');",
+                  "  pm.expect(res.data).to.have.property('courseCompleted');",
+                  "  pm.expect(res.data).to.have.property('totalTimeSpentSeconds');",
+                  "  pm.expect(res.data.lessons).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/course/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "course", "{{courseId}}"]
+            }
+          }
+        },
+        {
+          "name": "GET — My progress list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has pagination', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "  pm.expect(res.data.total).to.be.at.least(1);",
+                  "  pm.expect(res.data).to.have.property('page');",
+                  "  pm.expect(res.data).to.have.property('limit');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Progress — Complete",
+      "item": [
+        {
+          "name": "POST — Complete video lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Lesson completed', () => {",
+                  "  pm.expect(res.data.progressPercentage).to.eql(100);",
+                  "  pm.expect(res.data.completed).to.eql(true);",
+                  "  pm.expect(res.data.completedAt).to.not.be.null;",
+                  "  pm.expect(res.data.courseCompleted).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}", "complete"]
+            }
+          }
+        },
+        {
+          "name": "POST — Duplicate complete (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 409', () => pm.response.to.have.status(409));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{videoLessonId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{videoLessonId}}", "complete"]
+            }
+          }
+        },
+        {
+          "name": "POST — Complete text lesson (auto-complete enrollment)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Course auto-completed', () => {",
+                  "  pm.expect(res.data.progressPercentage).to.eql(100);",
+                  "  pm.expect(res.data.completed).to.eql(true);",
+                  "  pm.expect(res.data.courseCompleted).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{textLessonId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{textLessonId}}", "complete"]
+            }
+          }
+        },
+        {
+          "name": "GET — Check enrollment completed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Enrollment auto-completed', () => {",
+                  "  pm.expect(res.data.enrolled).to.eql(true);",
+                  "  pm.expect(res.data.status).to.eql('completed');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/check/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments", "check", "{{courseId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Progress — Admin",
+      "item": [
+        {
+          "name": "DELETE — Student attempt (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 403', () => pm.response.to.have.status(403));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/{{progressId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "{{progressId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE — Admin (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 204', () => pm.response.to.have.status(204));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/{{progressId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "{{progressId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE — Not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/{{progressId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "{{progressId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

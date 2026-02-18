@@ -1,1 +1,2 @@
-// Infrastructure repositories and services will be exported here
+export { ProgressRepository } from './repositories/progress.repository';
+export { ProgressCacheService } from './services/progress-cache.service';
