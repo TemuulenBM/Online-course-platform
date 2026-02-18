@@ -1,0 +1,670 @@
+{
+  "info": {
+    "name": "OCP — Certificates Module",
+    "description": "Online Course Platform — Certificates Module API\n\nPhase 3: Сургалт дуусгасан оюутанд сертификат үүсгэх, PDF + QR код баталгаажуулалт\n\n## Хэрэглэх дараалал\n1. Auth → Student, Teacher, Admin нэвтрэх\n2. Setup → Сургалт + хичээл үүсгэх + нийтлэх + элсэлт + хичээл дуусгах (auto-cert)\n3. Certificates → My → Get → Verify → Course → Generate → Delete\n\n## Урьдчилсан нөхцөл\n- DB-д STUDENT, TEACHER, ADMIN role-тэй хэрэглэгчид бүртгэлтэй байх\n- Published сургалт + published хичээлүүд байх\n- Student enrollment COMPLETED байх\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `studentToken`: STUDENT JWT\n- `teacherToken`: TEACHER JWT\n- `adminToken`: ADMIN JWT\n- `courseId`: Published сургалтын ID\n- `lessonId`: Хичээлийн ID\n- `certificateId`: Сертификатын ID\n- `verificationCode`: Баталгаажуулалтын код",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" },
+    { "key": "lessonId", "value": "", "type": "string" },
+    { "key": "certificateId", "value": "", "type": "string" },
+    { "key": "verificationCode", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01. Auth — Setup",
+      "item": [
+        {
+          "name": "Register Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-student@test.com\",\n  \"password\": \"Test12345\",\n  \"firstName\": \"Certificate\",\n  \"lastName\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-teacher@test.com\",\n  \"password\": \"Test12345\",\n  \"firstName\": \"Certificate\",\n  \"lastName\": \"Teacher\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-admin@test.com\",\n  \"password\": \"Test12345\",\n  \"firstName\": \"Certificate\",\n  \"lastName\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token updated', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-student@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token updated', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-teacher@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token updated', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cert-admin@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Setup — Course + Lesson + Enrollment + Complete",
+      "item": [
+        {
+          "name": "Create Category (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) {",
+                  "  pm.collectionVariables.set('categoryId', res.data.id);",
+                  "  pm.test('Category created', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cert Test Category\",\n  \"description\": \"Test category for certificates\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Course (TEACHER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) {",
+                  "  pm.collectionVariables.set('courseId', res.data.id);",
+                  "  pm.test('Course created', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Certificate Test Course\",\n  \"description\": \"Test course for certificate generation\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\",\n  \"price\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            }
+          }
+        },
+        {
+          "name": "Create Lesson (TEACHER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data) {",
+                  "  pm.collectionVariables.set('lessonId', res.data.id);",
+                  "  pm.test('Lesson created', () => pm.expect(res.success).to.be.true);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Lesson\",\n  \"courseId\": \"{{courseId}}\",\n  \"lessonType\": \"text\",\n  \"durationMinutes\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons"]
+            }
+          }
+        },
+        {
+          "name": "Publish Course (TEACHER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Course published', () => pm.expect(res.data.status).to.equal('published'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Enroll Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Enrolled', () => pm.expect(res.data.status).to.equal('active'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
+          }
+        },
+        {
+          "name": "Complete Lesson (auto-cert trigger)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Lesson completed', () => pm.expect(res.data.completed).to.be.true);",
+                  "pm.test('Course completed (auto-cert)', () => pm.expect(res.data.courseCompleted).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/progress/lessons/{{lessonId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "lessons", "{{lessonId}}", "complete"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Certificates — CRUD",
+      "item": [
+        {
+          "name": "My Certificates (STUDENT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has certificates', () => pm.expect(res.data.data).to.be.an('array'));",
+                  "pm.test('Has pagination', () => {",
+                  "  pm.expect(res.data).to.have.property('total');",
+                  "  pm.expect(res.data).to.have.property('page');",
+                  "  pm.expect(res.data).to.have.property('limit');",
+                  "});",
+                  "if (res.data.data && res.data.data.length > 0) {",
+                  "  const cert = res.data.data[0];",
+                  "  pm.collectionVariables.set('certificateId', cert.id);",
+                  "  pm.collectionVariables.set('verificationCode', cert.verificationCode);",
+                  "  pm.test('Certificate has PDF URL', () => pm.expect(cert.pdfUrl).to.be.a('string'));",
+                  "  pm.test('Certificate has QR URL', () => pm.expect(cert.qrCodeUrl).to.be.a('string'));",
+                  "  pm.test('Certificate number format OCP-YYYY-XXXXXXXX', () => pm.expect(cert.certificateNumber).to.match(/^OCP-\\d{4}-[A-F0-9]{8}$/));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Certificate by ID (STUDENT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has certificate data', () => {",
+                  "  pm.expect(res.data).to.have.property('id');",
+                  "  pm.expect(res.data).to.have.property('certificateNumber');",
+                  "  pm.expect(res.data).to.have.property('pdfUrl');",
+                  "  pm.expect(res.data).to.have.property('qrCodeUrl');",
+                  "  pm.expect(res.data).to.have.property('verificationCode');",
+                  "  pm.expect(res.data).to.have.property('userName');",
+                  "  pm.expect(res.data).to.have.property('courseTitle');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/{{certificateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "{{certificateId}}"]
+            }
+          }
+        },
+        {
+          "name": "Verify Certificate (PUBLIC)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Certificate verified', () => {",
+                  "  pm.expect(res.data).to.have.property('certificateNumber');",
+                  "  pm.expect(res.data).to.have.property('userName');",
+                  "  pm.expect(res.data).to.have.property('courseTitle');",
+                  "  pm.expect(res.data).to.have.property('issuedAt');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/verify/{{verificationCode}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "verify", "{{verificationCode}}"]
+            }
+          }
+        },
+        {
+          "name": "Verify Certificate — Invalid Code (PUBLIC)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));",
+                  "const res = pm.response.json();",
+                  "pm.test('Not found message', () => pm.expect(res.success).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/verify/invalidcode12345678901234567890",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "verify", "invalidcode12345678901234567890"]
+            }
+          }
+        },
+        {
+          "name": "Course Certificates (TEACHER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has certificates list', () => pm.expect(res.data.data).to.be.an('array'));",
+                  "pm.test('Has pagination', () => {",
+                  "  pm.expect(res.data).to.have.property('total');",
+                  "  pm.expect(res.data).to.have.property('page');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/course/{{courseId}}?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "course", "{{courseId}}"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Certificate Manually (STUDENT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success) {",
+                  "  pm.test('Certificate generated', () => {",
+                  "    pm.expect(res.data).to.have.property('id');",
+                  "    pm.expect(res.data).to.have.property('certificateNumber');",
+                  "    pm.expect(res.data).to.have.property('verificationCode');",
+                  "  });",
+                  "  pm.collectionVariables.set('certificateId', res.data.id);",
+                  "} else {",
+                  "  pm.test('Conflict or error', () => pm.expect(res.statusCode).to.be.oneOf([409, 400]));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/generate/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "generate", "{{courseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Certificate (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Deleted successfully', () => pm.expect(res.success).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/{{certificateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "{{certificateId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Error Cases",
+      "item": [
+        {
+          "name": "Get Certificate — Unauthorized",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 401', () => pm.response.to.have.status(401));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/my",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "my"]
+            }
+          }
+        },
+        {
+          "name": "Delete Certificate — Non-Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 403', () => pm.response.to.have.status(403));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/{{certificateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "{{certificateId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Certificate — Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/certificates/00000000-0000-0000-0000-000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["certificates", "00000000-0000-0000-0000-000000000000"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

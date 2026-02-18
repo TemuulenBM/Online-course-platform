@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   ConflictException,
 } from '@nestjs/common';
+import { getQueueToken } from '@nestjs/bull';
 import { CompleteLessonUseCase } from '../../application/use-cases/complete-lesson.use-case';
 import { ProgressRepository } from '../../infrastructure/repositories/progress.repository';
 import { ProgressCacheService } from '../../infrastructure/services/progress-cache.service';
@@ -20,6 +21,7 @@ describe('CompleteLessonUseCase', () => {
   let lessonRepository: jest.Mocked<LessonRepository>;
   let enrollmentRepository: jest.Mocked<EnrollmentRepository>;
   let redisService: jest.Mocked<RedisService>;
+  let certificateQueue: { add: jest.Mock };
 
   const now = new Date();
 
@@ -126,6 +128,12 @@ describe('CompleteLessonUseCase', () => {
             del: jest.fn(),
           },
         },
+        {
+          provide: getQueueToken('certificates'),
+          useValue: {
+            add: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -135,6 +143,7 @@ describe('CompleteLessonUseCase', () => {
     lessonRepository = module.get(LessonRepository);
     enrollmentRepository = module.get(EnrollmentRepository);
     redisService = module.get(RedisService);
+    certificateQueue = module.get(getQueueToken('certificates'));
   });
 
   it('амжилттай хичээл дуусгах', async () => {
@@ -220,6 +229,11 @@ describe('CompleteLessonUseCase', () => {
     /** Enrollment кэш мөн invalidate хийгдсэн */
     expect(redisService.del).toHaveBeenCalledWith('enrollment:enrollment-id-1');
     expect(redisService.del).toHaveBeenCalledWith('enrollment:check:user-id-1:course-id-1');
+    /** Сертификат үүсгэх job queue-д нэмэгдсэн */
+    expect(certificateQueue.add).toHaveBeenCalledWith('generate-auto', {
+      userId: 'user-id-1',
+      courseId: 'course-id-1',
+    });
   });
 
   it('auto-complete enrollment — зарим хичээл дуусаагүй', async () => {

@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BullModule } from '@nestjs/bull';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -29,7 +30,7 @@ import { ContentModule } from './modules/content/content.module';
 import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { QuizzesModule } from './modules/quizzes/quizzes.module';
-// import { CertificatesModule } from './modules/certificates/certificates.module';
+import { CertificatesModule } from './modules/certificates/certificates.module';
 // import { DiscussionsModule } from './modules/discussions/discussions.module';
 // import { NotificationsModule } from './modules/notifications/notifications.module';
 // import { PaymentsModule } from './modules/payments/payments.module';
@@ -79,6 +80,17 @@ import { QuizzesModule } from './modules/quizzes/quizzes.module';
         uri: config.get<string>('mongodb.uri'),
       }),
     }),
+    // Bull Queue — background job processing (Redis ашиглана)
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        redis: {
+          host: config.get<string>('redis.host'),
+          port: config.get<number>('redis.port'),
+          password: config.get<string>('redis.password') || undefined,
+        },
+      }),
+    }),
     PrismaModule,
     RedisModule,
     UsersModule,
@@ -89,6 +101,7 @@ import { QuizzesModule } from './modules/quizzes/quizzes.module';
     EnrollmentsModule,
     ProgressModule,
     QuizzesModule,
+    CertificatesModule,
   ],
   controllers: [AppController],
   providers: [

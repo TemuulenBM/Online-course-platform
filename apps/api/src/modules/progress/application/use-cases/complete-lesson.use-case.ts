@@ -6,6 +6,8 @@ import {
   ForbiddenException,
   ConflictException,
 } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 import { ProgressRepository } from '../../infrastructure/repositories/progress.repository';
 import { ProgressCacheService } from '../../infrastructure/services/progress-cache.service';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
@@ -27,6 +29,7 @@ export class CompleteLessonUseCase {
     private readonly lessonRepository: LessonRepository,
     private readonly enrollmentRepository: EnrollmentRepository,
     private readonly redisService: RedisService,
+    @InjectQueue('certificates') private readonly certificateQueue: Queue,
   ) {}
 
   async execute(
@@ -89,6 +92,15 @@ export class CompleteLessonUseCase {
       courseCompleted = true;
       this.logger.log(
         `Сургалт автоматаар дууслаа: хэрэглэгч ${userId}, сургалт ${lesson.courseId}`,
+      );
+
+      /** Сертификат автоматаар үүсгэх job queue-д нэмэх */
+      await this.certificateQueue.add('generate-auto', {
+        userId,
+        courseId: lesson.courseId,
+      });
+      this.logger.log(
+        `Сертификат үүсгэх job queue-д нэмэгдлээ: user=${userId}, course=${lesson.courseId}`,
       );
     }
 

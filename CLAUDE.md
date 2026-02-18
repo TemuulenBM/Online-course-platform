@@ -473,3 +473,39 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/quizzes/lesson/:lessonId`, `/quizzes/attempts/:attemptId/grade` нь `/quizzes/:id`-ээс ӨМНӨ; `/quizzes/:id/questions/reorder` нь `/:id/questions/:questionId`-ээс ӨМНӨ; `/attempts/my`, `/attempts/students` нь `/attempts/:attemptId`-ээс ӨМНӨ
 
 **Тест**: 8 test suite, 68 unit тест (use-case + controller + cache service + grading service)
+
+### Certificates Module (Phase 3)
+
+**Endpoints** (`/api/v1/certificates`):
+
+- `GET /certificates/verify/:verificationCode` — Сертификат баталгаажуулах (@Public, JWT шаардлагагүй)
+- `GET /certificates/my` — Миний сертификатууд pagination-тэй (JWT required)
+- `GET /certificates/course/:courseId` — Сургалтын сертификатуудын жагсаалт (TEACHER, ADMIN)
+- `POST /certificates/generate/:courseId` — Сертификат гараар үүсгэх (JWT required, COMPLETED enrollment шаардлагатай)
+- `GET /certificates/:id` — Сертификатын дэлгэрэнгүй (JWT required, эзэмшигч/багш/ADMIN)
+- `DELETE /certificates/:id` — Сертификат устгах (ADMIN only)
+
+**Export хийсэн service-ууд**: `CertificateRepository`
+
+**Хамаарал**: `BullModule` (certificates queue), `EnrollmentsModule` (EnrollmentRepository), `CoursesModule` (CourseRepository), `PrismaModule` (@Global), `RedisModule` (@Global), `ConfigModule`
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- `@@unique([userId, courseId])` — Нэг хэрэглэгчид нэг сургалтад нэг сертификат
+- **Auto-generate trigger**: `CompleteLessonUseCase`-д enrollment auto-complete болоход Bull Queue-ээр `generate-auto` job нэмэгдэнэ (`progress.module.ts`-д `BullModule.registerQueue({ name: 'certificates' })` нэмэгдсэн)
+- `BullModule.forRootAsync()` app.module.ts-д нэмэгдсэн (Redis config ашиглан)
+- **CertificateProcessor** (Bull Queue): `generate` + `generate-auto` 2 process. Auto-generate нь давхардал шалгаад certificate record үүсгээд generate рүү шилжинэ
+- Certificate number формат: `OCP-YYYY-XXXXXXXX` (hex random), P2002 unique violation дээр retry (3 удаа)
+- Verification code: `crypto.randomUUID()` dash-гүй (32 тэмдэгт)
+- **Puppeteer-core** + HTML template: A4 landscape PDF сертификат, QR код embed хийгдсэн
+- `CHROMIUM_PATH` env variable — Docker-д `/usr/bin/chromium-browser`, dev-д system Chromium
+- Content модулийн `IStorageService` + `LocalStorageService` pattern дахин ашигласан (`STORAGE_SERVICE` DI token)
+- `pdfUrl`, `qrCodeUrl` nullable — Bull processor async шинэчлэнэ
+- Redis кэш: `certificate:{id}`, `certificate:verify:{verificationCode}` (TTL 900s / 15 мин)
+- Эрхийн шалгалт: эзэмшигч / сургалтын багш (courseInstructorId) / ADMIN — use-case түвшинд
+- Public verify endpoint: JWT шаардлагагүй, verification code-оор сертификат хайна
+- Docker Dockerfile-д Chromium + шрифтүүд нэмэгдсэн (`chromium nss freetype harfbuzz ca-certificates ttf-freefont`)
+- Route дараалал: `/certificates/verify/:verificationCode`, `/certificates/my`, `/certificates/course/:courseId` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 11 test suite, 40 unit тест (use-case + controller + cache service + processor + pdf + qr)
