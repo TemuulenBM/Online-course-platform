@@ -397,3 +397,37 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/enrollments/my`, `/enrollments/course/:courseId`, `/enrollments/check/:courseId` нь `/:id`-ээс ӨМНӨ
 
 **Тест**: 10 test suite, 42 unit тест (use-case + controller + cache service)
+
+### Progress Module (Phase 3)
+
+**Endpoints** (`/api/v1/progress`):
+
+- `GET /progress/my` — Миний ахицуудын жагсаалт pagination-тэй (JWT required)
+- `GET /progress/course/:courseId` — Сургалтын ахицын нэгтгэл (JWT required)
+- `GET /progress/lessons/:lessonId` — Хичээлийн ахиц авах (JWT required)
+- `POST /progress/lessons/:lessonId` — Хичээлийн ахиц шинэчлэх (JWT required)
+- `POST /progress/lessons/:lessonId/complete` — Хичээл дуусгах (JWT required)
+- `PATCH /progress/lessons/:lessonId/position` — Видеоны байрлал шинэчлэх (JWT required)
+- `DELETE /progress/:id` — Ахиц устгах (ADMIN only)
+
+**Export хийсэн service-ууд**: `ProgressRepository`
+
+**Хамаарал**: `EnrollmentsModule` (EnrollmentRepository), `LessonsModule` (LessonRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- `@@unique([userId, lessonId])` — Нэг хэрэглэгчид нэг хичээлд нэг ахиц
+- Upsert семантик: progress байвал шинэчлэх, байхгүй бол үүсгэх
+- **Auto-complete enrollment**: Бүх published хичээл дуусахад enrollment автоматаар COMPLETED болно (`CompleteLessonUseCase` дотор)
+- `timeSpentSeconds` additive: Шинэ зарцуулсан хугацааг хуучин дээр нэмнэ
+- Видео progressPercentage автоматаар тооцоолно: `Math.min(100, Math.round((lastPositionSeconds / (durationMinutes * 60)) * 100))`
+- TEXT/QUIZ/ASSIGNMENT хичээлд зөвхөн 0% (эхлээгүй) эсвэл 100% (complete) — дунд шат байхгүй
+- Зөвхөн published хичээлд, ACTIVE элсэлттэй хэрэглэгчид ахиц бүртгэнэ
+- Redis кэш: `progress:lesson:{userId}:{lessonId}`, `progress:course:{userId}:{courseId}` (TTL 15 мин)
+- Enrollment кэш invalidation: auto-complete үед `enrollment:{id}`, `enrollment:check:{userId}:{courseId}` түлхүүрүүд устгагдана
+- GetLessonProgress-д ахиц олдоогүй бол default утга буцаана (0%, false) — NotFoundException биш
+- GetCourseProgress: нэгтгэл буцаана (totalLessons, completedLessons, courseProgressPercentage, totalTimeSpentSeconds, lessons[])
+- Route дараалал: `/progress/my`, `/progress/course/:courseId` нь `/progress/lessons/:lessonId`-ээс ӨМНӨ
+
+**Тест**: 9 test suite, 37 unit тест (use-case + controller + cache service)

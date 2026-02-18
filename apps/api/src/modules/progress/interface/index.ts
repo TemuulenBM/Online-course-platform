@@ -1,1 +1,1 @@
-// Controllers will be exported here
+export { ProgressController } from './controllers/progress.controller';

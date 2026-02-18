@@ -27,7 +27,7 @@ import { CoursesModule } from './modules/courses/courses.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { ContentModule } from './modules/content/content.module';
 import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
-// import { ProgressModule } from './modules/progress/progress.module';
+import { ProgressModule } from './modules/progress/progress.module';
 // import { QuizzesModule } from './modules/quizzes/quizzes.module';
 // import { CertificatesModule } from './modules/certificates/certificates.module';
 // import { DiscussionsModule } from './modules/discussions/discussions.module';
@@ -87,6 +87,7 @@ import { EnrollmentsModule } from './modules/enrollments/enrollments.module';
     LessonsModule,
     ContentModule,
     EnrollmentsModule,
+    ProgressModule,
   ],
   controllers: [AppController],
   providers: [
