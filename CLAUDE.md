@@ -558,3 +558,36 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `course/:courseId` нь `:id`-ээс ӨМНӨ; `lesson/:lessonId` нь `:id`-ээс ӨМНӨ
 
 **Тест**: 16 test suite, ~75 unit тест (use-case + controller + cache service)
+
+### Notifications Module (Phase 4)
+
+**Endpoints** (`/api/v1/notifications`):
+
+- `GET /notifications/unread-count` — Уншаагүй мэдэгдлийн тоо (JWT required)
+- `GET /notifications/preferences` — Мэдэгдлийн тохиргоо авах (JWT required)
+- `PATCH /notifications/mark-all-read` — Бүх мэдэгдлийг уншсан болгох (JWT required)
+- `PATCH /notifications/preferences` — Мэдэгдлийн тохиргоо шинэчлэх (JWT required)
+- `GET /notifications` — Мэдэгдлүүдийн жагсаалт pagination+filter (JWT required)
+- `PATCH /notifications/:id/read` — Нэг мэдэгдлийг уншсан болгох (JWT required, эзэмшигч)
+- `DELETE /notifications/:id` — Мэдэгдэл устгах (JWT required, эзэмшигч/ADMIN)
+
+**Export хийсэн service-ууд**: `NotificationService` (send, sendBulk — бусад модулиас дуудагдана)
+
+**Хамаарал**: `BullModule` (notifications queue), `ConfigModule`, `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- **Multi-channel architecture**: IN_APP (заавал) + Email (SendGrid) + SMS (Twilio placeholder) + Push (Expo placeholder)
+- `NotificationService.send()` workflow: DB бичих → кэш invalidate → preference шалгах → config шалгах → Bull Queue job нэмэх
+- `NotificationService.sendBulk()`: `Promise.all` ашиглан олон хэрэглэгчид параллелиар илгээх
+- **Bull Queue processor** (`NotificationProcessor`): `send-email`, `send-sms`, `send-push` гэсэн 3 process handler — тус бүр config шалгаж service дуудна
+- **DI Token pattern**: `EMAIL_SERVICE` → `SendGridEmailService`, `SMS_SERVICE` → `PlaceholderSmsService`, `PUSH_SERVICE` → `PlaceholderPushService` — ирээдүйд солих боломжтой
+- `notification.config.ts`: Email (SendGrid API key, from), SMS (Twilio), Push тохиргоо — env variables-ээр удирдана
+- **NotificationPreference**: Хэрэглэгч бүр email/push/sms идэвхтэй/идэвхгүй болгох боломжтой. Тохиргоо байхгүй бол default (email:true, push:true, sms:false)
+- Upsert семантик: preference байвал update, байхгүй бол create
+- Эрхийн шалгалт use-case түвшинд: өөрийн мэдэгдэл / ADMIN
+- Redis кэш: `notification:{id}`, `notification:unread:{userId}`, `notification:prefs:{userId}` (TTL 900s / 15 мин)
+- Route дараалал: `/unread-count`, `/preferences`, `/mark-all-read` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 11 test suite, 51 unit тест (use-case + controller + cache service + notification service + processor)

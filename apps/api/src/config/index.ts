@@ -7,3 +7,4 @@ export { default as s3Config } from './s3.config';
 export { default as stripeConfig } from './stripe.config';
 export { default as elasticsearchConfig } from './elasticsearch.config';
 export { default as mailConfig } from './mail.config';
+export { default as notificationConfig } from './notification.config';

@@ -1,1 +1,10 @@
-// Infrastructure repositories and services will be exported here
+export { NotificationRepository } from './repositories/notification.repository';
+export { NotificationPreferenceRepository } from './repositories/notification-preference.repository';
+export { NotificationCacheService } from './services/notification-cache.service';
+export type { IEmailService } from './services/email.service';
+export { EMAIL_SERVICE, SendGridEmailService } from './services/email.service';
+export type { ISmsService } from './services/sms.service';
+export { SMS_SERVICE, PlaceholderSmsService } from './services/sms.service';
+export type { IPushService } from './services/push.service';
+export { PUSH_SERVICE, PlaceholderPushService } from './services/push.service';
+export { NotificationProcessor } from './services/notification.processor';
