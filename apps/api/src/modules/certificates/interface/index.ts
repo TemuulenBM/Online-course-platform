@@ -1,1 +1,1 @@
-// Controllers will be exported here
+export { CertificatesController } from './controllers/certificates.controller';

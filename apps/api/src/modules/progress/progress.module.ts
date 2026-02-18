@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { BullModule } from '@nestjs/bull';
 import { EnrollmentsModule } from '../enrollments/enrollments.module';
 import { LessonsModule } from '../lessons/lessons.module';
 
@@ -24,7 +25,7 @@ import { ProgressCacheService } from './infrastructure/services/progress-cache.s
  * видео байрлал хадгалах, auto-complete enrollment зэрэг функцүүдийг удирдана.
  */
 @Module({
-  imports: [EnrollmentsModule, LessonsModule],
+  imports: [EnrollmentsModule, LessonsModule, BullModule.registerQueue({ name: 'certificates' })],
   controllers: [ProgressController],
   providers: [
     // Use Cases

@@ -1,1 +1,1 @@
-// DTOs will be exported here
+export { ListCertificatesQueryDto } from './list-certificates-query.dto';

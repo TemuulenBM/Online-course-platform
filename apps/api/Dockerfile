@@ -56,7 +56,9 @@ RUN pnpm --filter @ocp/api --prod deploy /app/prod-deps
 # --- Production stage: хамгийн жижиг image ---
 FROM node:20-alpine AS production
 
-RUN apk add --no-cache curl
+# Chromium — Puppeteer PDF үүсгэлтэд шаардлагатай
+RUN apk add --no-cache curl chromium nss freetype harfbuzz ca-certificates ttf-freefont
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 WORKDIR /app
 
 # Non-root хэрэглэгч үүсгэх
