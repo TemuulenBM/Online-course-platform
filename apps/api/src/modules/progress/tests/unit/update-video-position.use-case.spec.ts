@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  NotFoundException,
-  BadRequestException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { UpdateVideoPositionUseCase } from '../../application/use-cases/update-video-position.use-case';
 import { ProgressRepository } from '../../infrastructure/repositories/progress.repository';
 import { ProgressCacheService } from '../../infrastructure/services/progress-cache.service';

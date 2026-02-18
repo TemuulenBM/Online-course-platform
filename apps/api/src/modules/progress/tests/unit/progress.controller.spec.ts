@@ -104,44 +104,26 @@ describe('ProgressController', () => {
     };
     getCourseProgressUseCase.execute.mockResolvedValue(mockResult);
 
-    const result = await controller.getCourseProgress(
-      'user-id-1',
-      'course-id-1',
-    );
+    const result = await controller.getCourseProgress('user-id-1', 'course-id-1');
 
     expect(result).toEqual(mockResult);
-    expect(getCourseProgressUseCase.execute).toHaveBeenCalledWith(
-      'user-id-1',
-      'course-id-1',
-    );
+    expect(getCourseProgressUseCase.execute).toHaveBeenCalledWith('user-id-1', 'course-id-1');
   });
 
   it('GET /progress/lessons/:lessonId — Хичээлийн ахиц авах', async () => {
-    getLessonProgressUseCase.execute.mockResolvedValue(
-      mockProgress.toResponse(),
-    );
+    getLessonProgressUseCase.execute.mockResolvedValue(mockProgress.toResponse());
 
-    const result = await controller.getLessonProgress(
-      'user-id-1',
-      'lesson-id-1',
-    );
+    const result = await controller.getLessonProgress('user-id-1', 'lesson-id-1');
 
     expect(result).toEqual(mockProgress.toResponse());
-    expect(getLessonProgressUseCase.execute).toHaveBeenCalledWith(
-      'user-id-1',
-      'lesson-id-1',
-    );
+    expect(getLessonProgressUseCase.execute).toHaveBeenCalledWith('user-id-1', 'lesson-id-1');
   });
 
   it('POST /progress/lessons/:lessonId — Хичээлийн ахиц шинэчлэх', async () => {
     updateLessonProgressUseCase.execute.mockResolvedValue(mockProgress);
 
     const dto = { progressPercentage: 50, timeSpentSeconds: 120 };
-    const result = await controller.updateLessonProgress(
-      'user-id-1',
-      'lesson-id-1',
-      dto,
-    );
+    const result = await controller.updateLessonProgress('user-id-1', 'lesson-id-1', dto);
 
     expect(result).toEqual(mockProgress.toResponse());
     expect(updateLessonProgressUseCase.execute).toHaveBeenCalledWith(
@@ -169,10 +151,7 @@ describe('ProgressController', () => {
       ...completedProgress.toResponse(),
       courseCompleted: false,
     });
-    expect(completeLessonUseCase.execute).toHaveBeenCalledWith(
-      'user-id-1',
-      'lesson-id-1',
-    );
+    expect(completeLessonUseCase.execute).toHaveBeenCalledWith('user-id-1', 'lesson-id-1');
   });
 
   it('PATCH /progress/lessons/:lessonId/position — Видеоны байрлал шинэчлэх', async () => {
@@ -183,11 +162,7 @@ describe('ProgressController', () => {
     updateVideoPositionUseCase.execute.mockResolvedValue(updatedProgress);
 
     const dto = { lastPositionSeconds: 300, timeSpentSeconds: 60 };
-    const result = await controller.updateVideoPosition(
-      'user-id-1',
-      'lesson-id-1',
-      dto,
-    );
+    const result = await controller.updateVideoPosition('user-id-1', 'lesson-id-1', dto);
 
     expect(result).toEqual(updatedProgress.toResponse());
     expect(updateVideoPositionUseCase.execute).toHaveBeenCalledWith(

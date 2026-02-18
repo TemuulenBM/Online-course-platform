@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { ProgressCacheService } from '../../infrastructure/services/progress-cache.service';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
@@ -31,22 +27,13 @@ export class GetLessonProgressUseCase {
     }
 
     /** 2. Элсэлт ACTIVE эсэх шалгах */
-    const enrollment =
-      await this.enrollmentRepository.findByUserAndCourse(
-        userId,
-        lesson.courseId,
-      );
+    const enrollment = await this.enrollmentRepository.findByUserAndCourse(userId, lesson.courseId);
     if (!enrollment || enrollment.status !== 'active') {
-      throw new ForbiddenException(
-        'Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна',
-      );
+      throw new ForbiddenException('Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна');
     }
 
     /** 3. Кэшнээс авах, байхгүй бол DB-ээс */
-    const progress = await this.progressCacheService.getLessonProgress(
-      userId,
-      lessonId,
-    );
+    const progress = await this.progressCacheService.getLessonProgress(userId, lessonId);
 
     /** 4. Олдоогүй бол default утга буцаана */
     if (!progress) {

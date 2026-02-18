@@ -11,12 +11,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../../common/guards/roles.guard';
 import { Roles } from '../../../../common/decorators/roles.decorator';
@@ -55,10 +50,7 @@ export class ProgressController {
   @Get('my')
   @ApiOperation({ summary: 'Миний ахицуудын жагсаалт' })
   @ApiResponse({ status: 200, description: 'Ахицуудын жагсаалт' })
-  async listMyProgress(
-    @CurrentUser('id') userId: string,
-    @Query() query: ListEnrollmentsQueryDto,
-  ) {
+  async listMyProgress(@CurrentUser('id') userId: string, @Query() query: ListEnrollmentsQueryDto) {
     return this.listMyProgressUseCase.execute(userId, {
       page: query.page ?? 1,
       limit: query.limit ?? 20,
@@ -69,10 +61,7 @@ export class ProgressController {
   @Get('course/:courseId')
   @ApiOperation({ summary: 'Сургалтын ахицын нэгтгэл' })
   @ApiResponse({ status: 200, description: 'Сургалтын ахицын хураангуй' })
-  async getCourseProgress(
-    @CurrentUser('id') userId: string,
-    @Param('courseId') courseId: string,
-  ) {
+  async getCourseProgress(@CurrentUser('id') userId: string, @Param('courseId') courseId: string) {
     return this.getCourseProgressUseCase.execute(userId, courseId);
   }
 
@@ -80,10 +69,7 @@ export class ProgressController {
   @Get('lessons/:lessonId')
   @ApiOperation({ summary: 'Хичээлийн ахиц авах' })
   @ApiResponse({ status: 200, description: 'Хичээлийн ахицын мэдээлэл' })
-  async getLessonProgress(
-    @CurrentUser('id') userId: string,
-    @Param('lessonId') lessonId: string,
-  ) {
+  async getLessonProgress(@CurrentUser('id') userId: string, @Param('lessonId') lessonId: string) {
     return this.getLessonProgressUseCase.execute(userId, lessonId);
   }
 
@@ -96,11 +82,7 @@ export class ProgressController {
     @Param('lessonId') lessonId: string,
     @Body() dto: UpdateProgressDto,
   ) {
-    const progress = await this.updateLessonProgressUseCase.execute(
-      userId,
-      lessonId,
-      dto,
-    );
+    const progress = await this.updateLessonProgressUseCase.execute(userId, lessonId, dto);
     return progress.toResponse();
   }
 
@@ -108,14 +90,8 @@ export class ProgressController {
   @Post('lessons/:lessonId/complete')
   @ApiOperation({ summary: 'Хичээл дуусгах' })
   @ApiResponse({ status: 200, description: 'Хичээл амжилттай дууслаа' })
-  async completeLesson(
-    @CurrentUser('id') userId: string,
-    @Param('lessonId') lessonId: string,
-  ) {
-    const result = await this.completeLessonUseCase.execute(
-      userId,
-      lessonId,
-    );
+  async completeLesson(@CurrentUser('id') userId: string, @Param('lessonId') lessonId: string) {
+    const result = await this.completeLessonUseCase.execute(userId, lessonId);
     return {
       ...result.progress.toResponse(),
       courseCompleted: result.courseCompleted,
@@ -134,11 +110,7 @@ export class ProgressController {
     @Param('lessonId') lessonId: string,
     @Body() dto: UpdateVideoPositionDto,
   ) {
-    const progress = await this.updateVideoPositionUseCase.execute(
-      userId,
-      lessonId,
-      dto,
-    );
+    const progress = await this.updateVideoPositionUseCase.execute(userId, lessonId, dto);
     return progress.toResponse();
   }
 

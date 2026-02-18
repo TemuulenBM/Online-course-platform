@@ -132,10 +132,7 @@ describe('GetCourseProgressUseCase', () => {
       mockLesson3 as any,
     ]);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(mockEnrollment as any);
-    progressCacheService.getCourseProgress.mockResolvedValue([
-      mockProgress1,
-      mockProgress2,
-    ]);
+    progressCacheService.getCourseProgress.mockResolvedValue([mockProgress1, mockProgress2]);
 
     const result = await useCase.execute('user-id-1', 'course-id-1');
 
@@ -162,26 +159,19 @@ describe('GetCourseProgressUseCase', () => {
   it('хичээлгүй сургалт — NotFoundException', async () => {
     lessonRepository.findByCourseId.mockResolvedValue([]);
 
-    await expect(
-      useCase.execute('user-id-1', 'course-id-1'),
-    ).rejects.toThrow(NotFoundException);
+    await expect(useCase.execute('user-id-1', 'course-id-1')).rejects.toThrow(NotFoundException);
   });
 
   it('элсэлтгүй — ForbiddenException', async () => {
     lessonRepository.findByCourseId.mockResolvedValue([mockLesson1 as any]);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('user-id-1', 'course-id-1'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('user-id-1', 'course-id-1')).rejects.toThrow(ForbiddenException);
   });
 
   it('хоосон ахицтай — 0% progress', async () => {
     /** 2 хичээл, нэг ч ахиц бүртгэгдээгүй */
-    lessonRepository.findByCourseId.mockResolvedValue([
-      mockLesson1 as any,
-      mockLesson2 as any,
-    ]);
+    lessonRepository.findByCourseId.mockResolvedValue([mockLesson1 as any, mockLesson2 as any]);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(mockEnrollment as any);
     progressCacheService.getCourseProgress.mockResolvedValue([]);
 

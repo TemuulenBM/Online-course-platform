@@ -41,28 +41,17 @@ export class CompleteLessonUseCase {
 
     /** 2. Хичээл нийтлэгдсэн эсэх шалгах */
     if (!lesson.isPublished) {
-      throw new BadRequestException(
-        'Нийтлэгдээгүй хичээлийг дуусгах боломжгүй',
-      );
+      throw new BadRequestException('Нийтлэгдээгүй хичээлийг дуусгах боломжгүй');
     }
 
     /** 3. Элсэлт ACTIVE эсэх шалгах */
-    const enrollment =
-      await this.enrollmentRepository.findByUserAndCourse(
-        userId,
-        lesson.courseId,
-      );
+    const enrollment = await this.enrollmentRepository.findByUserAndCourse(userId, lesson.courseId);
     if (!enrollment || enrollment.status !== 'active') {
-      throw new ForbiddenException(
-        'Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна',
-      );
+      throw new ForbiddenException('Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна');
     }
 
     /** 4. Аль хэдийн дуусгасан эсэх шалгах */
-    const existing = await this.progressRepository.findByUserAndLesson(
-      userId,
-      lessonId,
-    );
+    const existing = await this.progressRepository.findByUserAndLesson(userId, lessonId);
     if (existing?.completed) {
       throw new ConflictException('Энэ хичээлийг аль хэдийн дуусгасан байна');
     }
@@ -77,28 +66,17 @@ export class CompleteLessonUseCase {
     });
 
     /** 6. Кэш invalidate */
-    await this.progressCacheService.invalidateAll(
-      userId,
-      lessonId,
-      lesson.courseId,
-    );
+    await this.progressCacheService.invalidateAll(userId, lessonId, lesson.courseId);
 
     /** 7. Auto-complete enrollment шалгалт */
     let courseCompleted = false;
-    const publishedLessons = await this.lessonRepository.findByCourseId(
+    const publishedLessons = await this.lessonRepository.findByCourseId(lesson.courseId, true);
+    const completedCount = await this.progressRepository.countCompletedLessons(
+      userId,
       lesson.courseId,
-      true,
     );
-    const completedCount =
-      await this.progressRepository.countCompletedLessons(
-        userId,
-        lesson.courseId,
-      );
 
-    if (
-      publishedLessons.length > 0 &&
-      completedCount >= publishedLessons.length
-    ) {
+    if (publishedLessons.length > 0 && completedCount >= publishedLessons.length) {
       await this.enrollmentRepository.update(enrollment.id, {
         status: 'completed',
         completedAt: new Date(),
@@ -106,9 +84,7 @@ export class CompleteLessonUseCase {
       /** Enrollment кэш invalidate */
       await Promise.all([
         this.redisService.del(`enrollment:${enrollment.id}`),
-        this.redisService.del(
-          `enrollment:check:${userId}:${lesson.courseId}`,
-        ),
+        this.redisService.del(`enrollment:check:${userId}:${lesson.courseId}`),
       ]);
       courseCompleted = true;
       this.logger.log(
@@ -116,9 +92,7 @@ export class CompleteLessonUseCase {
       );
     }
 
-    this.logger.log(
-      `Хичээл дууслаа: хэрэглэгч ${userId}, хичээл ${lessonId}`,
-    );
+    this.logger.log(`Хичээл дууслаа: хэрэглэгч ${userId}, хичээл ${lessonId}`);
     return { progress, courseCompleted };
   }
 }

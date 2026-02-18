@@ -9,14 +9,8 @@ import { ProgressRepository } from '../../infrastructure/repositories/progress.r
 export class ListMyProgressUseCase {
   constructor(private readonly progressRepository: ProgressRepository) {}
 
-  async execute(
-    userId: string,
-    options: { page: number; limit: number },
-  ) {
-    const result = await this.progressRepository.findByUserId(
-      userId,
-      options,
-    );
+  async execute(userId: string, options: { page: number; limit: number }) {
+    const result = await this.progressRepository.findByUserId(userId, options);
 
     return {
       data: result.data.map((p) => p.toResponse()),

@@ -143,7 +143,10 @@ describe('CompleteLessonUseCase', () => {
     progressRepository.findByUserAndLesson.mockResolvedValue(null);
     progressRepository.upsert.mockResolvedValue(mockCompletedProgress);
     /** Бүх хичээл дуусаагүй — auto-complete биш */
-    lessonRepository.findByCourseId.mockResolvedValue([mockLesson as any, { ...mockLesson, id: 'lesson-id-2' } as any]);
+    lessonRepository.findByCourseId.mockResolvedValue([
+      mockLesson as any,
+      { ...mockLesson, id: 'lesson-id-2' } as any,
+    ]);
     progressRepository.countCompletedLessons.mockResolvedValue(1);
 
     const result = await useCase.execute('user-id-1', 'lesson-id-1');
@@ -168,27 +171,21 @@ describe('CompleteLessonUseCase', () => {
   it('хичээл олдсонгүй — NotFoundException', async () => {
     lessonRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute('user-id-1', 'nonexistent')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('user-id-1', 'nonexistent')).rejects.toThrow(NotFoundException);
   });
 
   it('хичээл нийтлэгдээгүй — BadRequestException', async () => {
     const unpublishedLesson = { ...mockLesson, isPublished: false };
     lessonRepository.findById.mockResolvedValue(unpublishedLesson as any);
 
-    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(
-      BadRequestException,
-    );
+    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(BadRequestException);
   });
 
   it('элсэлтгүй — ForbiddenException', async () => {
     lessonRepository.findById.mockResolvedValue(mockLesson as any);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(null);
 
-    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(
-      ForbiddenException,
-    );
+    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(ForbiddenException);
   });
 
   it('аль хэдийн дуусгасан — ConflictException', async () => {
@@ -196,9 +193,7 @@ describe('CompleteLessonUseCase', () => {
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(mockEnrollment as any);
     progressRepository.findByUserAndLesson.mockResolvedValue(mockCompletedProgress);
 
-    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(
-      ConflictException,
-    );
+    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(ConflictException);
   });
 
   it('auto-complete enrollment — бүх хичээл дууссан', async () => {
@@ -224,9 +219,7 @@ describe('CompleteLessonUseCase', () => {
     });
     /** Enrollment кэш мөн invalidate хийгдсэн */
     expect(redisService.del).toHaveBeenCalledWith('enrollment:enrollment-id-1');
-    expect(redisService.del).toHaveBeenCalledWith(
-      'enrollment:check:user-id-1:course-id-1',
-    );
+    expect(redisService.del).toHaveBeenCalledWith('enrollment:check:user-id-1:course-id-1');
   });
 
   it('auto-complete enrollment — зарим хичээл дуусаагүй', async () => {

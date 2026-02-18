@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { ProgressCacheService } from '../../infrastructure/services/progress-cache.service';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
@@ -21,31 +17,20 @@ export class GetCourseProgressUseCase {
 
   async execute(userId: string, courseId: string) {
     /** 1. Сургалтын хичээлүүд олдох эсэх шалгах */
-    const publishedLessons = await this.lessonRepository.findByCourseId(
-      courseId,
-      true,
-    );
+    const publishedLessons = await this.lessonRepository.findByCourseId(courseId, true);
     if (publishedLessons.length === 0) {
-      throw new NotFoundException(
-        'Сургалт олдсонгүй эсвэл нийтлэгдсэн хичээл алга',
-      );
+      throw new NotFoundException('Сургалт олдсонгүй эсвэл нийтлэгдсэн хичээл алга');
     }
 
     /** 2. Элсэлт ACTIVE эсэх шалгах */
-    const enrollment =
-      await this.enrollmentRepository.findByUserAndCourse(userId, courseId);
+    const enrollment = await this.enrollmentRepository.findByUserAndCourse(userId, courseId);
     if (!enrollment || enrollment.status !== 'active') {
-      throw new ForbiddenException(
-        'Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна',
-      );
+      throw new ForbiddenException('Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна');
     }
 
     /** 3. Хэрэглэгчийн тухайн сургалтын ахицууд авах */
-    const progressList =
-      await this.progressCacheService.getCourseProgress(userId, courseId);
-    const progressMap = new Map(
-      progressList.map((p) => [p.lessonId, p]),
-    );
+    const progressList = await this.progressCacheService.getCourseProgress(userId, courseId);
+    const progressMap = new Map(progressList.map((p) => [p.lessonId, p]));
 
     /** 4. Тооцоолол хийх */
     let completedCount = 0;
@@ -71,9 +56,7 @@ export class GetCourseProgressUseCase {
 
     const totalLessons = publishedLessons.length;
     const courseProgressPercentage =
-      totalLessons > 0
-        ? Math.round((completedCount / totalLessons) * 100)
-        : 0;
+      totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
     return {
       courseId,

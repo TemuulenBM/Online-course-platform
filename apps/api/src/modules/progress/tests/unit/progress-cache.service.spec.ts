@@ -59,10 +59,7 @@ describe('ProgressCacheService', () => {
     it('Кэшнээс ахиц авах (cache hit)', async () => {
       redisService.get.mockResolvedValue(mockProgress.toResponse());
 
-      const result = await cacheService.getLessonProgress(
-        'user-id-1',
-        'lesson-id-1',
-      );
+      const result = await cacheService.getLessonProgress('user-id-1', 'lesson-id-1');
 
       expect(result).toBeDefined();
       expect(result!.id).toBe('progress-id-1');
@@ -75,10 +72,7 @@ describe('ProgressCacheService', () => {
       redisService.get.mockResolvedValue(null);
       progressRepository.findByUserAndLesson.mockResolvedValue(mockProgress);
 
-      const result = await cacheService.getLessonProgress(
-        'user-id-1',
-        'lesson-id-1',
-      );
+      const result = await cacheService.getLessonProgress('user-id-1', 'lesson-id-1');
 
       expect(result).toBeDefined();
       expect(result!.id).toBe('progress-id-1');
@@ -96,18 +90,10 @@ describe('ProgressCacheService', () => {
 
   describe('invalidateAll', () => {
     it('Кэш invalidate хийх — lesson болон course түлхүүрүүд устгагдана', async () => {
-      await cacheService.invalidateAll(
-        'user-id-1',
-        'lesson-id-1',
-        'course-id-1',
-      );
+      await cacheService.invalidateAll('user-id-1', 'lesson-id-1', 'course-id-1');
 
-      expect(redisService.del).toHaveBeenCalledWith(
-        'progress:lesson:user-id-1:lesson-id-1',
-      );
-      expect(redisService.del).toHaveBeenCalledWith(
-        'progress:course:user-id-1:course-id-1',
-      );
+      expect(redisService.del).toHaveBeenCalledWith('progress:lesson:user-id-1:lesson-id-1');
+      expect(redisService.del).toHaveBeenCalledWith('progress:course:user-id-1:course-id-1');
     });
   });
 });

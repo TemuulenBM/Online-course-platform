@@ -102,10 +102,7 @@ describe('GetLessonProgressUseCase', () => {
     expect(result.id).toBe('progress-id-1');
     expect(result.progressPercentage).toBe(50);
     expect(result.completed).toBe(false);
-    expect(progressCacheService.getLessonProgress).toHaveBeenCalledWith(
-      'user-id-1',
-      'lesson-id-1',
-    );
+    expect(progressCacheService.getLessonProgress).toHaveBeenCalledWith('user-id-1', 'lesson-id-1');
   });
 
   it('ахиц байхгүй — default утга буцаах', async () => {
@@ -132,8 +129,6 @@ describe('GetLessonProgressUseCase', () => {
     lessonRepository.findById.mockResolvedValue(mockLesson as any);
     enrollmentRepository.findByUserAndCourse.mockResolvedValue(null);
 
-    await expect(
-      useCase.execute('user-id-1', 'lesson-id-1'),
-    ).rejects.toThrow(ForbiddenException);
+    await expect(useCase.execute('user-id-1', 'lesson-id-1')).rejects.toThrow(ForbiddenException);
   });
 });

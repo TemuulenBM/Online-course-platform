@@ -40,30 +40,18 @@ export class UpdateLessonProgressUseCase {
 
     /** 2. Хичээл нийтлэгдсэн эсэх шалгах */
     if (!lesson.isPublished) {
-      throw new BadRequestException(
-        'Нийтлэгдээгүй хичээлд ахиц бүртгэх боломжгүй',
-      );
+      throw new BadRequestException('Нийтлэгдээгүй хичээлд ахиц бүртгэх боломжгүй');
     }
 
     /** 3. Элсэлт ACTIVE эсэх шалгах */
-    const enrollment =
-      await this.enrollmentRepository.findByUserAndCourse(
-        userId,
-        lesson.courseId,
-      );
+    const enrollment = await this.enrollmentRepository.findByUserAndCourse(userId, lesson.courseId);
     if (!enrollment || enrollment.status !== 'active') {
-      throw new ForbiddenException(
-        'Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна',
-      );
+      throw new ForbiddenException('Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна');
     }
 
     /** 4. Одоо байгаа ахиц авч timeSpentSeconds нэмэгдүүлэх */
-    const existing = await this.progressRepository.findByUserAndLesson(
-      userId,
-      lessonId,
-    );
-    const newTimeSpent =
-      (existing?.timeSpentSeconds ?? 0) + (dto.timeSpentSeconds ?? 0);
+    const existing = await this.progressRepository.findByUserAndLesson(userId, lessonId);
+    const newTimeSpent = (existing?.timeSpentSeconds ?? 0) + (dto.timeSpentSeconds ?? 0);
 
     /** 5. Ахиц upsert хийх */
     const progress = await this.progressRepository.upsert({
@@ -75,15 +63,9 @@ export class UpdateLessonProgressUseCase {
     });
 
     /** 6. Кэш invalidate */
-    await this.progressCacheService.invalidateAll(
-      userId,
-      lessonId,
-      lesson.courseId,
-    );
+    await this.progressCacheService.invalidateAll(userId, lessonId, lesson.courseId);
 
-    this.logger.log(
-      `Ахиц шинэчлэгдлээ: хэрэглэгч ${userId}, хичээл ${lessonId}`,
-    );
+    this.logger.log(`Ахиц шинэчлэгдлээ: хэрэглэгч ${userId}, хичээл ${lessonId}`);
     return progress;
   }
 }

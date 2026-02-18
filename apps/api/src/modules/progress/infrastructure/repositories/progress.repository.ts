@@ -67,10 +67,7 @@ export class ProgressRepository {
   }
 
   /** userId + lessonId-аар ахиц хайна */
-  async findByUserAndLesson(
-    userId: string,
-    lessonId: string,
-  ): Promise<UserProgressEntity | null> {
+  async findByUserAndLesson(userId: string, lessonId: string): Promise<UserProgressEntity | null> {
     const progress = await this.prisma.userProgress.findUnique({
       where: {
         userId_lessonId: { userId, lessonId },
@@ -91,10 +88,7 @@ export class ProgressRepository {
   }
 
   /** Хэрэглэгчийн тухайн сургалтын бүх ахицууд */
-  async findByUserAndCourse(
-    userId: string,
-    courseId: string,
-  ): Promise<UserProgressEntity[]> {
+  async findByUserAndCourse(userId: string, courseId: string): Promise<UserProgressEntity[]> {
     const progressList = await this.prisma.userProgress.findMany({
       where: {
         userId,
@@ -117,10 +111,7 @@ export class ProgressRepository {
   }
 
   /** Хэрэглэгчийн тухайн сургалтын completed хичээлүүдийн тоо */
-  async countCompletedLessons(
-    userId: string,
-    courseId: string,
-  ): Promise<number> {
+  async countCompletedLessons(userId: string, courseId: string): Promise<number> {
     return this.prisma.userProgress.count({
       where: {
         userId,

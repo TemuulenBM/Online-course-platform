@@ -39,48 +39,29 @@ export class UpdateVideoPositionUseCase {
     }
 
     if (lesson.lessonType !== 'video') {
-      throw new BadRequestException(
-        'Видеоны байрлал зөвхөн VIDEO төрлийн хичээлд ажиллана',
-      );
+      throw new BadRequestException('Видеоны байрлал зөвхөн VIDEO төрлийн хичээлд ажиллана');
     }
 
     if (!lesson.isPublished) {
-      throw new BadRequestException(
-        'Нийтлэгдээгүй хичээлд ахиц бүртгэх боломжгүй',
-      );
+      throw new BadRequestException('Нийтлэгдээгүй хичээлд ахиц бүртгэх боломжгүй');
     }
 
     /** 2. Элсэлт ACTIVE эсэх шалгах */
-    const enrollment =
-      await this.enrollmentRepository.findByUserAndCourse(
-        userId,
-        lesson.courseId,
-      );
+    const enrollment = await this.enrollmentRepository.findByUserAndCourse(userId, lesson.courseId);
     if (!enrollment || enrollment.status !== 'active') {
-      throw new ForbiddenException(
-        'Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна',
-      );
+      throw new ForbiddenException('Энэ сургалтад элсээгүй эсвэл элсэлт идэвхгүй байна');
     }
 
     /** 3. Ахицын хувийг автоматаар тооцоолох */
     const durationSeconds = lesson.durationMinutes * 60;
     const progressPercentage =
       durationSeconds > 0
-        ? Math.min(
-            100,
-            Math.round(
-              (dto.lastPositionSeconds / durationSeconds) * 100,
-            ),
-          )
+        ? Math.min(100, Math.round((dto.lastPositionSeconds / durationSeconds) * 100))
         : 0;
 
     /** 4. timeSpentSeconds нэмэгдүүлэх */
-    const existing = await this.progressRepository.findByUserAndLesson(
-      userId,
-      lessonId,
-    );
-    const newTimeSpent =
-      (existing?.timeSpentSeconds ?? 0) + (dto.timeSpentSeconds ?? 0);
+    const existing = await this.progressRepository.findByUserAndLesson(userId, lessonId);
+    const newTimeSpent = (existing?.timeSpentSeconds ?? 0) + (dto.timeSpentSeconds ?? 0);
 
     /** 5. Ахиц upsert */
     const progress = await this.progressRepository.upsert({
@@ -92,11 +73,7 @@ export class UpdateVideoPositionUseCase {
     });
 
     /** 6. Кэш invalidate */
-    await this.progressCacheService.invalidateAll(
-      userId,
-      lessonId,
-      lesson.courseId,
-    );
+    await this.progressCacheService.invalidateAll(userId, lessonId, lesson.courseId);
 
     this.logger.log(
       `Видео байрлал шинэчлэгдлээ: хэрэглэгч ${userId}, хичээл ${lessonId}, байрлал ${dto.lastPositionSeconds}с`,

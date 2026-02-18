@@ -72,8 +72,6 @@ describe('DeleteProgressUseCase', () => {
   it('олдсонгүй — NotFoundException', async () => {
     progressRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute('nonexistent')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(useCase.execute('nonexistent')).rejects.toThrow(NotFoundException);
   });
 });
