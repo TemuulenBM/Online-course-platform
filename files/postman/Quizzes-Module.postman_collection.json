@@ -1,0 +1,802 @@
+{
+  "info": {
+    "name": "OCP — Quizzes Module",
+    "description": "Online Course Platform — Quizzes Module API\n\nPhase 3: Quiz CRUD, асуулт удирдлага, оролдлогын lifecycle, автомат дүгнэлт\n\n## Хэрэглэх дараалал\n1. Auth → Teacher, Student нэвтрэх\n2. Setup → Сургалт + QUIZ хичээл үүсгэх + нийтлэх\n3. Quiz → Үүсгэх → Асуултууд нэмэх → Дараалал солих\n4. Attempt → Элсэлт → Эхлэх → Хариулт илгээх → Үр дүн\n5. Grade → Багш essay/code хариулт дүгнэх\n\n## Асуултын 5 төрөл\n- multiple_choice (автомат дүгнэлт)\n- true_false (автомат дүгнэлт)\n- fill_blank (автомат дүгнэлт)\n- code_challenge (гараар дүгнэх)\n- essay (гараар дүгнэх)\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `teacherToken`: TEACHER JWT\n- `studentToken`: STUDENT JWT\n- `courseId`: Сургалтын ID\n- `lessonId`: QUIZ хичээлийн ID\n- `quizId`: Quiz ID\n- `questionId1..3`: Асуултуудын ID\n- `attemptId`: Оролдлогын ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" },
+    { "key": "lessonId", "value": "", "type": "string" },
+    { "key": "quizId", "value": "", "type": "string" },
+    { "key": "questionId1", "value": "", "type": "string" },
+    { "key": "questionId2", "value": "", "type": "string" },
+    { "key": "questionId3", "value": "", "type": "string" },
+    { "key": "attemptId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01. Auth — Setup",
+      "item": [
+        {
+          "name": "Login Teacher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Test1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Register Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"quiz-student@test.com\",\n  \"password\": \"Pass1234!\",\n  \"firstName\": \"Quiz\",\n  \"lastName\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"quiz-student@test.com\",\n  \"password\": \"Pass1234!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Setup — Course & Lesson",
+      "item": [
+        {
+          "name": "Get Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('categoryId', res.data[0].id);",
+                  "  pm.test('Category ID saved', () => pm.expect(res.data[0].id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('courseId', res.data.id);",
+                  "  pm.test('Course created', () => pm.expect(res.data.title).to.eql('Quiz Test Course'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Quiz Test Course\",\n  \"description\": \"Quizzes module testing\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"difficulty\": \"beginner\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            }
+          }
+        },
+        {
+          "name": "Create QUIZ Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('lessonId', res.data.id);",
+                  "  pm.test('Quiz lesson created', () => pm.expect(res.data.lessonType).to.eql('quiz'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"title\": \"Math Quiz\",\n  \"lessonType\": \"quiz\",\n  \"durationMinutes\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["lessons"]
+            }
+          }
+        },
+        {
+          "name": "Publish Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Course published', () => pm.expect(res.data.status).to.eql('published'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Enroll Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Student enrolled', () => pm.expect(res.data.status).to.eql('active'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": ["{{baseUrl}}"],
+              "path": ["enrollments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Quiz CRUD",
+      "item": [
+        {
+          "name": "Create Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (res.data && res.data.id) {",
+                  "  pm.collectionVariables.set('quizId', res.data.id);",
+                  "  pm.test('Quiz created', () => {",
+                  "    pm.expect(res.data.title).to.eql('Math Basics Quiz');",
+                  "    pm.expect(res.data.passingScorePercentage).to.eql(60);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lessonId\": \"{{lessonId}}\",\n  \"title\": \"Math Basics Quiz\",\n  \"description\": \"Basic math questions\",\n  \"timeLimitMinutes\": 15,\n  \"passingScorePercentage\": 60,\n  \"maxAttempts\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes"]
+            }
+          }
+        },
+        {
+          "name": "Get Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Quiz retrieved', () => {",
+                  "  pm.expect(res.data.quiz.title).to.eql('Math Basics Quiz');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Quiz by Lesson",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Quiz found by lesson', () => {",
+                  "  pm.expect(res.data.id).to.eql(pm.collectionVariables.get('quizId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/lesson/{{lessonId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "lesson", "{{lessonId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Quiz updated', () => {",
+                  "  pm.expect(res.data.title).to.eql('Math Basics Quiz v2');",
+                  "  pm.expect(res.data.passingScorePercentage).to.eql(70);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Math Basics Quiz v2\",\n  \"passingScorePercentage\": 70,\n  \"randomizeQuestions\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Question Management",
+      "item": [
+        {
+          "name": "Add Question (multiple_choice)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (res.data && res.data.questions) {",
+                  "  const q = res.data.questions[res.data.questions.length - 1];",
+                  "  pm.collectionVariables.set('questionId1', q.questionId);",
+                  "  pm.test('MC question added', () => pm.expect(q.type).to.eql('multiple_choice'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"multiple_choice\",\n  \"questionText\": \"2+2 хэд вэ?\",\n  \"points\": 10,\n  \"options\": [\n    { \"optionId\": \"a\", \"text\": \"3\", \"isCorrect\": false },\n    { \"optionId\": \"b\", \"text\": \"4\", \"isCorrect\": true },\n    { \"optionId\": \"c\", \"text\": \"5\", \"isCorrect\": false }\n  ],\n  \"explanation\": \"2+2=4\",\n  \"difficulty\": \"easy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Add Question (true_false)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (res.data && res.data.questions) {",
+                  "  const q = res.data.questions[res.data.questions.length - 1];",
+                  "  pm.collectionVariables.set('questionId2', q.questionId);",
+                  "  pm.test('TF question added', () => pm.expect(q.type).to.eql('true_false'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"true_false\",\n  \"questionText\": \"Дэлхий дугуй юу?\",\n  \"points\": 5,\n  \"correctAnswer\": true,\n  \"explanation\": \"Дэлхий бөмбөрцөг хэлбэртэй\",\n  \"difficulty\": \"easy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Add Question (fill_blank)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (res.data && res.data.questions) {",
+                  "  const q = res.data.questions[res.data.questions.length - 1];",
+                  "  pm.collectionVariables.set('questionId3', q.questionId);",
+                  "  pm.test('Fill blank question added', () => pm.expect(q.type).to.eql('fill_blank'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"fill_blank\",\n  \"questionText\": \"Монгол улсын нийслэл хот ___\",\n  \"points\": 5,\n  \"correctAnswers\": [\"Улаанбаатар\", \"UB\"],\n  \"caseSensitive\": false,\n  \"difficulty\": \"easy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions"]
+            }
+          }
+        },
+        {
+          "name": "Update Question",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Question updated', () => pm.expect(res.success).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionText\": \"2 дээр 2 нэмвэл хэд гарах вэ?\",\n  \"points\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions/{{questionId1}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions", "{{questionId1}}"]
+            }
+          }
+        },
+        {
+          "name": "Reorder Questions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Questions reordered', () => {",
+                  "  pm.expect(res.success).to.be.true;",
+                  "  pm.expect(res.data.questions[0].orderIndex).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionOrder\": [\n    { \"questionId\": \"{{questionId3}}\", \"orderIndex\": 0 },\n    { \"questionId\": \"{{questionId2}}\", \"orderIndex\": 1 },\n    { \"questionId\": \"{{questionId1}}\", \"orderIndex\": 2 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions/reorder",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Delete Question (fill_blank)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Question deleted', () => pm.response.to.have.status(204));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/questions/{{questionId3}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "questions", "{{questionId3}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Attempt Lifecycle",
+      "item": [
+        {
+          "name": "Start Attempt",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (res.data && res.data.attempt) {",
+                  "  pm.collectionVariables.set('attemptId', res.data.attempt.id);",
+                  "  pm.test('Attempt started', () => {",
+                  "    pm.expect(res.data.attempt.submittedAt).to.be.null;",
+                  "    pm.expect(res.data.questions).to.be.an('array');",
+                  "  });",
+                  "  // Зөв хариулт арилсан эсэх шалгах",
+                  "  const mcQ = res.data.questions.find(q => q.type === 'multiple_choice');",
+                  "  if (mcQ && mcQ.options) {",
+                  "    pm.test('Correct answers stripped', () => {",
+                  "      mcQ.options.forEach(o => pm.expect(o).to.not.have.property('isCorrect'));",
+                  "    });",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/attempts",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "attempts"]
+            }
+          }
+        },
+        {
+          "name": "Submit Attempt (all correct)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Attempt submitted', () => {",
+                  "  pm.expect(res.data.attempt.submittedAt).to.not.be.null;",
+                  "  pm.expect(res.data.attempt.passed).to.be.true;",
+                  "  pm.expect(res.data.attempt.score).to.eql(res.data.attempt.maxScore);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": \"{{questionId1}}\",\n      \"answerData\": {\n        \"type\": \"multiple_choice\",\n        \"selectedOption\": \"b\",\n        \"timeSpentSeconds\": 20\n      }\n    },\n    {\n      \"questionId\": \"{{questionId2}}\",\n      \"answerData\": {\n        \"type\": \"true_false\",\n        \"selectedAnswer\": true,\n        \"timeSpentSeconds\": 5\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/attempts/{{attemptId}}/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "attempts", "{{attemptId}}", "submit"]
+            }
+          }
+        },
+        {
+          "name": "List My Attempts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('My attempts listed', () => {",
+                  "  pm.expect(res.data).to.be.an('array');",
+                  "  pm.expect(res.data.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/attempts/my",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "attempts", "my"]
+            }
+          }
+        },
+        {
+          "name": "Get Attempt Detail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Attempt detail retrieved', () => {",
+                  "  pm.expect(res.data.attempt.id).to.eql(pm.collectionVariables.get('attemptId'));",
+                  "  pm.expect(res.data.answers).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/attempts/{{attemptId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "attempts", "{{attemptId}}"]
+            }
+          }
+        },
+        {
+          "name": "List Student Attempts (teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Student attempts listed', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "  pm.expect(res.data.total).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}/attempts/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}", "attempts", "students"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Grade (Teacher)",
+      "item": [
+        {
+          "name": "Grade Attempt (essay question)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "// Essay асуулт байхгүй тохиолдолд 404/400 буцаж болно",
+                  "pm.test('Grade response received', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionId\": \"{{questionId1}}\",\n  \"pointsEarned\": 10,\n  \"feedback\": \"Маш сайн хариулсан байна\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/attempts/{{attemptId}}/grade",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "attempts", "{{attemptId}}", "grade"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Cleanup",
+      "item": [
+        {
+          "name": "Delete Quiz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Quiz deleted', () => pm.response.to.have.status(204));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/{{quizId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "{{quizId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

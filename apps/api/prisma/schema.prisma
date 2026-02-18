@@ -26,6 +26,7 @@ model User {
   courses        Course[]
   enrollments    Enrollment[]
   userProgress   UserProgress[]
+  quizAttempts   QuizAttempt[]
 
   @@map("users")
 }
@@ -216,6 +217,7 @@ model Lesson {
 
   course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userProgress UserProgress[]
+  quiz         Quiz?
 
   @@index([courseId])
   @@index([courseId, orderIndex])
@@ -262,4 +264,43 @@ model UserProgress {
   @@index([userId])
   @@index([lessonId])
   @@map("user_progress")
+}
+
+model Quiz {
+  id                     String    @id @default(uuid())
+  lessonId               String    @unique @map("lesson_id")
+  title                  String
+  description            String?
+  timeLimitMinutes       Int?      @map("time_limit_minutes")
+  passingScorePercentage Int       @default(70) @map("passing_score_percentage")
+  randomizeQuestions     Boolean   @default(false) @map("randomize_questions")
+  randomizeOptions       Boolean   @default(false) @map("randomize_options")
+  maxAttempts            Int?      @map("max_attempts")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  lesson   Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  attempts QuizAttempt[]
+
+  @@map("quizzes")
+}
+
+model QuizAttempt {
+  id          String    @id @default(uuid())
+  quizId      String    @map("quiz_id")
+  userId      String    @map("user_id")
+  score       Int       @default(0)
+  maxScore    Int       @default(0) @map("max_score")
+  passed      Boolean   @default(false)
+  startedAt   DateTime  @default(now()) @map("started_at")
+  submittedAt DateTime? @map("submitted_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@index([userId])
+  @@index([quizId, userId])
+  @@map("quiz_attempts")
 }

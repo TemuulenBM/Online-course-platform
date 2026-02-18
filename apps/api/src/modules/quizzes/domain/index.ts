@@ -1,1 +1,2 @@
-// Domain entities, value objects, and events will be exported here
+export { QuizEntity } from './entities/quiz.entity';
+export { QuizAttemptEntity } from './entities/quiz-attempt.entity';

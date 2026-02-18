@@ -39,6 +39,6 @@ import { ProgressCacheService } from './infrastructure/services/progress-cache.s
     ProgressRepository,
     ProgressCacheService,
   ],
-  exports: [ProgressRepository],
+  exports: [ProgressRepository, CompleteLessonUseCase],
 })
 export class ProgressModule {}
