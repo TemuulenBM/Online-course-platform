@@ -432,3 +432,44 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/progress/my`, `/progress/course/:courseId` нь `/progress/lessons/:lessonId`-ээс ӨМНӨ
 
 **Тест**: 9 test suite, 37 unit тест (use-case + controller + cache service)
+
+### Quizzes Module (Phase 3)
+
+**Endpoints** (`/api/v1/quizzes`):
+
+- `POST /quizzes` — Quiz үүсгэх (TEACHER, ADMIN — lessonType=QUIZ шаардлагатай)
+- `GET /quizzes/lesson/:lessonId` — Хичээлийн quiz авах (@Public)
+- `GET /quizzes/:id` — Quiz дэлгэрэнгүй + асуултууд (TEACHER/ADMIN: хариултуудтай, STUDENT: хариултгүй)
+- `PATCH /quizzes/:id` — Quiz тохиргоо шинэчлэх (эзэмшигч/ADMIN)
+- `DELETE /quizzes/:id` — Quiz устгах (эзэмшигч/ADMIN)
+- `POST /quizzes/:id/questions` — Асуулт нэмэх (TEACHER, ADMIN)
+- `PATCH /quizzes/:id/questions/:questionId` — Асуулт шинэчлэх (TEACHER, ADMIN)
+- `DELETE /quizzes/:id/questions/:questionId` — Асуулт устгах (TEACHER, ADMIN)
+- `PATCH /quizzes/:id/questions/reorder` — Асуултуудын дараалал солих (TEACHER, ADMIN)
+- `POST /quizzes/:id/attempts` — Quiz оролдлого эхлүүлэх (JWT required, ACTIVE enrollment)
+- `GET /quizzes/:id/attempts/my` — Миний оролдлогууд (JWT required)
+- `GET /quizzes/:id/attempts/students` — Оюутнуудын оролдлогууд (TEACHER, ADMIN)
+- `GET /quizzes/:id/attempts/:attemptId` — Оролдлогын дэлгэрэнгүй (JWT required)
+- `POST /quizzes/:id/attempts/:attemptId/submit` — Хариулт илгээх + auto-grade (JWT required)
+- `PATCH /quizzes/attempts/:attemptId/grade` — Essay/code гараар дүгнэх (TEACHER, ADMIN)
+
+**Export хийсэн service-ууд**: `QuizRepository`
+
+**Хамаарал**: `MongooseModule` (quiz_questions, quiz_answers), `LessonsModule` (LessonRepository), `EnrollmentsModule` (EnrollmentRepository), `ProgressModule` (CompleteLessonUseCase), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Dual-database: PostgreSQL (quiz metadata + attempt results) + MongoDB (questions + answers)
+- Асуултын 5 төрөл: `multiple_choice`, `true_false`, `fill_blank` (auto-grade), `code_challenge`, `essay` (гараар дүгнэх)
+- `QuizGradingService`: multiple_choice, true_false, fill_blank автомат дүгнэнэ; code_challenge, essay → pointsEarned=0, гараар дүгнэх хүртэл
+- `CompleteLessonUseCase` интеграц: quiz тэнцсэн бол хичээл автомат complete → enrollment auto-complete
+- `CompleteLessonUseCase` ConflictException-г try/catch-аар алгасна (дахин тэнцсэн тохиолдол)
+- `ProgressModule` exports-д `CompleteLessonUseCase` нэмэгдсэн
+- Attempt lifecycle: `startAttempt` → `submitAttempt` → auto-grade → (optional) `gradeAttempt`
+- `maxAttempts` null бол хязгааргүй оролдлого; `timeLimitMinutes` null бол хугацааны хязгааргүй
+- `randomizeQuestions`, `randomizeOptions` тохиргоо — Fisher-Yates shuffle алгоритм
+- Зөв хариулт нуулт: StartAttempt-д isCorrect, correctAnswer, solution зэрэг талбарууд strip хийгдэнэ
+- Redis кэш: `quiz:{id}`, `quiz:lesson:{lessonId}`, `quiz:questions:{quizId}`, `quiz:attempts:{quizId}:{userId}` (TTL 15 мин)
+- Route дараалал: `/quizzes/lesson/:lessonId`, `/quizzes/attempts/:attemptId/grade` нь `/quizzes/:id`-ээс ӨМНӨ; `/quizzes/:id/questions/reorder` нь `/:id/questions/:questionId`-ээс ӨМНӨ; `/attempts/my`, `/attempts/students` нь `/attempts/:attemptId`-ээс ӨМНӨ
+
+**Тест**: 8 test suite, 68 unit тест (use-case + controller + cache service + grading service)
