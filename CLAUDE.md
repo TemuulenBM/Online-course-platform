@@ -638,3 +638,45 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/my`, `/pending` нь `/:id`-ээс ӨМНӨ
 
 **Тест**: 18 test suite, 75 unit тест (use-case + controller + cache service + processor + mock gateway)
+
+### Analytics Module (Phase 5)
+
+**Endpoints — Dashboard** (`/api/v1/analytics/dashboard`) — ADMIN only:
+
+- `GET /analytics/dashboard/overview` — Ерөнхий тоон үзүүлэлтүүд (нийт хэрэглэгч, сургалт, элсэлт, орлого, сертификат, энэ сарын шинэ бүртгэл/элсэлт/орлого)
+- `GET /analytics/dashboard/revenue` — Орлогын тайлан (period: day/month/year, dateFrom, dateTo)
+- `GET /analytics/dashboard/enrollments` — Элсэлтийн трэнд (period: day/month/year, dateFrom, dateTo)
+- `GET /analytics/dashboard/popular-courses` — Топ сургалтууд (limit query param)
+
+**Endpoints — Course Analytics** (`/api/v1/analytics/courses`) — TEACHER, ADMIN:
+
+- `GET /analytics/courses/:courseId` — Сургалтын дэлгэрэнгүй статистик (enrollment, completion rate, revenue, avg progress)
+- `GET /analytics/courses/:courseId/students` — Оюутнуудын ахиц жагсаалт (pagination)
+- `GET /analytics/courses/:courseId/lessons` — Хичээл тус бүрийн статистик (completion rate, avg time)
+
+**Endpoints — Event Tracking** (`/api/v1/analytics/events`):
+
+- `POST /analytics/events/track` — Event бүртгэх (@Public, JWT optional)
+- `GET /analytics/events` — Event жагсаалт (ADMIN only, pagination + filters)
+
+**Export хийсэн service-ууд**: `AnalyticsEventRepository`
+
+**Хамаарал**: `BullModule` (analytics queue), `ConfigModule`, `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- **Hybrid арга**: AnalyticsEvent таблиц (client-side event tracking) + Aggregation from existing tables (enrollments, orders, progress, certificates)
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- **AnalyticsAggregationRepository**: `$queryRawUnsafe` ашиглан SQL aggregate (COUNT, SUM, AVG, date_trunc, GROUP BY) — Prisma tagged template UUID/text type mismatch-аас зайлсхийсэн
+- `Prisma.raw()` ашиглан `date_trunc('month', column)` SQL identifier-ийг template-д оруулсан
+- **Bull Queue**: `track-event` process-ээр event-ууд async бүртгэгдэнэ (endpoint хурдан `{ queued: true }` буцаана)
+- **Analytics processor**: Алдаа гарсан ч exception шидэхгүй (graceful handling — log хийж алгасна)
+- Redis кэш TTL: overview 300s (5 мин), бусад бүгд 900s (15 мин)
+- Кэш key-ууд: `analytics:overview`, `analytics:revenue:{period}:{from}:{to}`, `analytics:enrollments:{period}:{from}:{to}`, `analytics:popular:{limit}`, `analytics:course:{courseId}`
+- Dashboard endpoints: `@Roles('ADMIN')` — зөвхөн ADMIN
+- Course analytics: TEACHER (өөрийн сургалт) + ADMIN — use-case түвшинд CourseRepository.findById → instructorId шалгалт
+- Track event: `@Public()` — JWT optional, client-side event бүртгэхэд ашиглана
+- Revenue/Enrollment trend: default last 12 months, period param-аар бүлэглэнэ
+- Prisma column type бүгд `text` (uuid биш) — raw query-д `::uuid` cast хэрэглэхгүй
+
+**Тест**: 14 test suite, 68 unit тест (use-case + controller + cache service + processor)
