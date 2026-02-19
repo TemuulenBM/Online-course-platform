@@ -1,0 +1,495 @@
+{
+  "info": {
+    "name": "OCP — Payments Module",
+    "description": "Online Course Platform — Payments Module API\n\nPhase 5: Төлбөрийн модуль — захиалга, баримт upload, admin баталгаажуулалт, subscription, нэхэмжлэх\n\n## Төлбөрийн flow\n1. POST /payments/orders — Захиалга үүсгэх (PENDING)\n2. POST /payments/orders/:id/upload-proof — Банк баримт upload (PROCESSING)\n3. PATCH /payments/orders/:id/approve — Admin баталгаажуулах (PAID)\n   → Bull Queue: Enrollment + Invoice + Notification автомат\n4. PATCH /payments/orders/:id/reject — Admin татгалзах (FAILED)\n\n## Урьдчилсан нөхцөл\n- Docker ажиллаж байх (PostgreSQL, Redis)\n- PUBLISHED, төлбөртэй сургалт байх\n- ADMIN эрхтэй хэрэглэгч байх\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `studentToken`: Оюутны JWT token\n- `adminToken`: Admin JWT token\n- `courseId`: Сургалтын ID\n- `orderId`: Захиалгын ID\n- `subscriptionId`: Бүртгэлийн ID\n- `invoiceId`: Нэхэмжлэхийн ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "orderId", "value": "", "type": "string" },
+    { "key": "subscriptionId", "value": "", "type": "string" },
+    { "key": "invoiceId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00. Auth — Setup",
+      "item": [
+        {
+          "name": "Login (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"paystudent@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Order created with PENDING status', () => {",
+                  "  pm.expect(res.data.status).to.equal('pending');",
+                  "  pm.expect(res.data.amount).to.be.a('number');",
+                  "});",
+                  "if (res.data) {",
+                  "  pm.collectionVariables.set('orderId', res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{courseId}}\",\n  \"paymentMethod\": \"bank_transfer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders"]
+            }
+          }
+        },
+        {
+          "name": "List My Orders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns paginated list', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "  pm.expect(res.data.meta).to.have.property('total');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List My Orders (status filter)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/my?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "my"],
+              "query": [{ "key": "status", "value": "pending" }]
+            }
+          }
+        },
+        {
+          "name": "List Pending Orders (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns pending/processing orders', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/pending?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "pending"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Order Detail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns order with courseTitle', () => {",
+                  "  pm.expect(res.data.id).to.equal(pm.collectionVariables.get('orderId'));",
+                  "  pm.expect(res.data).to.have.property('courseTitle');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "{{orderId}}"]
+            }
+          }
+        },
+        {
+          "name": "Upload Payment Proof",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200 or 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Status changed to PROCESSING', () => {",
+                  "  pm.expect(res.data.status).to.equal('processing');",
+                  "  pm.expect(res.data.proofImageUrl).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/proof-image.png",
+                  "description": "Банк шилжүүлгийн баримт зураг"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/{{orderId}}/upload-proof",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "{{orderId}}", "upload-proof"]
+            }
+          }
+        },
+        {
+          "name": "Approve Order (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Status changed to PAID', () => {",
+                  "  pm.expect(res.data.status).to.equal('paid');",
+                  "  pm.expect(res.data.paidAt).to.not.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminNote\": \"Payment confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/{{orderId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "{{orderId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Order (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Status changed to FAILED', () => {",
+                  "  pm.expect(res.data.status).to.equal('failed');",
+                  "  pm.expect(res.data.adminNote).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminNote\": \"Proof image is unclear, please re-upload\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/orders/{{orderId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "orders", "{{orderId}}", "reject"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Subscriptions",
+      "item": [
+        {
+          "name": "Create Subscription (Monthly)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Monthly subscription created', () => {",
+                  "  pm.expect(res.data.planType).to.equal('monthly');",
+                  "  pm.expect(res.data.status).to.equal('active');",
+                  "  pm.expect(res.data.isActive).to.be.true;",
+                  "});",
+                  "if (res.data) {",
+                  "  pm.collectionVariables.set('subscriptionId', res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planType\": \"monthly\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/subscriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "Get My Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns subscription with period dates', () => {",
+                  "  pm.expect(res.data).to.have.property('currentPeriodStart');",
+                  "  pm.expect(res.data).to.have.property('currentPeriodEnd');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/subscriptions/my",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "subscriptions", "my"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cancel at period end set', () => {",
+                  "  pm.expect(res.data.cancelAtPeriodEnd).to.be.true;",
+                  "  pm.expect(res.data.cancelledAt).to.not.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/subscriptions/{{subscriptionId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "subscriptions", "{{subscriptionId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Invoices",
+      "item": [
+        {
+          "name": "List My Invoices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns invoice list', () => {",
+                  "  pm.expect(res.data.data).to.be.an('array');",
+                  "});",
+                  "if (res.data.data && res.data.data.length > 0) {",
+                  "  pm.collectionVariables.set('invoiceId', res.data.data[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/invoices/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "invoices", "my"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Invoice Detail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns invoice with number and amount', () => {",
+                  "  pm.expect(res.data).to.have.property('invoiceNumber');",
+                  "  pm.expect(res.data).to.have.property('amount');",
+                  "  pm.expect(res.data).to.have.property('currency');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/payments/invoices/{{invoiceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "invoices", "{{invoiceId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
