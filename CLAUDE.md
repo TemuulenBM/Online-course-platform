@@ -558,3 +558,83 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `course/:courseId` нь `:id`-ээс ӨМНӨ; `lesson/:lessonId` нь `:id`-ээс ӨМНӨ
 
 **Тест**: 16 test suite, ~75 unit тест (use-case + controller + cache service)
+
+### Notifications Module (Phase 4)
+
+**Endpoints** (`/api/v1/notifications`):
+
+- `GET /notifications/unread-count` — Уншаагүй мэдэгдлийн тоо (JWT required)
+- `GET /notifications/preferences` — Мэдэгдлийн тохиргоо авах (JWT required)
+- `PATCH /notifications/mark-all-read` — Бүх мэдэгдлийг уншсан болгох (JWT required)
+- `PATCH /notifications/preferences` — Мэдэгдлийн тохиргоо шинэчлэх (JWT required)
+- `GET /notifications` — Мэдэгдлүүдийн жагсаалт pagination+filter (JWT required)
+- `PATCH /notifications/:id/read` — Нэг мэдэгдлийг уншсан болгох (JWT required, эзэмшигч)
+- `DELETE /notifications/:id` — Мэдэгдэл устгах (JWT required, эзэмшигч/ADMIN)
+
+**Export хийсэн service-ууд**: `NotificationService` (send, sendBulk — бусад модулиас дуудагдана)
+
+**Хамаарал**: `BullModule` (notifications queue), `ConfigModule`, `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- **Multi-channel architecture**: IN_APP (заавал) + Email (SendGrid) + SMS (Twilio placeholder) + Push (Expo placeholder)
+- `NotificationService.send()` workflow: DB бичих → кэш invalidate → preference шалгах → config шалгах → Bull Queue job нэмэх
+- `NotificationService.sendBulk()`: `Promise.all` ашиглан олон хэрэглэгчид параллелиар илгээх
+- **Bull Queue processor** (`NotificationProcessor`): `send-email`, `send-sms`, `send-push` гэсэн 3 process handler — тус бүр config шалгаж service дуудна
+- **DI Token pattern**: `EMAIL_SERVICE` → `SendGridEmailService`, `SMS_SERVICE` → `PlaceholderSmsService`, `PUSH_SERVICE` → `PlaceholderPushService` — ирээдүйд солих боломжтой
+- `notification.config.ts`: Email (SendGrid API key, from), SMS (Twilio), Push тохиргоо — env variables-ээр удирдана
+- **NotificationPreference**: Хэрэглэгч бүр email/push/sms идэвхтэй/идэвхгүй болгох боломжтой. Тохиргоо байхгүй бол default (email:true, push:true, sms:false)
+- Upsert семантик: preference байвал update, байхгүй бол create
+- Эрхийн шалгалт use-case түвшинд: өөрийн мэдэгдэл / ADMIN
+- Redis кэш: `notification:{id}`, `notification:unread:{userId}`, `notification:prefs:{userId}` (TTL 900s / 15 мин)
+- Route дараалал: `/unread-count`, `/preferences`, `/mark-all-read` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 11 test suite, 51 unit тест (use-case + controller + cache service + notification service + processor)
+
+### Payments Module (Phase 5)
+
+**Endpoints — Orders** (`/api/v1/payments/orders`):
+
+- `POST /payments/orders` — Захиалга үүсгэх (JWT + Throttle 5/min)
+- `GET /payments/orders/my` — Миний захиалгууд pagination+status filter (JWT required)
+- `GET /payments/orders/pending` — Хүлээгдэж буй захиалгууд (ADMIN only)
+- `GET /payments/orders/:id` — Захиалгын дэлгэрэнгүй (JWT required, эзэмшигч/instructor/ADMIN)
+- `POST /payments/orders/:id/upload-proof` — Төлбөрийн баримт upload (JWT + Multer)
+- `PATCH /payments/orders/:id/approve` — Захиалга баталгаажуулах (ADMIN only)
+- `PATCH /payments/orders/:id/reject` — Захиалга татгалзах (ADMIN only)
+
+**Endpoints — Subscriptions** (`/api/v1/payments/subscriptions`):
+
+- `POST /payments/subscriptions` — Бүртгэл эхлүүлэх (JWT + Throttle 3/min)
+- `GET /payments/subscriptions/my` — Миний бүртгэл (JWT required)
+- `PATCH /payments/subscriptions/:id/cancel` — Бүртгэл цуцлах (JWT required, эзэмшигч/ADMIN)
+
+**Endpoints — Invoices** (`/api/v1/payments/invoices`):
+
+- `GET /payments/invoices/my` — Миний нэхэмжлэхүүд pagination-тэй (JWT required)
+- `GET /payments/invoices/:id` — Нэхэмжлэхийн дэлгэрэнгүй (JWT required, эзэмшигч/ADMIN)
+
+**Export хийсэн service-ууд**: `OrderRepository`
+
+**Хамаарал**: `BullModule` (payments queue), `MulterModule`, `ConfigModule`, `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- **Manual Payment flow**: Монголд Stripe ажиллахгүй, QPay/SocialPay бизнес данс шаардлагатай → Банк шилжүүлэг + Admin approve арга сонгосон
+- Flow: Order(PENDING) → Upload proof(PROCESSING) → Admin approve(PAID) → Bull Queue → Enrollment + Invoice + Notification
+- **IPaymentGateway DI Token pattern**: `PAYMENT_GATEWAY` → `MockPaymentGateway` — ирээдүйд QPay/Stripe руу хялбар солих боломжтой
+- `STORAGE_SERVICE` → `LocalStorageService` (Content модулийн pattern дахин ашигласан)
+- **Bull Queue processor** 3 process: `payment-approved` (enrollment + invoice + notification + PDF queue), `payment-rejected` (notification), `generate-invoice-pdf` (Puppeteer PDF)
+- **InvoicePdfService**: Puppeteer-core + HTML template → A4 portrait PDF нэхэмжлэх
+- Invoice number формат: `INV-YYYY-XXXXXXXX` (hex random), P2002 unique violation дээр retry (3 удаа)
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- Үнэгүй сургалтад захиалга үүсгэхгүй (BadRequestException → /enrollments руу чиглүүлнэ)
+- Давхар захиалга/элсэлт шалгалт: ACTIVE/COMPLETED enrollment болон PENDING/PROCESSING/PAID order байвал ConflictException
+- Хямдралтай үнэ байвал `discountPrice` ашиглана
+- Валют default: MNT (stripe.config-оос)
+- Redis кэш: `order:{id}`, `subscription:{id}`, `subscription:user:{userId}` (TTL 900s / 15 мин)
+- Throttle constants: `PAYMENT_THROTTLE` (5/min), `SUBSCRIPTION_THROTTLE` (3/min)
+- Route дараалал: `/my`, `/pending` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 18 test suite, 75 unit тест (use-case + controller + cache service + processor + mock gateway)

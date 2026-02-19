@@ -15,6 +15,8 @@ import redisConfig from './config/redis.config';
 import jwtConfig from './config/jwt.config';
 import throttleConfig from './config/throttle.config';
 import storageConfig from './config/storage.config';
+import notificationConfig from './config/notification.config';
+import stripeConfig from './config/stripe.config';
 
 // Common modules
 import { PrismaModule } from './common/prisma/prisma.module';
@@ -32,8 +34,8 @@ import { ProgressModule } from './modules/progress/progress.module';
 import { QuizzesModule } from './modules/quizzes/quizzes.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { DiscussionsModule } from './modules/discussions/discussions.module';
-// import { NotificationsModule } from './modules/notifications/notifications.module';
-// import { PaymentsModule } from './modules/payments/payments.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 // import { AnalyticsModule } from './modules/analytics/analytics.module';
 // import { AdminModule } from './modules/admin/admin.module';
 // import { LiveClassesModule } from './modules/live-classes/live-classes.module';
@@ -50,6 +52,8 @@ import { DiscussionsModule } from './modules/discussions/discussions.module';
         jwtConfig,
         throttleConfig,
         storageConfig,
+        notificationConfig,
+        stripeConfig,
       ],
     }),
     // Rate limiting — хүсэлт хязгаарлалт (config-оос уншина)
@@ -103,6 +107,8 @@ import { DiscussionsModule } from './modules/discussions/discussions.module';
     QuizzesModule,
     CertificatesModule,
     DiscussionsModule,
+    NotificationsModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [

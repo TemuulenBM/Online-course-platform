@@ -27,7 +27,11 @@ model User {
   enrollments    Enrollment[]
   userProgress   UserProgress[]
   quizAttempts   QuizAttempt[]
-  certificates   Certificate[]
+  certificates              Certificate[]
+  notifications             Notification[]
+  notificationPreference    NotificationPreference?
+  orders                    Order[]
+  subscriptions             Subscription[]
 
   @@map("users")
 }
@@ -129,6 +133,34 @@ enum EnrollmentStatus {
   EXPIRED
 }
 
+enum NotificationType {
+  EMAIL
+  PUSH
+  IN_APP
+  SMS
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+enum PlanType {
+  MONTHLY
+  YEARLY
+}
+
 model Category {
   id           String     @id @default(uuid())
   name         String     @unique
@@ -172,6 +204,7 @@ model Course {
   lessons       Lesson[]
   enrollments   Enrollment[]
   certificates  Certificate[]
+  orders        Order[]
 
   @@index([instructorId])
   @@index([categoryId])
@@ -325,4 +358,99 @@ model Certificate {
   @@index([userId])
   @@index([courseId])
   @@map("certificates")
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  read      Boolean          @default(false)
+  sentAt    DateTime         @default(now()) @map("sent_at")
+  readAt    DateTime?        @map("read_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
+  @@index([type])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id                 String   @id @default(uuid())
+  userId             String   @unique @map("user_id")
+  emailEnabled       Boolean  @default(true) @map("email_enabled")
+  pushEnabled        Boolean  @default(true) @map("push_enabled")
+  smsEnabled         Boolean  @default(false) @map("sms_enabled")
+  channelPreferences Json?    @default("{}") @map("channel_preferences")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  userId            String      @map("user_id")
+  courseId           String?     @map("course_id")
+  amount            Decimal     @db.Decimal(10, 2)
+  currency          String      @default("MNT")
+  status            OrderStatus @default(PENDING)
+  paymentMethod     String?     @map("payment_method")
+  externalPaymentId String?     @unique @map("external_payment_id")
+  proofImageUrl     String?     @map("proof_image_url")
+  adminNote         String?     @map("admin_note")
+  metadata          Json?
+  paidAt            DateTime?   @map("paid_at")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course  Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  invoice Invoice?
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+  @@map("orders")
+}
+
+model Subscription {
+  id                     String             @id @default(uuid())
+  userId                 String             @map("user_id")
+  planType               PlanType           @map("plan_type")
+  status                 SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart     DateTime           @map("current_period_start")
+  currentPeriodEnd       DateTime           @map("current_period_end")
+  externalSubscriptionId String?            @unique @map("external_subscription_id")
+  cancelAtPeriodEnd      Boolean            @default(false) @map("cancel_at_period_end")
+  cancelledAt            DateTime?          @map("cancelled_at")
+  createdAt              DateTime           @default(now()) @map("created_at")
+  updatedAt              DateTime           @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+model Invoice {
+  id            String   @id @default(uuid())
+  orderId       String   @unique @map("order_id")
+  invoiceNumber String   @unique @map("invoice_number")
+  amount        Decimal  @db.Decimal(10, 2)
+  currency      String   @default("MNT")
+  pdfUrl        String?  @map("pdf_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("invoices")
 }
