@@ -32,6 +32,7 @@ model User {
   notificationPreference    NotificationPreference?
   orders                    Order[]
   subscriptions             Subscription[]
+  analyticsEvents           AnalyticsEvent[]
 
   @@map("users")
 }
@@ -453,4 +454,24 @@ model Invoice {
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("invoices")
+}
+
+model AnalyticsEvent {
+  id            String   @id @default(uuid())
+  userId        String?  @map("user_id")
+  eventName     String   @map("event_name")
+  eventCategory String   @map("event_category")
+  properties    Json?
+  sessionId     String?  @map("session_id")
+  ipAddress     String?  @map("ip_address")
+  userAgent     String?  @map("user_agent")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([eventName])
+  @@index([eventCategory])
+  @@index([createdAt])
+  @@map("analytics_events")
 }

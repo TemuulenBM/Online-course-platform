@@ -1,0 +1,420 @@
+{
+  "info": {
+    "name": "OCP — Analytics Module",
+    "description": "Online Course Platform — Analytics Module API\n\nPhase 5: Аналитик модуль — Dashboard тоон үзүүлэлтүүд, орлогын тайлан, элсэлтийн трэнд, сургалтын статистик, event tracking\n\n## Endpoints\n- Dashboard (ADMIN only): overview, revenue, enrollments, popular courses\n- Course Analytics (TEACHER/ADMIN): course stats, students, lessons\n- Event Tracking: track (public), list (ADMIN)\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `adminToken`: Admin JWT token\n- `teacherToken`: Teacher JWT token\n- `courseId`: Сургалтын ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00. Auth — Setup",
+      "item": [
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Dashboard (ADMIN)",
+      "item": [
+        {
+          "name": "Dashboard Overview",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has overview data', () => {",
+                  "  pm.expect(res.data).to.have.property('totalUsers');",
+                  "  pm.expect(res.data).to.have.property('totalCourses');",
+                  "  pm.expect(res.data).to.have.property('totalRevenue');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/overview",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "overview"]
+            }
+          }
+        },
+        {
+          "name": "Revenue Report (Monthly)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has revenue data', () => {",
+                  "  pm.expect(res.data).to.have.property('data');",
+                  "  pm.expect(res.data).to.have.property('totalRevenue');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/revenue?period=month",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "revenue"],
+              "query": [{ "key": "period", "value": "month" }]
+            }
+          }
+        },
+        {
+          "name": "Revenue Report (Daily with date range)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/revenue?period=day&dateFrom=2025-01-01&dateTo=2025-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "revenue"],
+              "query": [
+                { "key": "period", "value": "day" },
+                { "key": "dateFrom", "value": "2025-01-01" },
+                { "key": "dateTo", "value": "2025-12-31" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Enrollment Trend (Monthly)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has enrollment trend data', () => {",
+                  "  pm.expect(res.data).to.have.property('data');",
+                  "  pm.expect(res.data).to.have.property('totalEnrollments');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/enrollments?period=month",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "enrollments"],
+              "query": [{ "key": "period", "value": "month" }]
+            }
+          }
+        },
+        {
+          "name": "Popular Courses (Top 10)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Is array', () => pm.expect(res.data).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/popular-courses?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "popular-courses"],
+              "query": [{ "key": "limit", "value": "10" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Course Analytics (TEACHER/ADMIN)",
+      "item": [
+        {
+          "name": "Course Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has course stats', () => {",
+                  "  pm.expect(res.data).to.have.property('courseId');",
+                  "  pm.expect(res.data).to.have.property('totalEnrollments');",
+                  "  pm.expect(res.data).to.have.property('completionRate');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "courses", "{{courseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Course Students",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has pagination', () => {",
+                  "  pm.expect(res.data).to.have.property('data');",
+                  "  pm.expect(res.data).to.have.property('total');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/courses/{{courseId}}/students?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "courses", "{{courseId}}", "students"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Course Lesson Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Is array', () => pm.expect(res.data).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/courses/{{courseId}}/lessons",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "courses", "{{courseId}}", "lessons"]
+            }
+          }
+        },
+        {
+          "name": "Course Stats (Teacher — own course)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "courses", "{{courseId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Event Tracking",
+      "item": [
+        {
+          "name": "Track Event (Public — anonymous)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.test('Event queued', () => pm.expect(res.data.queued).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventName\": \"page_view\",\n  \"eventCategory\": \"navigation\",\n  \"properties\": {\n    \"path\": \"/courses\",\n    \"referrer\": \"google.com\"\n  },\n  \"sessionId\": \"sess-abc-123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/events/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "events", "track"]
+            }
+          }
+        },
+        {
+          "name": "Track Event (Authenticated)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 201', () => pm.response.to.have.status(201));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventName\": \"video_play\",\n  \"eventCategory\": \"learning\",\n  \"properties\": {\n    \"courseId\": \"{{courseId}}\",\n    \"lessonId\": \"lesson-1\",\n    \"videoTimestamp\": 120\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/events/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "events", "track"]
+            }
+          }
+        },
+        {
+          "name": "List Events (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has pagination', () => {",
+                  "  pm.expect(res.data).to.have.property('data');",
+                  "  pm.expect(res.data).to.have.property('total');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/events?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "events"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Events (ADMIN — with filters)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/events?page=1&limit=20&eventCategory=learning&dateFrom=2025-01-01",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "events"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "eventCategory", "value": "learning" },
+                { "key": "dateFrom", "value": "2025-01-01" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
