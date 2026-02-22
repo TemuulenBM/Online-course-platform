@@ -318,6 +318,47 @@ export class DiscussionPostRepository {
     return doc ? this.toEntity(doc) : null;
   }
 
+  /** Тэмдэглэгдсэн (flagged) нийтлэлүүдийн жагсаалт (Admin moderation) */
+  async findFlagged(
+    page: number,
+    limit: number,
+    courseId?: string,
+  ): Promise<{
+    data: DiscussionPostEntity[];
+    total: number;
+    page: number;
+    limit: number;
+  }> {
+    const skip = (page - 1) * limit;
+    const filter: FilterQuery<DiscussionPostDocument> = { isFlagged: true };
+
+    if (courseId) {
+      filter.courseId = courseId;
+    }
+
+    const [docs, total] = await Promise.all([
+      this.postModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      this.postModel.countDocuments(filter).exec(),
+    ]);
+
+    return {
+      data: docs.map((doc) => this.toEntity(doc)),
+      total,
+      page,
+      limit,
+    };
+  }
+
+  /** Тэмдэглэгдсэн нийтлэлийн тоо */
+  async countFlagged(): Promise<number> {
+    return this.postModel.countDocuments({ isFlagged: true }).exec();
+  }
+
+  /** Түгжигдсэн нийтлэлийн тоо */
+  async countLocked(): Promise<number> {
+    return this.postModel.countDocuments({ isLocked: true }).exec();
+  }
+
   /** MongoDB document-г entity рүү хөрвүүлэх */
   private toEntity(doc: DiscussionPostDocument): DiscussionPostEntity {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

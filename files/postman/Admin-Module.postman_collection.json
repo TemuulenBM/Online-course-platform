@@ -1,0 +1,340 @@
+{
+  "info": {
+    "name": "OCP — Admin Module",
+    "description": "Online Course Platform — Admin Module API\n\nPhase 5: Админ модуль — Audit logging, системийн тохиргоо, контент moderation, admin dashboard\n\n## Endpoints\n- Audit Logs (ADMIN only): list, get by id, entity trail\n- System Settings (ADMIN only): list, get by key, upsert, delete, public (JWT-гүй)\n- Admin Dashboard (ADMIN only): health, stats, pending, activity, moderation stats, flagged list, approve, reject\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `adminToken`: Admin JWT token\n- `settingKey`: Тохиргооны key\n- `auditLogId`: Audit log ID\n- `flaggedPostId`: Тэмдэглэгдсэн нийтлэлийн ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "settingKey", "value": "site_name", "type": "string" },
+    { "key": "auditLogId", "value": "", "type": "string" },
+    { "key": "flaggedPostId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00. Auth — Setup",
+      "item": [
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Dashboard",
+      "item": [
+        {
+          "name": "System Health",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "health"]
+            }
+          }
+        },
+        {
+          "name": "Platform Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Pending Items",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Recent Activity",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/activity?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "activity"],
+              "query": [{ "key": "limit", "value": "10" }]
+            }
+          }
+        },
+        {
+          "name": "Moderation Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/moderation",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "moderation"]
+            }
+          }
+        },
+        {
+          "name": "Flagged Content List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.data && res.data.data.length > 0) {",
+                  "  pm.collectionVariables.set('flaggedPostId', res.data.data[0].id);",
+                  "  pm.test('Flagged post ID saved', () => pm.expect(res.data.data[0].id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/moderation/flagged?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "moderation", "flagged"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Flagged Content",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/moderation/flagged/{{flaggedPostId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "moderation", "flagged", "{{flaggedPostId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Flagged Content",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Спам контент\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/moderation/flagged/{{flaggedPostId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "moderation", "flagged", "{{flaggedPostId}}", "reject"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. System Settings",
+      "item": [
+        {
+          "name": "List Settings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings"]
+            }
+          }
+        },
+        {
+          "name": "List Settings (by category)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings?category=general",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings"],
+              "query": [{ "key": "category", "value": "general" }]
+            }
+          }
+        },
+        {
+          "name": "Public Settings (JWT-гүй)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings/public",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings", "public"]
+            }
+          }
+        },
+        {
+          "name": "Upsert Setting",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Online Course Platform\",\n  \"description\": \"Платформын нэр\",\n  \"category\": \"general\",\n  \"isPublic\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings/{{settingKey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings", "{{settingKey}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Setting by Key",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings/{{settingKey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings", "{{settingKey}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Setting",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/settings/{{settingKey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "settings", "{{settingKey}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Audit Logs",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.data && res.data.data.length > 0) {",
+                  "  pm.collectionVariables.set('auditLogId', res.data.data[0].id);",
+                  "  pm.test('Audit log ID saved', () => pm.expect(res.data.data[0].id).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/audit-logs?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "audit-logs"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Audit Logs (with filters)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/audit-logs?page=1&limit=10&entityType=SYSTEM_SETTING&action=CREATE",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "audit-logs"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "entityType", "value": "SYSTEM_SETTING" },
+                { "key": "action", "value": "CREATE" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/audit-logs/{{auditLogId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "audit-logs", "{{auditLogId}}"]
+            }
+          }
+        },
+        {
+          "name": "Entity Audit Trail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/admin/audit-logs/entity/SYSTEM_SETTING/{{settingKey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "audit-logs", "entity", "SYSTEM_SETTING", "{{settingKey}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -680,3 +680,50 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Prisma column type бүгд `text` (uuid биш) — raw query-д `::uuid` cast хэрэглэхгүй
 
 **Тест**: 14 test suite, 68 unit тест (use-case + controller + cache service + processor)
+
+### Admin Module (Phase 5)
+
+**Endpoints — Audit Logs** (`/api/v1/admin/audit-logs`) — ADMIN only:
+
+- `GET /admin/audit-logs` — Audit log жагсаалт pagination + filters (userId, entityType, action, dateFrom, dateTo)
+- `GET /admin/audit-logs/entity/:entityType/:entityId` — Entity-ийн audit trail
+- `GET /admin/audit-logs/:id` — Нэг audit log дэлгэрэнгүй
+
+**Endpoints — System Settings** (`/api/v1/admin/settings`) — ADMIN only (public хэсэг JWT-гүй):
+
+- `GET /admin/settings` — Бүх тохиргоо жагсаалт (category filter)
+- `GET /admin/settings/public` — Public тохиргоо (@Public — JWT шаардлагагүй)
+- `GET /admin/settings/:key` — Key-аар нэг тохиргоо
+- `PUT /admin/settings/:key` — Тохиргоо upsert + audit log
+- `DELETE /admin/settings/:key` — Тохиргоо устгах + audit log
+
+**Endpoints — Admin Dashboard** (`/api/v1/admin/dashboard`) — ADMIN only:
+
+- `GET /admin/dashboard/health` — Системийн health (PostgreSQL, Redis, MongoDB)
+- `GET /admin/dashboard/stats` — Ерөнхий статистик (users, courses, enrollments, certificates, orders)
+- `GET /admin/dashboard/pending` — Хүлээгдэж буй зүйлүүд (pending orders, flagged posts)
+- `GET /admin/dashboard/activity` — Сүүлийн admin үйлдлүүд (audit logs-оос)
+- `GET /admin/dashboard/moderation` — Moderation статистик (flagged, locked тоо)
+- `GET /admin/dashboard/moderation/flagged` — Тэмдэглэгдсэн контент жагсаалт (pagination)
+- `PATCH /admin/dashboard/moderation/flagged/:id/approve` — Approve — unflag хийх
+- `PATCH /admin/dashboard/moderation/flagged/:id/reject` — Reject — delete + notification илгээх
+
+**Export хийсэн service-ууд**: `AuditLogService` (log — бусад модулиуд Bull Queue-ээр async audit log бүртгэх боломжтой)
+
+**Хамаарал**: `BullModule` (admin queue), `ConfigModule`, `DiscussionsModule` (DiscussionPostRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- Зөвхөн PostgreSQL (AuditLog, SystemSetting) — MongoDB шаардлагагүй (DiscussionPostRepository-г cross-module ашиглана)
+- **Audit Log async (Bull Queue)**: `AuditLogService.log()` → Bull Queue → `AdminProcessor` → DB бичих. Endpoint-ийн хариу удаашруулахгүй
+- **AuditLogService** export хийгдсэн — бусад модулиуд `AdminModule` import хийж `AuditLogService.log()` дуудаж болно
+- **DiscussionPostRepository**-д 3 method нэмэгдсэн: `findFlagged()`, `countFlagged()`, `countLocked()` — Admin moderation-д ашиглагдана
+- **System Settings**: Prisma `upsert` + PUT semantic, upsert/delete үед автомат audit log бүртгэгдэнэ
+- **RolesGuard засвар**: `@Public()` decorator-тэй endpoint дээр role шалгалтыг skip хийхээр `IS_PUBLIC_KEY` шалгалт нэмэгдсэн
+- `ReviewFlaggedContentUseCase`: approve → unflag, reject → delete + NotificationService.send(userId, payload) — 2 тусдаа параметр
+- Redis кэш TTL: dashboard 300s (5 мин), settings/moderation 900s (15 мин)
+- Кэш key-ууд: `admin:settings:*`, `admin:dashboard:*`, `admin:moderation:*`
+- **AdminProcessor**: Алдаа гарсан ч exception шидэхгүй (graceful handling — log хийж алгасна)
+- Dashboard vs Analytics: Analytics = бизнесийн тоон үзүүлэлт (revenue, enrollments). Admin Dashboard = үйлдлийн хяналт (pending items, health, audit activity)
+
+**Тест**: 20 test suite, 64 unit тест (use-case + controller + cache service + audit log service + processor)
