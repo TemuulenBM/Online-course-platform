@@ -1,0 +1,521 @@
+{
+  "info": {
+    "name": "OCP — Live Classes Module",
+    "description": "Online Course Platform — Live Classes Module API\n\nPhase 6: Шууд хичээл модуль — Session товлох, эхлүүлэх, дуусгах, нэгдэх, гарах, Agora token, webhook\n\n## Endpoints\n- CRUD: schedule, get, list by course, list by lesson, list upcoming, update, cancel\n- Actions: start, end, join, leave, attendees, token, recording webhook\n\n## Variables\n- `baseUrl`: API URL (default: http://localhost:3001/api/v1)\n- `teacherToken`: Teacher JWT token\n- `studentToken`: Student JWT token\n- `adminToken`: Admin JWT token\n- `courseId`: Сургалтын ID\n- `lessonId`: Хичээлийн ID (LIVE төрөл)\n- `sessionId`: Live session ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001/api/v1", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "courseId", "value": "", "type": "string" },
+    { "key": "lessonId", "value": "", "type": "string" },
+    { "key": "sessionId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00. Auth — Setup",
+      "item": [
+        {
+          "name": "Login (Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('teacherToken', res.data.accessToken);",
+                  "  pm.test('Teacher token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('studentToken', res.data.accessToken);",
+                  "  pm.test('Student token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('adminToken', res.data.accessToken);",
+                  "  pm.test('Admin token saved', () => pm.expect(res.data.accessToken).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"Test12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Schedule Live Session",
+      "description": "POST /live-sessions — Шинэ шууд хичээл товлох (TEACHER/ADMIN)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Session created', () => {",
+              "  pm.expect(res.data).to.have.property('id');",
+              "  pm.expect(res.data.status).to.eql('scheduled');",
+              "  pm.collectionVariables.set('sessionId', res.data.id);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"lessonId\": \"{{lessonId}}\",\n  \"title\": \"Тест шууд хичээл\",\n  \"description\": \"Шууд хичээлийн тест тайлбар\",\n  \"scheduledStart\": \"2026-03-01T10:00:00.000Z\",\n  \"scheduledEnd\": \"2026-03-01T11:00:00.000Z\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions"]
+        }
+      }
+    },
+    {
+      "name": "02. List Upcoming Sessions",
+      "description": "GET /live-sessions/upcoming — Удахгүй эхлэх sessions (@Public)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Has data array', () => pm.expect(res.data.data).to.be.an('array'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/upcoming?page=1&limit=20",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "upcoming"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "20" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "03. List Course Sessions",
+      "description": "GET /live-sessions/course/:courseId — Сургалтын sessions (JWT required)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Has pagination', () => {",
+              "  pm.expect(res.data).to.have.property('total');",
+              "  pm.expect(res.data).to.have.property('page');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/course/{{courseId}}?page=1&limit=20",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "course", "{{courseId}}"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "20" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "04. Get Session by Lesson",
+      "description": "GET /live-sessions/lesson/:lessonId — Хичээлийн session (@Public)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Session found', () => pm.expect(res.data).to.have.property('id'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/lesson/{{lessonId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "lesson", "{{lessonId}}"]
+        }
+      }
+    },
+    {
+      "name": "05. Recording Webhook",
+      "description": "POST /live-sessions/webhook/recording — Бичлэгийн webhook (@Public, signature)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Received', () => pm.expect(pm.response.json().data.received).to.eql(true));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          {
+            "key": "x-agora-signature",
+            "value": "",
+            "description": "HMAC-SHA256 signature (optional in dev)"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channelName\": \"ocp-live-{{sessionId}}\",\n  \"recordingUrl\": \"https://example.com/recording.mp4\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/webhook/recording",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "webhook", "recording"]
+        }
+      }
+    },
+    {
+      "name": "06. Get Session by ID",
+      "description": "GET /live-sessions/:id — Session дэлгэрэнгүй (JWT required)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Session details', () => {",
+              "  pm.expect(res.data).to.have.property('id');",
+              "  pm.expect(res.data).to.have.property('title');",
+              "  pm.expect(res.data).to.have.property('status');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}"]
+        }
+      }
+    },
+    {
+      "name": "07. Update Session",
+      "description": "PATCH /live-sessions/:id — Session шинэчлэх (SCHEDULED үед, owner/ADMIN)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Title updated', () => pm.expect(res.data.title).to.eql('Шинэчлэгдсэн хичээл'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{teacherToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Шинэчлэгдсэн хичээл\",\n  \"description\": \"Шинэчлэгдсэн тайлбар\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}"]
+        }
+      }
+    },
+    {
+      "name": "08. Cancel Session",
+      "description": "DELETE /live-sessions/:id — Session цуцлах (SCHEDULED үед, owner/ADMIN)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Cancelled', () => pm.expect(res.data.status).to.eql('cancelled'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}"]
+        }
+      }
+    },
+    {
+      "name": "09. Start Session",
+      "description": "POST /live-sessions/:id/start — Session эхлүүлэх (instructor only, SCHEDULED → LIVE)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Live status', () => pm.expect(res.data.session.status).to.eql('live'));",
+              "pm.test('Has channel', () => pm.expect(res.data.channelName).to.be.a('string'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/start",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "start"]
+        }
+      }
+    },
+    {
+      "name": "10. End Session",
+      "description": "POST /live-sessions/:id/end — Session дуусгах (instructor only, LIVE → ENDED)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Ended status', () => pm.expect(res.data.status).to.eql('ended'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/end",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "end"]
+        }
+      }
+    },
+    {
+      "name": "11. Join Session",
+      "description": "POST /live-sessions/:id/join — Session-д нэгдэх (enrolled/instructor/ADMIN, LIVE үед)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Has token & channel', () => {",
+              "  pm.expect(res.data).to.have.property('channelName');",
+              "  pm.expect(res.data).to.have.property('uid');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/join",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "join"]
+        }
+      }
+    },
+    {
+      "name": "12. Leave Session",
+      "description": "POST /live-sessions/:id/leave — Session-ээс гарах (JWT required)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Duration returned', () => pm.expect(res.data).to.have.property('durationMinutes'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/leave",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "leave"]
+        }
+      }
+    },
+    {
+      "name": "13. Get Attendees",
+      "description": "GET /live-sessions/:id/attendees — Ирцийн жагсаалт (instructor/ADMIN)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Has pagination', () => {",
+              "  pm.expect(res.data).to.have.property('data');",
+              "  pm.expect(res.data).to.have.property('total');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/attendees?page=1&limit=50",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "attendees"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "50" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "14. Generate Agora Token",
+      "description": "GET /live-sessions/:id/token — Agora token шинэчлэх (enrolled/instructor/ADMIN, LIVE үед)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Token response', () => {",
+              "  pm.expect(res.data).to.have.property('channelName');",
+              "  pm.expect(res.data).to.have.property('uid');",
+              "  pm.expect(res.data).to.have.property('appId');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/live-sessions/{{sessionId}}/token",
+          "host": ["{{baseUrl}}"],
+          "path": ["live-sessions", "{{sessionId}}", "token"]
+        }
+      }
+    }
+  ]
+}

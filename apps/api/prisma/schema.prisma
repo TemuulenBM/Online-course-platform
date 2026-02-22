@@ -33,6 +33,9 @@ model User {
   orders                    Order[]
   subscriptions             Subscription[]
   analyticsEvents           AnalyticsEvent[]
+  auditLogs                 AuditLog[]
+  instructorSessions        LiveSession[]       @relation("InstructorSessions")
+  sessionAttendances        SessionAttendee[]   @relation("SessionAttendance")
 
   @@map("users")
 }
@@ -254,6 +257,7 @@ model Lesson {
   course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userProgress UserProgress[]
   quiz         Quiz?
+  liveSession  LiveSession?
 
   @@index([courseId])
   @@index([courseId, orderIndex])
@@ -474,4 +478,92 @@ model AnalyticsEvent {
   @@index([eventCategory])
   @@index([createdAt])
   @@map("analytics_events")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  changes    Json?
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  metadata   Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       Json
+  description String?
+  category    String   @default("general")
+  isPublic    Boolean  @default(false) @map("is_public")
+  updatedBy   String?  @map("updated_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@map("system_settings")
+}
+
+enum LiveSessionStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  CANCELLED
+}
+
+model LiveSession {
+  id             String            @id @default(uuid())
+  lessonId       String            @unique @map("lesson_id")
+  instructorId   String            @map("instructor_id")
+  title          String
+  description    String?
+  scheduledStart DateTime          @map("scheduled_start")
+  scheduledEnd   DateTime          @map("scheduled_end")
+  actualStart    DateTime?         @map("actual_start")
+  actualEnd      DateTime?         @map("actual_end")
+  meetingUrl     String?           @map("meeting_url")
+  meetingId      String?           @map("meeting_id")
+  recordingUrl   String?           @map("recording_url")
+  status         LiveSessionStatus @default(SCHEDULED)
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+
+  lesson    Lesson            @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  instructor User             @relation("InstructorSessions", fields: [instructorId], references: [id])
+  attendees SessionAttendee[]
+
+  @@index([instructorId])
+  @@index([status])
+  @@index([scheduledStart])
+  @@map("live_sessions")
+}
+
+model SessionAttendee {
+  id              String    @id @default(uuid())
+  liveSessionId   String    @map("live_session_id")
+  userId          String    @map("user_id")
+  joinedAt        DateTime  @default(now()) @map("joined_at")
+  leftAt          DateTime? @map("left_at")
+  durationMinutes Int       @default(0) @map("duration_minutes")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  liveSession LiveSession @relation(fields: [liveSessionId], references: [id], onDelete: Cascade)
+  user        User        @relation("SessionAttendance", fields: [userId], references: [id])
+
+  @@unique([liveSessionId, userId])
+  @@index([liveSessionId])
+  @@index([userId])
+  @@map("session_attendees")
 }
