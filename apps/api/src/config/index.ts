@@ -8,3 +8,4 @@ export { default as stripeConfig } from './stripe.config';
 export { default as elasticsearchConfig } from './elasticsearch.config';
 export { default as mailConfig } from './mail.config';
 export { default as notificationConfig } from './notification.config';
+export { default as agoraConfig } from './agora.config';

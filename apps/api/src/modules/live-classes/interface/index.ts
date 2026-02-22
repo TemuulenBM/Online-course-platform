@@ -1,1 +1,1 @@
-// Controllers will be exported here
+export * from './controllers/live-sessions.controller';

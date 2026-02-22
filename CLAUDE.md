@@ -727,3 +727,49 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Dashboard vs Analytics: Analytics = бизнесийн тоон үзүүлэлт (revenue, enrollments). Admin Dashboard = үйлдлийн хяналт (pending items, health, audit activity)
 
 **Тест**: 20 test suite, 64 unit тест (use-case + controller + cache service + audit log service + processor)
+
+### Live Classes Module (Phase 6)
+
+**Endpoints** (`/api/v1/live-sessions`):
+
+- `POST /live-sessions` — Session товлох (TEACHER/ADMIN)
+- `GET /live-sessions/upcoming` — Удахгүй эхлэх sessions (@Public)
+- `GET /live-sessions/course/:courseId` — Сургалтын sessions (JWT, enrolled/instructor/ADMIN)
+- `GET /live-sessions/lesson/:lessonId` — Хичээлийн session (@Public)
+- `POST /live-sessions/webhook/recording` — Бичлэгийн webhook (@Public, HMAC-SHA256 signature)
+- `GET /live-sessions/:id` — Session дэлгэрэнгүй (JWT)
+- `PATCH /live-sessions/:id` — Session шинэчлэх (owner/ADMIN, SCHEDULED only)
+- `DELETE /live-sessions/:id` — Session цуцлах (owner/ADMIN, SCHEDULED only)
+- `POST /live-sessions/:id/start` — Session эхлүүлэх (instructor only, SCHEDULED→LIVE)
+- `POST /live-sessions/:id/end` — Session дуусгах (instructor only, LIVE→ENDED)
+- `POST /live-sessions/:id/join` — Нэгдэх + Agora token авах (enrolled/instructor/ADMIN)
+- `POST /live-sessions/:id/leave` — Гарах (leftAt + durationMinutes тооцоолол)
+- `GET /live-sessions/:id/attendees` — Ирцийн жагсаалт (instructor/ADMIN, pagination)
+- `GET /live-sessions/:id/token` — Agora token шинэчлэх (enrolled/instructor/ADMIN)
+
+**Export хийсэн service-ууд**: `LiveSessionRepository`
+
+**Хамаарал**: `BullModule` (live-classes queue), `ConfigModule`, `LessonsModule` (LessonRepository), `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
+
+**Онцлог шийдвэрүүд**:
+
+- **WebSocket шаардлагагүй** — Agora SDK client-side WebRTC-г бүрэн зохицуулдаг. Server зөвхөн RTC token үүсгэнэ
+- **DI Token pattern**: `AGORA_SERVICE` → `AgoraTokenService`. Ирээдүйд 100ms/Jitsi руу солих боломжтой
+- `agora-token` npm package ашиглан `RtcTokenBuilder.buildTokenWithUid()` дуудна
+- Channel name формат: `ocp-live-{sessionId}`
+- **Deterministic UID**: `userId`-аас CRC32-like hash → `Math.abs(hash) % 1000000`
+- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
+- `@@unique([liveSessionId, userId])` — Session-д нэг хэрэглэгчид нэг attendance record (upsert)
+- `lessonId` unique on LiveSession — Нэг хичээлд нэг session
+- **Status flow**: SCHEDULED → LIVE → ENDED, SCHEDULED → CANCELLED (нэг чиглэлтэй)
+- **Attendance upsert**: Re-join хийхэд `joinedAt` шинэчлэгдэнэ, `leftAt` null болно
+- **Leave durationMinutes**: `markLeft` нь `joinedAt` → `leftAt` хоорондох минутыг тооцоолно
+- **Reminder delayed job**: Session товлоход Bull Queue delayed job (scheduledStart - 15 мин)
+- **Bull Processor 4 process**: `session-started` (enrolled notification), `session-ended` (markAllLeft + notification), `session-reminder` (15 мин сануулга), `recording-ready` (recordingUrl update + instructor notification)
+- Бүх processor graceful error handling — try/catch, log, exception шидэхгүй
+- **Webhook signature**: `x-agora-signature` header + HMAC-SHA256 verification (`agora.webhookSecret` config)
+- Redis кэш: `live-session:{id}`, `live-session:lesson:{lessonId}` (TTL 900s / 15 мин)
+- `agora.config.ts`: appId, appCertificate, tokenExpirySeconds, webhookSecret — env variables
+- Route дараалал: `/upcoming`, `/course/:courseId`, `/lesson/:lessonId`, `/webhook/recording` нь `/:id`-ээс ӨМНӨ
+
+**Тест**: 18 test suite, 88 unit тест (14 use-case + controller + cache service + agora service + processor)

@@ -17,6 +17,7 @@ import throttleConfig from './config/throttle.config';
 import storageConfig from './config/storage.config';
 import notificationConfig from './config/notification.config';
 import stripeConfig from './config/stripe.config';
+import agoraConfig from './config/agora.config';
 
 // Common modules
 import { PrismaModule } from './common/prisma/prisma.module';
@@ -38,7 +39,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { PaymentsModule } from './modules/payments/payments.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AdminModule } from './modules/admin/admin.module';
-// import { LiveClassesModule } from './modules/live-classes/live-classes.module';
+import { LiveClassesModule } from './modules/live-classes/live-classes.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { AdminModule } from './modules/admin/admin.module';
         storageConfig,
         notificationConfig,
         stripeConfig,
+        agoraConfig,
       ],
     }),
     // Rate limiting — хүсэлт хязгаарлалт (config-оос уншина)
@@ -111,6 +113,7 @@ import { AdminModule } from './modules/admin/admin.module';
     PaymentsModule,
     AnalyticsModule,
     AdminModule,
+    LiveClassesModule,
   ],
   controllers: [AppController],
   providers: [

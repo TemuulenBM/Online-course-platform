@@ -149,7 +149,14 @@
             "url": {
               "raw": "{{baseUrl}}/admin/dashboard/moderation/flagged/{{flaggedPostId}}/approve",
               "host": ["{{baseUrl}}"],
-              "path": ["admin", "dashboard", "moderation", "flagged", "{{flaggedPostId}}", "approve"]
+              "path": [
+                "admin",
+                "dashboard",
+                "moderation",
+                "flagged",
+                "{{flaggedPostId}}",
+                "approve"
+              ]
             }
           }
         },
