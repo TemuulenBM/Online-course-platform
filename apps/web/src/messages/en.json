@@ -55,7 +55,18 @@
     "lastNamePlaceholder": "Doe",
     "signUpSubtitle": "Join us and start your learning journey.",
     "serverError": "An error occurred. Please try again.",
-    "registrationFailed": "Registration failed. Please try again."
+    "registrationFailed": "Registration failed. Please try again.",
+    "resetPasswordTitle": "New Password",
+    "resetPasswordSubtitle": "Enter your new password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "resettingPassword": "Resetting...",
+    "resetPasswordSuccess": "Password reset successfully",
+    "resetPasswordSuccessSubtitle": "You can now sign in with your new password.",
+    "invalidResetToken": "Invalid or expired reset token",
+    "resetPasswordError": "Failed to reset password"
   },
   "nav": {
     "dashboard": "Dashboard",

@@ -55,7 +55,18 @@
     "lastNamePlaceholder": "Болд",
     "signUpSubtitle": "Бидэнтэй нэгдэж суралцаж эхлээрэй.",
     "serverError": "Алдаа гарлаа. Дахин оролдоно уу.",
-    "registrationFailed": "Бүртгэл амжилтгүй. Дахин оролдоно уу."
+    "registrationFailed": "Бүртгэл амжилтгүй. Дахин оролдоно уу.",
+    "resetPasswordTitle": "Шинэ нууц үг",
+    "resetPasswordSubtitle": "Шинэ нууц үгээ оруулна уу",
+    "newPassword": "Шинэ нууц үг",
+    "newPasswordPlaceholder": "Шинэ нууц үгээ оруулна уу",
+    "confirmPasswordPlaceholder": "Нууц үгээ давтана уу",
+    "passwordMismatch": "Нууц үг таарахгүй байна",
+    "resettingPassword": "Шинэчилж байна...",
+    "resetPasswordSuccess": "Нууц үг амжилттай шинэчлэгдлээ",
+    "resetPasswordSuccessSubtitle": "Шинэ нууц үгээр нэвтэрнэ үү.",
+    "invalidResetToken": "Токен буруу эсвэл хугацаа дууссан байна",
+    "resetPasswordError": "Нууц үг шинэчлэхэд алдаа гарлаа"
   },
   "nav": {
     "dashboard": "Хяналтын самбар",
