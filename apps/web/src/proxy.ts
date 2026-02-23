@@ -8,11 +8,11 @@ const PUBLIC_PATHS = ['/', '/login', '/register', '/forgot-password', '/reset-pa
 const AUTH_ONLY_PATHS = ['/login', '/register', '/forgot-password'];
 
 /**
- * Next.js Middleware — Route protection.
+ * Next.js Proxy — Route protection (Next.js 16-д middleware → proxy болсон).
  * `ocp-auth` cookie-аар auth төлөв шалгана (UX optimization, security биш).
  * Бодит token validation client-side AuthProvider дээр хийгдэнэ.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const authCookie = request.cookies.get('ocp-auth');
   const isAuthenticated = !!authCookie;

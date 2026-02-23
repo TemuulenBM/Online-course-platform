@@ -3,49 +3,33 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { ArrowLeft, Loader2, MailCheck } from 'lucide-react';
 import Link from 'next/link';
-
-const forgotPasswordSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-});
-
-type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+import { useTranslations } from 'next-intl';
+import { forgotPasswordSchema, type ForgotPasswordInput } from '@ocp/validation';
+import { useForgotPassword } from '@/hooks/api';
+import { ROUTES } from '@/lib/constants';
 
 export default function ForgotPasswordPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations('auth');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [serverError, setServerError] = useState('');
+  const forgotPasswordMutation = useForgotPassword();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ForgotPasswordFormValues>({
+  } = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: '',
     },
   });
 
-  const onSubmit = async (data: ForgotPasswordFormValues) => {
-    setIsLoading(true);
-    setServerError('');
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // Call api.auth.forgotPassword(data) here
-      console.log('Forgot password request for:', data.email);
-
-      // Show success state
-      setIsSubmitted(true);
-    } catch (error) {
-      setServerError('An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: ForgotPasswordInput) => {
+    forgotPasswordMutation.mutate(data.email, {
+      onSuccess: () => setIsSubmitted(true),
+    });
   };
 
   if (isSubmitted) {
@@ -55,17 +39,17 @@ export default function ForgotPasswordPage() {
           <MailCheck className="w-8 h-8 text-green-600" />
         </div>
         <h2 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
-          Check your email
+          {t('checkEmail')}
         </h2>
         <p className="text-gray-500 font-medium text-sm max-w-[300px] mb-8">
-          We have sent password recovery instructions to your email address.
+          {t('checkEmailSubtitle')}
         </p>
         <Link
-          href="/login"
-          className="w-full bg-[#2E3035] hover:bg-black text-white py-4 rounded-2xl font-bold tracking-wide transition-all shadow-md flex items-center justify-center gap-2"
+          href={ROUTES.LOGIN}
+          className="w-full bg-[#8A93E5] hover:bg-[#7C80EF] text-white py-4 rounded-2xl font-bold tracking-wide transition-all shadow-md flex items-center justify-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to log in
+          {t('backToLogin')}
         </Link>
       </div>
     );
@@ -74,62 +58,60 @@ export default function ForgotPasswordPage() {
   return (
     <div className="w-full animation-fade-in flex flex-col">
       <Link
-        href="/login"
+        href={ROUTES.LOGIN}
         className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors mb-6 self-start"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back
+        {t('backToLogin')}
       </Link>
 
       <div className="text-center lg:text-left mb-8">
         <h2 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
-          Forgot password?
+          {t('forgotPasswordQuestion')}
         </h2>
-        <p className="text-gray-500 font-medium text-sm">
-          No worries, we'll send you reset instructions.
-        </p>
+        <p className="text-gray-500 font-medium text-sm">{t('forgotPasswordHint')}</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {serverError && (
+        {forgotPasswordMutation.error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-medium flex items-center gap-2 border border-red-100">
             <span className="shrink-0 bg-red-100 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">
               !
             </span>
-            {serverError}
+            {t('serverError')}
           </div>
         )}
 
         <div className="space-y-1.5">
-          <label className="text-sm font-semibold text-gray-700 ml-1">
-            Email <span className="text-red-500">*</span>
+          <label className="text-sm font-semibold text-gray-800 tracking-wide">
+            {t('email')} <span className="text-red-500">*</span>
           </label>
           <input
             {...register('email')}
             type="email"
-            placeholder="Enter your email"
-            className={`w-full px-4 py-3.5 rounded-2xl bg-[#F4F5FA] border-2 transition-all duration-200 outline-none
-              ${errors.email ? 'border-red-300 focus:border-red-500 focus:bg-white' : 'border-transparent focus:border-[#8A93E5] focus:bg-white focus:shadow-[0_0_0_4px_rgba(138,147,229,0.1)]'}
+            placeholder={t('emailPlaceholder')}
+            className={`w-full px-4 py-3.5 rounded-xl bg-white border-2 transition-all duration-200 outline-none text-gray-900 placeholder:text-gray-400
+              ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/10' : 'border-gray-200 hover:border-gray-300 focus:border-[#8A93E5] focus:ring-4 focus:ring-[#8A93E5]/10'}
             `}
-            disabled={isLoading}
+            disabled={forgotPasswordMutation.isPending}
           />
           {errors.email && (
-            <p className="text-red-500 text-xs font-medium ml-1 mt-1">{errors.email.message}</p>
+            <p className="text-red-500 text-[13px] font-medium mt-1">{errors.email.message}</p>
           )}
         </div>
 
         <button
           type="submit"
-          disabled={isLoading}
-          className="w-full bg-[#2E3035] hover:bg-black text-white py-4 rounded-2xl font-bold tracking-wide transition-all shadow-[0_4px_14px_0_rgba(0,0,0,0.1)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2 active:scale-[0.98] mt-2"
+          disabled={forgotPasswordMutation.isPending}
+          className="w-full bg-[#8A93E5] hover:bg-[#7C80EF] text-white py-3.5 rounded-xl font-bold tracking-wide transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 active:scale-[0.98] mt-2"
         >
-          {isLoading ? (
+          {forgotPasswordMutation.isPending ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Sending...
+              {t('sending')}
             </>
           ) : (
-            'Reset Password'
+            t('resetPassword')
           )}
         </button>
       </form>
