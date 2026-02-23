@@ -2,17 +2,35 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BookOpen, Clock, User } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
 
-/** Түвшингийн badge өнгө */
+/** Түвшингийн badge өнгө — thumbnail дээр overlay */
 const difficultyStyles: Record<string, string> = {
-  beginner: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-  intermediate: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-  advanced: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  beginner: 'bg-emerald-500 text-white',
+  intermediate: 'bg-amber-500 text-white',
+  advanced: 'bg-purple-500 text-white',
 };
+
+/** Ангиллын badge стиль — categoryName-аар */
+const categoryStyles: Record<string, string> = {
+  design: 'border-purple-300 text-purple-700 dark:border-purple-600 dark:text-purple-300',
+  development: 'border-blue-300 text-blue-700 dark:border-blue-600 dark:text-blue-300',
+  marketing: 'border-emerald-300 text-emerald-700 dark:border-emerald-600 dark:text-emerald-300',
+  business: 'border-amber-300 text-amber-700 dark:border-amber-600 dark:text-amber-300',
+  photography: 'border-pink-300 text-pink-700 dark:border-pink-600 dark:text-pink-300',
+  music: 'border-red-300 text-red-700 dark:border-red-600 dark:text-red-300',
+  lifestyle: 'border-teal-300 text-teal-700 dark:border-teal-600 dark:text-teal-300',
+};
+
+/** Duration-г Xh Ym формат руу хувиргах */
+function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h}h ${m.toString().padStart(2, '0')}m`;
+}
 
 interface CourseCardProps {
   course: Course;
@@ -27,65 +45,87 @@ export function CourseCard({ course }: CourseCardProps) {
   const hasDiscount =
     course.discountPrice != null && course.price != null && course.discountPrice < course.price;
 
+  /** Ангиллын slug-аар badge стиль сонгох */
+  const categorySlug = course.categoryName?.toLowerCase() || '';
+  const catStyle =
+    categoryStyles[categorySlug] ||
+    'border-slate-300 text-slate-600 dark:border-slate-600 dark:text-slate-300';
+
   return (
     <Link href={ROUTES.COURSE_DETAIL(course.slug)}>
-      <div className="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all group flex flex-col h-full">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-300 group flex flex-col h-full">
         {/* Thumbnail */}
-        <div className="relative aspect-video overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden">
           {course.thumbnailUrl ? (
             <Image
               src={course.thumbnailUrl}
               alt={course.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-purple-100 to-emerald-100 dark:from-purple-900/30 dark:to-emerald-900/30 flex items-center justify-center">
-              <BookOpen className="size-12 text-slate-400" />
+            <div className="w-full h-full bg-gradient-to-br from-[#8A93E5]/20 via-[#A78BFA]/15 to-emerald-200/20 dark:from-[#8A93E5]/10 dark:via-[#A78BFA]/10 dark:to-emerald-900/10 flex items-center justify-center">
+              <BookOpen className="size-14 text-slate-300 dark:text-slate-600" />
             </div>
           )}
-          {/* Category badge overlay */}
-          {course.categoryName && (
-            <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-primary">
-              {course.categoryName}
-            </div>
-          )}
-        </div>
 
-        {/* Content */}
-        <div className="p-6 flex-1 flex flex-col">
-          {/* Difficulty badge */}
-          <div className="mb-3">
+          {/* Badge-ууд — зүүн дээд булан */}
+          <div className="absolute top-3 left-3 flex items-center gap-1.5">
+            {course.categoryName && (
+              <span
+                className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border bg-white/90 dark:bg-slate-900/80 backdrop-blur-sm ${catStyle}`}
+              >
+                {course.categoryName}
+              </span>
+            )}
             <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${difficultyStyles[course.difficulty] || difficultyStyles.beginner}`}
+              className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${difficultyStyles[course.difficulty] || difficultyStyles.beginner}`}
             >
               {t(course.difficulty)}
             </span>
           </div>
 
+          {/* Heart icon — баруун дээд булан (visual only) */}
+          <button
+            type="button"
+            onClick={(e) => e.preventDefault()}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center hover:bg-white dark:hover:bg-slate-700 hover:scale-110 transition-all shadow-sm"
+          >
+            <Heart className="size-4 text-slate-400 hover:text-red-400 transition-colors" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-5 flex-1 flex flex-col">
           {/* Title */}
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3 group-hover:text-[#8A93E5] transition-colors line-clamp-1">
             {course.title}
           </h3>
 
-          {/* Meta */}
-          <div className="flex items-center gap-3 text-sm text-slate-500 mb-4">
-            {course.instructorName && (
-              <span className="flex items-center gap-1">
-                <User className="size-3.5" />
-                {course.instructorName}
+          {/* Meta — instructor avatar + нэр + duration */}
+          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
+            {/* Instructor avatar placeholder */}
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#8A93E5] to-[#A78BFA] flex items-center justify-center shrink-0">
+              <span className="text-[9px] font-bold text-white">
+                {course.instructorName?.charAt(0) || '?'}
               </span>
+            </div>
+            {course.instructorName && (
+              <>
+                <span className="text-xs truncate">By {course.instructorName}</span>
+                <span className="text-slate-300 dark:text-slate-600">·</span>
+              </>
             )}
-            <span className="flex items-center gap-1">
-              <Clock className="size-3.5" />
-              {course.durationMinutes} {t('minutes')}
+            <span className="flex items-center gap-1 text-xs shrink-0">
+              <Clock className="size-3" />
+              {formatDuration(course.durationMinutes)}
             </span>
           </div>
 
-          {/* Price */}
-          <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          {/* Price + Arrow товч */}
+          <div className="mt-auto flex items-center justify-between">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold text-slate-900 dark:text-white">
+              <span className="text-lg font-black text-slate-900 dark:text-white">
                 {isFree ? t('free') : `₮${displayPrice?.toLocaleString()}`}
               </span>
               {hasDiscount && (
@@ -93,6 +133,9 @@ export function CourseCard({ course }: CourseCardProps) {
                   ₮{course.price?.toLocaleString()}
                 </span>
               )}
+            </div>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#8A93E5] to-[#A78BFA] flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#8A93E5]/25 transition-all">
+              <ArrowRight className="size-4 text-white" />
             </div>
           </div>
         </div>

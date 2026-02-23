@@ -19,7 +19,7 @@ interface CoursesFilterBarProps {
   onFilterChange: (key: string, value: string | undefined) => void;
 }
 
-/** Ангилал, түвшин, эрэмбэ шүүлтүүр */
+/** Ангилал, түвшин, эрэмбэ шүүлтүүр — Sort баруун талд */
 export function CoursesFilterBar({
   categoryId,
   difficulty,
@@ -46,7 +46,7 @@ export function CoursesFilterBar({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {/* Ангилал */}
+      {/* Зүүн тал — Ангилал + Түвшин */}
       <Select
         value={categoryId || 'all'}
         onValueChange={(v) => onFilterChange('categoryId', v === 'all' ? undefined : v)}
@@ -73,7 +73,6 @@ export function CoursesFilterBar({
         </SelectContent>
       </Select>
 
-      {/* Түвшин */}
       <Select
         value={difficulty || 'all'}
         onValueChange={(v) => onFilterChange('difficulty', v === 'all' ? undefined : v)}
@@ -89,18 +88,23 @@ export function CoursesFilterBar({
         </SelectContent>
       </Select>
 
-      {/* Эрэмбэ */}
-      <Select value={sortValue} onValueChange={handleSortChange}>
-        <SelectTrigger className="rounded-full px-4 h-10 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium min-w-[130px]">
-          <SelectValue placeholder={t('sortBy')} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="publishedAt:desc">{t('newest')}</SelectItem>
-          <SelectItem value="publishedAt:asc">{t('popular')}</SelectItem>
-          <SelectItem value="price:asc">{t('priceAsc')}</SelectItem>
-          <SelectItem value="price:desc">{t('priceDesc')}</SelectItem>
-        </SelectContent>
-      </Select>
+      {/* Баруун тал — Sort by */}
+      <div className="flex items-center gap-2 ml-auto">
+        <span className="text-sm text-slate-500 dark:text-slate-400 hidden sm:inline">
+          {t('sortBy')}:
+        </span>
+        <Select value={sortValue} onValueChange={handleSortChange}>
+          <SelectTrigger className="rounded-full px-4 h-10 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium min-w-[130px]">
+            <SelectValue placeholder={t('sortBy')} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="publishedAt:desc">{t('newest')}</SelectItem>
+            <SelectItem value="publishedAt:asc">{t('popularity')}</SelectItem>
+            <SelectItem value="price:asc">{t('priceAsc')}</SelectItem>
+            <SelectItem value="price:desc">{t('priceDesc')}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }
