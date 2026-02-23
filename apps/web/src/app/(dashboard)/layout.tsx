@@ -5,9 +5,9 @@ import { AppSidebar } from '@/components/dashboard/app-sidebar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-[#F4F2F9]">
       <AppSidebar />
-      <SidebarInset className="bg-white lg:rounded-[2.5rem] lg:m-4 lg:ml-0 lg:shadow-sm overflow-y-auto">
+      <SidebarInset className="bg-white lg:rounded-[2.5rem] lg:m-4 lg:ml-0 lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)] overflow-y-auto">
         {children}
       </SidebarInset>
     </SidebarProvider>

@@ -112,7 +112,7 @@ export function ClassListTable() {
                     </span>
                     <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                       <div
-                        className="h-full bg-[#8A93E5] rounded-full transition-all"
+                        className="h-full bg-[#A78BFA] rounded-full transition-all"
                         style={{ width: `${item.progress}%` }}
                       />
                     </div>

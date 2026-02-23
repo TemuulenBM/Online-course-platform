@@ -3,15 +3,15 @@
 import { ChevronDown, MoreVertical } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-/** Mock activity өгөгдөл — долоо хоногийн цаг */
+/** Mock activity өгөгдөл — долоо хоногийн цаг (pixel утга, max ~110px) */
 const ACTIVITY_DATA = [
-  { day: 'Mon', height: '30%' },
-  { day: 'Tue', height: '60%' },
-  { day: 'Wed', height: '40%' },
-  { day: 'Thu', height: '50%' },
-  { day: 'Fri', height: '85%', active: true },
-  { day: 'Sat', height: '45%' },
-  { day: 'Sun', height: '70%' },
+  { day: 'Mon', height: 33 },
+  { day: 'Tue', height: 66 },
+  { day: 'Wed', height: 44 },
+  { day: 'Thu', height: 55 },
+  { day: 'Fri', height: 94, active: true },
+  { day: 'Sat', height: 50 },
+  { day: 'Sun', height: 77 },
 ];
 
 export function ProfileCard() {
@@ -53,21 +53,21 @@ export function ProfileCard() {
         </div>
 
         {/* Bar chart */}
-        <div className="flex items-end justify-between h-32 relative">
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-white border border-gray-100 shadow-lg text-[10px] font-bold px-3 py-1.5 rounded-lg text-gray-600 z-10 hidden sm:block">
+        <div className="flex items-end justify-between h-36 relative px-1">
+          <div className="absolute top-0 left-[58%] -translate-x-1/2 bg-white border border-gray-100 shadow-lg text-[10px] font-bold px-3 py-1.5 rounded-lg text-gray-600 z-10">
             10 hours
           </div>
-          <div className="absolute top-[26px] left-[55%] -translate-x-1/2 w-px h-[10px] bg-gray-200 z-0 hidden sm:block" />
+          <div className="absolute top-[24px] left-[58%] -translate-x-1/2 w-px h-[8px] bg-gray-200 z-0" />
 
           {ACTIVITY_DATA.map((item, i) => (
-            <div key={i} className="flex flex-col items-center gap-3 w-8 group">
+            <div key={i} className="flex flex-col items-center gap-2.5 flex-1 group">
               <div
-                className={`w-6 rounded-md transition-all shadow-sm ${
+                className={`w-full max-w-[28px] rounded-lg transition-all ${
                   item.active
-                    ? 'bg-[repeating-linear-gradient(45deg,rgba(138,147,229,0.8),rgba(138,147,229,0.8)_4px,#8A93E5_4px,#8A93E5_8px)]'
-                    : 'bg-[#B4BCF8]'
+                    ? 'bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]'
+                    : 'bg-[#C4B5FD]'
                 } hover:opacity-80`}
-                style={{ height: item.height }}
+                style={{ height: `${item.height}px` }}
               />
               <span className="text-[10px] font-bold text-gray-400">{item.day}</span>
             </div>

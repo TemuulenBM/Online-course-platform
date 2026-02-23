@@ -7,9 +7,9 @@ const statsConfig = [
   {
     labelKey: 'enrolledCourse' as const,
     value: 24,
-    bg: 'bg-[#FFF8E7]',
-    border: 'border-[#FFE5D3]/50',
-    iconStroke: '#FFB84C',
+    bg: 'bg-[#E8F5E9]',
+    border: 'border-[#C8E6C9]/50',
+    iconStroke: '#66BB6A',
     iconPath: (
       <>
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -20,9 +20,9 @@ const statsConfig = [
   {
     labelKey: 'lesson' as const,
     value: 34,
-    bg: 'bg-[#F0EBF8]',
-    border: 'border-[#DDD5F0]/50',
-    iconStroke: '#8A93E5',
+    bg: 'bg-[#F3E8FF]',
+    border: 'border-[#E9D5FF]/50',
+    iconStroke: '#A78BFA',
     iconPath: (
       <>
         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -34,9 +34,9 @@ const statsConfig = [
   {
     labelKey: 'certificate' as const,
     value: 10,
-    bg: 'bg-[#EAF0FC]',
-    border: 'border-[#D0E0FF]/50',
-    iconStroke: '#5D8FFC',
+    bg: 'bg-[#FFF8E1]',
+    border: 'border-[#FFECB3]/50',
+    iconStroke: '#FFA726',
     iconPath: (
       <>
         <circle cx="12" cy="8" r="7" />

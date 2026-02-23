@@ -80,7 +80,7 @@ export function AppSidebar() {
                         'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
                         'hover:bg-white/50 hover:text-gray-900',
                         isActive &&
-                          'bg-[#8A93E5] text-white shadow-[0_4px_15px_-3px_rgba(138,147,229,0.5)] hover:bg-[#7B8AD4] hover:text-white font-bold',
+                          'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
                       )}
                     >
                       <Link href={item.href}>
@@ -110,7 +110,7 @@ export function AppSidebar() {
                     'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
                     'hover:bg-white/50 hover:text-gray-900',
                     isActive &&
-                      'bg-[#8A93E5] text-white shadow-[0_4px_15px_-3px_rgba(138,147,229,0.5)] hover:bg-[#7B8AD4] hover:text-white font-bold',
+                      'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
                   )}
                 >
                   <Link href={item.href}>
@@ -128,11 +128,56 @@ export function AppSidebar() {
         {/* Upgrade Premium Card */}
         <div className="bg-white rounded-[2rem] p-6 text-center shadow-sm relative overflow-visible border border-gray-100/50">
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#2E3035] rounded-full flex items-center justify-center shadow-lg border-4 border-[#F4F2F9] z-10">
-            <span className="text-4xl">🚀</span>
-            <div className="absolute top-2 left-3 w-1.5 h-1.5 bg-yellow-300 rounded-full" />
-            <div className="absolute bottom-4 right-3 w-1.5 h-1.5 bg-yellow-300 rounded-full" />
-            <div className="absolute top-5 right-2 w-1 h-1 bg-white rounded-full" />
-            <div className="absolute bottom-6 left-2 w-1 h-1 bg-white rounded-full" />
+            {/* Rocket SVG illustration */}
+            <svg
+              width="44"
+              height="44"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Дөл */}
+              <ellipse cx="24" cy="42" rx="5" ry="4.5" fill="#FF9E67" />
+              <ellipse cx="24" cy="41" rx="3" ry="3.5" fill="#FFD166" />
+              <ellipse cx="24" cy="40.5" rx="1.5" ry="2" fill="#FFF3C4" />
+              {/* Rocket бие — гадна */}
+              <path d="M17 32 C17 32 15.5 22 24 12 C32.5 22 31 32 31 32 Z" fill="#A78BFA" />
+              {/* Rocket бие — дотно highlight */}
+              <path d="M19 31 C19 31 18 23 24 14 C30 23 29 31 29 31 Z" fill="#C4B5FD" />
+              {/* Rocket толгой */}
+              <path
+                d="M21.5 17 C21.5 14.5 24 10.5 24 10.5 C24 10.5 26.5 14.5 26.5 17 Z"
+                fill="#FF6B6B"
+              />
+              {/* Цонх — гадна */}
+              <circle cx="24" cy="24" r="4" fill="#1E1E2E" />
+              {/* Цонх — дотно */}
+              <circle cx="24" cy="24" r="2.8" fill="#C7D2FE" />
+              {/* Цонх — гялалз */}
+              <circle cx="22.8" cy="22.8" r="1" fill="white" />
+              {/* Зүүн жигүүр */}
+              <path d="M17 32 C14 29 12 33 12 35 L17 32 Z" fill="#FF6B6B" />
+              {/* Баруун жигүүр */}
+              <path d="M31 32 C34 29 36 33 36 35 L31 32 Z" fill="#FF6B6B" />
+            </svg>
+            {/* Гялалзсан одууд */}
+            <div className="absolute top-1 left-2 text-yellow-300 text-xs animate-pulse">
+              &#10022;
+            </div>
+            <div
+              className="absolute bottom-2 right-2 text-yellow-300 text-sm animate-pulse"
+              style={{ animationDelay: '0.5s' }}
+            >
+              &#10022;
+            </div>
+            <div
+              className="absolute top-3.5 right-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse"
+              style={{ animationDelay: '1s' }}
+            />
+            <div
+              className="absolute bottom-4 left-2.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse"
+              style={{ animationDelay: '0.3s' }}
+            />
           </div>
           <div className="pt-8">
             <h4 className="font-extrabold text-[#1B1B1B] text-[15px] mb-2 tracking-tight">

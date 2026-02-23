@@ -42,3 +42,9 @@ postgres_data/
 mongodb_data/
 redis_data/
 elasticsearch_data/
+
+# Claude Code
+.claude/
+
+# Uploads (local dev)
+apps/api/uploads/
