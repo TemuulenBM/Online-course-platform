@@ -20,3 +20,4 @@ export { notificationsService } from './notifications.service';
 export type { Notification, NotificationListParams } from './notifications.service';
 export { certificatesService } from './certificates.service';
 export type { Certificate, MyCertificatesParams } from './certificates.service';
+export { lessonsService } from './lessons.service';
