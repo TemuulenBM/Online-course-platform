@@ -63,7 +63,7 @@ docker compose -f docker-compose.prod.yml down     # Зогсоох
 
 ## Tech Stack
 
-- **Web**: Next.js 15 + TypeScript + Tailwind CSS 4 + React Query + Zustand
+- **Web**: Next.js 16 + TypeScript + Tailwind CSS 4 + shadcn/ui + React Query + Zustand
 - **API**: NestJS 10 + Prisma 6 (PostgreSQL) + Mongoose (MongoDB)
 - **Mobile**: React Native + Expo 52 + Expo Router
 - **Infra**: Redis (cache/queue via Bull), Elasticsearch (search)
@@ -773,3 +773,46 @@ PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-sch
 - Route дараалал: `/upcoming`, `/course/:courseId`, `/lesson/:lessonId`, `/webhook/recording` нь `/:id`-ээс ӨМНӨ
 
 **Тест**: 18 test suite, 88 unit тест (14 use-case + controller + cache service + agora service + processor)
+
+### Web App Setup (Phase 7 - Frontend)
+
+**Tech Stack**:
+
+- Next.js 16.1.0 (App Router) + React 19.2.0 + TypeScript 5.6
+- Tailwind CSS 4.0.0 (`@tailwindcss/postcss`) + shadcn/ui (new-york style)
+- TanStack React Query 5.62 (server state) + Zustand 5.0 (client state)
+- Lucide React (icons)
+
+**shadcn/ui тохиргоо**:
+
+- `apps/web/components.json` — shadcn CLI config (new-york style, RSC enabled, Tailwind v4, neutral base color)
+- `apps/web/src/app/globals.css` — Tailwind v4 + shadcn CSS variables (OKLCH colors, light/dark theme, sidebar variables)
+- `apps/web/src/lib/utils.ts` — `cn()` utility (`clsx` + `tailwind-merge`)
+- `apps/web/src/components/ui/` — 24 shadcn component файл
+- `apps/web/src/hooks/use-mobile.ts` — Mobile detection hook (shadcn sidebar-д ашиглагдана)
+
+**Суулгасан shadcn/ui components** (24):
+
+`alert`, `avatar`, `badge`, `breadcrumb`, `button`, `card`, `command`, `dialog`, `dropdown-menu`, `form`, `input`, `label`, `navigation-menu`, `pagination`, `progress`, `select`, `separator`, `sheet`, `sidebar`, `skeleton`, `sonner`, `table`, `tabs`, `tooltip`
+
+**Dependencies нэмэгдсэн**:
+
+- Runtime: `class-variance-authority`, `clsx`, `tailwind-merge`, `tw-animate-css`, `lucide-react`
+- Dev: `shadcn` (CLI tool)
+- shadcn-ээр автомат суулгагдсан: `@radix-ui/*`, `react-hook-form`, `@hookform/resolvers`, `zod`, `sonner`, `cmdk`, `next-themes`, `recharts`, `react-resizable-panels`, `input-otp`, `vaul`
+
+**Одоогийн route бүтэц** (placeholder pages):
+
+```
+app/
+  (auth)/      — login, register, forgot-password
+  (dashboard)/ — dashboard, profile, courses, courses/[slug], my-courses
+  (admin)/     — admin
+```
+
+**Shared packages**:
+
+- `@ocp/shared-types` — User, Course, Category, Enrollment, AuthTokens, PaginatedResponse, ApiResponse
+- `@ocp/validation` — Zod schemas (auth, user, course, common)
+- `@ocp/api-client` — Axios wrapper (ApiClient class, setAccessToken, getClient)
+- `@ocp/ui-components` — Энгийн Button component (shadcn/ui-д шилжих)
