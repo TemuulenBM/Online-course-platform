@@ -33,6 +33,9 @@ export const QUERY_KEYS = {
   certificates: {
     my: (params?: object) => ['certificates', 'my', params] as const,
   },
+  lessons: {
+    byCourse: (courseId: string) => ['lessons', 'course', courseId] as const,
+  },
 } as const;
 
 /**

@@ -26,3 +26,6 @@ export {
 
 // Certificate hooks
 export { useMyCertificates } from './use-certificates';
+
+// Lesson hooks
+export { useCourseLessons } from './use-lessons';
