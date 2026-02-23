@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BookOpen, Maximize, PlayCircle, Star, Users } from 'lucide-react';
+import { BookOpen, Maximize, PlayCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 
@@ -77,9 +77,6 @@ export function CourseHero({ course }: CourseHeroProps) {
             {course.categoryName}
           </span>
         )}
-        <span className="bg-[#8A93E5] text-white rounded-md px-3 py-1 text-xs font-bold uppercase tracking-wider">
-          Bestseller
-        </span>
         <span
           className={`rounded-md px-3 py-1 text-xs font-bold uppercase tracking-wider ${difficultyStyles[course.difficulty] || difficultyStyles.beginner}`}
         >
@@ -107,24 +104,8 @@ export function CourseHero({ course }: CourseHeroProps) {
                 {course.instructorName}
               </span>
             </div>
-            <span className="text-slate-300 dark:text-slate-600">·</span>
           </>
         )}
-
-        {/* Rating — static placeholder */}
-        <div className="flex items-center gap-1">
-          <Star className="size-4 fill-amber-400 text-amber-400" />
-          <span className="font-semibold text-slate-700 dark:text-slate-300">4.9</span>
-          <span className="text-slate-400">(12.5k)</span>
-        </div>
-
-        <span className="text-slate-300 dark:text-slate-600">·</span>
-
-        {/* Enrolled count — static placeholder */}
-        <div className="flex items-center gap-1.5">
-          <Users className="size-4" />
-          <span>24,500 {t('enrolled')}</span>
-        </div>
       </div>
     </div>
   );

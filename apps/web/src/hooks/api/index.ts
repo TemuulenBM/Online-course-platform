@@ -42,6 +42,14 @@ export { useCourseLessons, useLessonById } from './use-lessons';
 // Content hooks
 export { useLessonContent } from './use-content';
 
+// Discussion hooks
+export {
+  useDiscussionPosts,
+  useCreateDiscussionPost,
+  useAddReply,
+  useVoteDiscussionPost,
+} from './use-discussions';
+
 // Comment hooks
 export {
   useLessonComments,

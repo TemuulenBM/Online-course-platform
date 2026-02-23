@@ -1,9 +1,13 @@
 'use client';
 
-import { Award, Download, Heart, Infinity, PlayCircle, Share2 } from 'lucide-react';
+import Link from 'next/link';
+import { Award, Download, Infinity, PlayCircle, Share2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import type { Course } from '@ocp/shared-types';
 import { CourseEnrollButton } from './course-enroll-button';
+import { useCourseLessons } from '@/hooks/api';
+import { ROUTES } from '@/lib/constants';
 
 interface CourseSidebarMetaProps {
   course: Course;
@@ -19,6 +23,25 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
   const discountPercent =
     hasDiscount && course.price ? Math.round((1 - course.discountPrice! / course.price) * 100) : 0;
   const videoHours = Math.round((course.durationMinutes / 60) * 10) / 10;
+
+  /** Эхний хичээлийн ID — Free Trial товчинд */
+  const { data: lessons } = useCourseLessons(course.id);
+  const firstLesson = lessons?.[0];
+
+  /** Share товч handler */
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: course.title, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success(t('linkCopied'));
+      }
+    } catch {
+      /* Хэрэглэгч цуцалсан — алдаа шидэхгүй */
+    }
+  };
 
   return (
     <div className="sticky top-6 flex flex-col gap-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
@@ -42,13 +65,23 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
       {/* Элсэх товч */}
       <CourseEnrollButton courseId={course.id} isFree={isFree} />
 
-      {/* Free Trial товч */}
-      <button
-        type="button"
-        className="w-full border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 py-3 rounded-xl font-bold text-sm hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors"
-      >
-        {t('freeTrial')}
-      </button>
+      {/* Free Trial товч — эхний хичээл рүү холбоос */}
+      {firstLesson ? (
+        <Link
+          href={ROUTES.LESSON_VIEWER(course.slug, firstLesson.id)}
+          className="w-full border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 py-3 rounded-xl font-bold text-sm hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors text-center block"
+        >
+          {t('freeTrial')}
+        </Link>
+      ) : (
+        <button
+          type="button"
+          disabled
+          className="w-full border-2 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 py-3 rounded-xl font-bold text-sm cursor-not-allowed"
+        >
+          {t('noFirstLesson')}
+        </button>
+      )}
 
       {/* Separator */}
       <div className="border-t border-slate-100 dark:border-slate-800" />
@@ -79,22 +112,15 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
       {/* Separator */}
       <div className="border-t border-slate-100 dark:border-slate-800" />
 
-      {/* Share + Heart + Guarantee */}
+      {/* Share + Guarantee */}
       <div className="flex flex-col items-center gap-3">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors"
-          >
-            <Share2 className="size-4" />
-          </button>
-          <button
-            type="button"
-            className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:border-red-400 hover:text-red-400 transition-colors"
-          >
-            <Heart className="size-4" />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleShare}
+          className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors"
+        >
+          <Share2 className="size-4" />
+        </button>
         <span className="text-xs text-slate-500 dark:text-slate-400 text-center">
           {t('moneyBack')}
         </span>
@@ -120,22 +146,6 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
               {course.instructorName || 'Instructor'}
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">{t('seniorInstructor')}</p>
-          </div>
-        </div>
-
-        {/* Instructor stats — static placeholder */}
-        <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg py-2">
-            <p className="text-sm font-bold text-slate-900 dark:text-white">24.5k</p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400">{t('students')}</p>
-          </div>
-          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg py-2">
-            <p className="text-sm font-bold text-slate-900 dark:text-white">15</p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400">{t('title')}</p>
-          </div>
-          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg py-2">
-            <p className="text-sm font-bold text-slate-900 dark:text-white">4.9</p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400">Rating</p>
           </div>
         </div>
 

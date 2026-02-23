@@ -43,6 +43,9 @@ export const QUERY_KEYS = {
   comments: {
     byLesson: (lessonId: string) => ['comments', 'lesson', lessonId] as const,
   },
+  discussions: {
+    byCourse: (courseId: string) => ['discussions', 'course', courseId] as const,
+  },
 } as const;
 
 /**

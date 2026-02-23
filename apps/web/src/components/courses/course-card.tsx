@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, BookOpen, Clock, Heart } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
@@ -84,15 +84,6 @@ export function CourseCard({ course }: CourseCardProps) {
               {t(course.difficulty)}
             </span>
           </div>
-
-          {/* Heart icon — баруун дээд булан (visual only) */}
-          <button
-            type="button"
-            onClick={(e) => e.preventDefault()}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex items-center justify-center hover:bg-white dark:hover:bg-slate-700 hover:scale-110 transition-all shadow-sm"
-          >
-            <Heart className="size-4 text-slate-400 hover:text-red-400 transition-colors" />
-          </button>
         </div>
 
         {/* Content */}
