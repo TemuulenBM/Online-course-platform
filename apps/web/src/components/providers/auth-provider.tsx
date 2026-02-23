@@ -36,7 +36,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     validateAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHydrated]);
 
   // Hydration эсвэл validation дуусаагүй бол loading
