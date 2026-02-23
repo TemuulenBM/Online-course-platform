@@ -317,6 +317,20 @@
     "timeAgo": "{time}-н өмнө",
     "replying": "Хариулж байна..."
   },
+  "notifications": {
+    "title": "Мэдэгдлүүд",
+    "markAllRead": "Бүгдийг уншсан болгох",
+    "seeAll": "Бүгдийг үзэх",
+    "empty": "Мэдэгдэл байхгүй",
+    "emptySubtitle": "Шинэ мэдэгдэл ирэхэд энд харагдана",
+    "unreadEmpty": "Уншаагүй мэдэгдэл байхгүй",
+    "all": "Бүгд",
+    "unread": "Уншаагүй",
+    "deleted": "Мэдэгдэл устгагдлаа",
+    "allMarkedRead": "Бүх мэдэгдлийг уншсан болголоо",
+    "showingOf": "{shown}-аас {total} мэдэгдэл харуулж байна",
+    "unreadCount": "{count} уншаагүй"
+  },
   "language": {
     "toggle": "Хэл",
     "mn": "Монгол",

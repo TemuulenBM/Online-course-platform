@@ -1,10 +1,11 @@
 'use client';
 
-import { Bell, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/stores/auth-store';
+import { NotificationBell } from '@/components/notifications/notification-bell';
 
 export function WelcomeHeader() {
   const t = useTranslations('dashboard');
@@ -34,11 +35,8 @@ export function WelcomeHeader() {
           />
         </div>
 
-        {/* Мэдэгдлийн товч */}
-        <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors relative shrink-0">
-          <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#FF6B6B] rounded-full border-2 border-white" />
-          <Bell className="w-5 h-5" />
-        </button>
+        {/* Мэдэгдлийн товч — dropdown-тэй */}
+        <NotificationBell />
       </div>
     </div>
   );

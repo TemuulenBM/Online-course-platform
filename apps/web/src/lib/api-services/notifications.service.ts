@@ -3,15 +3,17 @@ import apiClient from '../api';
 
 const client = apiClient.getClient();
 
-/** Мэдэгдлийн бүтэц */
+/** Мэдэгдлийн бүтэц — backend entity-тай тааруулсан */
 export interface Notification {
   id: string;
   userId: string;
-  type: string;
+  type: 'EMAIL' | 'PUSH' | 'IN_APP' | 'SMS';
   title: string;
   message: string;
-  isRead: boolean;
+  read: boolean;
   data: Record<string, unknown> | null;
+  sentAt: string;
+  readAt: string | null;
   createdAt: string;
 }
 
@@ -19,7 +21,7 @@ export interface NotificationListParams {
   page?: number;
   limit?: number;
   type?: string;
-  isRead?: boolean;
+  read?: boolean;
 }
 
 export const notificationsService = {
@@ -41,5 +43,9 @@ export const notificationsService = {
 
   markAllRead: async (): Promise<void> => {
     await client.patch('/notifications/mark-all-read');
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await client.delete(`/notifications/${id}`);
   },
 };

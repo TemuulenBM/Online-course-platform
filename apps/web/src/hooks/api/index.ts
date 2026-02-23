@@ -28,6 +28,7 @@ export {
   useUnreadNotificationCount,
   useMarkAllNotificationsRead,
   useMarkNotificationRead,
+  useDeleteNotification,
 } from './use-notifications';
 
 // Certificate hooks

@@ -58,6 +58,7 @@ export const ROUTES = {
   COURSE_DETAIL: (slug: string) => `/courses/${slug}` as const,
   MY_COURSES: '/my-courses',
   PROFILE: '/profile',
+  NOTIFICATIONS: '/notifications',
   ADMIN: '/admin',
   LESSON_VIEWER: (slug: string, lessonId: string) =>
     `/courses/${slug}/lessons/${lessonId}` as const,

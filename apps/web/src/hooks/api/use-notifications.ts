@@ -62,3 +62,20 @@ export function useMarkNotificationRead() {
     },
   });
 }
+
+/** Мэдэгдэл устгах mutation */
+export function useDeleteNotification() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => notificationsService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.notifications.unreadCount,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['notifications', 'list'],
+      });
+    },
+  });
+}

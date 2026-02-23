@@ -317,6 +317,20 @@
     "timeAgo": "{time} ago",
     "replying": "Replying..."
   },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "seeAll": "See all",
+    "empty": "No notifications",
+    "emptySubtitle": "New notifications will appear here",
+    "unreadEmpty": "No unread notifications",
+    "all": "All",
+    "unread": "Unread",
+    "deleted": "Notification deleted",
+    "allMarkedRead": "All notifications marked as read",
+    "showingOf": "Showing {shown} of {total} notifications",
+    "unreadCount": "{count} unread"
+  },
   "language": {
     "toggle": "Language",
     "mn": "Монгол",
