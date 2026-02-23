@@ -19,6 +19,7 @@ export interface EnrollmentWithCourse extends Enrollment {
   courseTitle?: string;
   courseSlug?: string;
   courseThumbnailUrl?: string;
+  courseInstructorName?: string;
 }
 
 /** Элсэлтийн статус шалгах response */

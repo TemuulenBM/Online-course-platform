@@ -20,6 +20,8 @@ export class EnrollmentEntity {
   readonly courseThumbnailUrl?: string;
   /** Сургалтын эзэмшигчийн ID — эрхийн шалгалтад (response-д буцаахгүй) */
   readonly courseInstructorId?: string;
+  /** Сургалтын багшийн нэр — жагсаалтад харуулахад */
+  readonly courseInstructorName?: string;
   /** Хэрэглэгчийн нэр — багш/админ харагдац */
   readonly userName?: string;
   /** Хэрэглэгчийн имэйл — багш/админ харагдац */
@@ -39,6 +41,7 @@ export class EnrollmentEntity {
     courseSlug?: string;
     courseThumbnailUrl?: string;
     courseInstructorId?: string;
+    courseInstructorName?: string;
     userName?: string;
     userEmail?: string;
   }) {
@@ -55,6 +58,7 @@ export class EnrollmentEntity {
     this.courseSlug = props.courseSlug;
     this.courseThumbnailUrl = props.courseThumbnailUrl;
     this.courseInstructorId = props.courseInstructorId;
+    this.courseInstructorName = props.courseInstructorName;
     this.userName = props.userName;
     this.userEmail = props.userEmail;
   }
@@ -74,6 +78,7 @@ export class EnrollmentEntity {
       courseTitle: this.courseTitle,
       courseSlug: this.courseSlug,
       courseThumbnailUrl: this.courseThumbnailUrl,
+      courseInstructorName: this.courseInstructorName,
       userName: this.userName,
       userEmail: this.userEmail,
     };

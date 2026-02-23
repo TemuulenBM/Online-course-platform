@@ -19,6 +19,7 @@ export function useCourseProgress(courseId: string) {
     queryKey: QUERY_KEYS.progress.course(courseId),
     queryFn: () => progressService.getCourseProgress(courseId),
     enabled: !!courseId,
+    retry: false,
   });
 }
 

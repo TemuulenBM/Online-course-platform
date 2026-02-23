@@ -179,7 +179,21 @@
     "empty": "Та одоогоор ямар ч сургалтад элсээгүй байна",
     "browseCourses": "Сургалтууд үзэх",
     "lessonsCompleted": "{completed}/{total} хичээл дуусгасан",
-    "progressPercent": "{percent}% дуусгасан"
+    "progressPercent": "{percent}% дуусгасан",
+    "continue": "Үргэлжлүүлэх",
+    "review": "Дахин үзэх",
+    "completedOn": "Дуусгасан: {date}",
+    "enrolledOn": "Элссэн: {date}",
+    "cancelled": "Цуцлагдсан",
+    "expired": "Хугацаа дууссан",
+    "noActiveCourses": "Идэвхтэй сургалт байхгүй",
+    "noCompletedCourses": "Дуусгасан сургалт одоогоор байхгүй",
+    "totalCourses": "Нийт {count} сургалт",
+    "emptySubtitle": "Өөрт тохирсон сургалтыг одоо сонгоорой",
+    "searchPlaceholder": "Сургалт хайх...",
+    "activeLearningPaths": "Танд {count} идэвхтэй суралцах зам байна",
+    "showingOf": "{shown}-аас {total} идэвхтэй сургалт харуулж байна",
+    "allCourses": "Бүх сургалт"
   },
   "profile": {
     "title": "Тохиргоо",

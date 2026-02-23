@@ -179,7 +179,21 @@
     "empty": "You haven't enrolled in any courses yet",
     "browseCourses": "Browse Courses",
     "lessonsCompleted": "{completed}/{total} lessons completed",
-    "progressPercent": "{percent}% completed"
+    "progressPercent": "{percent}% completed",
+    "continue": "Continue",
+    "review": "Review",
+    "completedOn": "Completed: {date}",
+    "enrolledOn": "Enrolled: {date}",
+    "cancelled": "Cancelled",
+    "expired": "Expired",
+    "noActiveCourses": "No active courses",
+    "noCompletedCourses": "No completed courses yet",
+    "totalCourses": "{count} courses total",
+    "emptySubtitle": "Find the perfect course for you today",
+    "searchPlaceholder": "Search your courses...",
+    "activeLearningPaths": "You have {count} active learning paths",
+    "showingOf": "Showing {shown} of {total} active courses",
+    "allCourses": "All Courses"
   },
   "profile": {
     "title": "Settings",

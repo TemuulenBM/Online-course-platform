@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
+  BookMarked,
   BookOpen,
   Calendar,
   HelpCircle,
@@ -33,6 +34,7 @@ import {
 const mainNavItems = [
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
   { href: '/courses', icon: BookOpen, labelKey: 'courses' },
+  { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
   { href: '/tasks', icon: ListTodo, labelKey: 'myTask' },
   { href: '/community', icon: Users, labelKey: 'community' },
   { href: '/report', icon: TrendingUp, labelKey: 'report' },
