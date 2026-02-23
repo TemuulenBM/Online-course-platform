@@ -11,7 +11,13 @@ export { useCategoryTree } from './use-categories';
 export { useMyEnrollments, useCheckEnrollment, useEnroll } from './use-enrollments';
 
 // Progress hooks
-export { useMyProgress, useCourseProgress, useLessonProgress } from './use-progress';
+export {
+  useMyProgress,
+  useCourseProgress,
+  useLessonProgress,
+  useCompleteLesson,
+  useUpdateVideoPosition,
+} from './use-progress';
 
 // Profile hooks
 export { useMyProfile, useUpdateProfile } from './use-profile';
@@ -28,4 +34,15 @@ export {
 export { useMyCertificates } from './use-certificates';
 
 // Lesson hooks
-export { useCourseLessons } from './use-lessons';
+export { useCourseLessons, useLessonById } from './use-lessons';
+
+// Content hooks
+export { useLessonContent } from './use-content';
+
+// Comment hooks
+export {
+  useLessonComments,
+  useCreateComment,
+  useReplyComment,
+  useUpvoteComment,
+} from './use-comments';

@@ -67,4 +67,28 @@ export const progressService = {
     );
     return res.data.data!;
   },
+
+  /** Хичээлийн ахиц шинэчлэх */
+  updateProgress: async (
+    lessonId: string,
+    data: { timeSpentSeconds?: number; progressPercentage?: number },
+  ): Promise<LessonProgress> => {
+    const res = await client.post<ApiResponse<LessonProgress>>(
+      `/progress/lessons/${lessonId}`,
+      data,
+    );
+    return res.data.data!;
+  },
+
+  /** Видеоны байрлал шинэчлэх */
+  updateVideoPosition: async (
+    lessonId: string,
+    data: { lastPositionSeconds: number },
+  ): Promise<LessonProgress> => {
+    const res = await client.patch<ApiResponse<LessonProgress>>(
+      `/progress/lessons/${lessonId}/position`,
+      data,
+    );
+    return res.data.data!;
+  },
 };

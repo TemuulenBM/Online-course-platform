@@ -1,8 +1,10 @@
 'use client';
 
 import { PlayCircle, FileText, HelpCircle, ClipboardCheck, Radio } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { Lesson, LessonType } from '@ocp/shared-types';
+import { ROUTES } from '@/lib/constants';
 
 /** Хичээлийн төрлийн icon */
 const lessonTypeIcons: Record<LessonType, React.ElementType> = {
@@ -16,15 +18,26 @@ const lessonTypeIcons: Record<LessonType, React.ElementType> = {
 interface CourseCurriculumItemProps {
   lesson: Lesson;
   index: number;
+  slug?: string;
 }
 
-/** Нэг хичээлийн мөр */
-export function CourseCurriculumItem({ lesson, index }: CourseCurriculumItemProps) {
+/** Нэг хичээлийн мөр — дарахад lesson viewer руу шилжинэ */
+export function CourseCurriculumItem({ lesson, index, slug }: CourseCurriculumItemProps) {
   const t = useTranslations('courses');
+  const router = useRouter();
   const Icon = lessonTypeIcons[lesson.lessonType] || FileText;
 
+  const handleClick = () => {
+    if (slug) {
+      router.push(ROUTES.LESSON_VIEWER(slug, lesson.id));
+    }
+  };
+
   return (
-    <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+    <div
+      onClick={handleClick}
+      className={`flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${slug ? 'cursor-pointer' : ''}`}
+    >
       <span className="text-xs font-bold text-slate-400 w-6 text-center">{index}</span>
       <Icon className="size-5 text-primary shrink-0" />
       <div className="flex-1 min-w-0">

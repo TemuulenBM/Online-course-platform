@@ -267,6 +267,28 @@
     "moreCategories": "Бусад",
     "exploreMore": "Дэлгэрэнгүй"
   },
+  "lessonViewer": {
+    "courseContent": "Сургалтын агуулга",
+    "complete": "Дуусгасан",
+    "nowPlaying": "Одоо тоглож байна",
+    "locked": "Түгжээтэй",
+    "previousLesson": "Өмнөх",
+    "nextLesson": "Дараах хичээл",
+    "comments": "Сэтгэгдэл",
+    "addComment": "Сэтгэгдэл бичих...",
+    "postComment": "Сэтгэгдэл нийтлэх",
+    "reply": "Хариулах",
+    "recentFirst": "Шинэ эхэнд",
+    "completeModule": "{module} дуусгаж энэ хэсгийг нээх",
+    "downloadResources": "Материал татах",
+    "markComplete": "Дуусгасан гэж тэмдэглэх",
+    "lessonCompleted": "Хичээл дуусгасан",
+    "posting": "Нийтэлж байна...",
+    "noComments": "Сэтгэгдэл одоогоор байхгүй",
+    "loginToComment": "Сэтгэгдэл бичихийн тулд нэвтрэнэ үү",
+    "timeAgo": "{time}-н өмнө",
+    "replying": "Хариулж байна..."
+  },
   "language": {
     "toggle": "Хэл",
     "mn": "Монгол",

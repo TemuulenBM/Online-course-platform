@@ -7,10 +7,11 @@ import { CourseCurriculumItem } from './course-curriculum-item';
 
 interface CourseCurriculumProps {
   courseId: string;
+  slug?: string;
 }
 
 /** Хичээлийн хөтөлбөр жагсаалт */
-export function CourseCurriculum({ courseId }: CourseCurriculumProps) {
+export function CourseCurriculum({ courseId, slug }: CourseCurriculumProps) {
   const t = useTranslations('courses');
   const { data: lessons, isLoading } = useCourseLessons(courseId);
 
@@ -36,7 +37,7 @@ export function CourseCurriculum({ courseId }: CourseCurriculumProps) {
         {t('lessonCount', { count: lessons.length })}
       </span>
       {lessons.map((lesson, idx) => (
-        <CourseCurriculumItem key={lesson.id} lesson={lesson} index={idx + 1} />
+        <CourseCurriculumItem key={lesson.id} lesson={lesson} index={idx + 1} slug={slug} />
       ))}
     </div>
   );

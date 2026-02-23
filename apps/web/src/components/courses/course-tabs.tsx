@@ -42,7 +42,7 @@ export function CourseTabs({ course }: CourseTabsProps) {
         <CourseOverview description={course.description} tags={course.tags} />
       </TabsContent>
       <TabsContent value="curriculum">
-        <CourseCurriculum courseId={course.id} />
+        <CourseCurriculum courseId={course.id} slug={course.slug} />
       </TabsContent>
       <TabsContent value="reviews">
         <CourseReviews />

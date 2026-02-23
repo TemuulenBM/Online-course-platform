@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { progressService } from '@/lib/api-services/progress.service';
 import type { MyProgressParams } from '@/lib/api-services/progress.service';
 import { QUERY_KEYS } from '@/lib/constants';
@@ -28,5 +28,39 @@ export function useLessonProgress(lessonId: string) {
     queryKey: QUERY_KEYS.progress.lesson(lessonId),
     queryFn: () => progressService.getLessonProgress(lessonId),
     enabled: !!lessonId,
+  });
+}
+
+/** Хичээл дуусгах mutation */
+export function useCompleteLesson() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (lessonId: string) => progressService.completeLesson(lessonId),
+    onSuccess: (_data, lessonId) => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.progress.lesson(lessonId) });
+      queryClient.invalidateQueries({ queryKey: ['progress', 'course'] });
+      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+    },
+  });
+}
+
+/** Видеоны байрлал шинэчлэх mutation */
+export function useUpdateVideoPosition() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      lessonId,
+      lastPositionSeconds,
+    }: {
+      lessonId: string;
+      lastPositionSeconds: number;
+    }) => progressService.updateVideoPosition(lessonId, { lastPositionSeconds }),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.progress.lesson(variables.lessonId),
+      });
+    },
   });
 }

@@ -12,3 +12,12 @@ export function useCourseLessons(courseId: string) {
     enabled: !!courseId,
   });
 }
+
+/** Нэг хичээлийн дэлгэрэнгүй */
+export function useLessonById(lessonId: string) {
+  return useQuery({
+    queryKey: QUERY_KEYS.lessons.byId(lessonId),
+    queryFn: () => lessonsService.getById(lessonId),
+    enabled: !!lessonId,
+  });
+}

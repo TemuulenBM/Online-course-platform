@@ -35,6 +35,13 @@ export const QUERY_KEYS = {
   },
   lessons: {
     byCourse: (courseId: string) => ['lessons', 'course', courseId] as const,
+    byId: (lessonId: string) => ['lessons', 'lesson', lessonId] as const,
+  },
+  content: {
+    byLesson: (lessonId: string) => ['content', 'lesson', lessonId] as const,
+  },
+  comments: {
+    byLesson: (lessonId: string) => ['comments', 'lesson', lessonId] as const,
   },
 } as const;
 
@@ -52,4 +59,6 @@ export const ROUTES = {
   MY_COURSES: '/my-courses',
   PROFILE: '/profile',
   ADMIN: '/admin',
+  LESSON_VIEWER: (slug: string, lessonId: string) =>
+    `/courses/${slug}/lessons/${lessonId}` as const,
 } as const;

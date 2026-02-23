@@ -267,6 +267,28 @@
     "moreCategories": "More",
     "exploreMore": "Explore More"
   },
+  "lessonViewer": {
+    "courseContent": "Course Content",
+    "complete": "Complete",
+    "nowPlaying": "Now Playing",
+    "locked": "Locked",
+    "previousLesson": "Previous",
+    "nextLesson": "Next Lesson",
+    "comments": "Comments",
+    "addComment": "Add a comment...",
+    "postComment": "Post Comment",
+    "reply": "Reply",
+    "recentFirst": "Recent First",
+    "completeModule": "Complete {module} to unlock this section",
+    "downloadResources": "Download Resources",
+    "markComplete": "Mark as Complete",
+    "lessonCompleted": "Lesson Completed",
+    "posting": "Posting...",
+    "noComments": "No comments yet",
+    "loginToComment": "Login to comment",
+    "timeAgo": "{time} ago",
+    "replying": "Replying..."
+  },
   "language": {
     "toggle": "Language",
     "mn": "Монгол",
