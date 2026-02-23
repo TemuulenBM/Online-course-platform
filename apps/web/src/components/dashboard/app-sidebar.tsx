@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import {
   Sidebar,
   SidebarContent,
@@ -52,16 +53,7 @@ export function AppSidebar() {
     <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
       {/* Лого */}
       <SidebarHeader className="px-6 pt-8 pb-6">
-        <Link href="/dashboard" className="flex items-center gap-3 pl-2">
-          <div className="flex flex-col gap-[3px]">
-            <div className="w-5 h-1.5 bg-[#FF6B6B] rounded-full rotate-[-45deg] origin-right ml-1" />
-            <div className="w-5 h-1.5 bg-[#2E3035] rounded-full rotate-[-45deg] origin-right" />
-            <div className="w-5 h-1.5 bg-[#8A93E5] rounded-full rotate-[-45deg] origin-right" />
-          </div>
-          <span className="text-xl font-extrabold tracking-wide uppercase text-[#1B1B1B]">
-            Learnify
-          </span>
-        </Link>
+        <LearnifyLogo href="/dashboard" className="pl-2" />
       </SidebarHeader>
 
       {/* Үндсэн навигац */}

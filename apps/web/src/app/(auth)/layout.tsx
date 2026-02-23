@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,16 +14,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="flex min-h-screen items-center justify-center p-4 sm:p-6 relative z-10">
         <div className="w-full max-w-[480px] bg-white/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 shadow-[0_8px_40px_rgba(138,147,229,0.12)] border border-white/60 animation-fade-in">
           {/* LEARNIFY лого */}
-          <Link href="/" className="flex items-center justify-center gap-3 mb-10">
-            <div className="flex flex-col gap-[3px]">
-              <div className="w-5 h-1.5 bg-[#FF6B6B] rounded-full rotate-[-45deg] origin-right ml-1" />
-              <div className="w-5 h-1.5 bg-[#2E3035] rounded-full rotate-[-45deg] origin-right" />
-              <div className="w-5 h-1.5 bg-[#8A93E5] rounded-full rotate-[-45deg] origin-right" />
-            </div>
-            <span className="text-xl font-extrabold tracking-wide uppercase text-[#1B1B1B]">
-              Learnify
-            </span>
-          </Link>
+          <div className="flex justify-center mb-10">
+            <LearnifyLogo href="/" />
+          </div>
 
           {children}
         </div>
