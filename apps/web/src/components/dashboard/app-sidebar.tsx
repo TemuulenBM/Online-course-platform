@@ -10,12 +10,14 @@ import {
   HelpCircle,
   LayoutGrid,
   ListTodo,
+  LogOut,
   Settings,
   TrendingUp,
   Users,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useLogout } from '@/hooks/api';
 import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import {
   Sidebar,
@@ -43,13 +45,14 @@ const mainNavItems = [
 
 /** Доод навигацийн зүйлс */
 const bottomNavItems = [
-  { href: '/settings', icon: Settings, labelKey: 'settings' },
+  { href: '/profile', icon: Settings, labelKey: 'settings' },
   { href: '/support', icon: HelpCircle, labelKey: 'support' },
 ] as const;
 
 export function AppSidebar() {
   const pathname = usePathname();
   const t = useTranslations('nav');
+  const logoutMutation = useLogout();
 
   return (
     <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
@@ -115,6 +118,17 @@ export function AppSidebar() {
               </SidebarMenuItem>
             );
           })}
+          {/* Logout товч */}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+              className="h-12 rounded-2xl px-5 font-semibold text-red-400 transition-all hover:bg-red-50 hover:text-red-600"
+            >
+              <LogOut className="size-5" strokeWidth={2.5} />
+              <span>{t('logout')}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
 
         <SidebarSeparator className="my-2 bg-transparent" />

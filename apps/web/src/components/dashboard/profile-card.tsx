@@ -1,7 +1,11 @@
 'use client';
 
-import { ChevronDown, MoreVertical } from 'lucide-react';
+import { ChevronDown, MoreVertical, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useMyProfile } from '@/hooks/api';
+import { useAuthStore } from '@/stores/auth-store';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 
 /** Mock activity өгөгдөл — долоо хоногийн цаг (pixel утга, max ~110px) */
 const ACTIVITY_DATA = [
@@ -14,8 +18,30 @@ const ACTIVITY_DATA = [
   { day: 'Sun', height: 77 },
 ];
 
+/** Role badge-ийн өнгө */
+const roleBadgeStyle: Record<string, string> = {
+  STUDENT: 'bg-[#8A93E5]/10 text-[#8A93E5]',
+  TEACHER: 'bg-emerald-50 text-emerald-600',
+  ADMIN: 'bg-amber-50 text-amber-600',
+};
+
 export function ProfileCard() {
   const t = useTranslations('dashboard');
+  const tr = useTranslations('roles');
+  const user = useAuthStore((s) => s.user);
+  const { data: profile, isLoading } = useMyProfile();
+
+  /** Нэрийн эхний үсэг */
+  const initials = profile
+    ? `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase()
+    : '';
+
+  const fullName =
+    profile?.firstName || profile?.lastName
+      ? `${profile.firstName ?? ''} ${profile.lastName ?? ''}`.trim()
+      : (user?.email?.split('@')[0] ?? '');
+
+  const roleKey = user?.role ?? 'STUDENT';
 
   return (
     <div className="flex flex-col bg-white rounded-3xl p-6 border border-gray-100 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)]">
@@ -28,16 +54,30 @@ export function ProfileCard() {
       </div>
 
       <div className="flex flex-col items-center pt-2 pb-4 border-b border-gray-100">
-        <div className="w-24 h-24 rounded-full bg-pink-50 p-1 mb-4 relative">
-          <div className="w-full h-full rounded-full bg-pink-100 overflow-hidden flex items-center justify-center border-[3px] border-white shadow-sm">
-            <span className="text-6xl pt-4">👩🏼‍🏫</span>
-          </div>
-          <div className="absolute -inset-2 rounded-full border border-pink-100/50 pointer-events-none" />
-        </div>
-        <h4 className="text-[19px] font-bold text-gray-900 mb-1">Adeline Watson</h4>
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-          {t('basicMember')} <span className="text-yellow-400">🌟</span>
-        </span>
+        {isLoading ? (
+          <>
+            <Skeleton className="w-24 h-24 rounded-full mb-4" />
+            <Skeleton className="h-6 w-36 mb-2 rounded-lg" />
+            <Skeleton className="h-4 w-24 rounded-lg" />
+          </>
+        ) : (
+          <>
+            <div className="mb-4">
+              <Avatar className="w-24 h-24 border-4 border-white shadow-md">
+                <AvatarImage src={profile?.avatarUrl} alt={fullName} />
+                <AvatarFallback className="bg-[#8A93E5]/10 text-[#8A93E5] text-2xl font-bold">
+                  {initials || <User className="w-10 h-10" />}
+                </AvatarFallback>
+              </Avatar>
+            </div>
+            <h4 className="text-[19px] font-bold text-gray-900 mb-1">{fullName}</h4>
+            <span
+              className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${roleBadgeStyle[roleKey] ?? 'bg-gray-100 text-gray-600'}`}
+            >
+              {tr(roleKey)}
+            </span>
+          </>
+        )}
       </div>
 
       {/* Идэвхийн график */}

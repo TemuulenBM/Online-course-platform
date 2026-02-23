@@ -230,7 +230,21 @@
     "saving": "Хадгалж байна...",
     "coursesCount": "Сургалт",
     "certificatesCount": "Сертификат",
-    "avgProgress": "Дундаж ахиц"
+    "avgProgress": "Дундаж ахиц",
+    "changePassword": "Нууц үг солих",
+    "changePasswordDesc": "Нууц үгээ сэргээх имэйлээр дамжуулан солих боломжтой.",
+    "goToForgotPassword": "Нууц үг сэргээх",
+    "securityInfo": "Аюулгүй байдал",
+    "notificationPreferences": "Мэдэгдлийн тохиргоо",
+    "emailNotifications": "Имэйл мэдэгдэл",
+    "pushNotifications": "Push мэдэгдэл",
+    "emailNotificationsDesc": "Шинэ мэдэгдлүүдийг имэйлээр хүлээн авах",
+    "pushNotificationsDesc": "Браузерийн push мэдэгдэл хүлээн авах",
+    "languagePreference": "Хэл",
+    "languagePreferenceDesc": "Интерфейсийн хэлийг сонгоно уу",
+    "preferencesUpdated": "Тохиргоо хадгалагдлаа",
+    "noEnrollments": "Одоогоор элссэн сургалт байхгүй",
+    "browseCourses": "Сургалт үзэх"
   },
   "roles": {
     "STUDENT": "Оюутан",

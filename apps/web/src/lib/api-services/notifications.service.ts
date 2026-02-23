@@ -24,6 +24,21 @@ export interface NotificationListParams {
   read?: boolean;
 }
 
+/** Мэдэгдлийн тохиргооны бүтэц */
+export interface NotificationPreferences {
+  id: string;
+  userId: string;
+  emailEnabled: boolean;
+  pushEnabled: boolean;
+  smsEnabled: boolean;
+}
+
+export interface UpdateNotificationPreferences {
+  emailEnabled?: boolean;
+  pushEnabled?: boolean;
+  smsEnabled?: boolean;
+}
+
 export const notificationsService = {
   list: async (params?: NotificationListParams): Promise<PaginatedResponse<Notification>> => {
     const res = await client.get<ApiResponse<PaginatedResponse<Notification>>>('/notifications', {
@@ -47,5 +62,22 @@ export const notificationsService = {
 
   delete: async (id: string): Promise<void> => {
     await client.delete(`/notifications/${id}`);
+  },
+
+  getPreferences: async (): Promise<NotificationPreferences> => {
+    const res = await client.get<ApiResponse<NotificationPreferences>>(
+      '/notifications/preferences',
+    );
+    return res.data.data!;
+  },
+
+  updatePreferences: async (
+    data: UpdateNotificationPreferences,
+  ): Promise<NotificationPreferences> => {
+    const res = await client.patch<ApiResponse<NotificationPreferences>>(
+      '/notifications/preferences',
+      data,
+    );
+    return res.data.data!;
   },
 };

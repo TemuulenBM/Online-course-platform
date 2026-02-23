@@ -4,15 +4,17 @@ import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useMyProfile } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { NotificationBell } from '@/components/notifications/notification-bell';
 
 export function WelcomeHeader() {
   const t = useTranslations('dashboard');
   const user = useAuthStore((s) => s.user);
+  const { data: profile } = useMyProfile();
 
   /** Хэрэглэгчийн нэрийг авах — profile firstName эсвэл email-ийн @ өмнөх хэсэг */
-  const displayName = user?.email?.split('@')[0] ?? 'User';
+  const displayName = profile?.firstName || user?.email?.split('@')[0] || 'User';
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

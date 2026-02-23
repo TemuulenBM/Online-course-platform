@@ -230,7 +230,21 @@
     "saving": "Saving...",
     "coursesCount": "Courses",
     "certificatesCount": "Certificates",
-    "avgProgress": "Avg. Grade"
+    "avgProgress": "Avg. Grade",
+    "changePassword": "Change Password",
+    "changePasswordDesc": "You can change your password via the password recovery email.",
+    "goToForgotPassword": "Reset Password",
+    "securityInfo": "Security Information",
+    "notificationPreferences": "Notification Preferences",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications",
+    "emailNotificationsDesc": "Receive notifications via email",
+    "pushNotificationsDesc": "Receive browser push notifications",
+    "languagePreference": "Language",
+    "languagePreferenceDesc": "Choose your interface language",
+    "preferencesUpdated": "Preferences saved",
+    "noEnrollments": "No enrolled courses yet",
+    "browseCourses": "Browse Courses"
   },
   "roles": {
     "STUDENT": "Student",
