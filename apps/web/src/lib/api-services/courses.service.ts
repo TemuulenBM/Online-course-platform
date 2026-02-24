@@ -22,8 +22,10 @@ export const coursesService = {
 
   /** Миний сургалтууд (Багш/Админ — бүх status) */
   listMy: async (): Promise<Course[]> => {
-    const res = await client.get<ApiResponse<Course[]>>('/courses/my');
-    return res.data.data!;
+    const res = await client.get<ApiResponse<PaginatedResponse<Course>>>('/courses/my', {
+      params: { limit: 100 },
+    });
+    return res.data.data!.data;
   },
 
   getBySlug: async (slug: string): Promise<Course> => {
