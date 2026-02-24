@@ -2,7 +2,17 @@
 export { useLogin, useRegister, useLogout, useForgotPassword, useResetPassword } from './use-auth';
 
 // Course hooks
-export { useCourseList, useCourseBySlug, useCourseById, useMyCourses } from './use-courses';
+export {
+  useCourseList,
+  useCourseBySlug,
+  useCourseById,
+  useMyCourses,
+  useCreateCourse,
+  useUpdateCourse,
+  useDeleteCourse,
+  usePublishCourse,
+  useArchiveCourse,
+} from './use-courses';
 
 // Category hooks
 export { useCategoryTree } from './use-categories';

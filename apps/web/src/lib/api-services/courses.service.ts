@@ -14,6 +14,30 @@ export interface CourseListParams {
   sortOrder?: 'asc' | 'desc';
 }
 
+/** Сургалт үүсгэх өгөгдөл */
+export interface CreateCourseData {
+  title: string;
+  description: string;
+  categoryId: string;
+  price?: number;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  language?: string;
+  tags?: string[];
+}
+
+/** Сургалт шинэчлэх өгөгдөл */
+export interface UpdateCourseData {
+  title?: string;
+  description?: string;
+  categoryId?: string;
+  price?: number;
+  discountPrice?: number;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  language?: string;
+  tags?: string[];
+  thumbnailUrl?: string;
+}
+
 export const coursesService = {
   list: async (params?: CourseListParams): Promise<PaginatedResponse<Course>> => {
     const res = await client.get<ApiResponse<PaginatedResponse<Course>>>('/courses', { params });
@@ -35,6 +59,35 @@ export const coursesService = {
 
   getById: async (id: string): Promise<Course> => {
     const res = await client.get<ApiResponse<Course>>(`/courses/${id}`);
+    return res.data.data!;
+  },
+
+  /** Шинэ сургалт үүсгэх */
+  create: async (data: CreateCourseData): Promise<Course> => {
+    const res = await client.post<ApiResponse<Course>>('/courses', data);
+    return res.data.data!;
+  },
+
+  /** Сургалт шинэчлэх */
+  update: async (id: string, data: UpdateCourseData): Promise<Course> => {
+    const res = await client.patch<ApiResponse<Course>>(`/courses/${id}`, data);
+    return res.data.data!;
+  },
+
+  /** Сургалт устгах (ADMIN only) */
+  delete: async (id: string): Promise<void> => {
+    await client.delete(`/courses/${id}`);
+  },
+
+  /** Сургалт нийтлэх (DRAFT → PUBLISHED) */
+  publish: async (id: string): Promise<Course> => {
+    const res = await client.patch<ApiResponse<Course>>(`/courses/${id}/publish`);
+    return res.data.data!;
+  },
+
+  /** Сургалт архивлах (PUBLISHED → ARCHIVED) */
+  archive: async (id: string): Promise<Course> => {
+    const res = await client.patch<ApiResponse<Course>>(`/courses/${id}/archive`);
     return res.data.data!;
   },
 };

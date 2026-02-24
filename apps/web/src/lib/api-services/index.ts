@@ -1,6 +1,6 @@
 export { authService } from './auth.service';
 export { coursesService } from './courses.service';
-export type { CourseListParams } from './courses.service';
+export type { CourseListParams, CreateCourseData, UpdateCourseData } from './courses.service';
 export { categoriesService } from './categories.service';
 export { enrollmentsService } from './enrollments.service';
 export type {
