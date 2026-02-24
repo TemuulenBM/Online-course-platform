@@ -3,18 +3,16 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, GraduationCap, LogIn, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { loginSchema, type LoginInput } from '@ocp/validation';
+import { AuthInput } from '@/components/auth/auth-input';
+import { AuthButton } from '@/components/auth/auth-button';
+import { AuthDivider } from '@/components/auth/auth-divider';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import { useLogin } from '@/hooks/api';
 import { ROUTES } from '@/lib/constants';
-
-/** Input талбарын стиль */
-const inputBase =
-  'w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-200 transition-all duration-200 outline-none text-gray-900 placeholder:text-gray-400 font-medium text-sm';
-const inputFocus = 'focus:border-[#8A93E5] focus:ring-2 focus:ring-[#8A93E5]/20 focus:bg-white';
-const inputError = 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200/50';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -38,109 +36,127 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('loginTitle')} ✨</h2>
-        <p className="text-gray-500 text-sm font-medium">{t('loginSubtitle')}</p>
+    <div className="min-h-screen flex">
+      {/* Зүүн тал — Чимэглэлийн хэсэг */}
+      <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-[#EDE7F9] via-[#E0D6F5] to-[#D5CCF0] relative overflow-hidden items-center justify-center p-12">
+        {/* Чимэглэлийн blur тойргууд */}
+        <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-[#8A93E5]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#9575ED]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col items-center text-center max-w-md">
+          {/* Floating card */}
+          <div className="relative mb-10">
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[85%] h-16 bg-[#C4B5F0]/30 rounded-3xl blur-md" />
+            <div className="relative w-72 h-64 bg-gradient-to-br from-[#B8A4E8] to-[#C9B8F0] rounded-3xl flex items-center justify-center shadow-2xl">
+              <div className="w-20 h-20 bg-white/25 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <GraduationCap className="w-10 h-10 text-white" />
+              </div>
+            </div>
+          </div>
+
+          <h3 className="text-2xl font-bold text-[#8A93E5] mb-3">{t('decorativeHeading')}</h3>
+          <p className="text-gray-600 text-sm leading-relaxed">{t('decorativeText')}</p>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {loginMutation.error && (
-          <div className="bg-red-50 text-red-600 p-3.5 rounded-2xl text-sm font-semibold flex items-center gap-3 border border-red-100">
-            <span className="shrink-0 bg-red-100 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold">
-              !
-            </span>
-            {t('invalidCredentials')}
+      {/* Баруун тал — Форм */}
+      <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 sm:p-8">
+        <div className="w-full max-w-[440px]">
+          {/* Лого */}
+          <div className="mb-10">
+            <LearnifyLogo href={ROUTES.HOME} />
           </div>
-        )}
 
-        {/* Имэйл */}
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="text-sm font-semibold text-gray-700 ml-0.5">
-            {t('email')}
-          </label>
-          <input
-            id="email"
-            {...register('email')}
-            type="email"
-            placeholder={t('emailPlaceholder')}
-            className={`${inputBase} ${errors.email ? inputError : inputFocus}`}
-            disabled={loginMutation.isPending}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-xs font-medium mt-1 ml-1">{errors.email.message}</p>
+          {/* Гарчиг */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('loginWelcome')}</h1>
+            <p className="text-gray-500 text-sm">{t('loginWelcomeSubtitle')}</p>
+          </div>
+
+          {/* Алдааны мэдээлэл */}
+          {loginMutation.error && (
+            <div className="bg-red-50 text-red-600 p-3.5 rounded-2xl text-sm font-semibold flex items-center gap-3 border border-red-100 mb-5">
+              <span className="shrink-0 bg-red-100 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold">
+                !
+              </span>
+              {t('invalidCredentials')}
+            </div>
           )}
-        </div>
 
-        {/* Нууц үг */}
-        <div className="space-y-1.5">
-          <label htmlFor="password" className="text-sm font-semibold text-gray-700 ml-0.5">
-            {t('password')}
-          </label>
-          <div className="relative">
-            <input
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Имэйл */}
+            <AuthInput
+              id="email"
+              label={t('emailLabel')}
+              type="email"
+              placeholder="example@domain.com"
+              rightIcon={<Mail className="w-[18px] h-[18px]" />}
+              error={errors.email?.message}
+              disabled={loginMutation.isPending}
+              {...register('email')}
+            />
+
+            {/* Нууц үг */}
+            <AuthInput
               id="password"
-              {...register('password')}
+              label={t('password')}
               type={showPassword ? 'text' : 'password'}
               placeholder={t('passwordPlaceholder')}
-              className={`${inputBase} pr-12 ${errors.password ? inputError : inputFocus}`}
+              labelRight={
+                <Link
+                  href={ROUTES.FORGOT_PASSWORD}
+                  className="text-sm font-semibold text-[#8A93E5] hover:text-[#6c77d4] transition-colors"
+                >
+                  {t('forgotPasswordQuestion')}
+                </Link>
+              }
+              rightIcon={
+                showPassword ? (
+                  <EyeOff className="w-[18px] h-[18px]" />
+                ) : (
+                  <Eye className="w-[18px] h-[18px]" />
+                )
+              }
+              onRightIconClick={() => setShowPassword(!showPassword)}
+              error={errors.password?.message}
               disabled={loginMutation.isPending}
+              {...register('password')}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
-              disabled={loginMutation.isPending}
+
+            {/* Намайг сана */}
+            <div className="flex items-center gap-2.5">
+              <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer hover:border-[#8A93E5] transition-colors">
+                <div className="w-2.5 h-2.5 rounded-full" />
+              </div>
+              <span className="text-sm text-gray-600">{t('rememberMe')}</span>
+            </div>
+
+            {/* Нэвтрэх товч */}
+            <AuthButton
+              type="submit"
+              isLoading={loginMutation.isPending}
+              loadingText={t('signingIn')}
+              icon={<LogIn className="w-5 h-5" />}
             >
-              {showPassword ? (
-                <EyeOff className="w-[18px] h-[18px]" />
-              ) : (
-                <Eye className="w-[18px] h-[18px]" />
-              )}
-            </button>
+              {t('signIn')}
+            </AuthButton>
+          </form>
+
+          <AuthDivider />
+
+          {/* Бүртгүүлэх холбоос */}
+          <div className="text-center">
+            <p className="text-sm text-gray-500">
+              {t('noAccount')}{' '}
+              <Link
+                href={ROUTES.REGISTER}
+                className="text-[#8A93E5] font-bold hover:text-[#6c77d4] transition-colors"
+              >
+                {t('signUp')}
+              </Link>
+            </p>
           </div>
-          {errors.password && (
-            <p className="text-red-500 text-xs font-medium mt-1 ml-1">{errors.password.message}</p>
-          )}
         </div>
-
-        {/* Нууц үг мартсан */}
-        <div className="flex justify-end">
-          <Link
-            href={ROUTES.FORGOT_PASSWORD}
-            className="text-sm font-semibold text-[#8A93E5] hover:text-[#6c77d4] transition-colors"
-          >
-            {t('forgotPasswordQuestion')}
-          </Link>
-        </div>
-
-        {/* Нэвтрэх товч */}
-        <button
-          type="submit"
-          disabled={loginMutation.isPending}
-          className="w-full bg-[#8A93E5] hover:bg-[#7B8AD4] text-white py-3.5 rounded-2xl font-bold text-base transition-all duration-200 shadow-lg shadow-[#8A93E5]/25 hover:shadow-[#8A93E5]/40 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-70 mt-2"
-        >
-          {loginMutation.isPending ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              {t('signingIn')}
-            </>
-          ) : (
-            t('signIn')
-          )}
-        </button>
-      </form>
-
-      <div className="text-center mt-8">
-        <p className="text-sm font-medium text-gray-500">
-          {t('noAccount')}{' '}
-          <Link
-            href={ROUTES.REGISTER}
-            className="text-[#8A93E5] font-bold hover:text-[#6c77d4] transition-colors"
-          >
-            {t('signUp')}
-          </Link>
-        </p>
       </div>
     </div>
   );

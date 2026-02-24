@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { GraduationCap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LearnifyLogoProps {
@@ -10,14 +11,19 @@ interface LearnifyLogoProps {
   variant?: 'default' | 'light';
 }
 
-/** Learnify брэнд лого — 3 өнгийн баар + текст */
+/** Learnify брэнд лого — ягаан дөрвөлжин icon + текст */
 export function LearnifyLogo({ href = '/', className, variant = 'default' }: LearnifyLogoProps) {
   const logo = (
-    <div className={cn('flex items-center gap-3', className)}>
-      <div className="flex flex-col gap-[3px]">
-        <div className="w-5 h-1.5 bg-[#FF6B6B] rounded-full rotate-[-45deg] origin-right ml-1" />
-        <div className="w-5 h-1.5 bg-[#2E3035] rounded-full rotate-[-45deg] origin-right" />
-        <div className="w-5 h-1.5 bg-[#8A93E5] rounded-full rotate-[-45deg] origin-right" />
+    <div className={cn('flex items-center gap-2.5', className)}>
+      <div
+        className={cn(
+          'w-9 h-9 rounded-xl flex items-center justify-center',
+          variant === 'light' ? 'bg-white/20' : 'bg-[#8A93E5]',
+        )}
+      >
+        <GraduationCap
+          className={cn('w-5 h-5', variant === 'light' ? 'text-white' : 'text-white')}
+        />
       </div>
       <span
         className={cn(
@@ -25,7 +31,7 @@ export function LearnifyLogo({ href = '/', className, variant = 'default' }: Lea
           variant === 'light' ? 'text-white' : 'text-[#1B1B1B] dark:text-white',
         )}
       >
-        Learnify
+        LEARNIFY
       </span>
     </div>
   );
