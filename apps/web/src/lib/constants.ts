@@ -8,6 +8,8 @@ export const QUERY_KEYS = {
   },
   users: {
     profile: ['users', 'profile'] as const,
+    profileById: (userId: string) => ['users', 'profile', userId] as const,
+    stats: (userId: string) => ['users', 'stats', userId] as const,
   },
   courses: {
     list: (params?: object) => ['courses', 'list', params] as const,
@@ -73,4 +75,5 @@ export const ROUTES = {
   TEACHER_COURSES: '/teacher/courses',
   TEACHER_CURRICULUM: (courseId: string) => `/teacher/courses/${courseId}/curriculum` as const,
   ADMIN_USERS: '/admin/users',
+  PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
 } as const;

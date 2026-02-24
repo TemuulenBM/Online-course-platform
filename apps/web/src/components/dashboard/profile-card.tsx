@@ -6,6 +6,7 @@ import { useMyProfile } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getFileUrl } from '@/lib/utils';
 
 /** Mock activity өгөгдөл — долоо хоногийн цаг (pixel утга, max ~110px) */
 const ACTIVITY_DATA = [
@@ -64,7 +65,7 @@ export function ProfileCard() {
           <>
             <div className="mb-4">
               <Avatar className="w-24 h-24 border-4 border-white shadow-md">
-                <AvatarImage src={profile?.avatarUrl} alt={fullName} />
+                <AvatarImage src={getFileUrl(profile?.avatarUrl)} alt={fullName} />
                 <AvatarFallback className="bg-[#8A93E5]/10 text-[#8A93E5] text-2xl font-bold">
                   {initials || <User className="w-10 h-10" />}
                 </AvatarFallback>

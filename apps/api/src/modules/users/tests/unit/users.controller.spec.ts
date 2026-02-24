@@ -6,6 +6,8 @@ import { UpdateUserProfileUseCase } from '../../application/use-cases/update-use
 import { UpdateUserRoleUseCase } from '../../application/use-cases/update-user-role.use-case';
 import { ListUsersUseCase } from '../../application/use-cases/list-users.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
+import { UploadAvatarUseCase } from '../../application/use-cases/upload-avatar.use-case';
+import { GetUserStatsUseCase } from '../../application/use-cases/get-user-stats.use-case';
 import { UserProfileEntity } from '../../domain/entities/user-profile.entity';
 
 describe('UsersController', () => {
@@ -45,6 +47,8 @@ describe('UsersController', () => {
         { provide: UpdateUserRoleUseCase, useValue: { execute: jest.fn() } },
         { provide: ListUsersUseCase, useValue: { execute: jest.fn() } },
         { provide: DeleteUserUseCase, useValue: { execute: jest.fn() } },
+        { provide: UploadAvatarUseCase, useValue: { execute: jest.fn() } },
+        { provide: GetUserStatsUseCase, useValue: { execute: jest.fn() } },
       ],
     }).compile();
 
@@ -115,7 +119,7 @@ describe('UsersController', () => {
           {
             id: 'user-id-1',
             email: 'test@example.com',
-            role: 'STUDENT',
+            role: 'STUDENT' as const,
             emailVerified: false,
             createdAt: new Date(),
             profile: mockProfileResponse,

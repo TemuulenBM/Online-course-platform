@@ -15,6 +15,7 @@ export class ListUsersUseCase {
       page: query.page ?? 1,
       limit: query.limit ?? 20,
       role: query.role,
+      emailVerified: query.emailVerified,
     });
 
     return {

@@ -30,7 +30,13 @@ export {
 } from './use-progress';
 
 // Profile hooks
-export { useMyProfile, useUpdateProfile } from './use-profile';
+export {
+  useMyProfile,
+  useUserProfile,
+  useUpdateProfile,
+  useUploadAvatar,
+  useUserStats,
+} from './use-profile';
 
 // Notification hooks
 export {

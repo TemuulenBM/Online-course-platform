@@ -1,11 +1,11 @@
-import { IsOptional, IsInt, Min, Max, IsEnum } from 'class-validator';
+import { IsOptional, IsInt, Min, Max, IsEnum, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { Role } from '@prisma/client';
 
 /**
  * Хэрэглэгчдийн жагсаалтын query DTO.
- * Pagination болон role filter дэмжинэ.
+ * Pagination, role filter, emailVerified filter дэмжинэ.
  */
 export class ListUsersQueryDto {
   @ApiProperty({ description: 'Хуудасны дугаар', example: 1, required: false, default: 1 })
@@ -27,4 +27,10 @@ export class ListUsersQueryDto {
   @IsOptional()
   @IsEnum(Role, { message: 'Эрх нь STUDENT, TEACHER, ADMIN-ын аль нэг байх ёстой' })
   role?: Role;
+
+  @ApiProperty({ description: 'И-мэйл баталгаажсан эсэхээр шүүх', required: false })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean({ message: 'emailVerified нь boolean утга байх ёстой' })
+  emailVerified?: boolean;
 }

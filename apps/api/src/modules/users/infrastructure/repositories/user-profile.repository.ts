@@ -66,7 +66,12 @@ export class UserProfileRepository {
   }
 
   /** Хэрэглэгчдийн жагсаалт (User + Profile) pagination-тэй */
-  async findManyWithUser(options: { page: number; limit: number; role?: Role }): Promise<{
+  async findManyWithUser(options: {
+    page: number;
+    limit: number;
+    role?: Role;
+    emailVerified?: boolean;
+  }): Promise<{
     data: Array<{
       id: string;
       email: string;
@@ -79,7 +84,9 @@ export class UserProfileRepository {
     page: number;
     limit: number;
   }> {
-    const where = options.role ? { role: options.role } : {};
+    const where: Record<string, unknown> = {};
+    if (options.role) where.role = options.role;
+    if (options.emailVerified !== undefined) where.emailVerified = options.emailVerified;
     const skip = (options.page - 1) * options.limit;
 
     const [users, total] = await Promise.all([

@@ -8,6 +8,7 @@ export interface AdminUserListParams {
   page?: number;
   limit?: number;
   role?: 'STUDENT' | 'TEACHER' | 'ADMIN';
+  emailVerified?: boolean;
 }
 
 /** Admin хэрэглэгчийн profile */

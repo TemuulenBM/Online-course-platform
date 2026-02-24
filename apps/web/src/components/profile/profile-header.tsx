@@ -1,102 +1,168 @@
 'use client';
 
-import { Camera, Loader2, User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useMyProfile } from '@/hooks/api';
-import { useMyEnrollments } from '@/hooks/api/use-enrollments';
-import { useMyCertificates } from '@/hooks/api/use-certificates';
-import { useAuthStore } from '@/stores/auth-store';
+import { useRef } from 'react';
+import { Camera, Loader2, Mail, User } from 'lucide-react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useUploadAvatar } from '@/hooks/api/use-profile';
+import { getFileUrl } from '@/lib/utils';
+import type { UserProfile, User as UserType } from '@ocp/shared-types';
 
-export function ProfileHeader() {
-  const t = useTranslations('profile');
-  const tr = useTranslations('roles');
-  const user = useAuthStore((s) => s.user);
+interface ProfileInfoCardProps {
+  profile: UserProfile | undefined;
+  user: UserType | null;
+  isLoading: boolean;
+  isDirty: boolean;
+  isPending: boolean;
+  onSave: () => void;
+  onCancel: () => void;
+}
 
-  const { data: profile, isLoading } = useMyProfile();
-  const { data: enrollments } = useMyEnrollments({ page: 1, limit: 1 });
-  const { data: certificates } = useMyCertificates({ page: 1, limit: 1 });
+/** Role badge стиль */
+const roleBadgeStyle: Record<string, string> = {
+  STUDENT: 'bg-[#9c7aff]/20 text-[#9c7aff]',
+  TEACHER: 'bg-emerald-100 text-emerald-700',
+  ADMIN: 'bg-[#9c7aff]/20 text-[#9c7aff]',
+};
+
+export function ProfileInfoCard({
+  profile,
+  user,
+  isLoading,
+  isDirty,
+  isPending,
+  onSave,
+  onCancel,
+}: ProfileInfoCardProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadAvatar = useUploadAvatar();
 
   if (isLoading) {
-    return (
-      <div className="bg-white rounded-2xl border border-gray-200 p-8">
-        <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-7 h-7 animate-spin text-[#8A93E5]" />
-        </div>
-      </div>
-    );
+    return <ProfileInfoSkeleton />;
   }
 
   const initials = profile
     ? `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase()
     : '';
 
-  const memberDate = user?.createdAt
-    ? new Date(user.createdAt).toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'long',
-      })
-    : '';
+  /** Аватар зураг сонгох */
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const locationText = profile?.country ?? '';
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Файлын хэмжээ 5MB-аас хэтрэхгүй байх ёстой');
+      return;
+    }
 
-  /** Role badge өнгө */
-  const roleBadgeStyle: Record<string, string> = {
-    STUDENT: 'bg-[#8A93E5]/10 text-[#8A93E5]',
-    TEACHER: 'bg-emerald-50 text-emerald-600',
-    ADMIN: 'bg-amber-50 text-amber-600',
+    uploadAvatar.mutate(file, {
+      onSuccess: () => toast.success('Аватар амжилттай шинэчлэгдлээ'),
+      onError: () => toast.error('Аватар upload хийхэд алдаа гарлаа'),
+    });
+
+    /* input-ийг reset хийх — дахин ижил файл сонгох боломжтой */
+    e.target.value = '';
   };
 
-  const totalEnrollments = enrollments?.total ?? 0;
-  const totalCertificates = certificates?.total ?? 0;
-
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 lg:p-8">
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        {/* Avatar + Edit overlay */}
-        <div className="relative group shrink-0">
-          <Avatar className="w-24 h-24 border-4 border-white shadow-md">
-            <AvatarImage src={profile?.avatarUrl} alt={t('avatarAlt')} />
-            <AvatarFallback className="bg-[#8A93E5]/10 text-[#8A93E5] text-2xl font-bold">
-              {initials || <User className="w-10 h-10" />}
-            </AvatarFallback>
-          </Avatar>
-          <button className="absolute bottom-0 right-0 w-8 h-8 bg-[#8A93E5] hover:bg-[#7B8AD4] text-white rounded-full flex items-center justify-center shadow-lg transition-colors border-2 border-white">
-            <Camera className="w-3.5 h-3.5" />
-          </button>
-        </div>
+    <div className="bg-white rounded-3xl shadow-sm border border-[#9c7aff]/5 overflow-hidden mb-8">
+      {/* Gradient banner */}
+      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/30 via-[#9c7aff]/10 to-transparent" />
 
-        {/* Мэдээлэл */}
-        <div className="flex-1 text-center sm:text-left">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2.5 mb-1">
-            <h2 className="text-xl font-bold text-gray-900">
-              {profile?.firstName} {profile?.lastName}
-            </h2>
-            {user?.role && (
-              <span
-                className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${roleBadgeStyle[user.role] ?? 'bg-gray-100 text-gray-600'}`}
+      <div className="px-8 pb-8 -mt-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
+            {/* Аватар */}
+            <div className="relative">
+              <div className="w-32 h-32 rounded-3xl border-4 border-white bg-white shadow-xl overflow-hidden">
+                <Avatar className="w-full h-full rounded-none">
+                  <AvatarImage src={getFileUrl(profile?.avatarUrl)} className="object-cover" />
+                  <AvatarFallback className="bg-[#9c7aff]/10 text-[#9c7aff] text-3xl font-bold rounded-none">
+                    {initials || <User className="w-12 h-12" />}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              {/* Нуусан file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadAvatar.isPending}
+                className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#9c7aff] text-white rounded-xl shadow-lg flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-50"
               >
-                {tr(user.role)}
-              </span>
-            )}
-          </div>
-          <p className="text-sm text-gray-500">
-            {t('memberSince', { date: memberDate })}
-            {locationText && ` • ${locationText}`}
-          </p>
+                {uploadAvatar.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Camera className="w-4 h-4" />
+                )}
+              </button>
+            </div>
 
-          {/* Stats */}
-          <div className="flex items-center justify-center sm:justify-start gap-0 mt-4">
-            <div className="text-center px-5 first:pl-0">
-              <p className="text-lg font-bold text-gray-900">{totalEnrollments}</p>
-              <p className="text-xs text-gray-500 font-medium">{t('coursesCount')}</p>
+            {/* Нэр + Role + Email */}
+            <div className="text-center md:text-left mb-2">
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <h1 className="text-3xl font-bold text-slate-900">
+                  {profile?.firstName} {profile?.lastName}
+                </h1>
+                {user?.role && (
+                  <span
+                    className={`px-3 py-1 text-xs font-bold rounded-lg border border-[#9c7aff]/20 ${roleBadgeStyle[user.role] ?? 'bg-gray-100 text-gray-600'}`}
+                  >
+                    {user.role}
+                  </span>
+                )}
+              </div>
+              <p className="text-slate-500 mt-1 flex items-center justify-center md:justify-start gap-2">
+                <Mail className="w-4 h-4" />
+                {user?.email}
+              </p>
             </div>
-            <Separator orientation="vertical" className="h-8" />
-            <div className="text-center px-5">
-              <p className="text-lg font-bold text-gray-900">{totalCertificates}</p>
-              <p className="text-xs text-gray-500 font-medium">{t('certificatesCount')}</p>
-            </div>
+          </div>
+
+          {/* Товчнууд */}
+          <div className="flex gap-3 self-center md:self-auto">
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={!isDirty || isPending}
+              className="px-6 py-2.5 bg-[#f6f5f8] text-slate-600 font-semibold rounded-xl hover:bg-[#9c7aff]/10 hover:text-[#9c7aff] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Цуцлах
+            </button>
+            <button
+              type="button"
+              onClick={onSave}
+              disabled={!isDirty || isPending}
+              className="px-8 py-2.5 bg-[#9c7aff] text-white font-bold rounded-xl shadow-lg shadow-[#9c7aff]/25 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
+              Хадгалах
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Loading skeleton */
+function ProfileInfoSkeleton() {
+  return (
+    <div className="bg-white rounded-3xl shadow-sm border border-[#9c7aff]/5 overflow-hidden mb-8">
+      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/10 via-[#9c7aff]/5 to-transparent" />
+      <div className="px-8 pb-8 -mt-12">
+        <div className="flex flex-col md:flex-row md:items-end gap-6">
+          <Skeleton className="w-32 h-32 rounded-3xl" />
+          <div className="space-y-3 mb-2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-5 w-48" />
           </div>
         </div>
       </div>

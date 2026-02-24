@@ -13,6 +13,15 @@ export function useMyProfile() {
   });
 }
 
+/** Бусад хэрэглэгчийн профайл авах */
+export function useUserProfile(userId: string) {
+  return useQuery({
+    queryKey: QUERY_KEYS.users.profileById(userId),
+    queryFn: () => usersService.getUserProfile(userId),
+    enabled: !!userId,
+  });
+}
+
 /** Профайл шинэчлэх mutation */
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
@@ -24,5 +33,28 @@ export function useUpdateProfile() {
         queryKey: QUERY_KEYS.users.profile,
       });
     },
+  });
+}
+
+/** Аватар upload mutation */
+export function useUploadAvatar() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file: File) => usersService.uploadAvatar(file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.users.profile,
+      });
+    },
+  });
+}
+
+/** Хэрэглэгчийн статистик авах */
+export function useUserStats(userId: string) {
+  return useQuery({
+    queryKey: QUERY_KEYS.users.stats(userId),
+    queryFn: () => usersService.getUserStats(userId),
+    enabled: !!userId,
   });
 }
