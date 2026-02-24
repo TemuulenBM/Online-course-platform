@@ -1,4 +1,5 @@
 import { Injectable, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
+import sharp from 'sharp';
 import { UserProfileRepository } from '../../infrastructure/repositories/user-profile.repository';
 import { UserCacheService } from '../../infrastructure/services/user-cache.service';
 import {
@@ -48,9 +49,19 @@ export class UploadAvatarUseCase {
       await this.storageService.delete(existing.avatarUrl).catch(() => {});
     }
 
-    /* Шинэ файлыг хадгалах */
-    const ext = file.originalname.split('.').pop() ?? 'jpg';
-    const filePath = `avatars/${userId}.${ext}`;
+    /* Sharp-ээр 400x400 JPEG болгон resize + optimize хийх */
+    const resizedBuffer = await sharp(file.buffer)
+      .resize(400, 400, { fit: 'cover', position: 'top' })
+      .jpeg({ quality: 85 })
+      .toBuffer();
+
+    /* Resize хийсэн buffer-г file объектод шинэчлэх */
+    file.buffer = resizedBuffer;
+    file.size = resizedBuffer.length;
+    file.mimetype = 'image/jpeg';
+
+    /* Шинэ файлыг хадгалах (JPEG format) */
+    const filePath = `avatars/${userId}.jpg`;
     const { url } = await this.storageService.upload(file, filePath);
 
     /* Профайл шинэчлэх */

@@ -1,12 +1,13 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Camera, Loader2, Mail, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useUploadAvatar } from '@/hooks/api/use-profile';
 import { getFileUrl } from '@/lib/utils';
+import { AvatarCropModal } from './avatar-crop-modal';
 import type { UserProfile, User as UserType } from '@ocp/shared-types';
 
 interface ProfileInfoCardProps {
@@ -37,6 +38,8 @@ export function ProfileInfoCard({
 }: ProfileInfoCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadAvatar = useUploadAvatar();
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState<string | null>(null);
 
   if (isLoading) {
     return <ProfileInfoSkeleton />;
@@ -46,7 +49,7 @@ export function ProfileInfoCard({
     ? `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase()
     : '';
 
-  /** Аватар зураг сонгох */
+  /** Файл сонгоход crop modal нээх */
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -56,13 +59,27 @@ export function ProfileInfoCard({
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSelectedImageSrc(reader.result as string);
+      setCropModalOpen(true);
+    };
+    reader.readAsDataURL(file);
+
+    /* input-ийг reset хийх — дахин ижил файл сонгох боломжтой */
+    e.target.value = '';
+  };
+
+  /** Crop modal-аас Blob авч upload хийх */
+  const handleCropDone = (blob: Blob) => {
+    setCropModalOpen(false);
+    setSelectedImageSrc(null);
+
+    const file = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
     uploadAvatar.mutate(file, {
       onSuccess: () => toast.success('Аватар амжилттай шинэчлэгдлээ'),
       onError: () => toast.error('Аватар upload хийхэд алдаа гарлаа'),
     });
-
-    /* input-ийг reset хийх — дахин ижил файл сонгох боломжтой */
-    e.target.value = '';
   };
 
   return (
@@ -77,7 +94,10 @@ export function ProfileInfoCard({
             <div className="relative">
               <div className="w-32 h-32 rounded-3xl border-4 border-white bg-white shadow-xl overflow-hidden">
                 <Avatar className="w-full h-full rounded-none">
-                  <AvatarImage src={getFileUrl(profile?.avatarUrl)} className="object-cover" />
+                  <AvatarImage
+                    src={getFileUrl(profile?.avatarUrl)}
+                    className="object-cover object-top"
+                  />
                   <AvatarFallback className="bg-[#9c7aff]/10 text-[#9c7aff] text-3xl font-bold rounded-none">
                     {initials || <User className="w-12 h-12" />}
                   </AvatarFallback>
@@ -148,6 +168,19 @@ export function ProfileInfoCard({
           </div>
         </div>
       </div>
+
+      {/* Аватар crop modal */}
+      {selectedImageSrc && (
+        <AvatarCropModal
+          open={cropModalOpen}
+          imageSrc={selectedImageSrc}
+          onClose={() => {
+            setCropModalOpen(false);
+            setSelectedImageSrc(null);
+          }}
+          onCropDone={handleCropDone}
+        />
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { ROUTES } from '@/lib/constants';
 
 /** Идэвхтэй сургалтуудыг "ойрын даалгавар" маягаар харуулна */
 export function UpcomingTasksCard() {
-  const { data, isLoading } = useMyEnrollments({ status: 'ACTIVE' as any, limit: 3 });
+  const { data, isLoading } = useMyEnrollments({ status: 'active' as any, limit: 3 });
 
   if (isLoading) {
     return <TasksSkeleton />;

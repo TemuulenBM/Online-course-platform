@@ -1,5 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
+
+/** Sharp mock — тест дотор бодит зураг шаардлагагүй */
+const mockResizedBuffer = Buffer.from('resized-image-data');
+jest.mock('sharp', () => {
+  const sharpInstance = {
+    resize: jest.fn().mockReturnThis(),
+    jpeg: jest.fn().mockReturnThis(),
+    toBuffer: jest.fn().mockResolvedValue(mockResizedBuffer),
+  };
+  return jest.fn(() => sharpInstance);
+});
+
 import { UploadAvatarUseCase } from '../../application/use-cases/upload-avatar.use-case';
 import { UserProfileRepository } from '../../infrastructure/repositories/user-profile.repository';
 import { UserCacheService } from '../../infrastructure/services/user-cache.service';
@@ -30,7 +42,7 @@ describe('UploadAvatarUseCase', () => {
   /** Аватартай mock профайл */
   const profileWithAvatar = new UserProfileEntity({
     ...mockProfile,
-    avatarUrl: '/uploads/avatars/user-id-1.png',
+    avatarUrl: '/uploads/avatars/user-id-1.jpg',
     createdAt: new Date(),
     updatedAt: new Date(),
   });
@@ -79,18 +91,21 @@ describe('UploadAvatarUseCase', () => {
   it('аватар амжилттай upload хийх', async () => {
     userProfileRepository.findByUserId.mockResolvedValue(mockProfile);
     storageService.upload.mockResolvedValue({
-      url: '/uploads/avatars/user-id-1.png',
+      url: '/uploads/avatars/user-id-1.jpg',
       sizeBytes: 102400,
     });
     userProfileRepository.update.mockResolvedValue(profileWithAvatar);
     userCacheService.invalidate.mockResolvedValue(undefined);
 
-    const result = await useCase.execute('user-id-1', mockFile);
+    const result = await useCase.execute('user-id-1', { ...mockFile });
 
-    expect(result.avatarUrl).toBe('/uploads/avatars/user-id-1.png');
-    expect(storageService.upload).toHaveBeenCalledWith(mockFile, 'avatars/user-id-1.png');
+    expect(result.avatarUrl).toBe('/uploads/avatars/user-id-1.jpg');
+    expect(storageService.upload).toHaveBeenCalledWith(
+      expect.objectContaining({ mimetype: 'image/jpeg' }),
+      'avatars/user-id-1.jpg',
+    );
     expect(userProfileRepository.update).toHaveBeenCalledWith('user-id-1', {
-      avatarUrl: '/uploads/avatars/user-id-1.png',
+      avatarUrl: '/uploads/avatars/user-id-1.jpg',
     });
     expect(userCacheService.invalidate).toHaveBeenCalledWith('user-id-1');
   });
@@ -99,15 +114,15 @@ describe('UploadAvatarUseCase', () => {
     userProfileRepository.findByUserId.mockResolvedValue(profileWithAvatar);
     storageService.delete.mockResolvedValue(undefined);
     storageService.upload.mockResolvedValue({
-      url: '/uploads/avatars/user-id-1.png',
+      url: '/uploads/avatars/user-id-1.jpg',
       sizeBytes: 102400,
     });
     userProfileRepository.update.mockResolvedValue(profileWithAvatar);
     userCacheService.invalidate.mockResolvedValue(undefined);
 
-    await useCase.execute('user-id-1', mockFile);
+    await useCase.execute('user-id-1', { ...mockFile });
 
-    expect(storageService.delete).toHaveBeenCalledWith('/uploads/avatars/user-id-1.png');
+    expect(storageService.delete).toHaveBeenCalledWith('/uploads/avatars/user-id-1.jpg');
     expect(storageService.upload).toHaveBeenCalled();
   });
 
