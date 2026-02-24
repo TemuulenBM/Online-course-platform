@@ -13,6 +13,7 @@ export const QUERY_KEYS = {
     list: (params?: object) => ['courses', 'list', params] as const,
     detail: (slug: string) => ['courses', 'detail', slug] as const,
     byId: (id: string) => ['courses', 'byId', id] as const,
+    my: ['courses', 'my'] as const,
   },
   categories: {
     tree: ['categories', 'tree'] as const,
@@ -46,6 +47,9 @@ export const QUERY_KEYS = {
   discussions: {
     byCourse: (courseId: string) => ['discussions', 'course', courseId] as const,
   },
+  admin: {
+    users: (params?: object) => ['admin', 'users', params] as const,
+  },
 } as const;
 
 /**
@@ -66,4 +70,7 @@ export const ROUTES = {
   ADMIN: '/admin',
   LESSON_VIEWER: (slug: string, lessonId: string) =>
     `/courses/${slug}/lessons/${lessonId}` as const,
+  TEACHER_COURSES: '/teacher/courses',
+  TEACHER_CURRICULUM: (courseId: string) => `/teacher/courses/${courseId}/curriculum` as const,
+  ADMIN_USERS: '/admin/users',
 } as const;

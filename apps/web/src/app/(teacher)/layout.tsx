@@ -2,13 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { AdminSidebar } from '@/components/admin/admin-sidebar';
+import { TeacherSidebar } from '@/components/teacher/teacher-sidebar';
 import { useAuthStore } from '@/stores/auth-store';
 import { ROUTES } from '@/lib/constants';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function TeacherLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, isAuthenticated, isHydrated } = useAuthStore();
 
@@ -22,22 +21,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
 
-    /** Admin зөвхөн — teacher-г зөвшөөрөхгүй */
-    if (userRole !== 'admin') {
+    if (userRole !== 'teacher' && userRole !== 'admin') {
       router.replace(ROUTES.DASHBOARD);
     }
   }, [isAuthenticated, isHydrated, userRole, router]);
 
   if (!isHydrated) return null;
 
-  if (!isAuthenticated || userRole !== 'admin') {
+  if (!isAuthenticated || (userRole !== 'teacher' && userRole !== 'admin')) {
     return null;
   }
 
   return (
     <SidebarProvider className="bg-[#F4F2F9]">
-      <AdminSidebar />
-      <SidebarInset className="overflow-y-auto bg-white lg:m-4 lg:ml-0 lg:rounded-[2.5rem] lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)]">
+      <TeacherSidebar />
+      <SidebarInset className="bg-white lg:rounded-[2.5rem] lg:m-4 lg:ml-0 lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)] overflow-y-auto">
         {children}
       </SidebarInset>
     </SidebarProvider>

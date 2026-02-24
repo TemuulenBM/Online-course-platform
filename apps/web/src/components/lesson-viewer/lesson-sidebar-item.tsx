@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, PlayCircle, Circle, Lock } from 'lucide-react';
+import { CheckCircle, PlayCircle, Circle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { Lesson } from '@ocp/shared-types';
 import type { LessonProgressSummary } from '@/lib/api-services/progress.service';

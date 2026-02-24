@@ -1,10 +1,9 @@
-// Database seed script
-// This will populate the database with initial data for development
+/**
+ * Seed script-ийг apps/api/prisma/seed.ts руу зөөсөн.
+ * Prisma client + bcrypt dependency-г api package-д ашиглах тул тэнд байрлана.
+ *
+ * Ажиллуулах: pnpm db:seed (project root-оос)
+ */
 
-async function seed() {
-  console.log('Seeding database...');
-  // TODO: Add seed logic
-  console.log('Database seeded successfully.');
-}
-
-seed().catch(console.error);
+console.log('Seed script apps/api/prisma/seed.ts руу зөөгдсөн.');
+console.log('Ажиллуулах: pnpm db:seed');

@@ -30,3 +30,11 @@ export function useCourseById(id: string) {
     enabled: !!id,
   });
 }
+
+/** Миний сургалтууд (Багш/Админ) */
+export function useMyCourses() {
+  return useQuery({
+    queryKey: QUERY_KEYS.courses.my,
+    queryFn: () => coursesService.listMy(),
+  });
+}

@@ -21,3 +21,19 @@ export type { Notification, NotificationListParams } from './notifications.servi
 export { certificatesService } from './certificates.service';
 export type { Certificate, MyCertificatesParams } from './certificates.service';
 export { lessonsService } from './lessons.service';
+export type { CreateLessonData, UpdateLessonData, ReorderLessonsData } from './lessons.service';
+export { contentService } from './content.service';
+export type {
+  LessonContent,
+  SetTextContentData,
+  SetVideoContentData,
+  UpdateContentData,
+  FileType,
+} from './content.service';
+export { adminService } from './admin.service';
+export type {
+  AdminUser,
+  AdminUserListParams,
+  AdminUserListResponse,
+  UpdateRoleResponse,
+} from './admin.service';

@@ -20,6 +20,12 @@ export const coursesService = {
     return res.data.data!;
   },
 
+  /** Миний сургалтууд (Багш/Админ — бүх status) */
+  listMy: async (): Promise<Course[]> => {
+    const res = await client.get<ApiResponse<Course[]>>('/courses/my');
+    return res.data.data!;
+  },
+
   getBySlug: async (slug: string): Promise<Course> => {
     const res = await client.get<ApiResponse<Course>>(`/courses/slug/${slug}`);
     return res.data.data!;

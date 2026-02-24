@@ -2,7 +2,7 @@
 export { useLogin, useRegister, useLogout, useForgotPassword, useResetPassword } from './use-auth';
 
 // Course hooks
-export { useCourseList, useCourseBySlug, useCourseById } from './use-courses';
+export { useCourseList, useCourseBySlug, useCourseById, useMyCourses } from './use-courses';
 
 // Category hooks
 export { useCategoryTree } from './use-categories';
@@ -37,10 +37,25 @@ export {
 export { useMyCertificates } from './use-certificates';
 
 // Lesson hooks
-export { useCourseLessons, useLessonById } from './use-lessons';
+export {
+  useCourseLessons,
+  useLessonById,
+  useCreateLesson,
+  useUpdateLesson,
+  useDeleteLesson,
+  useTogglePublishLesson,
+  useReorderLessons,
+} from './use-lessons';
 
 // Content hooks
-export { useLessonContent } from './use-content';
+export {
+  useLessonContent,
+  useSetTextContent,
+  useSetVideoContent,
+  useUpdateContent,
+  useDeleteContent,
+  useUploadFile,
+} from './use-content';
 
 // Discussion hooks
 export {
@@ -57,3 +72,6 @@ export {
   useReplyComment,
   useUpvoteComment,
 } from './use-comments';
+
+// Admin hooks
+export { useAdminUsers, useUpdateUserRole, useDeleteUser } from './use-admin';
