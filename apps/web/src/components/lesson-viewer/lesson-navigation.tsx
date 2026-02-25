@@ -12,7 +12,7 @@ interface LessonNavigationProps {
   slug: string;
 }
 
-/** Previous / Next хичээл товчнууд — дизайнд тааруулсан */
+/** Өмнөх / Дараах хичээл товчнууд — дизайнд тааруулсан */
 export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavigationProps) {
   const t = useTranslations('lessonViewer');
   const router = useRouter();
@@ -23,23 +23,23 @@ export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavig
   const next = currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center justify-between mt-10 pb-6">
       <button
         onClick={() => prev && router.push(ROUTES.LESSON_VIEWER(slug, prev.id))}
         disabled={!prev}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/20 bg-white dark:bg-slate-900 text-primary font-bold hover:bg-primary/5 transition-all disabled:opacity-40 disabled:pointer-events-none"
       >
-        <ArrowLeft className="size-4" />
-        {t('previousLesson')}
+        <ArrowLeft className="size-5" />
+        {t('previousBtn')}
       </button>
 
       <button
         onClick={() => next && router.push(ROUTES.LESSON_VIEWER(slug, next.id))}
         disabled={!next}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-primary text-white font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:scale-[1.02] transition-all disabled:opacity-40 disabled:pointer-events-none"
       >
-        {t('nextLesson')}
-        <ArrowRight className="size-4" />
+        {t('nextBtn')}
+        <ArrowRight className="size-5" />
       </button>
     </div>
   );

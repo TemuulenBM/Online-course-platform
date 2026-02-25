@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import {
   GripVertical,
   Pencil,
@@ -12,12 +13,14 @@ import {
   Radio,
   CheckCircle2,
   XCircle,
+  FileEdit,
 } from 'lucide-react';
 import type { Lesson, LessonType } from '@ocp/shared-types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { Switch } from '@/components/ui/switch';
+import { ROUTES } from '@/lib/constants';
 
 /** Хичээлийн төрлийн icon-ууд */
 const typeIcons: Record<LessonType, React.ElementType> = {
@@ -57,21 +60,22 @@ function formatDuration(minutes: number): string {
 
 interface LessonListItemProps {
   lesson: Lesson;
+  courseId: string;
   onEdit: (lesson: Lesson) => void;
   onDelete: (lesson: Lesson) => void;
   onTogglePreview: (lesson: Lesson) => void;
-  onSelectContent: (lesson: Lesson) => void;
 }
 
 /** Багшийн хичээлийн жагсаалтын нэг мөр — table row */
 export function LessonListItem({
   lesson,
+  courseId,
   onEdit,
   onDelete,
   onTogglePreview,
-  onSelectContent,
 }: LessonListItemProps) {
   const t = useTranslations('teacher');
+  const router = useRouter();
   const Icon = typeIcons[lesson.lessonType] || FileText;
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -106,7 +110,7 @@ export function LessonListItem({
       <td className="py-5 px-6">
         <button
           className="flex items-center gap-3 text-left"
-          onClick={() => onSelectContent(lesson)}
+          onClick={() => router.push(ROUTES.TEACHER_LESSON_CONTENT(courseId, lesson.id))}
         >
           <div className="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all flex-shrink-0">
             <Icon className="size-5" />
@@ -155,6 +159,13 @@ export function LessonListItem({
       {/* Үйлдэл */}
       <td className="py-5 px-6 text-right">
         <div className="flex justify-end gap-2">
+          <button
+            onClick={() => router.push(ROUTES.TEACHER_LESSON_CONTENT(courseId, lesson.id))}
+            className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+            title={t('editContentTitle')}
+          >
+            <FileEdit className="size-5" />
+          </button>
           <button
             onClick={() => onEdit(lesson)}
             className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"

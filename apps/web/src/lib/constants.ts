@@ -79,4 +79,6 @@ export const ROUTES = {
   ADMIN_USERS: '/admin/users',
   ADMIN_CATEGORIES: '/admin/categories',
   PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
+  TEACHER_LESSON_CONTENT: (courseId: string, lessonId: string) =>
+    `/teacher/courses/${courseId}/lessons/${lessonId}/content` as const,
 } as const;

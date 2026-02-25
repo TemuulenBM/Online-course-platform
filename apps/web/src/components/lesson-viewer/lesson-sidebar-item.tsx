@@ -1,19 +1,10 @@
 'use client';
 
-import { CheckCircle, PlayCircle, Lock } from 'lucide-react';
+import { CheckCircle2, Circle, Lock, HelpCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { Lesson } from '@ocp/shared-types';
 import type { LessonProgressSummary } from '@/lib/api-services/progress.service';
 import { ROUTES } from '@/lib/constants';
-
-/** Хичээлийн төрлийн label */
-const typeLabels: Record<string, string> = {
-  video: 'Видео',
-  text: 'Текст',
-  quiz: 'Тест',
-  assignment: 'Даалгавар',
-  live: 'Шууд',
-};
 
 interface LessonSidebarItemProps {
   lesson: Lesson;
@@ -23,7 +14,7 @@ interface LessonSidebarItemProps {
   isEnrolled: boolean;
 }
 
-/** Sidebar дахь нэг хичээлийн мөр — дизайнд тааруулсан */
+/** Sidebar дахь section outline item — check/circle/lock/quiz icons */
 export function LessonSidebarItem({
   lesson,
   slug,
@@ -34,8 +25,7 @@ export function LessonSidebarItem({
   const router = useRouter();
   const isCompleted = progress?.completed;
   const isAccessible = lesson.isPreview || isEnrolled;
-
-  const durationLabel = lesson.durationMinutes ? `${lesson.durationMinutes} мин` : '';
+  const isQuiz = lesson.lessonType === 'quiz';
 
   const handleClick = () => {
     if (isAccessible) {
@@ -43,66 +33,51 @@ export function LessonSidebarItem({
     }
   };
 
-  /** Active хичээл */
+  /** Icon сонголт */
+  const getIcon = () => {
+    if (isQuiz) return <HelpCircle className="size-4 shrink-0" />;
+    if (!isAccessible) return <Lock className="size-4 shrink-0" />;
+    if (isCompleted) return <CheckCircle2 className="size-4 shrink-0" />;
+    return <Circle className="size-4 shrink-0" />;
+  };
+
+  /** Active item */
   if (isActive) {
     return (
       <button
         onClick={handleClick}
-        className="w-full p-4 rounded-xl bg-primary/10 border border-primary/20 flex items-center gap-4 text-left"
+        className="w-full flex items-center gap-3 p-2 rounded-lg bg-primary/10 text-primary text-left"
       >
-        <PlayCircle className="size-5 text-primary shrink-0" />
-        <div className="flex-1 overflow-hidden">
-          <p className="text-sm font-bold text-primary truncate">
-            {lesson.orderIndex}. {lesson.title}
-          </p>
-          <p className="text-xs text-primary/70">
-            {durationLabel && `${durationLabel} • `}
-            {typeLabels[lesson.lessonType]}
-          </p>
-        </div>
-        {isCompleted && <CheckCircle className="size-4 text-primary shrink-0" />}
+        {getIcon()}
+        <span className="text-sm font-medium">
+          {lesson.orderIndex}. {lesson.title}
+        </span>
       </button>
     );
   }
 
-  /** Locked хичээл */
+  /** Locked item */
   if (!isAccessible) {
     return (
-      <div className="w-full p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center gap-4 opacity-50">
-        <Lock className="size-5 text-slate-400 shrink-0" />
-        <div className="flex-1 overflow-hidden">
-          <p className="text-sm font-bold truncate">
-            {lesson.orderIndex}. {lesson.title}
-          </p>
-          <p className="text-xs text-slate-500">
-            {durationLabel && `${durationLabel} • `}
-            {typeLabels[lesson.lessonType]}
-          </p>
-        </div>
+      <div className="flex items-center gap-3 p-2 rounded-lg text-slate-400">
+        {getIcon()}
+        <span className="text-sm">
+          {lesson.orderIndex}. {lesson.title}
+        </span>
       </div>
     );
   }
 
-  /** Хэвийн хичээл */
+  /** Normal item */
   return (
     <button
       onClick={handleClick}
-      className="w-full p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+      className="w-full flex items-center gap-3 p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
     >
-      {isCompleted ? (
-        <CheckCircle className="size-5 text-emerald-500 shrink-0" />
-      ) : (
-        <PlayCircle className="size-5 text-slate-400 shrink-0" />
-      )}
-      <div className="flex-1 overflow-hidden">
-        <p className={`text-sm font-bold truncate ${isCompleted ? 'text-slate-500' : ''}`}>
-          {lesson.orderIndex}. {lesson.title}
-        </p>
-        <p className="text-xs text-slate-500">
-          {durationLabel && `${durationLabel} • `}
-          {typeLabels[lesson.lessonType]}
-        </p>
-      </div>
+      {getIcon()}
+      <span className="text-sm">
+        {lesson.orderIndex}. {lesson.title}
+      </span>
     </button>
   );
 }

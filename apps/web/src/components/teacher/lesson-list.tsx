@@ -31,7 +31,6 @@ import {
 import { LessonListItem } from './lesson-list-item';
 import { LessonFormDialog } from './lesson-form-dialog';
 import { DeleteLessonDialog } from './delete-lesson-dialog';
-import { LessonContentEditor } from './lesson-content-editor';
 
 interface LessonListProps {
   courseId: string;
@@ -54,7 +53,6 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
   const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deletingLesson, setDeletingLesson] = useState<Lesson | null>(null);
-  const [contentLesson, setContentLesson] = useState<Lesson | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   /* --- DnD sensors --- */
@@ -144,9 +142,6 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
         toast.success(t('lessonDeleted'));
         setDeleteOpen(false);
         setDeletingLesson(null);
-        if (contentLesson?.id === deletingLesson.id) {
-          setContentLesson(null);
-        }
       },
     });
   };
@@ -257,10 +252,10 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
                     <LessonListItem
                       key={lesson.id}
                       lesson={lesson}
+                      courseId={courseId}
                       onEdit={handleEdit}
                       onDelete={handleDeleteClick}
                       onTogglePreview={handleTogglePreview}
-                      onSelectContent={setContentLesson}
                     />
                   ))}
                 </tbody>
@@ -285,11 +280,6 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
             </p>
           </div>
         </div>
-      )}
-
-      {/* Content editor panel */}
-      {contentLesson && (
-        <LessonContentEditor lesson={contentLesson} onClose={() => setContentLesson(null)} />
       )}
 
       {/* Stat cards */}

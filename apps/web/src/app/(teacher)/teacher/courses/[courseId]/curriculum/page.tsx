@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Pencil, Globe, Archive, PlusCircle, ChevronRight } from 'lucide-react';
+import { Pencil, Globe, Archive, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
