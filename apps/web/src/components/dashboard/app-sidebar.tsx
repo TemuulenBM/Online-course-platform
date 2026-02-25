@@ -39,11 +39,10 @@ const mainNavItems = [
   { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
 ] as const;
 
-/** Навигац item-ийн нийтлэг style */
+/** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */
 const navItemBase =
-  'h-11 rounded-xl px-4 text-sm font-medium text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-900';
-const navItemActive =
-  'bg-white text-gray-900 font-semibold shadow-sm hover:bg-white hover:text-gray-900';
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
+const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
 
 export function AppSidebar() {
   const pathname = usePathname();

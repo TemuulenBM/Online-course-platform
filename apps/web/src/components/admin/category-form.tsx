@@ -168,11 +168,7 @@ export function CategoryForm({
             disabled={isLoading}
             className="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-all disabled:opacity-50"
           >
-            {isLoading
-              ? t('saving')
-              : isEditing
-                ? t('updateCategory')
-                : t('saveCategory')}
+            {isLoading ? t('saving') : isEditing ? t('updateCategory') : t('saveCategory')}
           </button>
         </div>
       </form>

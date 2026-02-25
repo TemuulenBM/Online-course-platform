@@ -5,7 +5,12 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import type { Category } from '@ocp/shared-types';
-import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/api';
+import {
+  useCategoryTree,
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+} from '@/hooks/api';
 import { CategoryTable } from '@/components/admin/category-table';
 import { CategoryForm, type CategoryFormValues } from '@/components/admin/category-form';
 

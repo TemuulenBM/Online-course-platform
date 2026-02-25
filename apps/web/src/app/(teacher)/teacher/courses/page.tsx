@@ -40,8 +40,7 @@ export default function TeacherCoursesPage() {
   const filteredCourses = courses
     ?.filter((c: Course) => statusFilter === 'all' || c.status === statusFilter)
     ?.filter(
-      (c: Course) =>
-        !searchQuery || c.title.toLowerCase().includes(searchQuery.toLowerCase()),
+      (c: Course) => !searchQuery || c.title.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
   const filters: { key: StatusFilter; label: string }[] = [

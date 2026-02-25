@@ -147,9 +147,7 @@ export function CourseFormPage({ course }: CourseFormPageProps) {
                     className={inputClass}
                     placeholder={t('courseTitlePlaceholder')}
                   />
-                  {errors.title && (
-                    <p className="text-xs text-red-500">{errors.title.message}</p>
-                  )}
+                  {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-slate-700 dark:text-slate-300">

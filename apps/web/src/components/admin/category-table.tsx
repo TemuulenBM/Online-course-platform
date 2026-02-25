@@ -100,9 +100,7 @@ function CategoryRow({
         </td>
 
         {/* Тайлбар */}
-        <td
-          className={`px-6 py-4 text-sm ${isChild ? 'text-slate-400 italic' : 'text-slate-500'}`}
-        >
+        <td className={`px-6 py-4 text-sm ${isChild ? 'text-slate-400 italic' : 'text-slate-500'}`}>
           {category.description || '-'}
         </td>
 

@@ -96,7 +96,9 @@ export function CourseCard({ course }: CourseCardProps) {
                 {course.instructorName?.charAt(0) || '?'}
               </span>
             </div>
-            <span className="text-xs text-slate-500">{course.instructorName || t('instructor')}</span>
+            <span className="text-xs text-slate-500">
+              {course.instructorName || t('instructor')}
+            </span>
           </div>
 
           {/* Tags */}
