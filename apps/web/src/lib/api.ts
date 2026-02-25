@@ -72,9 +72,11 @@ client.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const res = await client.post('/auth/refresh', {
-        refreshToken: tokens.refreshToken,
-      });
+      const res = await client.post(
+        '/auth/refresh',
+        { refreshToken: tokens.refreshToken },
+        { _retry: true } as any,
+      );
       const newTokens = res.data.data;
       useAuthStore.getState().setTokens(newTokens);
 
