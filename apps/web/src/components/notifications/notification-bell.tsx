@@ -77,7 +77,7 @@ export function NotificationBell() {
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
-              className="text-xs text-[#8A93E5] hover:text-[#7B84D9] font-medium transition-colors"
+              className="text-xs text-primary hover:text-[#7B84D9] font-medium transition-colors"
             >
               {t('markAllRead')}
             </button>
@@ -115,7 +115,7 @@ export function NotificationBell() {
           <Link
             href={ROUTES.NOTIFICATIONS}
             onClick={() => setOpen(false)}
-            className="text-sm text-[#8A93E5] hover:text-[#7B84D9] font-semibold transition-colors"
+            className="text-sm text-primary hover:text-[#7B84D9] font-semibold transition-colors"
           >
             {t('seeAll')}
           </Link>

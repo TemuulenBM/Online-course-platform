@@ -104,7 +104,7 @@ function StatCard({
       >
         <stat.icon className="size-7" style={{ color: stat.color }} />
       </div>
-      <p className="text-4xl lg:text-5xl font-black text-[#8A93E5]">
+      <p className="text-4xl lg:text-5xl font-black text-primary">
         {count.toLocaleString()}
         {stat.suffix}
       </p>

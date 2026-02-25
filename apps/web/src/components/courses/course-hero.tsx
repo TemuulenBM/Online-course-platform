@@ -1,37 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import { BookOpen, Maximize, PlayCircle } from 'lucide-react';
+import { BookOpen, CheckCircle, PlayCircle, Star } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
-
-/** Түвшингийн badge өнгө */
-const difficultyStyles: Record<string, string> = {
-  beginner: 'bg-emerald-500 text-white',
-  intermediate: 'bg-amber-500 text-white',
-  advanced: 'bg-purple-500 text-white',
-};
-
-/** Duration-г mm:ss формат руу хувиргах */
-function formatPreviewTime(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:00`;
-  return `${m}:00`;
-}
 
 interface CourseHeroProps {
   course: Course;
 }
 
-/** Сургалтын дэлгэрэнгүй hero — video overlay + badge + title + meta */
+/** Сургалтын дэлгэрэнгүй hero — video, badge, title, instructor, тайлбар, сургах зүйлс, tags */
 export function CourseHero({ course }: CourseHeroProps) {
   const t = useTranslations('courses');
 
   return (
-    <div className="flex flex-col">
-      {/* Video/Thumbnail хэсэг */}
-      <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 group cursor-pointer">
+    <div className="space-y-6">
+      {/* Video / Thumbnail preview */}
+      <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-xl ring-1 ring-primary/10 relative group">
+        <div className="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer">
+          <PlayCircle className="size-16 text-white" />
+        </div>
         {course.thumbnailUrl ? (
           <Image
             src={course.thumbnailUrl}
@@ -41,72 +29,100 @@ export function CourseHero({ course }: CourseHeroProps) {
             priority
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#8A93E5]/20 via-[#A78BFA]/15 to-emerald-200/20 dark:from-[#8A93E5]/10 dark:via-[#A78BFA]/10 dark:to-emerald-900/10 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
             <BookOpen className="size-16 text-slate-300 dark:text-slate-600" />
           </div>
         )}
-
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-        {/* Play товч — голд */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-full bg-white/90 dark:bg-white/80 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-            <PlayCircle className="size-8 text-slate-900" />
-          </div>
-        </div>
-
-        {/* Зүүн доод — Preview badge */}
-        <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-lg">
-          <PlayCircle className="size-3.5" />
-          <span>
-            {formatPreviewTime(course.durationMinutes)} {t('preview')}
-          </span>
-        </div>
-
-        {/* Баруун доод — Maximize icon */}
-        <div className="absolute bottom-4 right-4 w-8 h-8 rounded-lg bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors">
-          <Maximize className="size-4" />
-        </div>
       </div>
 
       {/* Badge мөр */}
-      <div className="flex flex-wrap items-center gap-2 mt-4">
+      <div className="flex flex-wrap gap-2">
+        <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wide">
+          {t(course.difficulty)}
+        </span>
         {course.categoryName && (
-          <span className="border border-[#8A93E5] text-[#8A93E5] rounded-md px-3 py-1 text-xs font-bold uppercase tracking-wider">
+          <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded-full">
             {course.categoryName}
           </span>
         )}
-        <span
-          className={`rounded-md px-3 py-1 text-xs font-bold uppercase tracking-wider ${difficultyStyles[course.difficulty] || difficultyStyles.beginner}`}
-        >
-          {t(course.difficulty)}
-        </span>
       </div>
 
       {/* Title */}
-      <h1 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white mt-4">
+      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
         {course.title}
       </h1>
 
-      {/* Meta мөр */}
-      <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-slate-500 dark:text-slate-400">
-        {/* Instructor avatar + нэр */}
+      {/* Instructor + Rating мөр */}
+      <div className="flex items-center gap-4 py-2">
         {course.instructorName && (
-          <>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#8A93E5] to-[#A78BFA] flex items-center justify-center shrink-0">
-                <span className="text-xs font-bold text-white">
-                  {course.instructorName.charAt(0)}
-                </span>
-              </div>
-              <span className="font-medium text-slate-700 dark:text-slate-300">
-                {course.instructorName}
+          <div className="flex items-center gap-2">
+            <div className="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <span className="text-sm font-bold text-primary">
+                {course.instructorName.charAt(0)}
               </span>
             </div>
-          </>
+            <div>
+              <p className="text-xs text-slate-500">{t('instructor')}</p>
+              <p className="text-sm font-bold">{course.instructorName}</p>
+            </div>
+          </div>
         )}
+        <div className="h-8 w-px bg-slate-200 dark:bg-slate-700" />
+        <div className="flex items-center gap-1 text-amber-500">
+          <Star className="size-4 fill-current" />
+          <span className="font-bold text-slate-900 dark:text-slate-100">4.8</span>
+          <span className="text-slate-400 text-xs">(128 {t('reviews')})</span>
+        </div>
       </div>
+
+      {/* Хичээлийн тухай */}
+      <div className="prose dark:prose-invert max-w-none">
+        <h3 className="text-xl font-bold mb-3">{t('aboutCourse')}</h3>
+        <div className="text-slate-600 dark:text-slate-400 leading-relaxed">
+          {course.description.split('\n').map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+
+        {/* Сургах зүйлс жагсаалт */}
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none pl-0">
+          <li className="flex items-start gap-2 text-sm">
+            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
+            {t('learningOutcome1')}
+          </li>
+          <li className="flex items-start gap-2 text-sm">
+            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
+            {t('learningOutcome2')}
+          </li>
+          <li className="flex items-start gap-2 text-sm">
+            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
+            {t('learningOutcome3')}
+          </li>
+          <li className="flex items-start gap-2 text-sm">
+            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
+            {t('learningOutcome4')}
+          </li>
+        </ul>
+      </div>
+
+      {/* Tags */}
+      {course.tags && course.tags.length > 0 && (
+        <div className="pt-6">
+          <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">
+            {t('tagsHeading')}
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {course.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-4 py-1.5 rounded-lg bg-primary/5 border border-primary/10 text-xs font-medium text-primary"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

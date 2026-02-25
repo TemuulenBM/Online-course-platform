@@ -13,7 +13,7 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-white dark:bg-slate-950">
       {/* Чимэглэлийн blur тойргууд */}
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#8A93E5]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-[#FFD166]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-20 lg:pb-24">
@@ -21,7 +21,7 @@ export function HeroSection() {
           {/* Зүүн тал — текст */}
           <div className="animation-fade-in">
             {/* Trusted badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4F2F9] dark:bg-slate-800 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background dark:bg-slate-800 mb-6">
               <div className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30">
                 <div className="w-2 h-2 rounded-full bg-emerald-500" />
               </div>
@@ -34,7 +34,7 @@ export function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1B1B1B] dark:text-white leading-tight tracking-tight">
               {t('heroTitle')}
               <br />
-              <span className="italic bg-gradient-to-r from-[#8A93E5] to-[#A78BFA] bg-clip-text text-transparent">
+              <span className="italic bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 {t('heroTitleHighlight')}
               </span>
             </h1>
@@ -49,7 +49,7 @@ export function HeroSection() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white rounded-full px-8 h-12 text-base font-semibold hover:opacity-90 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#8A93E5]/25"
+                className="bg-gradient-to-r from-primary to-[#9575ED] text-white rounded-full px-8 h-12 text-base font-semibold hover:opacity-90 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/25"
               >
                 <Link href={ROUTES.REGISTER}>
                   {t('getStarted')}
@@ -60,7 +60,7 @@ export function HeroSection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="rounded-full px-8 h-12 text-base font-semibold border-gray-200 dark:border-slate-700 hover:border-[#8A93E5] dark:hover:border-[#A78BFA] transition-colors"
+                className="rounded-full px-8 h-12 text-base font-semibold border-gray-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary/70 transition-colors"
               >
                 <Link href={ROUTES.COURSES}>
                   <CirclePlay className="mr-2 size-4" />
@@ -82,8 +82,8 @@ export function HeroSection() {
                 style={{ animationDuration: '3s' }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#8A93E5]/10 flex items-center justify-center">
-                    <BookOpen className="size-5 text-[#8A93E5]" />
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <BookOpen className="size-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gray-900 dark:text-white">500+</p>

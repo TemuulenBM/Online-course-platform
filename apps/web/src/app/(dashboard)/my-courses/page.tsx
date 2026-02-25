@@ -70,7 +70,7 @@ export default function MyCoursesPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#8A93E5]/30 focus:border-[#8A93E5] transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
             />
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function MyCoursesPage() {
         {/* Pagination footer */}
         {!isLoading && totalCount > 0 && filteredData && filteredData.length > 0 && (
           <div className="flex items-center justify-between mt-2">
-            <p className="text-sm text-[#8A93E5] font-medium">
+            <p className="text-sm text-primary font-medium">
               {t('showingOf', {
                 shown: showingCount,
                 total: totalCount,

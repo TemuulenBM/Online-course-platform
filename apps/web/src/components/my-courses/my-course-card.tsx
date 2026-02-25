@@ -42,7 +42,7 @@ export function MyCourseCard({ enrollment }: MyCourseCardProps) {
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#8A93E5]/20 via-[#A78BFA]/15 to-emerald-200/20 dark:from-[#8A93E5]/10 dark:via-[#A78BFA]/10 dark:to-emerald-900/10 flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/70/15 to-emerald-200/20 dark:from-primary/10 dark:via-primary/70/10 dark:to-emerald-900/10 flex items-center justify-center">
               <BookOpen className="size-8 text-slate-300 dark:text-slate-600" />
             </div>
           )}
@@ -51,7 +51,7 @@ export function MyCourseCard({ enrollment }: MyCourseCardProps) {
         {/* Content — дунд хэсэг */}
         <div className="flex-1 min-w-0">
           {/* Title */}
-          <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-[#8A93E5] transition-colors truncate">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors truncate">
             {enrollment.courseTitle}
           </h3>
 
@@ -71,7 +71,7 @@ export function MyCourseCard({ enrollment }: MyCourseCardProps) {
                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
-                      progressPercentage >= 100 ? 'bg-emerald-500' : 'bg-[#8A93E5]'
+                      progressPercentage >= 100 ? 'bg-emerald-500' : 'bg-primary'
                     }`}
                     style={{ width: `${Math.min(progressPercentage, 100)}%` }}
                   />
@@ -91,7 +91,7 @@ export function MyCourseCard({ enrollment }: MyCourseCardProps) {
         {/* Action button — баруун тал */}
         <div className="shrink-0">
           {enrollment.status === 'active' ? (
-            <span className="inline-flex items-center px-6 py-2.5 rounded-full bg-[#8A93E5] text-white font-semibold text-sm hover:bg-[#7B84D9] transition-colors shadow-sm">
+            <span className="inline-flex items-center px-6 py-2.5 rounded-full bg-primary text-white font-semibold text-sm hover:bg-[#7B84D9] transition-colors shadow-sm">
               {t('continue')}
             </span>
           ) : enrollment.status === 'completed' ? (

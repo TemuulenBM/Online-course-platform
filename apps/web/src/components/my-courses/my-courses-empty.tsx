@@ -22,7 +22,7 @@ export function MyCoursesEmpty({ statusFilter }: MyCoursesEmptyProps) {
 
   return (
     <div className="text-center py-20 flex flex-col items-center gap-6">
-      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8A93E5]/10 to-[#A78BFA]/10 flex items-center justify-center">
+      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/70/10 flex items-center justify-center">
         <BookOpen className="size-10 text-slate-300" />
       </div>
       <div>
@@ -32,7 +32,7 @@ export function MyCoursesEmpty({ statusFilter }: MyCoursesEmptyProps) {
       {statusFilter === 'all' && (
         <Link
           href={ROUTES.COURSES}
-          className="px-8 py-3 rounded-2xl bg-gradient-to-r from-[#8A93E5] to-[#A78BFA] text-white font-semibold shadow-lg shadow-[#8A93E5]/25 hover:scale-105 transition-transform"
+          className="px-8 py-3 rounded-2xl bg-gradient-to-r from-primary to-primary/70 text-white font-semibold shadow-lg shadow-primary/25 hover:scale-105 transition-transform"
         >
           {t('browseCourses')}
         </Link>

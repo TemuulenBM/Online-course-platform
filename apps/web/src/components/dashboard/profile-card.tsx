@@ -21,7 +21,7 @@ const ACTIVITY_DATA = [
 
 /** Role badge-ийн өнгө */
 const roleBadgeStyle: Record<string, string> = {
-  STUDENT: 'bg-[#8A93E5]/10 text-[#8A93E5]',
+  STUDENT: 'bg-primary/10 text-primary',
   TEACHER: 'bg-emerald-50 text-emerald-600',
   ADMIN: 'bg-amber-50 text-amber-600',
 };
@@ -66,7 +66,7 @@ export function ProfileCard() {
             <div className="mb-4">
               <Avatar className="w-24 h-24 border-4 border-white shadow-md">
                 <AvatarImage src={getFileUrl(profile?.avatarUrl)} alt={fullName} />
-                <AvatarFallback className="bg-[#8A93E5]/10 text-[#8A93E5] text-2xl font-bold">
+                <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
                   {initials || <User className="w-10 h-10" />}
                 </AvatarFallback>
               </Avatar>

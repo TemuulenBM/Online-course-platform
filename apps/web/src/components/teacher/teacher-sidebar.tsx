@@ -52,7 +52,7 @@ export function TeacherSidebar() {
     : (user?.email?.[0] || 'U').toUpperCase();
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
+    <Sidebar collapsible="offcanvas" className="border-none bg-background">
       <SidebarHeader className="px-6 pt-8 pb-6">
         <LearnifyLogo href="/teacher/courses" className="pl-2" />
       </SidebarHeader>

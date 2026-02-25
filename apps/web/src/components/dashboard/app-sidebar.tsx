@@ -66,7 +66,7 @@ export function AppSidebar() {
   const roleName = tRoles(user?.role || 'student');
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
+    <Sidebar collapsible="offcanvas" className="border-none bg-background">
       {/* Лого */}
       <SidebarHeader className="px-5 pt-7 pb-4">
         <LearnifyLogo href="/dashboard" />

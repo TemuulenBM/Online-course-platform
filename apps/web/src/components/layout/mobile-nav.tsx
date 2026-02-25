@@ -49,7 +49,7 @@ export function MobileNav() {
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center h-12 px-4 rounded-xl text-gray-700 dark:text-gray-300 font-medium hover:bg-[#F4F2F9] dark:hover:bg-slate-800 transition-colors"
+                    className="flex items-center h-12 px-4 rounded-xl text-gray-700 dark:text-gray-300 font-medium hover:bg-background dark:hover:bg-slate-800 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -63,7 +63,7 @@ export function MobileNav() {
             {isAuthenticated ? (
               <Button
                 asChild
-                className="w-full bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white hover:opacity-90"
+                className="w-full bg-gradient-to-r from-primary to-[#9575ED] text-white hover:opacity-90"
               >
                 <Link href={ROUTES.DASHBOARD} onClick={() => setOpen(false)}>
                   {t('goToDashboard')}
@@ -78,7 +78,7 @@ export function MobileNav() {
                 </Button>
                 <Button
                   asChild
-                  className="w-full bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white hover:opacity-90"
+                  className="w-full bg-gradient-to-r from-primary to-[#9575ED] text-white hover:opacity-90"
                 >
                   <Link href={ROUTES.REGISTER} onClick={() => setOpen(false)}>
                     {t('getStarted')}

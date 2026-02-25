@@ -35,11 +35,11 @@ export function LessonSidebar({
       <div className="p-5 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white">{t('courseContent')}</h3>
-          <span className="text-xs font-medium text-[#8A93E5]">
+          <span className="text-xs font-medium text-primary">
             {Math.round(progressPercent)}% {t('complete')}
           </span>
         </div>
-        <Progress value={progressPercent} className="h-2 [&>div]:bg-[#8A93E5]" />
+        <Progress value={progressPercent} className="h-2 [&>div]:bg-primary" />
       </div>
 
       {/* Хичээлүүд жагсаалт */}
@@ -59,7 +59,7 @@ export function LessonSidebar({
       <div className="p-4 border-t border-slate-100 dark:border-slate-800">
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium hover:border-primary hover:text-primary transition-colors"
         >
           <Download className="size-4" />
           {t('downloadResources')}

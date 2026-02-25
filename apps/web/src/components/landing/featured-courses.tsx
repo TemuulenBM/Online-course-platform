@@ -151,7 +151,7 @@ export function FeaturedCourses() {
             asChild
             variant="outline"
             size="lg"
-            className="rounded-full px-8 border-gray-200 dark:border-slate-700 hover:border-[#8A93E5] dark:hover:border-[#A78BFA]"
+            className="rounded-full px-8 border-gray-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary/70"
           >
             <Link href={ROUTES.COURSES}>
               {t('viewAllCourses')}

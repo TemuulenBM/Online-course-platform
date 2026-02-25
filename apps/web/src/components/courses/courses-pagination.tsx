@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CoursesPaginationProps {
@@ -10,7 +10,7 @@ interface CoursesPaginationProps {
   onPageChange: (page: number) => void;
 }
 
-/** Courses жагсаалтын pagination — Stitch стиль */
+/** Courses жагсаалтын pagination */
 export function CoursesPagination({ page, total, limit, onPageChange }: CoursesPaginationProps) {
   const totalPages = Math.ceil(total / limit) || 0;
   if (totalPages <= 1) return null;
@@ -37,30 +37,25 @@ export function CoursesPagination({ page, total, limit, onPageChange }: CoursesP
   };
 
   return (
-    <nav className="flex justify-center items-center gap-2 mt-8">
-      {/* Previous */}
+    <nav className="flex justify-center items-center gap-2 mt-16">
       <button
         type="button"
         onClick={() => page > 1 && onPageChange(page - 1)}
         disabled={page <= 1}
         className={cn(
-          'w-10 h-10 rounded-lg border flex items-center justify-center transition-all',
+          'size-10 flex items-center justify-center rounded-xl transition-all',
           page <= 1
-            ? 'border-slate-200 dark:border-slate-700 text-slate-300 dark:text-slate-600 cursor-not-allowed'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-[#8A93E5] hover:text-[#8A93E5] cursor-pointer',
+            ? 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-300 dark:text-slate-600 cursor-not-allowed'
+            : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary cursor-pointer',
         )}
       >
         <ChevronLeft className="size-4" />
       </button>
 
-      {/* Page numbers */}
       {getPageNumbers().map((p, idx) =>
         p === 'ellipsis' ? (
-          <span
-            key={`ellipsis-${idx}`}
-            className="w-10 h-10 flex items-center justify-center text-slate-400"
-          >
-            <MoreHorizontal className="size-4" />
+          <span key={`ellipsis-${idx}`} className="text-slate-400 mx-1">
+            ...
           </span>
         ) : (
           <button
@@ -68,10 +63,10 @@ export function CoursesPagination({ page, total, limit, onPageChange }: CoursesP
             type="button"
             onClick={() => onPageChange(p)}
             className={cn(
-              'w-10 h-10 rounded-lg text-sm font-semibold flex items-center justify-center transition-all cursor-pointer',
+              'size-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all cursor-pointer',
               p === page
-                ? 'bg-[#8A93E5] text-white shadow-md shadow-[#8A93E5]/25'
-                : 'border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-[#8A93E5] hover:text-[#8A93E5]',
+                ? 'bg-primary text-white'
+                : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-600 dark:text-slate-400 hover:text-primary',
             )}
           >
             {p}
@@ -79,16 +74,15 @@ export function CoursesPagination({ page, total, limit, onPageChange }: CoursesP
         ),
       )}
 
-      {/* Next */}
       <button
         type="button"
         onClick={() => page < totalPages && onPageChange(page + 1)}
         disabled={page >= totalPages}
         className={cn(
-          'w-10 h-10 rounded-lg border flex items-center justify-center transition-all',
+          'size-10 flex items-center justify-center rounded-xl transition-all',
           page >= totalPages
-            ? 'border-slate-200 dark:border-slate-700 text-slate-300 dark:text-slate-600 cursor-not-allowed'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-[#8A93E5] hover:text-[#8A93E5] cursor-pointer',
+            ? 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-300 dark:text-slate-600 cursor-not-allowed'
+            : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary cursor-pointer',
         )}
       >
         <ChevronRight className="size-4" />

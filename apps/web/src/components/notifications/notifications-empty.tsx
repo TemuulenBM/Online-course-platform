@@ -13,7 +13,7 @@ export function NotificationsEmpty({ filter = 'all' }: NotificationsEmptyProps) 
 
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8A93E5]/10 via-[#A78BFA]/10 to-slate-100 dark:from-[#8A93E5]/5 dark:via-[#A78BFA]/5 dark:to-slate-800 flex items-center justify-center mb-4">
+      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 via-primary/70/10 to-slate-100 dark:from-primary/5 dark:via-primary/70/5 dark:to-slate-800 flex items-center justify-center mb-4">
         <Bell className="size-10 text-slate-300 dark:text-slate-600" />
       </div>
       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">

@@ -35,7 +35,7 @@ export function HeroBanner() {
         <div className="absolute right-[20%] bottom-[10%] text-[180px] drop-shadow-xl z-10 font-emoji leading-none mb-[-25px]">
           👩🏼‍🦰
         </div>
-        <div className="absolute right-[10%] bottom-[0%] w-32 h-24 bg-[#8A93E5] rounded-t-xl z-20 -rotate-6 border-b-[6px] border-[#6972C3]" />
+        <div className="absolute right-[10%] bottom-[0%] w-32 h-24 bg-primary rounded-t-xl z-20 -rotate-6 border-b-[6px] border-[#6972C3]" />
         <div className="absolute top-[15%] left-[30%] text-sm text-white/80">✦</div>
         <div className="absolute top-[20%] right-[30%] text-2xl drop-shadow-md">✈️</div>
         <div className="absolute top-[40%] right-[45%] w-2 h-2 rounded-full bg-white/40" />

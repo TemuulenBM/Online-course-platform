@@ -79,7 +79,7 @@ export function TopCategories() {
           </div>
           <Link
             href={ROUTES.COURSES}
-            className="hidden sm:inline-flex text-sm font-semibold text-[#8A93E5] hover:text-[#9575ED] transition-colors"
+            className="hidden sm:inline-flex text-sm font-semibold text-primary hover:text-[#9575ED] transition-colors"
           >
             {t('seeAll')} →
           </Link>

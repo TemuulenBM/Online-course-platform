@@ -91,3 +91,6 @@ export {
 
 // Admin hooks
 export { useAdminUsers, useUpdateUserRole, useDeleteUser } from './use-admin';
+
+// Category admin hooks
+export { useCreateCategory, useUpdateCategory, useDeleteCategory } from './use-categories-admin';

@@ -73,7 +73,10 @@ export const ROUTES = {
   LESSON_VIEWER: (slug: string, lessonId: string) =>
     `/courses/${slug}/lessons/${lessonId}` as const,
   TEACHER_COURSES: '/teacher/courses',
+  TEACHER_COURSE_NEW: '/teacher/courses/new',
+  TEACHER_COURSE_EDIT: (courseId: string) => `/teacher/courses/${courseId}/edit` as const,
   TEACHER_CURRICULUM: (courseId: string) => `/teacher/courses/${courseId}/curriculum` as const,
   ADMIN_USERS: '/admin/users',
+  ADMIN_CATEGORIES: '/admin/categories',
   PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
 } as const;

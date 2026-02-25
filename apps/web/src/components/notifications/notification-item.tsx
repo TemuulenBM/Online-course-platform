@@ -21,7 +21,7 @@ function getNotificationIcon(notification: Notification) {
   if (data?.orderId) return <CreditCard className="size-4 text-amber-500" />;
   if (data?.postId) return <MessageSquare className="size-4 text-blue-500" />;
   if (data?.liveSessionId) return <Video className="size-4 text-rose-500" />;
-  if (data?.courseId) return <BookOpen className="size-4 text-[#8A93E5]" />;
+  if (data?.courseId) return <BookOpen className="size-4 text-primary" />;
   return <Bell className="size-4 text-slate-400" />;
 }
 
@@ -61,8 +61,8 @@ export function NotificationItem({
             ? 'hover:bg-slate-50'
             : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:shadow-sm'
           : isCompact
-            ? 'bg-[#8A93E5]/5'
-            : 'bg-[#8A93E5]/5 border-[#8A93E5]/20 border-l-2 border-l-[#8A93E5]',
+            ? 'bg-primary/5'
+            : 'bg-primary/5 border-primary/20 border-l-2 border-l-primary',
       )}
     >
       {/* Icon */}
@@ -97,7 +97,7 @@ export function NotificationItem({
 
       {/* Баруун хэсэг: unread dot + delete */}
       <div className="flex items-center gap-2 shrink-0 pt-1">
-        {!notification.read && <div className="w-2 h-2 bg-[#8A93E5] rounded-full" />}
+        {!notification.read && <div className="w-2 h-2 bg-primary rounded-full" />}
         {!isCompact && onDelete && (
           <button
             onClick={(e) => {

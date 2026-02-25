@@ -51,7 +51,7 @@ export function LessonCommentItem({ comment, lessonId, depth = 0 }: LessonCommen
     <div className={depth > 0 ? 'ml-10 mt-3' : ''}>
       <div className="flex gap-3">
         {/* Avatar */}
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#8A93E5] to-[#A78BFA] flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shrink-0">
           <span className="text-xs font-bold text-white">
             {comment.authorName?.charAt(0).toUpperCase() || '?'}
           </span>
@@ -76,7 +76,7 @@ export function LessonCommentItem({ comment, lessonId, depth = 0 }: LessonCommen
               disabled={!isAuthenticated}
               className={`flex items-center gap-1 text-xs transition-colors ${
                 comment.hasUpvoted
-                  ? 'text-[#8A93E5] font-medium'
+                  ? 'text-primary font-medium'
                   : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
               } disabled:opacity-50`}
             >
@@ -102,12 +102,12 @@ export function LessonCommentItem({ comment, lessonId, depth = 0 }: LessonCommen
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 placeholder={t('addComment')}
-                className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#8A93E5]/40"
+                className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
               <button
                 onClick={handleReply}
                 disabled={replyMutation.isPending || !replyText.trim()}
-                className="px-3 py-2 bg-[#8A93E5] text-white text-xs font-medium rounded-lg hover:bg-[#7B84D6] transition-colors disabled:opacity-50"
+                className="px-3 py-2 bg-primary text-white text-xs font-medium rounded-lg hover:bg-[#7B84D6] transition-colors disabled:opacity-50"
               >
                 {replyMutation.isPending ? (
                   <Loader2 className="size-3.5 animate-spin" />

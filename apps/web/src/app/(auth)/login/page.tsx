@@ -40,7 +40,7 @@ export default function LoginPage() {
       {/* Зүүн тал — Чимэглэлийн хэсэг */}
       <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-[#EDE7F9] via-[#E0D6F5] to-[#D5CCF0] relative overflow-hidden items-center justify-center p-12">
         {/* Чимэглэлийн blur тойргууд */}
-        <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-[#8A93E5]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#9575ED]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col items-center text-center max-w-md">
@@ -54,7 +54,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-[#8A93E5] mb-3">{t('decorativeHeading')}</h3>
+          <h3 className="text-2xl font-bold text-primary mb-3">{t('decorativeHeading')}</h3>
           <p className="text-gray-600 text-sm leading-relaxed">{t('decorativeText')}</p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function LoginPage() {
               labelRight={
                 <Link
                   href={ROUTES.FORGOT_PASSWORD}
-                  className="text-sm font-semibold text-[#8A93E5] hover:text-[#6c77d4] transition-colors"
+                  className="text-sm font-semibold text-primary hover:text-[#6c77d4] transition-colors"
                 >
                   {t('forgotPasswordQuestion')}
                 </Link>
@@ -125,7 +125,7 @@ export default function LoginPage() {
 
             {/* Намайг сана */}
             <div className="flex items-center gap-2.5">
-              <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer hover:border-[#8A93E5] transition-colors">
+              <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
                 <div className="w-2.5 h-2.5 rounded-full" />
               </div>
               <span className="text-sm text-gray-600">{t('rememberMe')}</span>
@@ -150,7 +150,7 @@ export default function LoginPage() {
               {t('noAccount')}{' '}
               <Link
                 href={ROUTES.REGISTER}
-                className="text-[#8A93E5] font-bold hover:text-[#6c77d4] transition-colors"
+                className="text-primary font-bold hover:text-[#6c77d4] transition-colors"
               >
                 {t('signUp')}
               </Link>

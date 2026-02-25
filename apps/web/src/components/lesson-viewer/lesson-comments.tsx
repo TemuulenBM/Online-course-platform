@@ -55,12 +55,12 @@ export function LessonComments({ lessonId }: LessonCommentsProps) {
             onChange={(e) => setCommentText(e.target.value)}
             placeholder={t('addComment')}
             rows={2}
-            className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#8A93E5]/40 resize-none"
+            className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
           />
           <button
             onClick={handleSubmit}
             disabled={createMutation.isPending || !commentText.trim()}
-            className="self-end px-4 py-2.5 bg-[#8A93E5] text-white text-sm font-medium rounded-xl hover:bg-[#7B84D6] transition-colors disabled:opacity-50 flex items-center gap-2"
+            className="self-end px-4 py-2.5 bg-primary text-white text-sm font-medium rounded-xl hover:bg-[#7B84D6] transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             {createMutation.isPending ? (
               <>

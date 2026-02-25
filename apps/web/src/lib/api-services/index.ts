@@ -37,3 +37,5 @@ export type {
   AdminUserListResponse,
   UpdateRoleResponse,
 } from './admin.service';
+export { categoriesAdminService } from './categories-admin.service';
+export type { CreateCategoryData, UpdateCategoryData } from './categories-admin.service';

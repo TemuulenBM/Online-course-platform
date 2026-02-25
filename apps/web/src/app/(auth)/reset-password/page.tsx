@@ -167,7 +167,7 @@ export default function ResetPasswordPage() {
             <div className="mt-6">
               <Link
                 href={ROUTES.LOGIN}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#8A93E5] hover:text-[#6c77d4] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-[#6c77d4] transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 {t('goBackToLogin')}

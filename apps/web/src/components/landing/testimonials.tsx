@@ -39,8 +39,8 @@ export function Testimonials() {
         >
           {/* Quote icon */}
           <div className="flex justify-center mb-8">
-            <div className="w-14 h-14 rounded-full bg-[#F4F2F9] dark:bg-slate-800 flex items-center justify-center">
-              <Quote className="size-6 text-[#8A93E5]" />
+            <div className="w-14 h-14 rounded-full bg-background dark:bg-slate-800 flex items-center justify-center">
+              <Quote className="size-6 text-primary" />
             </div>
           </div>
 
@@ -52,7 +52,7 @@ export function Testimonials() {
           {/* Зохиогч */}
           <div className="flex flex-col items-center mt-8">
             <Avatar className="w-14 h-14 mb-3">
-              <AvatarFallback className="bg-gradient-to-br from-[#8A93E5] to-[#A78BFA] text-white text-lg font-bold">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-white text-lg font-bold">
                 {t('testimonialName')
                   .split(' ')
                   .map((n) => n[0])

@@ -96,7 +96,7 @@ export default function NotificationsPage() {
             <button
               onClick={handleMarkAllRead}
               disabled={markAllRead.isPending}
-              className="text-sm text-[#8A93E5] hover:text-[#7B84D9] font-semibold transition-colors disabled:opacity-50"
+              className="text-sm text-primary hover:text-[#7B84D9] font-semibold transition-colors disabled:opacity-50"
             >
               {t('markAllRead')}
             </button>
@@ -129,7 +129,7 @@ export default function NotificationsPage() {
         {/* Pagination footer */}
         {!isLoading && totalCount > 0 && notifications.length > 0 && (
           <div className="flex items-center justify-between mt-2">
-            <p className="text-sm text-[#8A93E5] font-medium">
+            <p className="text-sm text-primary font-medium">
               {t('showingOf', {
                 shown: notifications.length,
                 total: totalCount,

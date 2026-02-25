@@ -65,7 +65,7 @@ export function ClassListTable() {
             <p className="text-sm font-semibold text-gray-500 mb-1">{tp('noEnrollments')}</p>
             <Link
               href={ROUTES.COURSES}
-              className="text-sm font-bold text-[#8A93E5] hover:text-[#7B8AD4] transition-colors"
+              className="text-sm font-bold text-primary hover:text-[#7B8AD4] transition-colors"
             >
               {tp('browseCourses')}
             </Link>
@@ -114,7 +114,7 @@ export function ClassListTable() {
                           )}
                         </div>
                         <div className="flex flex-col">
-                          <span className="font-bold text-gray-900 text-[15px] mb-0.5 group-hover:text-[#8A93E5] transition-colors">
+                          <span className="font-bold text-gray-900 text-[15px] mb-0.5 group-hover:text-primary transition-colors">
                             {enrollment.courseTitle ?? 'Untitled Course'}
                           </span>
                           {enrollment.courseInstructorName && (
@@ -132,7 +132,7 @@ export function ClassListTable() {
                         </span>
                         <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                           <div
-                            className="h-full bg-[#A78BFA] rounded-full transition-all"
+                            className="h-full bg-primary/70 rounded-full transition-all"
                             style={{ width: `${progressPercent}%` }}
                           />
                         </div>

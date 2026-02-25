@@ -29,7 +29,7 @@ export function AuthButton({
       className={cn(
         'w-full py-3.5 rounded-full font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-70',
         variant === 'primary' &&
-          'bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white shadow-lg shadow-[#8A93E5]/25 hover:shadow-[#8A93E5]/40',
+          'bg-gradient-to-r from-primary to-[#9575ED] text-white shadow-lg shadow-primary/25 hover:shadow-primary/40',
         variant === 'outline' &&
           'border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50',
         className,

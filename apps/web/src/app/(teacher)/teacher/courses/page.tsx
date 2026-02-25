@@ -1,27 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { BookOpen, Plus } from 'lucide-react';
+import { BookOpen, PlusCircle, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Course } from '@ocp/shared-types';
 
-import {
-  useMyCourses,
-  useCreateCourse,
-  useUpdateCourse,
-  useDeleteCourse,
-  usePublishCourse,
-  useArchiveCourse,
-} from '@/hooks/api';
-import { useAuthStore } from '@/stores/auth-store';
-import { TeacherCourseCard } from '@/components/teacher/teacher-course-card';
-import { CourseFormDialog } from '@/components/teacher/course-form-dialog';
-import { DeleteCourseDialog } from '@/components/teacher/delete-course-dialog';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useMyCourses, usePublishCourse, useArchiveCourse } from '@/hooks/api';
+import { TeacherCoursesTable } from '@/components/teacher/teacher-courses-table';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 
@@ -31,90 +19,37 @@ export default function TeacherCoursesPage() {
   const router = useRouter();
   const t = useTranslations('teacher');
   const tc = useTranslations('common');
-  const user = useAuthStore((s) => s.user);
-  const userRole = user?.role?.toLowerCase();
 
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
-  const [formOpen, setFormOpen] = useState(false);
-  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deletingCourse, setDeletingCourse] = useState<Course | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const { data: courses, isLoading } = useMyCourses();
-  const createMutation = useCreateCourse();
-  const updateMutation = useUpdateCourse();
-  const deleteMutation = useDeleteCourse();
   const publishMutation = usePublishCourse();
   const archiveMutation = useArchiveCourse();
 
-  const filteredCourses =
-    statusFilter === 'all' ? courses : courses?.filter((c: Course) => c.status === statusFilter);
+  /** Debounced search */
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setSearchQuery(e.target.value);
+    }, 300);
+  }, []);
 
-  /** Шинэ сургалт үүсгэх dialog нээх */
-  const handleCreate = () => {
-    setEditingCourse(null);
-    setFormOpen(true);
-  };
+  /** Шүүлтүүрлэх */
+  const filteredCourses = courses
+    ?.filter((c: Course) => statusFilter === 'all' || c.status === statusFilter)
+    ?.filter(
+      (c: Course) =>
+        !searchQuery || c.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
-  /** Сургалт засах dialog нээх */
-  const handleEdit = (course: Course) => {
-    setEditingCourse(course);
-    setFormOpen(true);
-  };
-
-  /** Form submit — create эсвэл update */
-  const handleFormSubmit = (data: {
-    title: string;
-    description: string;
-    categoryId: string;
-    difficulty: 'beginner' | 'intermediate' | 'advanced';
-    price?: number;
-    discountPrice?: number;
-    language?: string;
-    tags?: string[];
-  }) => {
-    if (editingCourse) {
-      updateMutation.mutate(
-        { id: editingCourse.id, data },
-        {
-          onSuccess: () => {
-            toast.success(t('courseUpdated'));
-            setFormOpen(false);
-            setEditingCourse(null);
-          },
-          onError: () => toast.error(tc('error')),
-        },
-      );
-    } else {
-      createMutation.mutate(data, {
-        onSuccess: (course) => {
-          toast.success(t('courseCreated'));
-          setFormOpen(false);
-          router.push(ROUTES.TEACHER_CURRICULUM(course.id));
-        },
-        onError: () => toast.error(tc('error')),
-      });
-    }
-  };
-
-  /** Устгах dialog нээх */
-  const handleDeleteClick = (course: Course) => {
-    setDeletingCourse(course);
-    setDeleteOpen(true);
-  };
-
-  /** Устгах баталгаажуулах */
-  const handleDeleteConfirm = () => {
-    if (!deletingCourse) return;
-    deleteMutation.mutate(deletingCourse.id, {
-      onSuccess: () => {
-        toast.success(t('courseDeleted'));
-        setDeleteOpen(false);
-        setDeletingCourse(null);
-      },
-      onError: () => toast.error(tc('error')),
-    });
-  };
+  const filters: { key: StatusFilter; label: string }[] = [
+    { key: 'all', label: tc('all') },
+    { key: 'published', label: t('published') },
+    { key: 'draft', label: t('draft') },
+    { key: 'archived', label: t('archived') },
+  ];
 
   /** Нийтлэх */
   const handlePublish = (courseId: string) => {
@@ -133,78 +68,87 @@ export default function TeacherCoursesPage() {
   };
 
   return (
-    <div className="p-6 lg:p-10 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <div className="flex-1 overflow-y-auto">
+      {/* Sticky header */}
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
+        <div className="flex items-center gap-4">
           <SidebarTrigger className="md:hidden" />
-          <h1 className="text-2xl font-bold">{t('myCourses')}</h1>
+          <h2 className="text-xl font-bold">{t('myCourses')}</h2>
         </div>
-        <Button onClick={handleCreate} className="gap-1.5">
-          <Plus className="size-4" />
-          {t('createCourse')}
-        </Button>
-      </div>
-
-      {/* Status filter tabs */}
-      <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
-        <TabsList>
-          <TabsTrigger value="all">{tc('all')}</TabsTrigger>
-          <TabsTrigger value="draft">{t('draft')}</TabsTrigger>
-          <TabsTrigger value="published">{t('published')}</TabsTrigger>
-          <TabsTrigger value="archived">{t('archived')}</TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      {/* Course grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="space-y-3">
-              <Skeleton className="aspect-video rounded-lg" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
-          ))}
-        </div>
-      ) : !filteredCourses?.length ? (
-        <div className="text-center py-20 space-y-3">
-          <BookOpen className="size-12 text-gray-300 mx-auto" />
-          <p className="text-gray-500 font-medium">{t('noCourses')}</p>
-          <p className="text-sm text-gray-400">{t('noCoursesDesc')}</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.map((course: Course) => (
-            <TeacherCourseCard
-              key={course.id}
-              course={course}
-              userRole={userRole}
-              onEdit={handleEdit}
-              onDelete={handleDeleteClick}
-              onPublish={handlePublish}
-              onArchive={handleArchive}
+        <div className="flex items-center gap-4">
+          <div className="relative w-64 hidden md:block">
+            <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              onChange={handleSearch}
+              placeholder={tc('search')}
+              className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 outline-none"
             />
-          ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push(ROUTES.TEACHER_COURSE_NEW)}
+            className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-sm"
+          >
+            <PlusCircle className="size-4" />
+            {t('createCourse')}
+          </button>
         </div>
-      )}
+      </header>
 
-      {/* Dialogs */}
-      <CourseFormDialog
-        open={formOpen}
-        onOpenChange={setFormOpen}
-        course={editingCourse}
-        onSubmit={handleFormSubmit}
-        isPending={createMutation.isPending || updateMutation.isPending}
-      />
+      {/* Content */}
+      <div className="p-8">
+        {/* Filter tabs + тоо */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex gap-2 p-1 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+            {filters.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setStatusFilter(f.key)}
+                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                  statusFilter === f.key
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div className="text-sm text-slate-500 dark:text-slate-400">
+            {t('totalCoursesCount', { count: filteredCourses?.length ?? 0 })}
+          </div>
+        </div>
 
-      <DeleteCourseDialog
-        open={deleteOpen}
-        onOpenChange={setDeleteOpen}
-        onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
-        courseTitle={deletingCourse?.title || ''}
-      />
+        {/* Хүснэгт */}
+        {isLoading ? (
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-lg" />
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-5 w-20 rounded-full" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            ))}
+          </div>
+        ) : !filteredCourses?.length ? (
+          <div className="text-center py-20 space-y-3">
+            <BookOpen className="size-12 text-slate-300 mx-auto" />
+            <p className="text-slate-500 font-medium">{t('noCourses')}</p>
+            <p className="text-sm text-slate-400">{t('noCoursesDesc')}</p>
+          </div>
+        ) : (
+          <TeacherCoursesTable
+            courses={filteredCourses}
+            onPublish={handlePublish}
+            onArchive={handleArchive}
+          />
+        )}
+      </div>
     </div>
   );
 }

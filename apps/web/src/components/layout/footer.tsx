@@ -48,7 +48,7 @@ export function Footer() {
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 hover:bg-[#8A93E5] hover:text-white dark:hover:bg-[#8A93E5] transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors"
                 >
                   <social.icon className="size-4" />
                 </a>
@@ -67,7 +67,7 @@ export function Footer() {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#8A93E5] dark:hover:text-[#A78BFA] transition-colors"
+                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary/70 transition-colors"
                     >
                       {link}
                     </a>

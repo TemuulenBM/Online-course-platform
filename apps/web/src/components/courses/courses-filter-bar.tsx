@@ -1,110 +1,44 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import type { Category } from '@ocp/shared-types';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 
 interface CoursesFilterBarProps {
-  categoryId?: string;
   difficulty?: string;
-  sortBy?: string;
-  sortOrder?: string;
-  categories?: Category[];
   onFilterChange: (key: string, value: string | undefined) => void;
 }
 
-/** Ангилал, түвшин, эрэмбэ шүүлтүүр — Sort баруун талд */
-export function CoursesFilterBar({
-  categoryId,
-  difficulty,
-  sortBy,
-  sortOrder,
-  categories,
-  onFilterChange,
-}: CoursesFilterBarProps) {
+/** Түвшин шүүлтүүр — pill buttons */
+export function CoursesFilterBar({ difficulty, onFilterChange }: CoursesFilterBarProps) {
   const t = useTranslations('courses');
 
-  /** Sort утга нэгтгэх */
-  const sortValue = sortBy && sortOrder ? `${sortBy}:${sortOrder}` : 'publishedAt:desc';
-
-  const handleSortChange = (value: string) => {
-    if (value === 'all') {
-      onFilterChange('sortBy', undefined);
-      onFilterChange('sortOrder', undefined);
-      return;
-    }
-    const [newSortBy, newSortOrder] = value.split(':');
-    onFilterChange('sortBy', newSortBy);
-    onFilterChange('sortOrder', newSortOrder);
-  };
+  const levels = [
+    { value: undefined, label: t('allLevels') },
+    { value: 'beginner', label: t('beginner') },
+    { value: 'intermediate', label: t('intermediate') },
+    { value: 'advanced', label: t('advanced') },
+  ];
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      {/* Зүүн тал — Ангилал + Түвшин */}
-      <Select
-        value={categoryId || 'all'}
-        onValueChange={(v) => onFilterChange('categoryId', v === 'all' ? undefined : v)}
-      >
-        <SelectTrigger className="rounded-full px-4 h-10 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium min-w-[150px]">
-          <SelectValue placeholder={t('allCategories')} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">{t('allCategories')}</SelectItem>
-          {categories?.map((cat) => (
-            <SelectItem key={cat.id} value={cat.id}>
-              {cat.name}
-              {cat.children && cat.children.length > 0 ? ` (${cat.coursesCount ?? 0})` : ''}
-            </SelectItem>
-          ))}
-          {/* Дэд ангиллууд */}
-          {categories?.flatMap((cat) =>
-            (cat.children ?? []).map((child) => (
-              <SelectItem key={child.id} value={child.id} className="pl-6">
-                {child.name}
-              </SelectItem>
-            )),
-          )}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={difficulty || 'all'}
-        onValueChange={(v) => onFilterChange('difficulty', v === 'all' ? undefined : v)}
-      >
-        <SelectTrigger className="rounded-full px-4 h-10 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium min-w-[140px]">
-          <SelectValue placeholder={t('allDifficulty')} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">{t('allDifficulty')}</SelectItem>
-          <SelectItem value="beginner">{t('beginner')}</SelectItem>
-          <SelectItem value="intermediate">{t('intermediate')}</SelectItem>
-          <SelectItem value="advanced">{t('advanced')}</SelectItem>
-        </SelectContent>
-      </Select>
-
-      {/* Баруун тал — Sort by */}
-      <div className="flex items-center gap-2 ml-auto">
-        <span className="text-sm text-slate-500 dark:text-slate-400 hidden sm:inline">
-          {t('sortBy')}:
-        </span>
-        <Select value={sortValue} onValueChange={handleSortChange}>
-          <SelectTrigger className="rounded-full px-4 h-10 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium min-w-[130px]">
-            <SelectValue placeholder={t('sortBy')} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="publishedAt:desc">{t('newest')}</SelectItem>
-            <SelectItem value="publishedAt:asc">{t('popularity')}</SelectItem>
-            <SelectItem value="price:asc">{t('priceAsc')}</SelectItem>
-            <SelectItem value="price:desc">{t('priceDesc')}</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-10">
+      {levels.map((level) => {
+        const isActive = difficulty === level.value || (!difficulty && !level.value);
+        return (
+          <button
+            key={level.value ?? 'all'}
+            type="button"
+            onClick={() => onFilterChange('difficulty', level.value)}
+            className={cn(
+              'px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
+              isActive
+                ? 'bg-primary text-white'
+                : 'bg-white dark:bg-slate-800 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400',
+            )}
+          >
+            {level.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

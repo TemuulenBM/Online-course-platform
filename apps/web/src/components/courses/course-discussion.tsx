@@ -86,7 +86,7 @@ export function CourseDiscussion({ courseId }: CourseDiscussionProps) {
             <button
               type="button"
               onClick={() => setParams((p) => ({ ...p, page: (p.page ?? 1) + 1, limit: total }))}
-              className="self-center text-sm font-medium text-[#8A93E5] hover:text-[#7B84D8] transition-colors"
+              className="self-center text-sm font-medium text-primary hover:text-[#7B84D8] transition-colors"
             >
               {t('loadMore')}
             </button>
@@ -101,8 +101,8 @@ export function CourseDiscussion({ courseId }: CourseDiscussionProps) {
 function EmptyState({ t }: { t: ReturnType<typeof useTranslations<'courses'>> }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-14 h-14 rounded-full bg-[#8A93E5]/10 flex items-center justify-center mb-4">
-        <MessageCircle className="size-7 text-[#8A93E5]" />
+      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+        <MessageCircle className="size-7 text-primary" />
       </div>
       <p className="text-slate-500 dark:text-slate-400 font-medium">{t('noDiscussions')}</p>
     </div>
@@ -131,7 +131,7 @@ function PostActionArea({
         <p className="text-sm text-slate-500">{t('loginToDiscuss')}</p>
         <Link
           href={ROUTES.LOGIN}
-          className="mt-2 inline-block text-sm font-medium text-[#8A93E5] hover:underline"
+          className="mt-2 inline-block text-sm font-medium text-primary hover:underline"
         >
           {t('loginToDiscuss')}
         </Link>
@@ -152,7 +152,7 @@ function PostActionArea({
       <button
         type="button"
         onClick={() => setShowForm(true)}
-        className="w-full rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 py-4 text-sm font-medium text-slate-500 hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors"
+        className="w-full rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 py-4 text-sm font-medium text-slate-500 hover:border-primary hover:text-primary transition-colors"
       >
         + {t('writePost')}
       </button>
@@ -209,7 +209,7 @@ function CreatePostForm({
             onClick={() => setPostType(type)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
               postType === type
-                ? 'bg-[#8A93E5] text-white'
+                ? 'bg-primary text-white'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
@@ -224,7 +224,7 @@ function CreatePostForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder={t('postTitle')}
-        className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:border-[#8A93E5] focus:outline-none"
+        className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:border-primary focus:outline-none"
       />
 
       {/* Агуулга */}
@@ -233,7 +233,7 @@ function CreatePostForm({
         onChange={(e) => setContent(e.target.value)}
         placeholder={t('postContent')}
         rows={3}
-        className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:border-[#8A93E5] focus:outline-none resize-none"
+        className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:border-primary focus:outline-none resize-none"
       />
 
       {/* Товчнууд */}
@@ -249,7 +249,7 @@ function CreatePostForm({
           type="button"
           onClick={handleSubmit}
           disabled={createMutation.isPending || !content.trim()}
-          className="flex items-center gap-1.5 bg-[#8A93E5] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#7B84D8] disabled:opacity-50 transition-colors"
+          className="flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#7B84D8] disabled:opacity-50 transition-colors"
         >
           <Send className="size-3.5" />
           {t('submitPost')}
@@ -301,7 +301,7 @@ function PostCard({
             onClick={() => handleVote('up')}
             disabled={voteMutation.isPending}
             className={`p-1 rounded transition-colors ${
-              post.userVote === 'up' ? 'text-[#8A93E5]' : 'text-slate-400 hover:text-[#8A93E5]'
+              post.userVote === 'up' ? 'text-primary' : 'text-slate-400 hover:text-primary'
             }`}
           >
             <ChevronUp className="size-4" />

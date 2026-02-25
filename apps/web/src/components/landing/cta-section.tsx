@@ -15,9 +15,9 @@ export function CtaSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-[#2E3035] dark:bg-slate-800 px-8 py-16 lg:px-16 lg:py-20 text-center">
           {/* Чимэглэлийн blob-ууд */}
-          <div className="absolute top-[-20%] left-[-10%] w-[400px] h-[400px] bg-[#8A93E5]/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-[-20%] left-[-10%] w-[400px] h-[400px] bg-primary/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-[-20%] right-[-10%] w-[350px] h-[350px] bg-[#FF6B6B]/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-[30%] right-[15%] w-[200px] h-[200px] bg-[#A78BFA]/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute top-[30%] right-[15%] w-[200px] h-[200px] bg-primary/70/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="relative z-10">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">

@@ -41,7 +41,7 @@ export function HowItWorks() {
   }, []);
 
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-[#F4F2F9] dark:bg-slate-900/50">
+    <section ref={ref} className="py-16 lg:py-20 bg-background dark:bg-slate-900/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Гарчиг */}
         <div className="text-center mb-14">
@@ -54,7 +54,7 @@ export function HowItWorks() {
         {/* 3 алхам */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
           {/* Холбох шугам — зөвхөн desktop */}
-          <div className="hidden md:block absolute top-16 left-[25%] right-[25%] h-[2px] border-t-2 border-dashed border-[#8A93E5]/30" />
+          <div className="hidden md:block absolute top-16 left-[25%] right-[25%] h-[2px] border-t-2 border-dashed border-primary/30" />
 
           {steps.map((step, index) => (
             <div
@@ -68,12 +68,12 @@ export function HowItWorks() {
             >
               {/* Дугаартай тойрог */}
               <div className="relative mb-6">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8A93E5] to-[#A78BFA] flex items-center justify-center shadow-lg shadow-[#8A93E5]/25">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg shadow-primary/25">
                   <step.icon className="size-8 text-white" strokeWidth={2} />
                 </div>
                 {/* Дугаарын badge */}
                 <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white dark:bg-slate-800 shadow-md flex items-center justify-center">
-                  <span className="text-sm font-black text-[#8A93E5]">{step.number}</span>
+                  <span className="text-sm font-black text-primary">{step.number}</span>
                 </div>
               </div>
 

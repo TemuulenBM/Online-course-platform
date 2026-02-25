@@ -52,7 +52,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#8A93E5] dark:hover:text-[#A78BFA] transition-colors rounded-lg"
+                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary/70 transition-colors rounded-lg"
               >
                 {link.label}
               </Link>
@@ -71,7 +71,7 @@ export function Navbar() {
               {isAuthenticated ? (
                 <Button
                   asChild
-                  className="bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white hover:opacity-90 rounded-full px-6"
+                  className="bg-gradient-to-r from-primary to-[#9575ED] text-white hover:opacity-90 rounded-full px-6"
                 >
                   <Link href={ROUTES.DASHBOARD}>{t('goToDashboard')}</Link>
                 </Button>
@@ -86,7 +86,7 @@ export function Navbar() {
                   </Button>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-[#8A93E5] to-[#9575ED] text-white hover:opacity-90 rounded-full px-6"
+                    className="bg-gradient-to-r from-primary to-[#9575ED] text-white hover:opacity-90 rounded-full px-6"
                   >
                     <Link href={ROUTES.REGISTER}>{t('getStarted')}</Link>
                   </Button>

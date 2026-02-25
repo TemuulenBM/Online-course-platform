@@ -2,40 +2,40 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-/** Нэг course card-ийн loading skeleton — шинэ Stitch layout-д тааруулсан */
+/** Нэг course card-ийн loading skeleton — шинэ дизайнд тааруулсан */
 export function CourseCardSkeleton() {
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-primary/5">
       {/* Thumbnail */}
-      <div className="relative aspect-[4/3]">
-        <Skeleton className="w-full h-full rounded-none" />
-        {/* Badge skeleton-ууд */}
-        <div className="absolute top-3 left-3 flex items-center gap-1.5">
-          <Skeleton className="h-5 w-14 rounded-md" />
-          <Skeleton className="h-5 w-16 rounded-md" />
-        </div>
-        <Skeleton className="absolute top-3 right-3 w-8 h-8 rounded-full" />
-      </div>
+      <Skeleton className="h-48 w-full rounded-none" />
 
       {/* Content */}
       <div className="p-5 flex flex-col gap-3">
-        {/* Title */}
-        <Skeleton className="h-5 w-4/5" />
-
-        {/* Meta — avatar + нэр + duration */}
-        <div className="flex items-center gap-2">
-          <Skeleton className="w-6 h-6 rounded-full" />
-          <Skeleton className="h-3.5 w-24" />
-          <Skeleton className="h-3.5 w-16" />
+        {/* Түвшин + rating */}
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-5 w-16 rounded" />
+          <Skeleton className="h-4 w-10" />
         </div>
 
-        {/* Price + Arrow */}
-        <div className="flex items-center justify-between mt-2">
-          <div className="flex items-baseline gap-2">
-            <Skeleton className="h-6 w-20" />
-            <Skeleton className="h-3.5 w-16" />
-          </div>
-          <Skeleton className="w-10 h-10 rounded-full" />
+        {/* Title */}
+        <Skeleton className="h-6 w-4/5" />
+
+        {/* Instructor */}
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-6 rounded-full" />
+          <Skeleton className="h-3.5 w-24" />
+        </div>
+
+        {/* Tags */}
+        <div className="flex gap-1.5 mt-1">
+          <Skeleton className="h-4 w-12 rounded-md" />
+          <Skeleton className="h-4 w-10 rounded-md" />
+        </div>
+
+        {/* Price */}
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-primary/5">
+          <Skeleton className="h-6 w-20" />
+          <Skeleton className="size-9 rounded-lg" />
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ export function CourseCardSkeleton() {
 /** Grid-д зориулсан олон skeleton */
 export function CourseGridSkeleton({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
       {Array.from({ length: count }).map((_, i) => (
         <CourseCardSkeleton key={i} />
       ))}

@@ -27,7 +27,7 @@ export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavig
       <button
         onClick={() => prev && router.push(ROUTES.LESSON_VIEWER(slug, prev.id))}
         disabled={!prev}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium hover:border-[#8A93E5] hover:text-[#8A93E5] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium hover:border-primary hover:text-primary transition-colors disabled:opacity-40 disabled:pointer-events-none"
       >
         <ChevronLeft className="size-4" />
         {t('previousLesson')}
@@ -36,7 +36,7 @@ export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavig
       <button
         onClick={() => next && router.push(ROUTES.LESSON_VIEWER(slug, next.id))}
         disabled={!next}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#8A93E5] text-white text-sm font-medium hover:bg-[#7B84D6] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-[#7B84D6] transition-colors disabled:opacity-40 disabled:pointer-events-none"
       >
         {t('nextLesson')}
         <ChevronRight className="size-4" />

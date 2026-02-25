@@ -18,7 +18,7 @@ export function LearnifyLogo({ href = '/', className, variant = 'default' }: Lea
       <div
         className={cn(
           'w-9 h-9 rounded-xl flex items-center justify-center',
-          variant === 'light' ? 'bg-white/20' : 'bg-[#8A93E5]',
+          variant === 'light' ? 'bg-white/20' : 'bg-primary',
         )}
       >
         <GraduationCap

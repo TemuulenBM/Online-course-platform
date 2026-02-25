@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutGrid, Users, Shield } from 'lucide-react';
+import { LayoutGrid, Users, Shield, Layers } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
@@ -25,6 +25,7 @@ import {
 /** Admin sidebar навигацийн зүйлс */
 const navItems = [
   { href: '/admin/users', icon: Users, labelKey: 'users' },
+  { href: '/admin/categories', icon: Layers, labelKey: 'categories' },
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
 ] as const;
 
@@ -51,7 +52,7 @@ export function AdminSidebar() {
     : (user?.email?.[0] || 'U').toUpperCase();
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
+    <Sidebar collapsible="offcanvas" className="border-none bg-background">
       <SidebarHeader className="px-6 pt-8 pb-6">
         <div className="flex items-center gap-2 pl-2">
           <Shield className="size-5 text-purple-600" />

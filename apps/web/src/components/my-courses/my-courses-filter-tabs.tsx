@@ -37,7 +37,7 @@ export function MyCoursesFilterTabs({ activeTab, onTabChange }: MyCoursesFilterT
           >
             {t(tab.labelKey)}
             {activeTab === tab.value && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#8A93E5] rounded-full" />
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
             )}
           </button>
         ))}

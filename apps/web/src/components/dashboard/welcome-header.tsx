@@ -33,7 +33,7 @@ export function WelcomeHeader() {
           <input
             type="text"
             placeholder={t('searchPlaceholder')}
-            className="pl-11 pr-4 py-2.5 rounded-full border border-gray-200 bg-white text-sm w-full sm:w-[260px] focus:outline-none focus:ring-2 focus:ring-[#8A93E5]/20 focus:border-[#8A93E5] transition-all"
+            className="pl-11 pr-4 py-2.5 rounded-full border border-gray-200 bg-white text-sm w-full sm:w-[260px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
           />
         </div>
 

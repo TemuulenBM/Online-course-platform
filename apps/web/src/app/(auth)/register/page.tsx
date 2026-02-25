@@ -69,7 +69,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#EDE7F9] via-[#E0D6F5] to-[#D5CCF0] flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Чимэглэлийн blur тойргууд */}
-      <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-[#8A93E5]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#9575ED]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center w-full max-w-[480px]">
@@ -180,7 +180,7 @@ export default function RegisterPage() {
             {t('hasAccount')}{' '}
             <Link
               href={ROUTES.LOGIN}
-              className="text-[#8A93E5] font-bold hover:text-[#6c77d4] transition-colors"
+              className="text-primary font-bold hover:text-[#6c77d4] transition-colors"
             >
               {t('signIn')}
             </Link>

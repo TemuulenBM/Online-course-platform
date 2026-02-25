@@ -45,8 +45,8 @@ export default function ForgotPasswordPage() {
           {isSubmitted ? (
             /* Амжилттай илгээгдсэн төлөв */
             <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 bg-[#8A93E5]/10 rounded-full flex items-center justify-center mb-6">
-                <MailCheck className="w-9 h-9 text-[#8A93E5]" />
+              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                <MailCheck className="w-9 h-9 text-primary" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">{t('checkEmail')}</h2>
               <p className="text-gray-500 text-sm max-w-[300px] mb-8 leading-relaxed">
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
               <div className="text-center mt-6">
                 <Link
                   href={ROUTES.LOGIN}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#8A93E5] hover:text-[#6c77d4] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-[#6c77d4] transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   {t('goBack')}
