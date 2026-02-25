@@ -25,8 +25,8 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Breadcrumb */}
         <CourseDetailHeader courseTitle={course.title} categoryName={course.categoryName} />
 

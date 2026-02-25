@@ -13,7 +13,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
   /** Алдааны төлөв */
   if (error && !isLoading) {
     return (
-      <div className="p-10 max-w-4xl mx-auto w-full">
+      <div className="p-6 lg:p-8 max-w-5xl mx-auto w-full">
         <div className="bg-white rounded-xl border border-red-200 p-16 text-center">
           <p className="text-slate-500 text-lg font-medium">Хэрэглэгч олдсонгүй</p>
           <p className="text-slate-400 text-sm mt-2">
@@ -25,7 +25,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
   }
 
   return (
-    <div className="p-10 max-w-4xl mx-auto w-full">
+    <div className="p-6 lg:p-8 max-w-5xl mx-auto w-full">
       <PublicProfileCard profile={profile} userId={userId} isLoading={isLoading} />
       <PublicProfileTabs userId={userId} />
 

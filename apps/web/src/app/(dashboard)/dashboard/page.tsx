@@ -11,7 +11,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col xl:flex-row min-h-full">
       {/* Үндсэн контент */}
-      <div className="flex-1 flex flex-col gap-8 p-6 lg:p-10 max-w-[900px]">
+      <div className="flex-1 flex flex-col gap-8 p-6 lg:p-10">
         <WelcomeHeader />
         <HeroBanner />
         <StatsCards />
