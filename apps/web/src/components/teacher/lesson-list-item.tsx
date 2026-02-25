@@ -5,45 +5,71 @@ import {
   GripVertical,
   Pencil,
   Trash2,
-  Video,
+  PlayCircle,
   FileText,
   HelpCircle,
   ClipboardList,
   Radio,
-  Eye,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
 import type { Lesson, LessonType } from '@ocp/shared-types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
+/** Хичээлийн төрлийн icon-ууд */
 const typeIcons: Record<LessonType, React.ElementType> = {
-  video: Video,
+  video: PlayCircle,
   text: FileText,
   quiz: HelpCircle,
   assignment: ClipboardList,
   live: Radio,
 };
 
+/** Төрлийн badge стилүүд */
+const typeBadgeStyles: Record<LessonType, string> = {
+  video:
+    'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+  text: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
+  quiz: 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
+  assignment:
+    'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
+  live: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
+};
+
+/** Төрлийн label */
+const typeLabels: Record<LessonType, string> = {
+  video: 'Video',
+  text: 'Doc',
+  quiz: 'Quiz',
+  assignment: 'Task',
+  live: 'Live',
+};
+
+/** Duration-г MM:SS формат руу хөрвүүлэх */
+function formatDuration(minutes: number): string {
+  const mins = Math.floor(minutes);
+  const secs = Math.round((minutes - mins) * 60);
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
 interface LessonListItemProps {
   lesson: Lesson;
   onEdit: (lesson: Lesson) => void;
   onDelete: (lesson: Lesson) => void;
-  onTogglePublish: (lesson: Lesson) => void;
+  onTogglePreview: (lesson: Lesson) => void;
   onSelectContent: (lesson: Lesson) => void;
-  isPublishPending: boolean;
 }
 
+/** Багшийн хичээлийн жагсаалтын нэг мөр — table row */
 export function LessonListItem({
   lesson,
   onEdit,
   onDelete,
-  onTogglePublish,
+  onTogglePreview,
   onSelectContent,
-  isPublishPending,
 }: LessonListItemProps) {
   const t = useTranslations('teacher');
   const Icon = typeIcons[lesson.lessonType] || FileText;
@@ -59,71 +85,92 @@ export function LessonListItem({
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="flex items-center gap-3 bg-white border rounded-xl p-3 hover:shadow-sm transition-shadow group"
-    >
+    <tr ref={setNodeRef} style={style} className="group hover:bg-primary/5 transition-colors">
+      {/* # */}
+      <td className="py-5 px-6 font-medium text-slate-400">
+        {String(lesson.orderIndex + 1).padStart(2, '0')}
+      </td>
+
       {/* Drag handle */}
-      <button
-        {...attributes}
-        {...listeners}
-        className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500 touch-none"
-      >
-        <GripVertical className="size-4" />
-      </button>
+      <td className="py-5 px-2">
+        <button
+          {...attributes}
+          {...listeners}
+          className="text-slate-300 group-hover:text-primary cursor-grab active:cursor-grabbing touch-none"
+        >
+          <GripVertical className="size-5" />
+        </button>
+      </td>
 
-      {/* Type icon */}
-      <div className="size-9 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
-        <Icon className="size-4 text-gray-500" />
-      </div>
+      {/* Гарчиг + icon */}
+      <td className="py-5 px-6">
+        <button
+          className="flex items-center gap-3 text-left"
+          onClick={() => onSelectContent(lesson)}
+        >
+          <div className="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all flex-shrink-0">
+            <Icon className="size-5" />
+          </div>
+          <div className="min-w-0">
+            <p className="font-bold text-sm text-slate-900 dark:text-slate-100 truncate">
+              {lesson.title}
+            </p>
+            <p className="text-xs text-slate-500 truncate">{t(lesson.lessonType)}</p>
+          </div>
+        </button>
+      </td>
 
-      {/* Title + meta — content засах */}
-      <button className="flex-1 min-w-0 text-left" onClick={() => onSelectContent(lesson)}>
-        <p className="text-sm font-medium truncate">{lesson.title}</p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-xs text-gray-400 capitalize">{t(lesson.lessonType)}</span>
-          {lesson.durationMinutes > 0 && (
-            <span className="text-xs text-gray-400">{lesson.durationMinutes} мин</span>
+      {/* Төрөл badge */}
+      <td className="py-5 px-6">
+        <span
+          className={`px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-wide border ${typeBadgeStyles[lesson.lessonType]}`}
+        >
+          {typeLabels[lesson.lessonType]}
+        </span>
+      </td>
+
+      {/* Хугацаа */}
+      <td className="py-5 px-6 text-sm text-center text-slate-500 font-medium">
+        {lesson.durationMinutes > 0 ? formatDuration(lesson.durationMinutes) : '—'}
+      </td>
+
+      {/* Preview toggle */}
+      <td className="py-5 px-6 text-center">
+        <div className="flex justify-center">
+          <Switch checked={lesson.isPreview} onCheckedChange={() => onTogglePreview(lesson)} />
+        </div>
+      </td>
+
+      {/* Нийтэлсэн */}
+      <td className="py-5 px-6 text-center">
+        <div className="flex items-center justify-center">
+          {lesson.isPublished ? (
+            <CheckCircle2 className="size-5 text-green-500" />
+          ) : (
+            <XCircle className="size-5 text-slate-300" />
           )}
         </div>
-      </button>
+      </td>
 
-      {/* Preview badge */}
-      {lesson.isPreview && (
-        <Badge variant="outline" className="gap-1 text-xs">
-          <Eye className="size-3" />
-          Preview
-        </Badge>
-      )}
-
-      {/* Publish toggle */}
-      <Switch
-        checked={lesson.isPublished}
-        onCheckedChange={() => onTogglePublish(lesson)}
-        disabled={isPublishPending}
-        aria-label={lesson.isPublished ? t('unpublish') : t('publish')}
-      />
-
-      {/* Edit */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="size-8 opacity-0 group-hover:opacity-100 transition-opacity"
-        onClick={() => onEdit(lesson)}
-      >
-        <Pencil className="size-3.5" />
-      </Button>
-
-      {/* Delete */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="size-8 opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-600"
-        onClick={() => onDelete(lesson)}
-      >
-        <Trash2 className="size-3.5" />
-      </Button>
-    </div>
+      {/* Үйлдэл */}
+      <td className="py-5 px-6 text-right">
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => onEdit(lesson)}
+            className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+            title={t('editLesson')}
+          >
+            <Pencil className="size-5" />
+          </button>
+          <button
+            onClick={() => onDelete(lesson)}
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+            title={t('deleteLesson')}
+          >
+            <Trash2 className="size-5" />
+          </button>
+        </div>
+      </td>
+    </tr>
   );
 }

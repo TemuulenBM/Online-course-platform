@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { Lesson } from '@ocp/shared-types';
@@ -12,7 +12,7 @@ interface LessonNavigationProps {
   slug: string;
 }
 
-/** Previous / Next хичээл товчнууд */
+/** Previous / Next хичээл товчнууд — дизайнд тааруулсан */
 export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavigationProps) {
   const t = useTranslations('lessonViewer');
   const router = useRouter();
@@ -23,23 +23,23 @@ export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavig
   const next = currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
 
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center gap-3">
       <button
         onClick={() => prev && router.push(ROUTES.LESSON_VIEWER(slug, prev.id))}
         disabled={!prev}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium hover:border-primary hover:text-primary transition-colors disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all disabled:opacity-40 disabled:pointer-events-none"
       >
-        <ChevronLeft className="size-4" />
+        <ArrowLeft className="size-4" />
         {t('previousLesson')}
       </button>
 
       <button
         onClick={() => next && router.push(ROUTES.LESSON_VIEWER(slug, next.id))}
         disabled={!next}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-[#7B84D6] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-primary text-white font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:pointer-events-none"
       >
         {t('nextLesson')}
-        <ChevronRight className="size-4" />
+        <ArrowRight className="size-4" />
       </button>
     </div>
   );
