@@ -1,40 +1,42 @@
 'use client';
 
 import Link from 'next/link';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { ROUTES } from '@/lib/constants';
 
+type StatusFilter = 'all' | 'active' | 'completed' | 'cancelled' | 'expired';
+
 interface MyCoursesEmptyProps {
-  statusFilter: 'all' | 'active' | 'completed';
+  statusFilter: StatusFilter;
 }
 
 /** Хоосон төлөв — элсэлт байхгүй үед харуулна */
 export function MyCoursesEmpty({ statusFilter }: MyCoursesEmptyProps) {
   const t = useTranslations('myCourses');
 
-  const message =
-    statusFilter === 'active'
-      ? t('noActiveCourses')
-      : statusFilter === 'completed'
-        ? t('noCompletedCourses')
-        : t('empty');
+  const messageMap: Record<StatusFilter, string> = {
+    all: t('empty'),
+    active: t('noActiveCourses'),
+    completed: t('noCompletedCourses'),
+    cancelled: t('noCancelledCourses'),
+    expired: t('noExpiredCourses'),
+  };
 
   return (
-    <div className="text-center py-20 flex flex-col items-center gap-6">
-      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/70/10 flex items-center justify-center">
-        <BookOpen className="size-10 text-slate-300" />
+    <div className="flex flex-col items-center justify-center py-24 text-center">
+      <div className="size-24 rounded-full bg-primary/5 flex items-center justify-center mb-6">
+        <BookOpen className="size-12 text-primary/30" />
       </div>
-      <div>
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{message}</h3>
-        <p className="text-sm text-slate-500">{t('emptySubtitle')}</p>
-      </div>
+      <h3 className="text-xl font-bold mb-2">{messageMap[statusFilter]}</h3>
+      <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-sm">{t('emptySubtitle')}</p>
       {statusFilter === 'all' && (
         <Link
           href={ROUTES.COURSES}
-          className="px-8 py-3 rounded-2xl bg-gradient-to-r from-primary to-primary/70 text-white font-semibold shadow-lg shadow-primary/25 hover:scale-105 transition-transform"
+          className="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-3 rounded-xl hover:bg-primary/90 transition-all"
         >
-          {t('browseCourses')}
+          <span>{t('browseCourses')}</span>
+          <ArrowRight className="size-4" />
         </Link>
       )}
     </div>

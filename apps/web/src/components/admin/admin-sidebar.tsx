@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutGrid, Users, Shield, Layers } from 'lucide-react';
+import { LayoutGrid, Users, Shield, Layers, GraduationCap } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
@@ -26,6 +26,7 @@ import {
 const navItems = [
   { href: '/admin/users', icon: Users, labelKey: 'users' },
   { href: '/admin/categories', icon: Layers, labelKey: 'categories' },
+  { href: '/admin/enrollments', icon: GraduationCap, labelKey: 'enrollments' },
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
 ] as const;
 

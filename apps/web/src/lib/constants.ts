@@ -23,6 +23,9 @@ export const QUERY_KEYS = {
   enrollments: {
     my: (params?: object) => ['enrollments', 'my', params] as const,
     check: (courseId: string) => ['enrollments', 'check', courseId] as const,
+    detail: (id: string) => ['enrollments', 'detail', id] as const,
+    byCourse: (courseId: string, params?: object) =>
+      ['enrollments', 'course', courseId, params] as const,
   },
   progress: {
     my: (params?: object) => ['progress', 'my', params] as const,
@@ -78,6 +81,9 @@ export const ROUTES = {
   TEACHER_CURRICULUM: (courseId: string) => `/teacher/courses/${courseId}/curriculum` as const,
   ADMIN_USERS: '/admin/users',
   ADMIN_CATEGORIES: '/admin/categories',
+  ADMIN_ENROLLMENTS: '/admin/enrollments',
+  ADMIN_ENROLLMENT_DETAIL: (id: string) => `/admin/enrollments/${id}` as const,
+  TEACHER_STUDENTS: (courseId: string) => `/teacher/courses/${courseId}/students` as const,
   PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
   TEACHER_LESSON_CONTENT: (courseId: string, lessonId: string) =>
     `/teacher/courses/${courseId}/lessons/${lessonId}/content` as const,

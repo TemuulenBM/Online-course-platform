@@ -44,6 +44,24 @@ export interface AdminUserListResponse {
   meta: AdminUserListMeta;
 }
 
+/** Audit log entry */
+export interface AuditLogEntry {
+  id: string;
+  userId: string;
+  action: string;
+  entityType: string;
+  entityId: string;
+  changes: Record<string, unknown> | null;
+  createdAt: string;
+  user?: { email: string };
+}
+
+/** Audit log жагсаалтын хариулт */
+export interface AuditLogListResponse {
+  data: AuditLogEntry[];
+  meta?: { total: number; page: number; limit: number; totalPages: number };
+}
+
 /** Эрх солих хариулт */
 export interface UpdateRoleResponse {
   id: string;
@@ -69,5 +87,16 @@ export const adminService = {
   /** Хэрэглэгч устгах (ADMIN only) */
   deleteUser: async (userId: string): Promise<void> => {
     await client.delete(`/users/${userId}`);
+  },
+
+  /** Entity-ийн audit log жагсаалт (ADMIN only) */
+  getEntityAuditLogs: async (
+    entityType: string,
+    entityId: string,
+  ): Promise<AuditLogListResponse> => {
+    const res = await client.get<ApiResponse<AuditLogListResponse>>(
+      `/admin/audit-logs/entity/${entityType}/${entityId}`,
+    );
+    return res.data.data!;
   },
 };

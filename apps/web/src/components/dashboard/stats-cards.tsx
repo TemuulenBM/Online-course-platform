@@ -21,7 +21,7 @@ export function StatsCards() {
   const statsConfig = [
     {
       labelKey: 'enrolledCourse' as const,
-      value: enrollments?.total ?? 0,
+      value: enrollments?.meta?.total ?? 0,
       loading: loadingEnrollments,
       bg: 'bg-[#E8F5E9]',
       border: 'border-[#C8E6C9]/50',

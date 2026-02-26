@@ -28,6 +28,15 @@ export function useUpdateUserRole() {
   });
 }
 
+/** Entity-ийн audit log жагсаалт (ADMIN only) */
+export function useEntityAuditLogs(entityType: string, entityId: string) {
+  return useQuery({
+    queryKey: ['admin', 'audit-logs', entityType, entityId] as const,
+    queryFn: () => adminService.getEntityAuditLogs(entityType, entityId),
+    enabled: !!entityType && !!entityId,
+  });
+}
+
 /** Хэрэглэгч устгах (ADMIN only) */
 export function useDeleteUser() {
   const queryClient = useQueryClient();

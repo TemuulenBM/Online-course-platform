@@ -2,34 +2,39 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-/** Нэг элсэлтийн хэвтээ skeleton */
-export function MyCourseCardSkeleton() {
+/** Нэг enrollment карт-ын skeleton */
+function MyCourseCardSkeleton() {
   return (
-    <div className="flex items-center gap-5 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
-      {/* Thumbnail */}
-      <Skeleton className="w-[140px] h-[100px] rounded-xl shrink-0" />
-
-      {/* Content */}
-      <div className="flex-1 min-w-0 space-y-3">
-        <Skeleton className="h-5 w-3/5" />
-        <Skeleton className="h-4 w-2/5" />
-        <Skeleton className="h-1.5 w-full rounded-full" />
-        <div className="flex justify-end">
-          <Skeleton className="h-4 w-10" />
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row">
+      {/* Thumbnail skeleton */}
+      <div className="sm:w-48 h-48 sm:h-auto shrink-0">
+        <Skeleton className="w-full h-full min-h-[140px]" />
+      </div>
+      {/* Content skeleton */}
+      <div className="flex-1 p-6 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-between items-start mb-2">
+            <Skeleton className="h-6 w-16 rounded-lg" />
+            <Skeleton className="h-4 w-20 rounded" />
+          </div>
+          <Skeleton className="h-6 w-3/4 rounded mt-1" />
+          <Skeleton className="h-4 w-1/2 rounded mt-3" />
+          <Skeleton className="h-1.5 w-full rounded-full mt-4" />
+        </div>
+        <div className="mt-6 flex gap-3">
+          <Skeleton className="h-10 flex-1 rounded-xl" />
+          <Skeleton className="h-10 w-20 rounded-xl" />
         </div>
       </div>
-
-      {/* Button */}
-      <Skeleton className="w-[110px] h-10 rounded-full shrink-0" />
     </div>
   );
 }
 
-/** Олон skeleton-тэй жагсаалт */
-export function MyCoursesListSkeleton({ count = 4 }: { count?: number }) {
+/** Grid skeleton — 4 карт */
+export function MyCoursesListSkeleton() {
   return (
-    <div className="flex flex-col gap-4">
-      {Array.from({ length: count }).map((_, i) => (
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      {Array.from({ length: 4 }).map((_, i) => (
         <MyCourseCardSkeleton key={i} />
       ))}
     </div>

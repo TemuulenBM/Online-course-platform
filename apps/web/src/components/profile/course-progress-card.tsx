@@ -22,7 +22,7 @@ export function CourseProgressCard() {
     return <ProgressSkeleton />;
   }
 
-  const totalEnrollments = enrollments?.total ?? 0;
+  const totalEnrollments = enrollments?.meta?.total ?? 0;
   const completedCount = certificates?.total ?? 0;
   const progressPercentage =
     totalEnrollments > 0 ? Math.round((completedCount / totalEnrollments) * 100) : 0;

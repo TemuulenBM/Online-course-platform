@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Archive, BookOpen, Globe, Pencil } from 'lucide-react';
+import { Archive, BookOpen, Globe, Pencil, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
@@ -23,6 +23,7 @@ interface TeacherCoursesTableProps {
 /** Багшийн сургалтуудын хүснэгт — шинэ дизайн */
 export function TeacherCoursesTable({ courses, onPublish, onArchive }: TeacherCoursesTableProps) {
   const t = useTranslations('teacher');
+  const te = useTranslations('enrollments');
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
@@ -113,6 +114,13 @@ export function TeacherCoursesTable({ courses, onPublish, onArchive }: TeacherCo
                       title={t('edit')}
                     >
                       <Pencil className="size-4" />
+                    </Link>
+                    <Link
+                      href={ROUTES.TEACHER_STUDENTS(course.id)}
+                      className="p-1.5 hover:bg-primary/10 rounded text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
+                      title={te('students')}
+                    >
+                      <Users className="size-4" />
                     </Link>
                     {course.status === 'draft' && (
                       <button

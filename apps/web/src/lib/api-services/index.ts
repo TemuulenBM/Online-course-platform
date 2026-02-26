@@ -3,11 +3,7 @@ export { coursesService } from './courses.service';
 export type { CourseListParams, CreateCourseData, UpdateCourseData } from './courses.service';
 export { categoriesService } from './categories.service';
 export { enrollmentsService } from './enrollments.service';
-export type {
-  MyEnrollmentsParams,
-  EnrollmentWithCourse,
-  EnrollmentCheck,
-} from './enrollments.service';
+export type { MyEnrollmentsParams, CourseEnrollmentsParams } from './enrollments.service';
 export { progressService } from './progress.service';
 export type {
   LessonProgress,

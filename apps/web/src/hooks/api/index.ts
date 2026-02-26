@@ -18,7 +18,16 @@ export {
 export { useCategoryTree } from './use-categories';
 
 // Enrollment hooks
-export { useMyEnrollments, useCheckEnrollment, useEnroll } from './use-enrollments';
+export {
+  useMyEnrollments,
+  useCheckEnrollment,
+  useEnroll,
+  useEnrollment,
+  useCourseEnrollments,
+  useCancelEnrollment,
+  useCompleteEnrollment,
+  useDeleteEnrollment,
+} from './use-enrollments';
 
 // Progress hooks
 export {
@@ -90,7 +99,7 @@ export {
 } from './use-comments';
 
 // Admin hooks
-export { useAdminUsers, useUpdateUserRole, useDeleteUser } from './use-admin';
+export { useAdminUsers, useUpdateUserRole, useDeleteUser, useEntityAuditLogs } from './use-admin';
 
 // Category admin hooks
 export { useCreateCategory, useUpdateCategory, useDeleteCategory } from './use-categories-admin';
