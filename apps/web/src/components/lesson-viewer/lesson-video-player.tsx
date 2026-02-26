@@ -22,6 +22,12 @@ interface LessonVideoPlayerProps {
   isEnrolled?: boolean;
   onEnroll?: () => void;
   enrollPending?: boolean;
+  /** Хичээлийн ID — progress tracking-д ашиглагдана */
+  lessonId?: string;
+  /** Сүүлийн хадгалсан байрлал — resume playback */
+  lastPositionSeconds?: number;
+  /** Видеоны байрлал шинэчлэх callback */
+  onPositionUpdate?: (position: number) => void;
 }
 
 /** Цагийг MM:SS форматаар буцаах */
@@ -31,17 +37,22 @@ function formatTime(seconds: number): string {
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
-/** Видео тоглуулагч — custom HTML5 controls + enrollment overlay */
+/** Видео тоглуулагч — custom HTML5 controls + enrollment overlay + progress tracking */
 export function LessonVideoPlayer({
   content,
   isEnrolled = true,
   onEnroll,
   enrollPending,
+  lastPositionSeconds,
+  onPositionUpdate,
 }: LessonVideoPlayerProps) {
   const t = useTranslations('lessonViewer');
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  /** Throttled position update-д ашиглагдана */
+  const lastSavedPositionRef = useRef<number>(0);
+  const hasResumedRef = useRef(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -130,11 +141,27 @@ export function LessonVideoPlayer({
     const onPause = () => {
       setIsPlaying(false);
       setShowControls(true);
+      /** Pause хийхэд байрлал хадгалах */
+      if (onPositionUpdate && video.currentTime > 0) {
+        onPositionUpdate(Math.floor(video.currentTime));
+      }
     };
     const onTimeUpdate = () => {
       if (!isSeeking) setCurrentTime(video.currentTime);
+      /** 10 секунд тутам байрлал хадгалах (throttled) */
+      if (onPositionUpdate && Math.abs(video.currentTime - lastSavedPositionRef.current) >= 10) {
+        lastSavedPositionRef.current = video.currentTime;
+        onPositionUpdate(Math.floor(video.currentTime));
+      }
     };
-    const onLoadedMetadata = () => setDuration(video.duration);
+    const onLoadedMetadata = () => {
+      setDuration(video.duration);
+      /** Resume playback — өмнөх байрлалаас үргэлжлүүлэх */
+      if (lastPositionSeconds && lastPositionSeconds > 0 && !hasResumedRef.current) {
+        video.currentTime = lastPositionSeconds;
+        hasResumedRef.current = true;
+      }
+    };
     const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
 
     video.addEventListener('play', onPlay);
@@ -150,7 +177,7 @@ export function LessonVideoPlayer({
       video.removeEventListener('loadedmetadata', onLoadedMetadata);
       document.removeEventListener('fullscreenchange', onFullscreenChange);
     };
-  }, [isSeeking]);
+  }, [isSeeking, onPositionUpdate, lastPositionSeconds]);
 
   /** Cleanup timeout */
   useEffect(() => {

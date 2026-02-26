@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
+  BarChart3,
   BookMarked,
   BookOpen,
   GraduationCap,
@@ -37,6 +38,7 @@ const mainNavItems = [
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
   { href: '/courses', icon: BookOpen, labelKey: 'courses' },
   { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
+  { href: '/progress', icon: BarChart3, labelKey: 'progress' },
 ] as const;
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */

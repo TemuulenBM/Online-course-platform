@@ -12,7 +12,7 @@ interface LessonNavigationProps {
   slug: string;
 }
 
-/** Өмнөх / Дараах хичээл товчнууд — дизайнд тааруулсан */
+/** Өмнөх / Дараах хичээл товчнууд + dot indicator */
 export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavigationProps) {
   const t = useTranslations('lessonViewer');
   const router = useRouter();
@@ -27,16 +27,30 @@ export function LessonNavigation({ lessons, currentLessonId, slug }: LessonNavig
       <button
         onClick={() => prev && router.push(ROUTES.LESSON_VIEWER(slug, prev.id))}
         disabled={!prev}
-        className="flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/20 bg-white dark:bg-slate-900 text-primary font-bold hover:bg-primary/5 transition-all disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium disabled:opacity-40 disabled:pointer-events-none"
       >
         <ArrowLeft className="size-5" />
         {t('previousBtn')}
       </button>
 
+      {/* Dot indicator — хичээлийн байршлыг харуулна */}
+      <div className="hidden sm:flex items-center gap-1.5">
+        {sorted.map((lesson, idx) => (
+          <button
+            key={lesson.id}
+            onClick={() => router.push(ROUTES.LESSON_VIEWER(slug, lesson.id))}
+            className={`size-2 rounded-full transition-all ${
+              idx === currentIdx ? 'bg-primary scale-125' : 'bg-primary/20 hover:bg-primary/40'
+            }`}
+            aria-label={`${t('lesson')} ${idx + 1}`}
+          />
+        ))}
+      </div>
+
       <button
         onClick={() => next && router.push(ROUTES.LESSON_VIEWER(slug, next.id))}
         disabled={!next}
-        className="flex items-center gap-2 px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:scale-[1.02] transition-all disabled:opacity-40 disabled:pointer-events-none"
+        className="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/5 rounded-lg transition-all font-medium disabled:opacity-40 disabled:pointer-events-none"
       >
         {t('nextBtn')}
         <ArrowRight className="size-5" />

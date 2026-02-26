@@ -1,13 +1,12 @@
 'use client';
 
-import { Loader2, ShieldCheck } from 'lucide-react';
+import { Loader2, ShieldCheck, PlaySquare, Download } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Lesson } from '@ocp/shared-types';
 import type { CourseProgress } from '@/lib/api-services/progress.service';
 import type { LessonContent } from '@/lib/api-services/content.service';
 import { LessonSidebarItem } from './lesson-sidebar-item';
 import { LessonAttachments, type ContentAttachment } from './lesson-attachments';
-import { CourseProgressWidget } from './course-progress-widget';
 
 interface LessonSidebarProps {
   lessons: Lesson[];
@@ -19,6 +18,8 @@ interface LessonSidebarProps {
   enrollPending?: boolean;
   contentType?: string;
   content?: LessonContent | null;
+  /** Сургалтын нэр — video sidebar-д харуулах */
+  courseTitle?: string;
 }
 
 /** Course sidebar — text/video тусдаа variant */
@@ -32,23 +33,92 @@ export function LessonSidebar({
   enrollPending,
   contentType,
   content,
+  courseTitle,
 }: LessonSidebarProps) {
   const t = useTranslations('lessonViewer');
+  const tp = useTranslations('progress');
   const sorted = [...lessons].sort((a, b) => a.orderIndex - b.orderIndex);
 
   /** Хичээлийн ахиц олох */
   const getProgress = (lessonId: string) =>
     courseProgress?.lessons?.find((l) => l.lessonId === lessonId);
 
-  /** Video sidebar — attachments + course progress widget */
+  /** Нийт хугацаа тооцоолох */
+  const totalDuration = sorted.reduce((sum, l) => sum + (l.durationMinutes || 0), 0);
+  const totalHours = Math.floor(totalDuration / 60);
+  const totalMins = totalDuration % 60;
+  const durationText =
+    totalHours > 0
+      ? `${totalHours} ${tp('hours')} ${totalMins} ${tp('minutes')}`
+      : `${totalMins} ${tp('minutes')}`;
+
+  const attachments = ((content?.metadata as Record<string, unknown>)?.attachments ||
+    []) as ContentAttachment[];
+
+  /** Video sidebar — course info card + lesson list + attachments */
   if (contentType === 'video') {
-    const attachments = ((content?.metadata as Record<string, unknown>)?.attachments ||
-      []) as ContentAttachment[];
+    const progressPercent = courseProgress?.courseProgressPercentage ?? 0;
 
     return (
-      <div className="space-y-6">
+      <div className="sticky top-24 space-y-4">
+        {/* Course info card */}
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-primary/10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <PlaySquare className="size-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">
+                {courseTitle || t('sectionContent')}
+              </h3>
+              <p className="text-xs text-slate-500">
+                {sorted.length} {t('lessonLabel')} • {durationText}
+              </p>
+            </div>
+          </div>
+          {/* Progress bar */}
+          {isEnrolled && courseProgress && (
+            <div>
+              <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all duration-500"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+              <p className="text-[10px] uppercase tracking-wider text-slate-500 mt-1.5 font-medium">
+                {tp('progressCol')}: {progressPercent}%
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Lesson list */}
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-3 max-h-[400px] overflow-y-auto">
+          <div className="space-y-1">
+            {sorted.map((lesson) => (
+              <LessonSidebarItem
+                key={lesson.id}
+                lesson={lesson}
+                slug={slug}
+                isActive={lesson.id === currentLessonId}
+                progress={getProgress(lesson.id)}
+                isEnrolled={isEnrolled}
+                variant="video"
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Attachments */}
         {attachments.length > 0 && <LessonAttachments attachments={attachments} />}
-        {courseProgress && <CourseProgressWidget courseProgress={courseProgress} />}
+
+        {/* Материал татах placeholder */}
+        {isEnrolled && attachments.length === 0 && (
+          <button className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <Download className="size-4" />
+            {tp('downloadMaterials')}
+          </button>
+        )}
       </div>
     );
   }
@@ -68,6 +138,7 @@ export function LessonSidebar({
               isActive={lesson.id === currentLessonId}
               progress={getProgress(lesson.id)}
               isEnrolled={isEnrolled}
+              variant="text"
             />
           ))}
         </div>

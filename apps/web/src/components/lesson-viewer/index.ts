@@ -12,3 +12,4 @@ export { LessonAttachments } from './lesson-attachments';
 export { CourseProgressWidget } from './course-progress-widget';
 export { LessonVideoMeta } from './lesson-video-meta';
 export { MobileBottomNav } from './mobile-bottom-nav';
+export { LessonCompleteButton } from './lesson-complete-button';

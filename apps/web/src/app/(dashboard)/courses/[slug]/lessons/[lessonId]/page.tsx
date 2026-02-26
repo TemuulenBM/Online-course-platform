@@ -3,6 +3,7 @@
 import { use } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
+import { useCallback } from 'react';
 import {
   useCourseBySlug,
   useCourseLessons,
@@ -10,6 +11,7 @@ import {
   useCourseProgress,
   useCheckEnrollment,
   useEnroll,
+  useUpdateVideoPosition,
 } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import {
@@ -22,6 +24,7 @@ import {
   LessonProgressBar,
   LessonVideoMeta,
   MobileBottomNav,
+  LessonCompleteButton,
 } from '@/components/lesson-viewer';
 
 export default function LessonViewerPage({
@@ -42,6 +45,7 @@ export default function LessonViewerPage({
   const { data: enrollmentCheck } = useCheckEnrollment(isAuthenticated ? (course?.id ?? '') : '');
 
   const enrollMutation = useEnroll();
+  const videoPositionMutation = useUpdateVideoPosition();
 
   const isEnrolled = enrollmentCheck?.isEnrolled ?? false;
 
@@ -79,6 +83,16 @@ export default function LessonViewerPage({
     if (course?.id) enrollMutation.mutate(course.id);
   };
 
+  /** Видеоны байрлал шинэчлэх — throttled callback */
+  const handleVideoPositionUpdate = useCallback(
+    (position: number) => {
+      if (isEnrolled && lessonId) {
+        videoPositionMutation.mutate({ lessonId, lastPositionSeconds: position });
+      }
+    },
+    [isEnrolled, lessonId, videoPositionMutation],
+  );
+
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
       {/* Breadcrumb */}
@@ -114,12 +128,24 @@ export default function LessonViewerPage({
                 isEnrolled={hasAccess}
                 onEnroll={handleEnroll}
                 enrollPending={enrollMutation.isPending}
+                lessonId={lessonId}
+                lastPositionSeconds={lessonProgressData?.lastPositionSeconds}
+                onPositionUpdate={handleVideoPositionUpdate}
               />
               <LessonVideoMeta
                 description={
                   (content?.metadata as Record<string, unknown>)?.description as string | undefined
                 }
               />
+              {/* Хичээл дуусгах товч */}
+              {isEnrolled && (
+                <LessonCompleteButton
+                  lessonId={lessonId}
+                  isCompleted={lessonProgressData?.completed ?? false}
+                  progressPercentage={lessonProgressData?.progressPercentage ?? 0}
+                  variant="video"
+                />
+              )}
               {lessons && (
                 <LessonNavigation lessons={lessons} currentLessonId={lessonId} slug={slug} />
               )}
@@ -137,6 +163,7 @@ export default function LessonViewerPage({
                 enrollPending={enrollMutation.isPending}
                 contentType="video"
                 content={content}
+                courseTitle={course.title}
               />
             </aside>
           </div>
@@ -159,6 +186,14 @@ export default function LessonViewerPage({
                 <div className="bg-white dark:bg-slate-900 p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 text-center text-slate-500">
                   {tCommon('noData')}
                 </div>
+              )}
+              {/* Хичээл дуусгах товч */}
+              {isEnrolled && (
+                <LessonCompleteButton
+                  lessonId={lessonId}
+                  isCompleted={lessonProgressData?.completed ?? false}
+                  variant="text"
+                />
               )}
               {lessons && (
                 <LessonNavigation lessons={lessons} currentLessonId={lessonId} slug={slug} />

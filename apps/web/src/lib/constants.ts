@@ -87,4 +87,6 @@ export const ROUTES = {
   PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
   TEACHER_LESSON_CONTENT: (courseId: string, lessonId: string) =>
     `/teacher/courses/${courseId}/lessons/${lessonId}/content` as const,
+  PROGRESS: '/progress',
+  COURSE_PROGRESS: (slug: string) => `/courses/${slug}/progress` as const,
 } as const;
