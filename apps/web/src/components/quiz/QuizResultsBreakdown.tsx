@@ -4,8 +4,6 @@ import { CheckCircle, XCircle, Check, X, Clock, AlertCircle } from 'lucide-react
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import type { AttemptAnswer } from '@/lib/api-services/quizzes.service';
-
 interface QuestionBreakdownItem {
   questionId: string;
   questionText: string;

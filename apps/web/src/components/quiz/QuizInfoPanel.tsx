@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 import {
   Info,
   Timer,
@@ -16,11 +14,9 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useQuizByLessonId, useMyAttempts, useStartAttempt } from '@/hooks/api/use-quizzes';
+import { useQuizByLessonId, useMyAttempts } from '@/hooks/api/use-quizzes';
 import { QuizAttemptHistory } from './QuizAttemptHistory';
 import { ROUTES } from '@/lib/constants';
-import type { Quiz } from '@/lib/api-services/quizzes.service';
-
 interface QuizInfoPanelProps {
   lessonId: string;
 }

@@ -69,6 +69,14 @@ export const QUERY_KEYS = {
   admin: {
     users: (params?: object) => ['admin', 'users', params] as const,
   },
+  payments: {
+    myOrders: (params?: object) => ['payments', 'orders', 'my', params] as const,
+    orderDetail: (id: string) => ['payments', 'orders', 'detail', id] as const,
+    pendingOrders: (params?: object) => ['payments', 'orders', 'pending', params] as const,
+    myInvoices: (params?: object) => ['payments', 'invoices', 'my', params] as const,
+    invoiceDetail: (id: string) => ['payments', 'invoices', 'detail', id] as const,
+    mySubscription: ['payments', 'subscription', 'my'] as const,
+  },
 } as const;
 
 /**
@@ -124,4 +132,11 @@ export const ROUTES = {
   COURSE_DISCUSSION_NEW: (slug: string) => `/courses/${slug}/discussions/new` as const,
   COURSE_DISCUSSION_POST: (slug: string, postId: string) =>
     `/courses/${slug}/discussions/${postId}` as const,
+  ORDERS: '/orders',
+  ORDER_DETAIL: (id: string) => `/orders/${id}` as const,
+  CHECKOUT: (courseId: string) => `/checkout/${courseId}` as const,
+  INVOICES: '/invoices',
+  INVOICE_DETAIL: (id: string) => `/invoices/${id}` as const,
+  ADMIN_ORDERS: '/admin/orders',
+  ADMIN_ORDER_DETAIL: (id: string) => `/admin/orders/${id}` as const,
 } as const;

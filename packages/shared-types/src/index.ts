@@ -5,3 +5,4 @@ export * from './enrollment';
 export * from './lesson';
 export * from './common';
 export * from './certificate';
+export * from './payment';

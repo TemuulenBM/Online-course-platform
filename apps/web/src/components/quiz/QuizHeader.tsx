@@ -3,7 +3,7 @@
 import { BookOpen, Clock, CheckCircle, HelpCircle, Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { useQuizStore, getAnsweredCount } from '@/stores/quiz-store';
+import { useQuizStore } from '@/stores/quiz-store';
 import { QuizTimer } from './QuizTimer';
 
 interface QuizHeaderProps {
@@ -20,12 +20,9 @@ interface QuizHeaderProps {
 export function QuizHeader({ onSubmit, onHelp }: QuizHeaderProps) {
   const t = useTranslations('quiz');
   const questions = useQuizStore((s) => s.questions);
-  const answers = useQuizStore((s) => s.answers);
   const currentQuestionIndex = useQuizStore((s) => s.currentQuestionIndex);
   const hasTimeLimit = useQuizStore((s) => s.hasTimeLimit);
   const isSubmitting = useQuizStore((s) => s.isSubmitting);
-
-  const answeredCount = getAnsweredCount(answers);
 
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-primary/10 px-6 py-4">

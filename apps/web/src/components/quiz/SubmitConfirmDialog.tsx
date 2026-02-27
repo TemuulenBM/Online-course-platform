@@ -11,12 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import {
-  useQuizStore,
-  getAnsweredCount,
-  getUnansweredCount,
-  getQuestionStatus,
-} from '@/stores/quiz-store';
+import { useQuizStore, getAnsweredCount, getUnansweredCount } from '@/stores/quiz-store';
 import { cn } from '@/lib/utils';
 
 interface SubmitConfirmDialogProps {
@@ -34,7 +29,6 @@ export function SubmitConfirmDialog({ open, onOpenChange, onConfirm }: SubmitCon
   const questions = useQuizStore((s) => s.questions);
   const answers = useQuizStore((s) => s.answers);
   const bookmarkedQuestions = useQuizStore((s) => s.bookmarkedQuestions);
-  const currentQuestionIndex = useQuizStore((s) => s.currentQuestionIndex);
   const goToQuestion = useQuizStore((s) => s.goToQuestion);
   const isSubmitting = useQuizStore((s) => s.isSubmitting);
 
@@ -123,13 +117,6 @@ export function SubmitConfirmDialog({ open, onOpenChange, onConfirm }: SubmitCon
           <h4 className="text-sm font-bold text-muted-foreground">{t('reviewAnswers')}</h4>
           <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1 no-scrollbar">
             {questions.map((q, index) => {
-              const status = getQuestionStatus(
-                q.questionId,
-                answers,
-                bookmarkedQuestions,
-                currentQuestionIndex,
-                questions,
-              );
               const isAnswered = !!answers[q.questionId];
               const isBookmarked = bookmarkedQuestions.includes(q.questionId);
 

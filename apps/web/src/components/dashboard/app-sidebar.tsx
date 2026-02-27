@@ -11,8 +11,10 @@ import {
   GraduationCap,
   LayoutGrid,
   LogOut,
+  Receipt,
   Settings,
   Shield,
+  ShoppingCart,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -41,6 +43,8 @@ const mainNavItems = [
   { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
   { href: '/progress', icon: BarChart3, labelKey: 'progress' },
   { href: '/certificates', icon: Award, labelKey: 'certificates' },
+  { href: '/orders', icon: ShoppingCart, labelKey: 'orders' },
+  { href: '/invoices', icon: Receipt, labelKey: 'invoices' },
 ] as const;
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */

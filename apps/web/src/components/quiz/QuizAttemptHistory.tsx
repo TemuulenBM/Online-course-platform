@@ -24,7 +24,7 @@ export function QuizAttemptHistory({
   isLoading,
   quizId,
   remainingAttempts,
-  passingPercentage,
+  passingPercentage: _passingPercentage,
 }: QuizAttemptHistoryProps) {
   const t = useTranslations('quiz');
   const router = useRouter();

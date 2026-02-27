@@ -16,7 +16,7 @@ import {
   useUpdateQuiz,
   useDeleteQuiz,
 } from '@/hooks/api/use-quizzes';
-import type { Quiz, CreateQuizData, UpdateQuizData } from '@/lib/api-services/quizzes.service';
+import type { CreateQuizData, UpdateQuizData } from '@/lib/api-services/quizzes.service';
 
 interface QuizManagementFormProps {
   lessonId: string;
@@ -37,7 +37,7 @@ interface FormValues {
  * Quiz тохиргооны форм — Багш/Админ хэрэглэнэ.
  * Quiz байхгүй бол үүсгэх, байвал шинэчлэх.
  */
-export function QuizManagementForm({ lessonId, courseId }: QuizManagementFormProps) {
+export function QuizManagementForm({ lessonId, courseId: _courseId }: QuizManagementFormProps) {
   const t = useTranslations('quiz');
 
   const { data: quiz, isLoading } = useQuizByLessonId(lessonId);

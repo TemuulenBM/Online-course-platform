@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircle, XCircle, Trophy, Award, Medal } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import confetti from 'canvas-confetti';

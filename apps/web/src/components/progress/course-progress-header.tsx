@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { ArrowRight, Clock, CheckCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import type { CourseProgress, LessonProgressSummary } from '@/lib/api-services/progress.service';
+import type { CourseProgress } from '@/lib/api-services/progress.service';
 import { CircularProgress } from './circular-progress';
 import { ROUTES } from '@/lib/constants';
 

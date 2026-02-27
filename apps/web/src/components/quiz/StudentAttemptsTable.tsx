@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Eye, Download, RefreshCw, CheckCircle, BarChart3, Clock, Loader2 } from 'lucide-react';
+import { Eye, RefreshCw, CheckCircle, BarChart3, Clock, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';

@@ -71,7 +71,6 @@ export default function QuizTakePage() {
         router.back();
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHydrated, quiz, quizId]);
 
   /** Хугацаа дуусахад автомат илгээх */
@@ -81,7 +80,6 @@ export default function QuizTakePage() {
       toast.info(t('timeUp'));
       handleSubmitConfirm();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining, hasTimeLimit, storeAttemptId]);
 
   /** Хариулт илгээх */
@@ -102,7 +100,7 @@ export default function QuizTakePage() {
     submitMutation.mutate(
       { quizId, attemptId: storeAttemptId, data: submitData },
       {
-        onSuccess: (result) => {
+        onSuccess: () => {
           clearAttempt();
           router.replace(ROUTES.QUIZ_RESULTS(quizId, storeAttemptId));
         },

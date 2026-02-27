@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useAttemptDetail, useGradeAttempt } from '@/hooks/api/use-quizzes';
-import type { AttemptAnswer, RubricCriterion } from '@/lib/api-services/quizzes.service';
+import type { AttemptAnswer } from '@/lib/api-services/quizzes.service';
 
 interface ManualGradingPanelProps {
   attemptId: string;
