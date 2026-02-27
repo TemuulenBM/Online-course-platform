@@ -97,6 +97,14 @@ export const QUERY_KEYS = {
     pendingItems: ['analytics', 'pending-items'] as const,
     recentActivity: (limit?: number) => ['analytics', 'recent-activity', limit] as const,
   },
+  liveSessions: {
+    upcoming: (params?: object) => ['live-sessions', 'upcoming', params] as const,
+    byCourse: (courseId: string, params?: object) =>
+      ['live-sessions', 'course', courseId, params] as const,
+    byLesson: (lessonId: string) => ['live-sessions', 'lesson', lessonId] as const,
+    detail: (id: string) => ['live-sessions', 'detail', id] as const,
+    attendees: (id: string, params?: object) => ['live-sessions', 'attendees', id, params] as const,
+  },
 } as const;
 
 /**
@@ -169,4 +177,9 @@ export const ROUTES = {
   ADMIN_ANALYTICS_POPULAR_COURSES: '/admin/analytics/popular-courses',
   ADMIN_ANALYTICS_EVENTS: '/admin/analytics/events',
   TEACHER_COURSE_ANALYTICS: (courseId: string) => `/teacher/courses/${courseId}/analytics` as const,
+  LIVE_SESSIONS: '/live-sessions',
+  LIVE_CLASSROOM: (sessionId: string) => `/live-session/${sessionId}` as const,
+  COURSE_LIVE_SESSIONS: (slug: string) => `/courses/${slug}/live-sessions` as const,
+  TEACHER_LIVE_SESSIONS: (courseId: string) =>
+    `/teacher/courses/${courseId}/live-sessions` as const,
 } as const;

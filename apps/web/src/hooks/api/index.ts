@@ -172,6 +172,22 @@ export {
   useCancelSubscription,
 } from './use-payments';
 
+// Live Session hooks
+export {
+  useUpcomingSessions,
+  useCourseSessions,
+  useLessonSession,
+  useLiveSessionDetail,
+  useSessionAttendees,
+  useCreateLiveSession,
+  useUpdateLiveSession,
+  useCancelLiveSession,
+  useStartLiveSession,
+  useEndLiveSession,
+  useJoinLiveSession,
+  useLeaveLiveSession,
+} from './use-live-sessions';
+
 // Analytics hooks
 export {
   useAnalyticsOverview,

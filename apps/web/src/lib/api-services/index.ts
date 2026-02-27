@@ -38,3 +38,5 @@ export type { CreateCategoryData, UpdateCategoryData } from './categories-admin.
 export { paymentsService } from './payments.service';
 export type { MyOrdersParams, PendingOrdersParams, MyInvoicesParams } from './payments.service';
 export { analyticsService } from './analytics.service';
+export { liveSessionsService } from './live-sessions.service';
+export type { LiveSessionListParams, AttendeeListParams } from './live-sessions.service';
