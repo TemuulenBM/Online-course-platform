@@ -93,15 +93,26 @@ export {
 // Discussion hooks
 export {
   useDiscussionPosts,
+  useDiscussionPost,
   useCreateDiscussionPost,
+  useUpdateDiscussionPost,
+  useDeleteDiscussionPost,
   useAddReply,
+  useUpdateReply,
+  useDeleteReply,
   useVoteDiscussionPost,
+  usePinPost,
+  useLockPost,
+  useFlagPost,
+  useAcceptAnswer,
 } from './use-discussions';
 
 // Comment hooks
 export {
   useLessonComments,
   useCreateComment,
+  useUpdateComment,
+  useDeleteComment,
   useReplyComment,
   useUpvoteComment,
 } from './use-comments';

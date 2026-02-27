@@ -19,10 +19,40 @@ export function useCreateComment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { lessonId: string; content: string }) => commentsService.create(data),
+    mutationFn: (data: { lessonId: string; content: string; timestampSeconds?: number }) =>
+      commentsService.create(data),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.comments.byLesson(variables.lessonId),
+      });
+    },
+  });
+}
+
+/** Сэтгэгдэл шинэчлэх */
+export function useUpdateComment(lessonId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ commentId, content }: { commentId: string; content: string }) =>
+      commentsService.updateComment(commentId, { content }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.comments.byLesson(lessonId),
+      });
+    },
+  });
+}
+
+/** Сэтгэгдэл устгах */
+export function useDeleteComment(lessonId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (commentId: string) => commentsService.deleteComment(commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.comments.byLesson(lessonId),
       });
     },
   });

@@ -55,6 +55,7 @@ export const QUERY_KEYS = {
   },
   discussions: {
     byCourse: (courseId: string) => ['discussions', 'course', courseId] as const,
+    detail: (postId: string) => ['discussions', 'detail', postId] as const,
   },
   quizzes: {
     byLesson: (lessonId: string) => ['quizzes', 'lesson', lessonId] as const,
@@ -118,4 +119,8 @@ export const ROUTES = {
   CERTIFICATE_VERIFY: '/verify',
   TEACHER_COURSE_CERTIFICATES: (courseId: string) =>
     `/teacher/courses/${courseId}/certificates` as const,
+  COURSE_DISCUSSIONS: (slug: string) => `/courses/${slug}/discussions` as const,
+  COURSE_DISCUSSION_NEW: (slug: string) => `/courses/${slug}/discussions/new` as const,
+  COURSE_DISCUSSION_POST: (slug: string, postId: string) =>
+    `/courses/${slug}/discussions/${postId}` as const,
 } as const;

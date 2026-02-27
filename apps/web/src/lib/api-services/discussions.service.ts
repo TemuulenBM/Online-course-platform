@@ -7,11 +7,14 @@ const client = apiClient.getClient();
 export interface DiscussionReply {
   replyId: string;
   authorId: string;
+  authorName?: string;
+  authorAvatar?: string;
   content: string;
   contentHtml: string;
   upvotes: number;
   downvotes: number;
   isAccepted: boolean;
+  isInstructorReply?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -22,6 +25,8 @@ export interface DiscussionPost {
   courseId: string;
   lessonId?: string;
   authorId: string;
+  authorName?: string;
+  authorAvatar?: string;
   postType: 'question' | 'discussion';
   title?: string;
   content: string;
@@ -37,6 +42,7 @@ export interface DiscussionPost {
   isPinned: boolean;
   isLocked: boolean;
   isFlagged: boolean;
+  flagReason?: string;
   userVote: 'up' | 'down' | null;
   createdAt: string;
   updatedAt: string;
@@ -48,6 +54,8 @@ export interface DiscussionPostListItem {
   courseId: string;
   lessonId?: string;
   authorId: string;
+  authorName?: string;
+  authorAvatar?: string;
   postType: 'question' | 'discussion';
   title?: string;
   isAnswered: boolean;
@@ -110,6 +118,23 @@ export const discussionsService = {
     return res.data.data!;
   },
 
+  /** Нийтлэл шинэчлэх */
+  updatePost: async (
+    postId: string,
+    data: { title?: string; content?: string; contentHtml?: string; tags?: string[] },
+  ): Promise<DiscussionPost> => {
+    const res = await client.patch<ApiResponse<DiscussionPost>>(
+      `/discussions/posts/${postId}`,
+      data,
+    );
+    return res.data.data!;
+  },
+
+  /** Нийтлэл устгах */
+  deletePost: async (postId: string): Promise<void> => {
+    await client.delete(`/discussions/posts/${postId}`);
+  },
+
   /** Нийтлэлд хариулт нэмэх */
   addReply: async (
     postId: string,
@@ -122,11 +147,55 @@ export const discussionsService = {
     return res.data.data!;
   },
 
+  /** Хариулт шинэчлэх */
+  updateReply: async (
+    postId: string,
+    replyId: string,
+    data: { content: string; contentHtml: string },
+  ): Promise<DiscussionPost> => {
+    const res = await client.patch<ApiResponse<DiscussionPost>>(
+      `/discussions/posts/${postId}/replies/${replyId}`,
+      data,
+    );
+    return res.data.data!;
+  },
+
+  /** Хариулт устгах */
+  deleteReply: async (postId: string, replyId: string): Promise<void> => {
+    await client.delete(`/discussions/posts/${postId}/replies/${replyId}`);
+  },
+
   /** Санал өгөх (up/down toggle) */
   votePost: async (postId: string, voteType: 'up' | 'down'): Promise<DiscussionPost> => {
     const res = await client.post<ApiResponse<DiscussionPost>>(
       `/discussions/posts/${postId}/vote`,
       { voteType },
+    );
+    return res.data.data!;
+  },
+
+  /** Нийтлэл pin/unpin toggle */
+  pinPost: async (postId: string): Promise<DiscussionPost> => {
+    const res = await client.post<ApiResponse<DiscussionPost>>(`/discussions/posts/${postId}/pin`);
+    return res.data.data!;
+  },
+
+  /** Нийтлэл lock/unlock toggle */
+  lockPost: async (postId: string): Promise<DiscussionPost> => {
+    const res = await client.post<ApiResponse<DiscussionPost>>(`/discussions/posts/${postId}/lock`);
+    return res.data.data!;
+  },
+
+  /** Нийтлэл flag/unflag toggle */
+  flagPost: async (postId: string): Promise<DiscussionPost> => {
+    const res = await client.post<ApiResponse<DiscussionPost>>(`/discussions/posts/${postId}/flag`);
+    return res.data.data!;
+  },
+
+  /** Зөв хариулт хүлээн авах */
+  acceptAnswer: async (postId: string, replyId: string): Promise<DiscussionPost> => {
+    const res = await client.post<ApiResponse<DiscussionPost>>(
+      `/discussions/posts/${postId}/accept/${replyId}`,
     );
     return res.data.data!;
   },
