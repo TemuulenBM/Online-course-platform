@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Миний элсэлтүүд - Learnify</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col h-full shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-xl p-2 text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Learnify</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Оюутны хянах самбар</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">book_2</span>
+<span>Миний сургалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span>Каталог</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span>Миний сертификат</span>
+</a>
+<div class="pt-4 pb-2 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Систем</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Тусламж</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">Б</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Б.Тэмүүлэн</p>
+<p class="text-xs text-slate-500 truncate">Оюутан</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/5 px-8 py-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-3xl font-black tracking-tight">Миний элсэлтүүд</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Таны суралцаж буй болон дуусгасан сургалтууд</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative min-w-[200px]">
+<select class="w-full appearance-none bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer">
+<option value="all">Бүх төлөв</option>
+<option value="active">ACTIVE (Идэвхтэй)</option>
+<option value="completed">COMPLETED (Дууссан)</option>
+<option value="cancelled">CANCELLED (Цуцлагдсан)</option>
+<option value="expired">EXPIRED (Хугацаа дууссан)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">unfold_more</span>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8">
+<!-- Course List Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Course Card 1: Active -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row group">
+<div class="sm:w-48 h-48 sm:h-auto overflow-hidden shrink-0">
+<div class="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Modern graphic design workspace with laptop and notebook" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuKfHFVxtNorAl5VDnTAq4HeXrV2JSr8ck9ZbOa0foJwX4rO2dFh094ZIVgwBUMFeU5-6S5wIltmQpPhLEKlLC2oNRdUSGEYDsrIzGyy91k8zgyG0RXWn2KTAnMFPeJqZENkweB6I6PKgdz9whZT3aVITjz3gPxIwewyDLas-gRV0W66PuDBLDn6oAal1uc028bSHM0YNsfMAd5wbpMvsnSg_wmDcJ7eL0heGdlHrGxVB_duc-MUpmrRf__vXAhnVKyGy5-DL1rxA');"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<span class="px-2.5 py-1 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold uppercase tracking-wider">ACTIVE</span>
+<span class="text-xs text-slate-400 font-medium italic">2023-10-15</span>
+</div>
+<h3 class="text-lg font-bold line-clamp-1">Graphic Design Fundamentals</h3>
+<div class="flex items-center gap-2 mt-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">person</span>
+<p class="text-sm font-medium">Багш: Г.Болд</p>
+</div>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all shadow-lg shadow-primary/20">Үргэлжлүүлэх</button>
+<button class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium">Цуцлах</button>
+</div>
+</div>
+</div>
+<!-- Course Card 2: Completed -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row group">
+<div class="sm:w-48 h-48 sm:h-auto overflow-hidden shrink-0">
+<div class="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Mobile app UI screens on a screen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5Z4_kOqBx4DBGdzT76RUYoPlwV77rUgnMXY24fStkrPELeoObGSn7Jk-VdeLv4yb6i_ewNQZJA2tvbwtTfKVr4MCqPTUERjOWEoICa5XHQy_OGmkr_qHzbZEf2qTXyH9tbiZKog9f3FKuP5lLYIbyvrrqzg48S23LFnN7yQ4N_e4cT1hLPiOAKekYMjybCYo1_5WzR9tCDj4pytW9TBe8oW1ZLTDNGa87uUR-cyKMW1h27WT1rlt3ldgixFUb013j88yxnuUmd-Y');"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<span class="px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">COMPLETED</span>
+<span class="text-xs text-slate-400 font-medium italic">Дууссан: 2023-09-20</span>
+</div>
+<h3 class="text-lg font-bold line-clamp-1">UI/UX Design Essentials</h3>
+<div class="flex items-center gap-2 mt-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">person</span>
+<p class="text-sm font-medium">Багш: С.Сарнай</p>
+</div>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-semibold py-2.5 px-4 rounded-xl text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Дахин үзэх</button>
+<button class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 transition-colors text-sm font-medium flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 3: Expired -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row group opacity-75">
+<div class="sm:w-48 h-48 sm:h-auto overflow-hidden shrink-0 grayscale">
+<div class="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center" data-alt="Coding and web development abstract image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDi0z45dV9snXEZ1zzHLIGEB4J_OliLoCDlcghzbTnG7Jk9NeOuj-rrGNrcTZD6jxdCoxxAIOkkf-GaH_2LXml4aFL8KZ0pPp5xKvRE-jK8eUwF212btKTCflBLU9XSpYbZZ1E3TUH-bmhkvEwpZqaADNwA57jNYvlQhFAVvbD8wZhsOKOBxDw8Xz99DDmtX_vXTCGpxBnDXM2cVkOSDiDiddnrDmCowyg_JIOOlLJjug3ST_3-PRnw_gNCQwSpFs7awsCmjQA0KVY');"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold uppercase tracking-wider">EXPIRED</span>
+<span class="text-xs text-slate-400 font-medium italic">2023-05-10</span>
+</div>
+<h3 class="text-lg font-bold line-clamp-1">Advanced React Hooks</h3>
+<div class="flex items-center gap-2 mt-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">person</span>
+<p class="text-sm font-medium">Багш: Б.Төгөлдөр</p>
+</div>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="flex-1 bg-white dark:bg-slate-900 border border-primary text-primary font-semibold py-2.5 px-4 rounded-xl text-sm hover:bg-primary/5 transition-all">Сунгалт хийх</button>
+</div>
+</div>
+</div>
+<!-- Course Card 4: Cancelled -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row group opacity-75">
+<div class="sm:w-48 h-48 sm:h-auto overflow-hidden shrink-0 grayscale">
+<div class="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center" data-alt="Data analysis chart background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkcOxFaMWQlD5_7ZnuGXkJsjbzL_vDjU8MzPTMG36fHaiGwuzqsv7CP-mp0xB0A2BShxuBWhff1emVSd-k1LmaaF-r7G-FOSQ43xlXucJ3Et7ubBmScM8PJtkveKL0Dw9k_b2GbzNz9_hIcAzpgWhSaV-X47zzb5wOeO84MXF4ZGXtEQCZUaH1wu9-AKvNYg_I7Maxrp4zSi-CfrGGkzE6AYIQ1ixjTla568Bj2SjGVgKtkPTpuWSD4_Y4bKTZFAwxFJK4Qy3d-h8');"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<span class="px-2.5 py-1 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-500 text-[10px] font-bold uppercase tracking-wider">CANCELLED</span>
+<span class="text-xs text-slate-400 font-medium italic">Цуцалсан: 2023-11-01</span>
+</div>
+<h3 class="text-lg font-bold line-clamp-1">Data Science Fundamentals</h3>
+<div class="flex items-center gap-2 mt-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">person</span>
+<p class="text-sm font-medium">Багш: Д.Энхээ</p>
+</div>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="flex-1 bg-slate-50 dark:bg-slate-800 text-slate-400 font-semibold py-2.5 px-4 rounded-xl text-sm cursor-not-allowed">Дахин элсэх боломжгүй</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default, shown when list is empty) -->
+<div class="hidden flex-col items-center justify-center py-24 text-center">
+<div class="size-24 rounded-full bg-primary/5 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-5xl text-primary/30">auto_stories</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Та одоогоор ямар ч сургалтад элсээгүй байна</h3>
+<p class="text-slate-500 dark:text-slate-400 mb-8 max-w-sm">Сургалтын каталогоос өөрт хэрэгтэй сургалтаа хайж, мэдлэгээ тэлээрэй.</p>
+<a class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-3 rounded-xl hover:bg-primary/90 transition-all" href="#">
+<span>Каталог үзэх</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex items-center justify-between border-t border-primary/5 pt-8">
+<p class="text-sm text-slate-500">Нийт 4 сургалт харуулж байна</p>
+<div class="flex items-center gap-2">
+<button class="size-10 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold">1</button>
+<button class="size-10 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">2</button>
+<button class="size-10 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

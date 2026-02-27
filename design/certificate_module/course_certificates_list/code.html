@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify - Course Certificates</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-none">Learnify</h1>
+<p class="text-xs text-primary/70 font-medium">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">book_5</span>
+<span class="text-sm font-medium">My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">workspace_premium</span>
+<span class="text-sm font-medium">Certificates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Students</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">Settings</div>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">General Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 p-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">JD</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">James Instructor</p>
+<p class="text-xs text-slate-500 truncate">james@learnify.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-primary/10 px-8 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-slate-400">Courses</span>
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="font-medium">UX/UI Design Masterclass</span>
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="font-medium text-primary">Certificates</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Issue Certificate
+                </button>
+</div>
+</header>
+<div class="p-8 space-y-6">
+<!-- Title and Description -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold tracking-tight">Course Certificates</h2>
+<p class="text-slate-500 text-sm">Manage and track all digital certificates issued for this course.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 rounded-lg text-sm w-64 focus:ring-primary focus:border-primary" placeholder="Search students..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filter
+                    </button>
+</div>
+</div>
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-medium">Total Issued</p>
+<p class="text-xl font-bold">128</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-medium">This Month</p>
+<p class="text-xl font-bold">14</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined">pending</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-medium">Pending Approval</p>
+<p class="text-xl font-bold">3</p>
+</div>
+</div>
+</div>
+<!-- Certificates Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 border-b border-primary/10">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Student Name</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Student Email</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Certificate No.</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Issued Date</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold overflow-hidden border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="Student profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGCo5pdD2I0JYA37U3kdWajhj9FsRU722a-nmeH3sWgsmGjMdUt8rrMQD_TyMh7Kr8XfIUaiWXT7q98HGBPmSa816-FruEJqDQDbn5-en7r_hR_Db4k2nhmhzIYUR5I-H1uPp4QuqjMlaPGJL7pnxIgt_l6Gg9RpVljqRKnqpS2UAUEg1XqF5WzDdZTsTtLLqlhMoN3J2YN2R27ObhjTdoTPiufPkH1-IefzBhzDZ43Pq8TMigtFvCxg__9gKzKPWgnhJTZbgrHO0"/>
+</div>
+<span class="font-medium text-sm">Erdenebat Bat-Erdene</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">erdene@example.mn</td>
+<td class="px-6 py-4">
+<code class="px-2 py-1 bg-primary/10 text-primary text-xs rounded font-mono font-bold">UI-2023-0891</code>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Nov 12, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<a class="flex items-center gap-1 text-primary hover:underline font-semibold text-xs transition-all" href="#">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                            Download
+                                        </a>
+<span class="text-slate-300">|</span>
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold overflow-hidden border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="Student profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7ThN4qiGU97EvgYcsSe7-1kI7YG9kB4Ccw8-S782SapuN1RRs1Oqhdp1omzouRllRmFo2dSpKooVgzdZwlYmG-HFFSPunJk8T4-qiIFKha0rjp7ASBZ0vxsH3ydnFruMa6bomNvr0gwHjlPPDx3SFjYjynEy4aRdd_uO9Y_6pdIFM4JNw9OGWfSppzJoL4PB-_SRAb62WBvA2KjQN2sfj3eQRiWmLD_fYEGFnQ3zqF4lMl9aD4xp2gvxg7e6em3qgr8odyG5riJ8"/>
+</div>
+<span class="font-medium text-sm">Sarnai Bayar</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">sarnai@example.mn</td>
+<td class="px-6 py-4">
+<code class="px-2 py-1 bg-primary/10 text-primary text-xs rounded font-mono font-bold">UI-2023-0892</code>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Nov 10, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<a class="flex items-center gap-1 text-primary hover:underline font-semibold text-xs transition-all" href="#">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                            Download
+                                        </a>
+<span class="text-slate-300">|</span>
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold overflow-hidden border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="Student profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl3aElO1R7hm1xetabwCiq6sn0DmSvTwyYfqcDDVGtKpSX95HgW4EsBozhwxmcKpAD4fVvYVGTB9uKvr3qKRwC7SI3uUkyrifCYF9zCzUOKYJUcgqAwcqPY9t8riXxeR-wAETm6pLskyMGDqSBnyPu3Bf6uy8kSufcOmeFEnEoiy0uY2WFwycGAWHSr0K_LBxASwX7T3b1UwzRqWFRnn9QK4cRF281EvS85ns_zVPK3u2RdBcq6PlhbzuK8S8pUDpvP_Jh0F0znw0"/>
+</div>
+<span class="font-medium text-sm">Tuguldur Otgonbayar</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">tuguldur@example.mn</td>
+<td class="px-6 py-4">
+<code class="px-2 py-1 bg-primary/10 text-primary text-xs rounded font-mono font-bold">UI-2023-0893</code>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 28, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<a class="flex items-center gap-1 text-primary hover:underline font-semibold text-xs transition-all" href="#">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                            Download
+                                        </a>
+<span class="text-slate-300">|</span>
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-primary/5 flex items-center justify-between border-t border-primary/10">
+<span class="text-sm text-slate-500 font-medium">Showing 1-10 of 128 results</span>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-white font-bold text-xs">1</button>
+<button class="w-8 h-8 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-xs font-bold transition-colors">2</button>
+<button class="w-8 h-8 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-xs font-bold transition-colors">3</button>
+<span class="mx-1 text-slate-400">...</span>
+<button class="w-8 h-8 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-xs font-bold transition-colors">13</button>
+<button class="p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Empty State Illustration -->
+<div class="mt-12 py-16 bg-white dark:bg-slate-900 border border-dashed border-primary/30 rounded-2xl flex flex-col items-center text-center">
+<div class="w-24 h-24 mb-6 relative">
+<div class="absolute inset-0 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
+<div class="relative w-full h-full bg-primary/5 rounded-full flex items-center justify-center text-primary/40">
+<span class="material-symbols-outlined text-5xl">card_membership</span>
+</div>
+</div>
+<h3 class="text-lg font-bold mb-2">Сертификат олгогдоогүй</h3>
+<p class="text-slate-500 max-w-xs text-sm">Энэ сургалтад сертификат олгогдоогүй байна. Та сургалтын сертификатын загвараа үүсгэнэ үү.</p>
+<button class="mt-6 px-6 py-2 bg-primary/20 text-primary border border-primary/30 rounded-lg text-sm font-bold hover:bg-primary/30 transition-all">
+                    Загвар үүсгэх
+                </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

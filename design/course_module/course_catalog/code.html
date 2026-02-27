@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 lg:px-10 py-3">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary text-sm font-semibold" href="#">Нүүр</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium" href="#">Миний сургалт</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium" href="#">Мэдэгдэл</a>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+<div class="size-10 rounded-full bg-primary/20 border-2 border-primary/10 overflow-hidden" data-alt="User profile avatar icon" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBaVZ9JWpKOWzBgrNWlft9OTIkQu2t299-6vJp1nTveuOw4shLs9GYmBZUyR4Z09FALMS3icZQTHJ_m-J7goVQZtQ0dl2n8QLq0d1ddYZqPj9Tyff3SP9bx9oeKsIdXd-cQn34JC6ektW85n24FPJ3pMDd-DELU-AyYDMvVevUvWFXue8I1MSscN2qP-_RVtXA3g_R0Jmsy__N7W1oIHoJ_YA4lijyyf2Lmh6oRhmWXp2O1pSC3exgEul3ea_KxzlOe8jQgOCSOkY');">
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 max-w-[1440px] mx-auto w-full">
+<!-- Sidebar -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-primary/10 p-6 gap-8 sticky top-[73px] h-[calc(100vh-73px)]">
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white font-medium transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span>Сургалтын сан</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span>Миний хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span>Хүслийн жагсаалт</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Тусламж</span>
+</a>
+</nav>
+<div class="mt-auto p-4 rounded-2xl bg-gradient-to-br from-primary to-primary/60 text-white">
+<p class="text-sm font-bold mb-1">PRO болох</p>
+<p class="text-xs opacity-90 mb-3">Бүх сургалтанд хязгааргүй хандах эрх аваарай.</p>
+<button class="w-full py-2 bg-white text-primary rounded-lg text-xs font-bold hover:bg-slate-100 transition-colors">Идэвхжүүлэх</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-6 lg:p-10">
+<!-- Header & Hero -->
+<div class="mb-10">
+<h1 class="text-3xl lg:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100 mb-2">Сургалтын сан</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Өөрийн мэдлэгээ тэлэх шилдэг сургалтуудыг хайж олоорой.</p>
+</div>
+<!-- Filters -->
+<div class="flex flex-col gap-6 mb-10">
+<div class="flex flex-col lg:flex-row gap-4 items-center">
+<div class="relative w-full lg:flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-primary/10 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400" placeholder="Сургалт хайх..." type="text"/>
+</div>
+<div class="flex gap-4 w-full lg:w-auto">
+<div class="relative w-full lg:w-48">
+<select class="w-full appearance-none pl-4 pr-10 py-3.5 bg-white dark:bg-slate-800 border border-primary/10 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer">
+<option>Бүх ангилал</option>
+<option>Програмчлал</option>
+<option>Дизайн</option>
+<option>Маркетинг</option>
+<option>Бизнес</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+<button class="px-6 py-2 rounded-full bg-primary text-white text-sm font-medium whitespace-nowrap">Бүгд</button>
+<button class="px-6 py-2 rounded-full bg-white dark:bg-slate-800 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 text-sm font-medium whitespace-nowrap transition-all">Анхан шат</button>
+<button class="px-6 py-2 rounded-full bg-white dark:bg-slate-800 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 text-sm font-medium whitespace-nowrap transition-all">Дунд шат</button>
+<button class="px-6 py-2 rounded-full bg-white dark:bg-slate-800 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 text-sm font-medium whitespace-nowrap transition-all">Ахисан шат</button>
+</div>
+</div>
+<!-- Course Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Course Card 1 -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all group">
+<div class="relative h-48 w-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="UI UX design course thumbnail illustration" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgfoB3cLNKpTK-klUNqr-YnC_jAiMvRJEUSVXJd1Bld9WDytJ2zGUgh-9trZPEUqXR4xFR7esuIq3NVG6aDE6XQbHoQ2bI2kYS3SqzF7_Oyf76a0a9QZVCICz1DQbRpYUni8deTtuXC62JgYB8zDThrWudVKG7Q9ZE9zrBS67xHGu72HZrIkhDvGSNZc1gU5BmxXvZ7h8ZTxTqRXninE6esdrTr-V06PRbIZ5mbReTm2RC4zQnBe5s70EEmP3Fi-Afu3iicEnJaDg');"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded-full uppercase tracking-wider">Дизайн</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded">Анхан шат</span>
+<div class="flex items-center text-amber-500 gap-1">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="text-xs font-bold">4.8</span>
+</div>
+</div>
+<h3 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">UI/UX Дизайны үндэс: Figma дээр ажиллах</h3>
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-100 overflow-hidden" data-alt="Instructor avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA9WJI5AEgemYmhifk2nMr0jW09uqjRrlf2o5g939hZcEO7o0oGzk3Ekxz5r28mkuXc6T5RcR_e7o04Adj23eqD79W_ig8H8KCwDdeH5E_31I0NhNJWalrCTkHywE-_YkAJX2WNZMjF9rIGzk6jWxR2WI3D7tu8YiMNFZLW6TkZLTfj5TBcChZ4ZRMrjM48FVnIUbemqxiDfnZ0EDwKMGPpzCcxkDOLSiyj_gh4GDDs1ZWIwXKHcsUO9XputVHT2wyoFm-BVdkPjZk');"></div>
+<span class="text-xs text-slate-500">Г. Болдбаатар</span>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-1">
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#figma</span>
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#ux</span>
+</div>
+<div class="flex items-center justify-between mt-4 pt-4 border-t border-primary/5">
+<div class="flex flex-col">
+<span class="text-slate-400 text-[10px] line-through">120,000₮</span>
+<span class="text-primary font-bold text-lg">89,000₮</span>
+</div>
+<button class="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 2 -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all group">
+<div class="relative h-48 w-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Python programming course thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0ca1b2JuLaXHyRHX54tHwPjUP_UFgRR0dK5sdMajXDy0vTmtu4KRRVfHyDZ8Qta7BYbfYLF_Dsw-_mJOEd1-u1PHooJKmT6JDjsQRL9lBT6Gz5Jm8f4kJc4WlnQbbRPkHpDaGGYhUM7Wg0609UV85AXL_6p3s5cVN_8vY2oeA8LoumWZl0WAiHeHAygmkgZLW3_v0AWAXdIF-GgVkGCsu2w-mR5u43O808KbWBdP2bHp4fNgkMm2fimF5A21xdQ6QaUe0n1OvDXE');"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-blue-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider">Програмчлал</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-blue-500 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded">Дунд шат</span>
+<div class="flex items-center text-amber-500 gap-1">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="text-xs font-bold">4.9</span>
+</div>
+</div>
+<h3 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">Python хэлээр өгөгдлийн шинжилгээ хийх</h3>
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-100 overflow-hidden" data-alt="Instructor avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhMgI3DuLrHEfeSxaABlZMxNGLXcmUMme5--LXBfQmE-BT30H9qFXTRXTaQ949qWGwq0SF34S_tdJ1uPdBnfqguZ_umk7iC_lPAsZ5J8ydXGVb4ZoubtAT6xvKUo0RI7TMFjJdsAUKYGFk55Od8l9WfRZvHNiFwXrOixpavbz9blGiiIZgRMHBqhujkDkuccfuAUhFgghctS8rgqd10inbiW9HOcepwqq8HilQ_67alofgCDuVObeajR8EBYIr2ZYUxkMsBOM_lSI');"></div>
+<span class="text-xs text-slate-500">С. Тэмүүлэн</span>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-1">
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#python</span>
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#data</span>
+</div>
+<div class="flex items-center justify-between mt-4 pt-4 border-t border-primary/5">
+<div class="flex flex-col">
+<span class="text-primary font-bold text-lg">Үнэгүй</span>
+</div>
+<button class="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 3 -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all group">
+<div class="relative h-48 w-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Digital marketing strategy thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2kHUSS_DRij1SBVpzW9OzRAfw_SvvwKG9_DxVHWZMivNZdGvPK-w1XvKZ7xcMiWgV4zUHgr-00SZ58QDsEJrDQ4AWOwXfoBvbV0tvjmiy-npPlo3LAIgefBp4I9dVFnhGt5PlegIedrE0MqiD7a7IgsDJoET4MVZAB7UI171CqC-4D6Fi9uxYSxoT6D_bi3DqHk5f4zC78gaxpAo06TdeAU-1CEPav0LuftqsUKFbuOYUl4r0kpy_dFf3Hr5W-coHx7OFhqYzt2I');"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-orange-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider">Маркетинг</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-red-500 bg-red-50 dark:bg-red-500/10 px-2 py-0.5 rounded">Ахисан шат</span>
+<div class="flex items-center text-amber-500 gap-1">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="text-xs font-bold">4.7</span>
+</div>
+</div>
+<h3 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">Дижитал маркетингийн стратегийн удирдлага</h3>
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-100 overflow-hidden" data-alt="Instructor avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPyzdaexDGIeDPR9jaDU9MhUVcYso2-05Cy8dBGYc-BW6jwYTbKrwHXqShRZk3-LOU-ME_p7nFbl6Ov32v0495pwadY8MdPavLELxTzvU_g_lK8PTAg5dYrGrXwFAQsc-D3q4hgTzhC5toOk6-pqgQoHK_rYGbolxRATIutr5WM8gr81kN_bcVntAYq4dhz1xXdgIgkmwcMMZTfj2jszFnqNfr1MSltwEhCjwYAMijtybGC20LCC5ufmIx0txcqlMA2H4MBdhHlrU');"></div>
+<span class="text-xs text-slate-500">Э. Мишээл</span>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-1">
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#social</span>
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500">#ads</span>
+</div>
+<div class="flex items-center justify-between mt-4 pt-4 border-t border-primary/5">
+<div class="flex flex-col">
+<span class="text-primary font-bold text-lg">150,000₮</span>
+</div>
+<button class="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-center gap-2 mt-16">
+<button class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold">1</button>
+<button class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 border border-primary/10 text-slate-600 dark:text-slate-400 hover:text-primary transition-all font-bold">2</button>
+<button class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 border border-primary/10 text-slate-600 dark:text-slate-400 hover:text-primary transition-all font-bold">3</button>
+<span class="text-slate-400 mx-1">...</span>
+<button class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 border border-primary/10 text-slate-600 dark:text-slate-400 hover:text-primary transition-all font-bold">12</button>
+<button class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+</body></html>

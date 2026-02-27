@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-none">Learnify</h1>
+<p class="text-primary text-xs font-medium uppercase tracking-wider">Lavender Edition</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-sm font-medium">Нүүр</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">book_2</span>
+<span class="text-sm font-bold">Миний курсууд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Хуваарь</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-sm font-medium">Мэдэгдэл</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="p-4 rounded-xl bg-primary/5 border border-primary/10">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Хөгжүүлэлтийн явц</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">logout</span>
+                    Гарах
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-8 lg:p-12">
+<div class="max-w-4xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-primary mb-2">
+<span class="text-xs font-bold uppercase tracking-widest">Курсын агуулга</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">UX Дизайны үндэс</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-3 text-lg max-w-2xl">Энэхүү курсээр та хэрэглэгчийн туршлага төлөвлөлтийн суурь мэдлэгийг эзэмшинэ.</p>
+</div>
+<button class="shrink-0 px-8 py-4 bg-primary text-white rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-primary/25">
+                        Бүртгүүлэх
+                    </button>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto whitespace-nowrap">
+<button class="px-6 py-4 border-b-2 border-primary text-primary font-bold text-sm">Хичээлийн хөтөлбөр</button>
+<button class="px-6 py-4 border-b-2 border-transparent text-slate-500 dark:text-slate-400 font-medium text-sm hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Танилцуулга</button>
+<button class="px-6 py-4 border-b-2 border-transparent text-slate-500 dark:text-slate-400 font-medium text-sm hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Багш</button>
+<button class="px-6 py-4 border-b-2 border-transparent text-slate-500 dark:text-slate-400 font-medium text-sm hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Сэтгэгдэл (124)</button>
+</div>
+<!-- Lessons List -->
+<div class="space-y-4">
+<!-- Lesson Item: Free Video -->
+<div class="group flex items-center justify-between p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-slate-300 dark:text-slate-700 w-6">01</span>
+<div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold group-hover:text-primary transition-colors">UX гэж юу вэ?</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-tighter bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Видео</span>
+<span class="text-xs text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 12 мин
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold rounded-full">Үнэгүй</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-700">chevron_right</span>
+</div>
+</div>
+<!-- Lesson Item: Text -->
+<div class="group flex items-center justify-between p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-slate-300 dark:text-slate-700 w-6">02</span>
+<div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold group-hover:text-primary transition-colors">Хэрэглэгчийн судалгааны аргууд</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-tighter bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Текст</span>
+<span class="text-xs text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 20 мин
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold rounded-full">Үнэгүй</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-700">chevron_right</span>
+</div>
+</div>
+<!-- Lesson Item: Locked Video -->
+<div class="flex items-center justify-between p-5 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 opacity-80">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-slate-200 dark:text-slate-800 w-6">03</span>
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<div>
+<h4 class="text-slate-500 dark:text-slate-500 font-bold">Persona үүсгэх нь</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-bold text-slate-300 dark:text-slate-700 uppercase tracking-tighter bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Видео</span>
+<span class="text-xs text-slate-300 dark:text-slate-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 15 мин
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-700">lock</span>
+</div>
+</div>
+<!-- Lesson Item: Locked Quiz -->
+<div class="flex items-center justify-between p-5 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 opacity-80">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-slate-200 dark:text-slate-800 w-6">04</span>
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined">quiz</span>
+</div>
+<div>
+<h4 class="text-slate-500 dark:text-slate-500 font-bold">Судалгааны хэсгийн шалгалт</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-bold text-slate-300 dark:text-slate-700 uppercase tracking-tighter bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Тест</span>
+<span class="text-xs text-slate-300 dark:text-slate-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 10 мин
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-700">lock</span>
+</div>
+</div>
+<!-- Lesson Item: Locked Video -->
+<div class="flex items-center justify-between p-5 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 opacity-80">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-slate-200 dark:text-slate-800 w-6">05</span>
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<div>
+<h4 class="text-slate-500 dark:text-slate-500 font-bold">Wireframe болон Prototyping</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-bold text-slate-300 dark:text-slate-700 uppercase tracking-tighter bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Видео</span>
+<span class="text-xs text-slate-300 dark:text-slate-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 25 мин
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-700">lock</span>
+</div>
+</div>
+</div>
+<!-- Enrollment CTA Card -->
+<div class="mt-12 p-8 rounded-2xl bg-gradient-to-br from-primary to-[#7a59ff] text-white flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-2xl font-bold mb-2">Хичээлээ бүрэн үзэхийг хүсвэл</h3>
+<p class="text-primary-foreground/80 opacity-90">Бүх видео хичээл, даалгавар болон сертификат авах эрх нээгдэнэ.</p>
+</div>
+<div class="relative z-10 shrink-0">
+<button class="px-8 py-3 bg-white text-primary font-bold rounded-xl shadow-lg hover:scale-105 transition-transform">
+                            Одоо эхлэх
+                        </button>
+</div>
+<!-- Decorative shapes -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full"></div>
+<div class="absolute right-20 -top-10 w-20 h-20 bg-white/5 rounded-full"></div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

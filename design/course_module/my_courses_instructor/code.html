@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-none">Learnify</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Багшийн хэсэг</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хянах самбар</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">book_2</span>
+<span class="text-sm font-medium">Миний сургалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Оюутнууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Тайлан</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary overflow-hidden">
+<img alt="User avatar" data-alt="Teacher profile avatar with minimalist character design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyLgEVJjiVA3MGug5Ro7a7D5EyM92IF8HxAo6fkIxGcPXZnDVZGMP2oXfaRxD48XmUtPMa4GMTC2ZaUU0s2keUOu3Rm3QPvcd34gTrL2FO0dCcY2ydN8lHE23iv-3KkN7BtyLqEZNtrUwzG9sjbL8yfxYSyy5RCi_ehvW6zdgdMB8b3PIb3plJDh2H1-Bn4TiQ9tVKJFg5PxUnWXt3tToYOYpbnEnOC_NsgKy3vYiDy4Rb2Asip0C7ixrV_O82GCxzi3MCd0JwVcU"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-semibold truncate">Бат-Эрдэнэ</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Ахлах багш</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto">
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold">Миний сургалтууд</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 outline-none" placeholder="Хайх..." type="text"/>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-sm">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Шинэ сургалт үүсгэх
+                    </button>
+</div>
+</header>
+<div class="p-8">
+<div class="flex items-center justify-between mb-6">
+<div class="flex gap-2 p-1 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+<button class="px-4 py-1.5 text-sm font-medium rounded-md bg-primary text-white shadow-sm">Бүгд</button>
+<button class="px-4 py-1.5 text-sm font-medium rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Нийтлэгдсэн</button>
+<button class="px-4 py-1.5 text-sm font-medium rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Ноорог</button>
+<button class="px-4 py-1.5 text-sm font-medium rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">Архивлагдсан</button>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span>Нийт: 12 сургалт</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Гарчиг</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Төлөв</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Ангилал</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Үнэ</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Үүсгэсэн огноо</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 overflow-hidden shrink-0">
+<img alt="UI/UX Basics" data-alt="Graphic showing a modern user interface design layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3nOEBNca73PsQomKbnkLJayRNXVZY91kbnvyUUkD5ZuXzYvuLEzpoRB4e4_k6afXgZg73FPyD7hGk1_J2RvFNBE2yTmKpgj1GisYsO2X9f1qqmCYR-FbhrjEtEfK0IPVH9okzKyQPmD6ee_1C0WudReexjtNS2U9hgtxZ5vBlmGcuTNZCdfN95Jtf-9s4q6fmXadEnGo4jV9nNnolZTGVhtdIZjVlF7aGUiAcq668Afylyolh03RTw-HJVZ4UhisDS1d4DmulKGQ"/>
+</div>
+<span class="font-semibold text-sm">UI/UX Дизайн үндэс</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                            PUBLISHED
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Дизайн</td>
+<td class="px-6 py-4 text-sm font-medium">₮150,000</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2023-10-01</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Засах">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Архивлах">
+<span class="material-symbols-outlined text-lg">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 overflow-hidden shrink-0">
+<img alt="Python Programming" data-alt="Matrix style digital green code background on a dark screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj08rCTrU4OZKaDcwmT57-43bHyEqcJ8ULFlJzbtmD9aAsRYsNHRQ0KoLUqvmvsb5WkxQg8kx7CtBs63mUd4X-XoFOPyWC7XHGkapfhdMzh6di0pQlf9mQOxEZZXPanajbn6sK6md394APS4ALTPhMFwOUJL_6ibknKQI8WHFpQNEDoNxTQ38M8oIIIRlM1fgRy8WEBaZkv1nSToKimMcOIon3U583k5-7R4T5GCKw7tW34HHWVrPE4Kvc4nN10VJEQsoZs2kehvM"/>
+</div>
+<span class="font-semibold text-sm">Python Програмчлал</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                            DRAFT
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Технологи</td>
+<td class="px-6 py-4 text-sm font-medium">₮200,000</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2023-11-15</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Засах">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 hover:bg-primary/10 rounded text-primary transition-colors" title="Нийтлэх">
+<span class="material-symbols-outlined text-lg">publish</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 overflow-hidden shrink-0">
+<img alt="Marketing Strategy" data-alt="Financial charts and business analysis data on a white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByf0MevJzIzu86_exB_NizqcAo6OLasAiFYkQk8dRvRub6lQls-P9GXSm6ihCy6YjWD8xze3fMA2zQepbgx2Yk3lM1WQHBzmht3qHBWyUawy-9lz0M8gSDRtl8K5L6EtaR1zDp_4DTr1KajvnZXcbehgOzVbBv_CpMmHgYyuEgPgV8LDSUYY6WGluA9d9DOdPLgVCrvtXeRNzSKaB_RiqGyIoEuSqJ13d3RjrhnuqTbOMnMKpfLb1HMZ2832WcHPO2GeAvRSmih_o"/>
+</div>
+<span class="font-semibold text-sm">Маркетингийн стратеги</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                                            ARCHIVED
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Бизнес</td>
+<td class="px-6 py-4 text-sm font-medium">₮120,000</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2023-05-20</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Засах">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 dark:text-slate-500 transition-colors disabled" disabled="">
+<span class="material-symbols-outlined text-lg opacity-50">restore_from_trash</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 overflow-hidden shrink-0">
+<img alt="Business Mgmt" data-alt="Team of people working together in a bright modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6NHBCl6YnwRWqWgotuLrCErM1b968RXRDu9f-yTroaHv7Y9z6EYI1t-rdE3ggN6nB2IWp9JCR7n81YvC_b7xmnLh5xXwQdLKwHngMyRVummKCBtWwMkWLxszlxbQib1s0ToT4BWD7tjqlqp3k6jLsJbhf5zLtOfT9uktzx21H3XbZB_Dwk9SXUx7ocOFYbDsGozrFVYVFbbs4CyF-LfqiFee7RV44-3N5FRULRQGCVI4K2O6qrFBlW15LzZDAci_ivSzbBYA-6bU"/>
+</div>
+<span class="font-semibold text-sm">Бизнесийн удирдлага</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                            PUBLISHED
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Бизнес</td>
+<td class="px-6 py-4 text-sm font-medium">₮180,000</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2023-08-10</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Засах">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-400 transition-colors" title="Архивлах">
+<span class="material-symbols-outlined text-lg">archive</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="mt-8 flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-slate-400">Нийт 48 илэрцээс 1-4 харуулж байна</p>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled="">
+<span class="material-symbols-outlined text-lg leading-none">chevron_left</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="size-9 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm">1</button>
+<button class="size-9 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-sm transition-colors">2</button>
+<button class="size-9 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-sm transition-colors">3</button>
+<span class="px-1">...</span>
+<button class="size-9 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-sm transition-colors">12</button>
+</div>
+<button class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-lg leading-none">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

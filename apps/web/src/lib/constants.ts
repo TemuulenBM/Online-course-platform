@@ -68,6 +68,12 @@ export const QUERY_KEYS = {
   },
   admin: {
     users: (params?: object) => ['admin', 'users', params] as const,
+    health: ['admin', 'health'] as const,
+    moderationStats: ['admin', 'moderation-stats'] as const,
+    flaggedContent: (params?: object) => ['admin', 'flagged-content', params] as const,
+    auditLogs: (params?: object) => ['admin', 'audit-logs', params] as const,
+    auditLogDetail: (id: string) => ['admin', 'audit-logs', 'detail', id] as const,
+    settings: (category?: string) => ['admin', 'settings', category] as const,
   },
   payments: {
     myOrders: (params?: object) => ['payments', 'orders', 'my', params] as const,
@@ -151,6 +157,10 @@ export const ROUTES = {
   CHECKOUT: (courseId: string) => `/checkout/${courseId}` as const,
   INVOICES: '/invoices',
   INVOICE_DETAIL: (id: string) => `/invoices/${id}` as const,
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_SETTINGS: '/admin/settings',
+  ADMIN_AUDIT_LOGS: '/admin/audit-logs',
+  ADMIN_MODERATION: '/admin/moderation',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_ORDER_DETAIL: (id: string) => `/admin/orders/${id}` as const,
   ADMIN_ANALYTICS: '/admin/analytics',

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-primary/10 bg-white dark:bg-slate-900 flex flex-col fixed h-full z-20">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">auto_stories</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Learnify</h1>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-medium">Нүүр</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">book</span>
+<span class="font-medium">Миний сургалт</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">video_camera_front</span>
+<span class="font-medium">Шууд хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-medium">Багш нар</span>
+</a>
+<div class="pt-4 pb-2 border-t border-primary/10 mt-4">
+<p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Тохиргоо</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Тохиргоо</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary overflow-hidden">
+<img class="object-cover h-full w-full" data-alt="User profile avatar illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8iAPyC2hC1YGeL2y6dO3suyocRM0ngYucB_7_6i8L90yI_7s3-WfG10NdFnPq8ee63oD5r_c4qzAA04t9EwF7koYy4RLwocNTfWMzgGOVGdEy0LHnPEBpyvALSqUUeG7Du_I4mPCSIhG9Etr4QobSf1OrRsBJvvJ8mijhTUckB80OyPXObVwDzaPGqZ3YDKmqOJnrau7gIO-eIwiFdkjFLaVyK_HSZJuKSZaKTmIpKRPEKD8pi5TuAFCxgF9mc8xL8Mmnu0FzotA"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Г.Болд</p>
+<p class="text-xs text-slate-500 truncate">Оюутан</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8">
+<!-- Header -->
+<header class="flex items-center justify-between mb-8">
+<div class="flex-1 max-w-xl">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm" placeholder="Хичээл хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:bg-primary/10 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-primary/10 mx-2"></div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                    Шинэ хичээл
+                </button>
+</div>
+</header>
+<!-- Title Section -->
+<div class="mb-10">
+<h2 class="text-3xl font-extrabold tracking-tight mb-2">Удахгүй болох шууд хичээлүүд</h2>
+<p class="text-slate-500 dark:text-slate-400 max-w-2xl">Танд хэрэгтэй шинэ мэдлэгийг салбартаа тэргүүлэгч багш нарын шууд дамжуулалтаас суралцаарай.</p>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 mb-8 overflow-x-auto pb-2">
+<button class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-medium whitespace-nowrap">Бүгд</button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Технологи</button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Бизнес</button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Дизайн</button>
+<button class="px-4 py-2 bg-white dark:bg-slate-900 border border-primary/10 hover:border-primary text-slate-600 dark:text-slate-400 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Маркетинг</button>
+</div>
+<!-- Featured / Soonest First Large Card -->
+<div class="mb-10">
+<div class="relative group overflow-hidden bg-white dark:bg-slate-900 rounded-2xl border border-primary/20 shadow-xl shadow-primary/5 flex flex-col md:flex-row">
+<div class="md:w-2/5 relative h-64 md:h-auto overflow-hidden">
+<div class="absolute inset-0 bg-primary/20 z-10 group-hover:bg-primary/10 transition-colors"></div>
+<div class="absolute top-4 left-4 z-20 bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded flex items-center gap-1">
+<span class="animate-pulse w-2 h-2 bg-white rounded-full"></span>
+                        Тун удахгүй
+                    </div>
+<img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" data-alt="React development code on a screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsearD3tPJduvpZxFHN0cgEgmYCyIFf9pomJR1xxkbXfY6vxxvv0XkaLSOJwOJdszahw7ZZvnLCnL1RKJ7Q3fcuxiIxT3k6Jx3jusQPeR86MSNZ-UWXDvlkbiWel-Wq74uYhAuPsjokohptsyEiYLLBn0mFbT0H5mdVr7161qyAycsYsyhEBWFGREIVx875whw3GlSlWy_OY7yMSzq-bMFY4ZiLl_9N6WC_ixbv8l_RJ0bdhe9y7puCLawVxqxIgMtwmDncpVRjXs"/>
+</div>
+<div class="md:w-3/5 p-8 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-4">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">Вэб хөгжүүлэлт</span>
+<span class="text-slate-400 text-sm">•</span>
+<span class="text-slate-500 text-sm">Өнөөдөр 19:00</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">Advanced React Patterns &amp; performance optimization</h3>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center gap-2">
+<div class="h-8 w-8 rounded-full overflow-hidden bg-slate-200">
+<img class="object-cover w-full h-full" data-alt="Professional instructor portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZM9Bss-YdJeYeHXiy7DrnxgsgMQV23yD3-zsWZqvjJaDKie2ILs-Oo3IhCgmXz_8k1jvEHuAF-bHcfn46vn1WbWa_-WXnGJu1pgyIJRM8BPCHGv9wViyUCWOsRrjEc8KK2opLxjs1yKZMjFwrD5zIdSXP3W9os-tXaxl6F2vfvabPf1n4H7C3a3S2zeK_ViGaRjVl2nALifyDG_F_NXEK4paO72xVkqaoL4ptLMeCG-9GIytqQBc5pM39yWYZFW5JiUNBptkler8"/>
+</div>
+<span class="text-sm font-medium">Г.Болд</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-lg">person_check</span>
+<span class="text-sm">124 үзэгч</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95">Элсэх</button>
+<button class="p-3 border border-primary/20 text-primary rounded-xl hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid of Sessions -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg">
+<div class="aspect-video relative overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Modern business office meeting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBK-c3Y2xWGseaJLJdRyxLTKbDJfzjbb8Q3wASkA23uAB-XT_YyKJ83D28h0XtkCSIBarXXNLH4_kkqAxGTOSnOrBMbKNiZqwPD67G4MnTonMr3kXRSWs2gOZb6rb1GFSRel5eloo3bG1nTUNi5TxIG7dN_THp2RdK0nccUmA2yGfRvTZjOj1yQEljpuPu3166XKzXifii5OyupvkPtDmybiQs4PzjZ-iS2zI9-SIM6AFJRlrtIvqH_HXQZ0tL8_jEkwzgfv6dkSg"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2 py-1 rounded">
+                        Маргааш 10:00
+                    </div>
+</div>
+<div class="p-5">
+<div class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Бизнес ба Менежмент</div>
+<h4 class="font-bold text-lg mb-4 line-clamp-1">Стартап эхлүүлэхэд анхаарах 10 зүйл</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-slate-100 overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Female instructor headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC499Dca_QVo0drZ3jaJl8xg8BpuyWN9Skwk8XUWHvn9Dq_bHvoxLz4x3saZKDoVrgqFO1wSV2gOXT1KMjD3qrh3CtVS5ydh52e_FrDYMVjau44fY6r0-WSeZuFCPlY55CVhfoRPhQCfljjW0aAvHJdtNlAk1omGE0nmf2gcC5LTnHu0riCLXZoCJvaXtJme7ZZty2aKdtYGlNa2-GCzBFwFgRYKKisK_cpyHs29XlaujR--5Drt9nc_sY55VIt-bKoet8FqXGTzO0"/>
+</div>
+<span class="text-xs text-slate-600 dark:text-slate-400">С.Энхмаа</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>45 хүлээж буй</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-primary/10 text-primary py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all">Үзэх</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg">
+<div class="aspect-video relative overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="UX Design screens on a laptop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmNN5-CIHCaZdHeiIPjIXf2KdMweCSXpKHudAZi2l1Uh-iZBfviuSBlmiPCxe30Yc-U4RC3AC-A5aApGPgapOBQ5HNtqgv-ABijyvAQvb9xQZEpGWT3ozf4qxAjz6iSSSrZRKqsmUPlz9Loi4St5hdX2i5RwBwBvmxVeiGd1v9a8REcAr8mDKTZXNlSNPUlZMomjHWtZhUKwmfvWnV-qwd1KRetTgEdyeGg2tCCn2IPctxPQPY7Sd5TUgHLEVWj7CYiStDxRAwc8"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2 py-1 rounded">
+                        2 сарын 25, 15:30
+                    </div>
+</div>
+<div class="p-5">
+<div class="text-primary text-xs font-bold uppercase tracking-wider mb-2">UI/UX Дизайн</div>
+<h4 class="font-bold text-lg mb-4 line-clamp-1">Figma-ийн шинэ боломжууд (Variables)</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-slate-100 overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Design instructor avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0ALmpovnEP9KcKzG8nNRQdlDGCi8Op6pN_G2woqhZpULBQLyjXxMyZrlKoKPZZPDgN4aHDPhR8isZvVsrGYmZREg2rFNJqz1vSuwQs2whI2ZBma1KKmSE_YQTSWsfHNLlnn53CFqHS2uDpz6Zj6rvJH_Iftqg756RN57blwCBisUR2lLvXONfSPrroIWA7f59PhJVFxu4HxOSNOIf1s6o-JJwmEjpMtIc0n_n2YYJO10WY8r2alZv4ciEjniINdmQew4R9BuLYxU"/>
+</div>
+<span class="text-xs text-slate-600 dark:text-slate-400">Б.Тэмүүлэн</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>212 хүлээж буй</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-primary/10 text-primary py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all">Үзэх</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg">
+<div class="aspect-video relative overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Classroom setting for photography workshop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoBy9NJtcggdXZursIMWaSmYnpy8ycnePkKUHlHRRJJBt15_DUf2R4OHTck0HuSmtWZRVq9POPPE_IiFrpdV4_z3wmiT1UJgePc5VSJe3pCjYAMx6dH6ULs8ghxdVKYqb6N4at2pq8AFo2XKM-0Mh6UDn30DjY2hwUyFk7NGblP1X6op4aroReMeU9BABQ7YkT2hpNN4TGpxaoKQNkXs3_8atPw-WBCrWRrziOjxICFXmbPZi_7uiIFSyAwZAduUYKkGrmssSYIp0"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2 py-1 rounded">
+                        2 сарын 28, 11:00
+                    </div>
+</div>
+<div class="p-5">
+<div class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Хувь хүний хөгжил</div>
+<h4 class="font-bold text-lg mb-4 line-clamp-1">Цаг төлөвлөлтийн шилдэг аргууд</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-slate-100 overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Development coach profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAPMMkRvYdPG8d-43ZOFZFgOcF3XsYN2PYgPOpxepFkfJozOYMAWthqO6zZLSIzJLo517iqCuh8zrY8KpaNEMeV1U4iLCyAmR3pZFzTXr8fkfsMLCW-BfVhTFsw9sYv4l5QTujQN4xnn3BGUA2TfohQ_COM5MY85hF9b5tXyCsByphcBPwPK_q4mT_cp3C_bOBpU9FaRdPhGj4oM4Kv0onmdfJFMHfxbZJols9jhcXWcIdxEZnUNPPyJgDQTEHQQtgLGC8w6W6XDY"/>
+</div>
+<span class="text-xs text-slate-600 dark:text-slate-400">М.Золзаяа</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>89 хүлээж буй</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-primary/10 text-primary py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all">Үзэх</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg">
+<div class="aspect-video relative overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Marketing data charts on a tablet" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL8VAZMj8WyVtg-iGV7HZqX7UyDa-cwZ_GAEBvLwK4wBLOxYpjG56V7K1GoV6IMJ-V5hWEoPujhXpy56iAVEgc8-zOaBI-q-4Y-ha6UpiPOsO1vRrzQyx5DfGXgGdNtlLcaAnN0Xxdy_N1D0o92ypl6PVZVwhO-R51DVhRjO5uNXqjMP31H2zyAPgNYKV0NtgxooG9miG80ITSE_6sO3qZetsw4nJtsDeZ3DkKj64CDc0mIR3JBXFSVK6RpkuYa3nhl180ATSNYxY"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2 py-1 rounded">
+                        3 сарын 1, 20:00
+                    </div>
+</div>
+<div class="p-5">
+<div class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Дижитал Маркетинг</div>
+<h4 class="font-bold text-lg mb-4 line-clamp-1">AI ашиглан контент бүтээх нь</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-slate-100 overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Marketing expert headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAirf5nMP0oE--BuGZZCwurA63iLEd5Sf0kpC-kWS5h2BibKCJiULPuxUpc2-0I7gGlHLgQ0bf0vbd-BcTdqn_rPrkfVHEjBzgKORBbvSNPESrdqfLwb4_GhpI1DzPhruQ5uDsK9jFsGY7F8803B0nDpNY38OPQiLHXO6YqubPGnnYOlyfPFBHDeTei7_tAYJZnwiZFmeGxdZHonqR46OPMj5TEiju5xDEHUHuiO71nzi4VlgCbD6XSOMKKjQE40JHtMp1J25aXdUM"/>
+</div>
+<span class="text-xs text-slate-600 dark:text-slate-400">Т.Гэрэл</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>156 хүлээж буй</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-primary/10 text-primary py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all">Үзэх</button>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg">
+<div class="aspect-video relative overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Python programming code on monitor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDewouOGQAUqMdETmQ9y1wt0FedC1QQIXFDpr6ikip3_xaGnQeO7bFEMygvm1pucjhAeU9KuuTMykyJOvBR_siODdUCvjcyoyP6xspbz-pgKv_X7wOkzx_ljC5dGRANsK2sXNgWfs9mSRUyVEGEI2_wGAhp0SeH849ty8sq38zGcqz0v8s7fLm71QrulUiDluq8NmJcTXecADRQePA-CN6THZV31mdLCzsQSF_7tjzmzgmj2OqwWx41pCM23oDYdmzzlWJMP1HXCG4"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs px-2 py-1 rounded">
+                        3 сарын 5, 14:00
+                    </div>
+</div>
+<div class="p-5">
+<div class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Програмчлал</div>
+<h4 class="font-bold text-lg mb-4 line-clamp-1">Python хэлний үндэс - Анхан шат</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-slate-100 overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Coding instructor portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMN9OJtGanoqlUgqlqm4-1zQheX6Xcmt2s17fb7KmJs8YjaDlU83B6fWDggYUHg27iDiM73_1S-ExIQ1kr7d6Bi8qduwgS8wRrWkJGVQWZR6G4cQop3Ep2u3R6RF6JuP7ZcJAHjAzEUXh2p5ppXys-BvswGPOMoLffiGcM7dMZPCXRKuQNNp7Kwzq99plGM5yC8e-LAtHThE_CKBAO7dIPZujfOBuONCyHKaE3CoVlwVbhup5p-Blfl4vbj02lN5Io1Hi6KEaIqW0"/>
+</div>
+<span class="text-xs text-slate-600 dark:text-slate-400">Ж.Бат-Оргил</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>342 хүлээж буй</span>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-primary/10 text-primary py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all">Үзэх</button>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden hover:border-primary/30 transition-all hover:shadow-lg border-dashed flex flex-col items-center justify-center p-8 text-center bg-primary/5">
+<div class="h-12 w-12 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl">add</span>
+</div>
+<h4 class="font-bold text-lg mb-2">Таны хичээл байхгүй байна уу?</h4>
+<p class="text-sm text-slate-500 mb-6">Өөрийн мэдлэгээ бусадтай хуваалцаж, шууд хичээлээ энд байршуулаарай.</p>
+<button class="px-6 py-2 bg-primary text-white rounded-xl text-sm font-bold shadow-md">Хүсэлт илгээх</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

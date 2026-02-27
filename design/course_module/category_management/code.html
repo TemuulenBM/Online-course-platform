@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 flex-shrink-0 border-r border-primary/10 bg-white dark:bg-background-dark/50 hidden md:flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight">Learnify</h1>
+<p class="text-xs text-slate-500">Системийн админ</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хянах самбар</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-sm font-medium">Сургалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-sm font-bold">Ангилал</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Хэрэглэгчид</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-lg">person</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-semibold truncate">Админ Хэрэглэгч</p>
+<p class="text-xs text-slate-500 truncate">admin@learnify.mn</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-4 md:p-8">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-3xl font-black tracking-tight">Ангилал удирдлага</h2>
+<p class="text-slate-500 mt-1">Сургалтын ангиллуудыг засах, устгах болон шинээр нэмэх</p>
+</div>
+<a class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20 w-fit" href="#add-category">
+<span class="material-symbols-outlined text-xl">add</span>
+<span>Шинэ ангилал нэмэх</span>
+</a>
+</div>
+<!-- Category List Table -->
+<div class="bg-white dark:bg-background-dark/30 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 border-b border-primary/10">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Ангиллын нэр</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Тайлбар</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Курс</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Дараалал</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<!-- Parent Row -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary/60">keyboard_arrow_down</span>
+<span class="font-semibold">Мэдээллийн технологи</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Програмчлал, өгөгдлийн шинжилгээний үндсэн салбар</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">12</span>
+</td>
+<td class="px-6 py-4 text-center font-medium">1</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-slate-300 cursor-not-allowed" title="Курс байгаа тул устгах боломжгүй"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Child Row -->
+<tr class="hover:bg-primary/5 transition-colors bg-slate-50/50 dark:bg-slate-900/10">
+<td class="px-6 py-4 pl-12">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xs text-slate-400">subdirectory_arrow_right</span>
+<span class="text-sm font-medium">Вэб хөгжүүлэлт</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-400 italic">Frontend болон Backend технологиуд</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">8</span>
+</td>
+<td class="px-6 py-4 text-center text-sm font-medium">1</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-2 text-slate-300 cursor-not-allowed"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Empty Category Row -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary/60">category</span>
+<span class="font-semibold">Бизнес удирдлага</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Бизнесийн стратеги, менежмент</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-400 px-3 py-1 rounded-full text-xs font-bold">0</span>
+</td>
+<td class="px-6 py-4 text-center font-medium">2</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-red-400 hover:text-red-600 transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary/60">brush</span>
+<span class="font-semibold">Дизайн</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">График дизайн, UI/UX чиглэлүүд</td>
+<td class="px-6 py-4 text-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">5</span>
+</td>
+<td class="px-6 py-4 text-center font-medium">3</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-slate-300 cursor-not-allowed"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Add New Category Form -->
+<div class="bg-white dark:bg-background-dark/30 rounded-2xl border border-primary/10 p-6 md:p-8 shadow-sm" id="add-category">
+<div class="flex items-center gap-3 mb-8">
+<div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">add_circle</span>
+</div>
+<h3 class="text-xl font-bold">Шинэ ангилал нэмэх</h3>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Ангиллын нэр</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-primary/10 rounded-xl px-4 py-3 focus:ring-primary focus:border-primary transition-all" placeholder="Жишээ: Хиймэл оюун ухаан" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Эцэг ангилал</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800/50 border-primary/10 rounded-xl px-4 py-3 focus:ring-primary focus:border-primary transition-all">
+<option value="">--- Эцэг ангилалгүй ---</option>
+<option value="1">Мэдээллийн технологи</option>
+<option value="2">Бизнес удирдлага</option>
+<option value="3">Дизайн</option>
+</select>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Тайлбар</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border-primary/10 rounded-xl px-4 py-3 focus:ring-primary focus:border-primary transition-all" placeholder="Ангиллын тухай товч тайлбар..." rows="3"></textarea>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Харагдах дараалал</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-primary/10 rounded-xl px-4 py-3 focus:ring-primary focus:border-primary transition-all" placeholder="1" type="number"/>
+</div>
+<div class="flex items-end">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-all" type="submit">
+                                Ангилал хадгалах
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+</body></html>

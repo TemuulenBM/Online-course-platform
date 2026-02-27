@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col fixed h-full z-50">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl">school</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">Learnify</h1>
+<p class="text-xs text-primary font-medium uppercase tracking-wider">Education Hub</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">book_4</span>
+<span class="text-sm font-medium">Course</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="text-sm font-medium">My Task</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Community</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">bar_chart_4_bars</span>
+<span class="text-sm font-medium">Report</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Events</span>
+</a>
+<div class="my-4 border-t border-primary/5"></div>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Setting</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="text-sm font-medium">Support</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary/5 rounded-2xl p-4 border border-primary/10">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">workspace_premium</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Pro Plan</p>
+<p class="text-[10px] text-slate-500">Upgrade for more features</p>
+</div>
+</div>
+<button class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">Upgrade</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-72">
+<!-- Header -->
+<header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-primary/10 flex items-center justify-between px-8 sticky top-0 z-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">Миний Профайл</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Хайх..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-xl bg-primary/5 text-slate-600 dark:text-slate-400 flex items-center justify-center hover:bg-primary/10 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<div class="w-px h-6 bg-primary/10 mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden transition-transform group-hover:scale-105">
+<img class="w-full h-full object-cover" data-alt="Profile avatar of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFc9r_pN51fm51g-rhueDGDzAyYTUN-aW_V9j2-9zQkiT8PGAQI2aD4LM8ugV-KPZg_MC-CuA70CmShm7qJcyslkVf3sNd_0mCaH1lCUNDziSLrdsz1_eoRt0ahwcAJZI_IWtXQ-XIZOy1XA-2ZLJCnMsNOgHvN9mFoLtijuFrIcFRoi8HRjQY4BJb87sF7C8mJP82vDFiUrCcbTjBE-ZNIhXfZw6-8DphZawXc6xrbcMCxPu5UPSBlOrKv01orLYLdMvus_s-XAU"/>
+</div>
+<div class="hidden md:block">
+<p class="text-sm font-bold leading-none">Бат-Эрдэнэ</p>
+<p class="text-[10px] text-primary font-medium mt-1">ADMIN</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-5xl mx-auto">
+<!-- Profile Info Card -->
+<div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-primary/5 overflow-hidden mb-8">
+<div class="h-32 bg-gradient-to-r from-primary/30 via-primary/10 to-transparent"></div>
+<div class="px-8 pb-8 -mt-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col md:flex-row items-center md:items-end gap-6">
+<div class="relative">
+<div class="w-32 h-32 rounded-3xl border-4 border-white dark:border-slate-900 bg-white dark:bg-slate-800 shadow-xl overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Large profile picture of a male student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnKe4K7cYPoxs5w6OweudlX7gkGI6t34c2PcmJK5fGCgVSa7to4ppw6pq13vqfEsGKUTxhxeMcoQBtHDQz-lx3ozteZkCofW9L5rzamTCk58dMCXgU2q0nCyDJsyPIRIVRVKmiUWQJUT6euUAWYnQApw84mwdtnvdgO0xnvtkAsLiX9pinAmyBpFPXmQoMkG6nKN116RFNPoaKKGdzANoZfL2LiCZr2vMAXjDSlZ_yit69O53cH1JkkPlP1Chyw-GhMmCtMFcs2-w"/>
+</div>
+<button class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary text-white rounded-xl shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-lg">photo_camera</span>
+</button>
+</div>
+<div class="text-center md:text-left mb-2">
+<div class="flex items-center justify-center md:justify-start gap-3">
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white">Бат-Эрдэнэ Гантулга</h1>
+<span class="px-3 py-1 bg-primary/20 text-primary text-xs font-bold rounded-lg border border-primary/20">ADMIN</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 mt-1 flex items-center justify-center md:justify-start gap-2">
+<span class="material-symbols-outlined text-sm">mail</span>
+                                    bat-erdene@learnify.mn
+                                </p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 bg-background-light dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold rounded-xl hover:bg-primary/10 hover:text-primary transition-all">Цуцлах</button>
+<button class="px-8 py-2.5 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:opacity-90 transition-all">Хадгалах</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Edit Form Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-primary/5 shadow-sm">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Үндсэн мэдээлэл</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Нэр</label>
+<input class="w-full px-4 py-3 bg-background-light dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 dark:text-white font-medium" type="text" value="Бат-Эрдэнэ"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Овог</label>
+<input class="w-full px-4 py-3 bg-background-light dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 dark:text-white font-medium" type="text" value="Гантулга"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Имэйл хаяг (Засах боломжгүй)</label>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800/50 border-none rounded-xl text-slate-400 font-medium cursor-not-allowed" readonly="" type="email" value="bat-erdene@learnify.mn"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">lock</span>
+</div>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Миний тухай</label>
+<textarea class="w-full px-4 py-3 bg-background-light dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 dark:text-white font-medium resize-none" rows="4">Сайн байна уу? Намайг Бат-Эрдэнэ гэдэг. Би Learnify платформд Сурлагын зөвлөх бөгөөд вэб хөгжүүлэлтийн чиглэлээр суралцаж байна. Шинэ зүйл сурах бүртээ урам зориг авдаг.</textarea>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-primary/5 shadow-sm">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Байршил ба Хугацаа</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Улс</label>
+<select class="w-full px-4 py-3 bg-background-light dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 dark:text-white font-medium">
+<option selected="">Монгол</option>
+<option>АНУ</option>
+<option>Герман</option>
+<option>Япон</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Цагийн бүс</label>
+<select class="w-full px-4 py-3 bg-background-light dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 dark:text-white font-medium">
+<option selected="">(GMT+08:00) Ulaanbaatar</option>
+<option>(GMT+00:00) London</option>
+<option>(GMT-05:00) New York</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Progress Card -->
+<div class="bg-primary rounded-3xl p-8 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-2">Сургалтын явц</h4>
+<p class="text-white/70 text-sm mb-6">Та нийт сургалтынхаа 78%-ийг амжилттай дүүргэсэн байна.</p>
+<div class="w-full bg-white/20 rounded-full h-3 mb-6">
+<div class="bg-white h-full rounded-full w-[78%] shadow-sm"></div>
+</div>
+<button class="w-full py-3 bg-white text-primary font-bold rounded-xl hover:bg-slate-50 transition-colors">Дэлгэрэнгүй</button>
+</div>
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+</div>
+<!-- Task Quick View -->
+<div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-bold">Ойрын даалгавар</h4>
+<span class="text-primary material-symbols-outlined">more_horiz</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">code</span>
+</div>
+<div>
+<p class="text-sm font-bold">Python Project</p>
+<p class="text-xs text-slate-400">Маргааш, 18:00</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-orange-500 text-xl">palette</span>
+</div>
+<div>
+<p class="text-sm font-bold">UI Design Review</p>
+<p class="text-xs text-slate-400">11 сарын 25</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

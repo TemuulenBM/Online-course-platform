@@ -118,7 +118,22 @@ export {
 } from './use-comments';
 
 // Admin hooks
-export { useAdminUsers, useUpdateUserRole, useDeleteUser, useEntityAuditLogs } from './use-admin';
+export {
+  useAdminUsers,
+  useUpdateUserRole,
+  useDeleteUser,
+  useEntityAuditLogs,
+  useSystemHealth,
+  useModerationStats,
+  useFlaggedContent,
+  useApproveFlaggedContent,
+  useRejectFlaggedContent,
+  useAuditLogs,
+  useAuditLogDetail,
+  useSettings,
+  useUpsertSetting,
+  useDeleteSetting,
+} from './use-admin';
 
 // Category admin hooks
 export { useCreateCategory, useUpdateCategory, useDeleteCategory } from './use-categories-admin';

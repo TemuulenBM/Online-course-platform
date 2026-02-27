@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#9c7aff",
+                "background-light": "#f6f5f8",
+                "background-dark": "#140f23",
+              },
+              fontFamily: {
+                "display": ["Lexend"]
+              },
+              borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .filled { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex flex-col items-center">
+<!-- Header -->
+<header class="w-full max-w-[1200px] flex items-center justify-between px-6 py-4 border-b border-primary/10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">school</span>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Сургалтууд</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Миний хичээл</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Тусламж</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50 w-64" placeholder="Хайх..." type="text"/>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border-2 border-primary/30">
+<img alt="Хэрэглэгчийн зураг" data-alt="User profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASZU8qZbyonME0qly2Og1rlRhmlTIpjWYIMJchMIQZs7721rDhGAzLs6yM3bFGA5xq4H87i7l0oPHjwtesM4jeHG84XnJ5E7Ad8qyFvszig4nEQogu4HxmwD7yLJzTmgysX1M3X-W2MT7fJsXl0cGEVpec5GOI0cswjah74gTM_nP1dT40PlVHdFoNE2s7YSKnx4RjlrcJSHWrPsml2UoKIp6LfA2oIOKBvNVYYED8LDcZCtTx0OLN--yUlxlWXxKDnNKn5MA-7J8"/>
+</div>
+</div>
+</header>
+<main class="w-full max-w-[960px] px-6 py-12">
+<div class="mb-10">
+<span class="text-primary font-semibold text-sm uppercase tracking-wider">Бизнес аналитик ба өгөгдлийн сан</span>
+<h1 class="text-4xl font-black mt-2 mb-4 leading-tight">Элсэлтийн удирдлага</h1>
+<p class="text-slate-500 dark:text-slate-400 max-w-2xl">Таны сургалтын явц болон элсэлтийн төлөвийг доорх хэсгээс удирдана уу. Төрөл бүрийн төлөвт тохирох үйлдлүүдийг харууллаа.</p>
+</div>
+<!-- Prerequisite Section -->
+<div class="mb-8 p-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl">
+<div class="flex items-center gap-3 mb-4 text-amber-700 dark:text-amber-400">
+<span class="material-symbols-outlined">info</span>
+<h3 class="font-bold">Дараах сургалтуудыг дуусгах шаардлагатай:</h3>
+</div>
+<ul class="space-y-3">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">link</span>
+<a class="text-amber-800 dark:text-amber-300 underline underline-offset-4 hover:text-primary transition-colors" href="#">Өгөгдлийн сангийн үндэс (Intro to SQL)</a>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">link</span>
+<a class="text-amber-800 dark:text-amber-300 underline underline-offset-4 hover:text-primary transition-colors" href="#">Бизнес аналитик 101: Үндсэн ойлголтууд</a>
+</li>
+</ul>
+</div>
+<!-- Enrollment States Grid -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Success State (Notification) -->
+<div class="flex items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 rounded-xl text-emerald-800 dark:text-emerald-400">
+<span class="material-symbols-outlined filled">check_circle</span>
+<p class="font-medium text-sm">Амжилттай элсэлт хийгдлээ. Хичээлээ эхлэхэд бэлэн байна.</p>
+</div>
+<!-- 1. Not enrolled (Free) -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">card_giftcard</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Үнэгүй элсэх боломжтой</h4>
+<p class="text-slate-500 text-sm">Энэхүү сургалт нь хүн бүрт нээлттэй.</p>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/20">
+                        Үнэгүй элсэх
+                    </button>
+</div>
+<!-- 2. Not enrolled (Paid) -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">shopping_cart</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Худалдаж авах</h4>
+<p class="text-slate-500 text-sm">Бүх агуулгыг 149,000₮-өөр нээх.</p>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/20">
+                        Худалдаж авах
+                    </button>
+</div>
+<!-- 3. Active -->
+<div class="bg-primary/5 dark:bg-primary/10 p-6 rounded-xl border border-primary/20 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">play_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Сургалт идэвхтэй байна</h4>
+<div class="flex items-center gap-2 mt-1">
+<div class="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-primary"></div>
+</div>
+<span class="text-xs text-slate-500">35% дууссан</span>
+</div>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/20 flex items-center gap-2">
+                        Үргэлжлүүлэх
+                        <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+</button>
+</div>
+<!-- 4. Completed -->
+<div class="bg-emerald-50 dark:bg-emerald-950/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-900/30 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 rounded-lg bg-emerald-500 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Баяр хүргэе!</h4>
+<p class="text-slate-500 text-sm">Та энэ сургалтыг амжилттай дуусгасан.</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm filled">check_circle</span>
+                            Дууссан
+                        </span>
+<span class="text-xs text-slate-400">Огноо: 2024.03.15</span>
+</div>
+</div>
+<!-- 5. Cancelled/Expired -->
+<div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 grayscale">
+<div class="flex items-center gap-5 opacity-60">
+<div class="w-14 h-14 rounded-lg bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-3xl">history_toggle_off</span>
+</div>
+<div>
+<h4 class="font-bold text-lg">Элсэлтийн хугацаа дууссан</h4>
+<p class="text-slate-500 text-sm">Таны элсэлт цуцлагдсан эсвэл дууссан байна.</p>
+</div>
+</div>
+<button class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-semibold transition-all">
+                        Дахин элсэх
+                    </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full max-w-[1200px] mt-20 px-6 py-12 border-t border-primary/10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3 text-primary opacity-60">
+<span class="material-symbols-outlined font-bold">school</span>
+<span class="font-bold tracking-tight">Learnify</span>
+</div>
+<div class="flex gap-8 text-sm text-slate-400">
+<a class="hover:text-primary transition-colors" href="#">Бидний тухай</a>
+<a class="hover:text-primary transition-colors" href="#">Үйлчилгээний нөхцөл</a>
+<a class="hover:text-primary transition-colors" href="#">Нууцлалын бодлого</a>
+</div>
+<p class="text-xs text-slate-400">© 2024 Learnify Education Platform</p>
+</div>
+</footer>
+</div>
+</body></html>

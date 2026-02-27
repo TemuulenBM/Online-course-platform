@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify - Course Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-3">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-primary/5 dark:bg-primary/10">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 h-full placeholder:text-slate-400 text-sm" placeholder="Хичээл хайх..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl size-10 bg-primary/5 dark:bg-primary/10 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl size-10 bg-primary/5 dark:bg-primary/10 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPaSHZspUvAFKua4iUxxixdHsGbLnxNGihOXfZdkxyo3BZQsu0fX2nrGbgEzMcRdR3Brv6WrA1VWqofeHBJhoQKbaR1Nfy-yrFzQqrP610TwJfpwFixFBGtRJ0fPFibR4P7lHnDYSwdEBFPWJj3-vIV4eQZKXQ7F0XhDKv__VfLlnKsAVT1Y1vhJx3GRBuSlaPTOXGGMGWGCF4UdssjireJmwgLL4HhDkLSNqUXFHn2kAM7Sw6KKOYIsDTSEddhf799tat9-ewMXw");'></div>
+</div>
+</header>
+<div class="flex grow h-full max-w-[1440px] mx-auto w-full">
+<aside class="hidden lg:flex w-64 flex-col border-r border-primary/10 p-6 gap-6 shrink-0 h-[calc(100vh-65px)] sticky top-[65px]">
+<div class="flex flex-col gap-2">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-wider px-3 mb-2">Цэс</p>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-primary">home</span>
+<span class="text-sm font-medium">Нүүр хуудас</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-sm font-semibold">Хайх</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="text-sm font-medium">Миний хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Багш нар</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Гарах</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 p-4 md:p-8 lg:p-12">
+<div class="max-w-4xl mx-auto space-y-8">
+<nav class="flex items-center gap-2 text-sm text-slate-500">
+<a class="hover:text-primary" href="#">Хичээлүүд</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="text-primary font-medium" href="#">Дизайн</a>
+</nav>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8 space-y-6">
+<div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl ring-1 ring-primary/10 relative group">
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer">
+<span class="material-symbols-outlined text-6xl text-white">play_circle</span>
+</div>
+<div class="w-full h-full bg-center bg-cover bg-no-repeat" data-alt="Modern UI UX Design workspace preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD5Q5wjMEVJSVC5lyYir66FtgbjG8ZvoN35AxOddukWp8WIdcRAZT8l_khLDKaO0qkAB5hVC0ZwWxtILdy2W2Lnru8SgC4i_QWOJueMovbafrZvePtvMPl1ns16xcY45uWAHlZIGDdRwrfTr0i91BzB1JigTfirjTOnrioM8ZA8Eo0p54Sxe3csPQzIil76-nRzEn5qNU4-Ba6dD7Jfb3YtCDb3wpyDDwqVh6xGOoHKZmZOOartY-kZgfAec4Jwfhe-z8rWHU33-CE");'></div>
+</div>
+<div class="space-y-4">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wide">Дунд шат</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded-full">UI/UX Дизайн</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">Орчин үеийн UI/UX Дизайн: Систем болон Хэрэглэгчийн судалгаа</h1>
+<div class="flex items-center gap-4 py-2">
+<div class="flex items-center gap-2">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+<img alt="Instructor Profile" class="w-full h-full object-cover" data-alt="Profile photo of the course instructor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZHs8D2j-TydG8T_DyNsV6iNZSXncv1hvksVRAbAJORRsANbieXNIv2yj1Uwvfp2qVy_i-B1j6lNDCc8FkF1NN6kUzdnYjblhUleZR5UATtr63BOPWXWMI8q3KSsrx5sEwVublDrUE6r5oITWq5HQs1IRRCx3blGZSvEvsQrZAeRc_cOTtRrlMbKU2nUN3juqnH7JY17_X0GF7QGUQ6HXT3CkPeGyjoRQIP7LQMbmIpK9t-0em1saYU2MIb2YXx61jZnNveI5sa8"/>
+</div>
+<div>
+<p class="text-xs text-slate-500">Зааварлагч</p>
+<p class="text-sm font-bold">Б. Тэмүүлэн</p>
+</div>
+</div>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex items-center gap-1 text-yellow-500">
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="font-bold text-slate-900 dark:text-slate-100">4.8</span>
+<span class="text-slate-400 text-xs">(128 сэтгэгдэл)</span>
+</div>
+</div>
+<div class="prose dark:prose-invert max-w-none">
+<h3 class="text-xl font-bold mb-3">Хичээлийн тухай</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Энэхүү цогц хичээлээр та дизайн сэтгэлгээний суурь зарчмуудаас эхлээд орчин үеийн Figma дизайн систем, хэрэглэгчийн туршлага (UX) судалгааны арга техникүүдийг эзэмших болно. Бид бодит төслүүд дээр ажиллаж, аппликейшн болон вэб сайтын интерфейсийг хэрхэн мэргэжлийн түвшинд бүтээхийг суралцана.
+                                    </p>
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                            Дизайн системийн үндэс ба бүрэлдэхүүн хэсгүүд
+                                        </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                            Figma дээрх дэвшилтэт функцууд
+                                        </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                            Хэрэглэгчийн ярилцлага ба судалгаа
+                                        </li>
+<li class="flex items-start gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                            Прототайп болон тест хийх процессууд
+                                        </li>
+</ul>
+</div>
+<div class="pt-6">
+<h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Тагууд</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-1.5 rounded-lg bg-primary/5 border border-primary/10 text-xs font-medium text-primary">Figma</span>
+<span class="px-4 py-1.5 rounded-lg bg-primary/5 border border-primary/10 text-xs font-medium text-primary">Prototyping</span>
+<span class="px-4 py-1.5 rounded-lg bg-primary/5 border border-primary/10 text-xs font-medium text-primary">UX Research</span>
+<span class="px-4 py-1.5 rounded-lg bg-primary/5 border border-primary/10 text-xs font-medium text-primary">Visual Design</span>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-4">
+<div class="sticky top-24 space-y-6">
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-xl shadow-primary/5 border border-primary/10 ring-1 ring-primary/5">
+<div class="flex items-baseline gap-2 mb-6">
+<span class="text-3xl font-black text-slate-900 dark:text-slate-100">45,000₮</span>
+<span class="text-lg text-slate-400 line-through">120,000₮</span>
+<span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold ml-auto">-62%</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 text-slate-500">
+<span class="material-symbols-outlined text-lg">schedule</span>
+                                                Хугацаа
+                                            </div>
+<span class="font-semibold">12 цаг 45 мин</span>
+</div>
+<div class="flex items-center justify-between text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 text-slate-500">
+<span class="material-symbols-outlined text-lg">language</span>
+                                                Хэл
+                                            </div>
+<span class="font-semibold">Монгол</span>
+</div>
+<div class="flex items-center justify-between text-sm py-2 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 text-slate-500">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                                                Нийтлэгдсэн
+                                            </div>
+<span class="font-semibold">2024.03.15</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/25 mb-3 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">shopping_cart</span>
+                                        Худалдаж авах
+                                    </button>
+<button class="w-full bg-primary/10 hover:bg-primary/20 text-primary font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">school</span>
+                                        Элсэх
+                                    </button>
+<p class="text-[11px] text-center text-slate-400 mt-4">30 хоногийн дотор төлбөр буцаан авах боломжтой</p>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/20">
+<h5 class="font-bold mb-4 text-sm text-primary uppercase tracking-wider">Юу сурах вэ?</h5>
+<div class="space-y-3">
+<div class="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-primary text-lg">verified</span>
+<span>Мэргэжлийн түвшний портфолио бэлдэх</span>
+</div>
+<div class="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-primary text-lg">verified</span>
+<span>Ажлын байранд шаардагдах ур чадвар</span>
+</div>
+<div class="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-primary text-lg">verified</span>
+<span>Төгсөлтийн сертификат</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

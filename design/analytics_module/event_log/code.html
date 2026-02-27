@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; }
+    </style>
+<title>Learnify Admin - Event-ууд</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-background-dark border-r border-primary/10 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h1 class="font-display font-bold text-xl tracking-tight">Learnify</h1>
+</div>
+<div class="px-4 py-2">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Цэс</p>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хяналтын самбар</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Хэрэглэгчид</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="text-sm font-medium">Event-ууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="text-sm font-medium">Хичээлүүд</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto px-4 py-6 border-t border-primary/10">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+<div class="mt-4 flex items-center gap-3 px-3 py-2">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs" data-alt="User profile placeholder circle">
+                        AD
+                    </div>
+<div class="flex flex-col">
+<span class="text-xs font-bold">Admin User</span>
+<span class="text-[10px] text-slate-400">Системийн админ</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Nav -->
+<header class="h-16 bg-white dark:bg-background-dark border-b border-primary/10 px-8 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4 w-1/3">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-background-light dark:hover:bg-slate-800 rounded-lg transition-all relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-background-light dark:hover:bg-slate-800 rounded-lg transition-all">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold font-display tracking-tight text-slate-900 dark:text-slate-100">Системийн Event-ууд</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Бүх бүртгэгдсэн үйлдлүүдийн жагсаалт ба лог</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-medium hover:border-primary transition-all">
+<span class="material-symbols-outlined">download</span> Export CSV
+                            </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined">refresh</span> Шинэчлэх
+                            </button>
+</div>
+</div>
+<!-- Filters Card -->
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-semibold text-slate-500 uppercase">Event нэр</label>
+<input class="w-full px-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50" placeholder="Нэрээр хайх..." type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-slate-500 uppercase">Ангилал</label>
+<select class="w-full px-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50">
+<option value="">Бүх ангилал</option>
+<option value="auth">Authentication</option>
+<option value="content">Content Management</option>
+<option value="billing">Billing</option>
+<option value="system">System Status</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-slate-500 uppercase">Хэрэглэгчийн ID</label>
+<input class="w-full px-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50" placeholder="ID оруулах..." type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-slate-500 uppercase">Огноо</label>
+<div class="flex items-center gap-2">
+<input class="w-full px-3 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50" type="date"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-background-dark rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 border-b border-primary/10">
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase">User ID</th>
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase">Event Name</th>
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase">Category</th>
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase">Session ID</th>
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase">Created Date</th>
+<th class="px-6 py-4 text-xs font-bold text-primary uppercase text-right">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<!-- Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-900 dark:text-slate-100">UID_29384</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">user.login_success</span>
+<span class="text-[10px] text-slate-400">IP: 192.168.1.1</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase tracking-tight">Authentication</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs font-mono text-slate-500">sess_a82b9c</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-slate-600 dark:text-slate-400">2023.10.27 14:20:05</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center gap-1 ml-auto text-xs font-medium">
+<span class="material-symbols-outlined">unfold_more</span> Expand
+                                            </button>
+</td>
+</tr>
+<!-- Row 2 (Unauthenticated) -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm italic text-slate-400">Нэвтрээгүй</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">landing.page_view</span>
+<span class="text-[10px] text-slate-400">Source: Organic</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 uppercase tracking-tight">Navigation</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs font-mono text-slate-500">sess_f931d2</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-slate-600 dark:text-slate-400">2023.10.27 14:18:22</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center gap-1 ml-auto text-xs font-medium">
+<span class="material-symbols-outlined">unfold_more</span> Expand
+                                            </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-900 dark:text-slate-100">UID_11022</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">lesson.video_complete</span>
+<span class="text-[10px] text-slate-400">Lesson: UI Design Basics</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 uppercase tracking-tight">Content</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs font-mono text-slate-500">sess_e44c21</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-slate-600 dark:text-slate-400">2023.10.27 14:15:40</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center gap-1 ml-auto text-xs font-medium">
+<span class="material-symbols-outlined">unfold_more</span> Expand
+                                            </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-900 dark:text-slate-100">UID_33901</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">payment.intent_started</span>
+<span class="text-[10px] text-slate-400">Amount: $49.00</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 uppercase tracking-tight">Billing</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs font-mono text-slate-500">sess_d11a09</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-slate-600 dark:text-slate-400">2023.10.27 14:10:12</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center gap-1 ml-auto text-xs font-medium">
+<span class="material-symbols-outlined">unfold_more</span> Expand
+                                            </button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm italic text-slate-400">Нэвтрээгүй</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">api.rate_limit_reached</span>
+<span class="text-[10px] text-red-500 font-medium">Status: 429 Error</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 uppercase tracking-tight">System</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs font-mono text-slate-500">sess_b55c81</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-slate-600 dark:text-slate-400">2023.10.27 14:05:59</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center gap-1 ml-auto text-xs font-medium">
+<span class="material-symbols-outlined">unfold_more</span> Expand
+                                            </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-background-light dark:bg-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+<span class="text-xs text-slate-500 font-medium">Нийт 1,240 илэрцээс 1-5 харуулж байна</span>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-primary/20 text-slate-400 hover:text-primary hover:border-primary disabled:opacity-50 transition-all" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-8 rounded-lg bg-primary text-white text-xs font-bold flex items-center justify-center">1</button>
+<button class="size-8 rounded-lg text-slate-600 dark:text-slate-400 text-xs font-bold flex items-center justify-center hover:bg-primary/10 transition-all">2</button>
+<button class="size-8 rounded-lg text-slate-600 dark:text-slate-400 text-xs font-bold flex items-center justify-center hover:bg-primary/10 transition-all">3</button>
+<span class="text-slate-400 px-1">...</span>
+<button class="size-8 rounded-lg text-slate-600 dark:text-slate-400 text-xs font-bold flex items-center justify-center hover:bg-primary/10 transition-all">25</button>
+<button class="p-2 rounded-lg border border-primary/20 text-slate-600 hover:text-primary hover:border-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- JSON Expand Sample (Hidden initially, shown here as reference of logic) -->
+<div class="bg-slate-900 rounded-xl p-6 border border-slate-800 shadow-inner overflow-hidden">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Event Properties JSON</h3>
+<button class="text-[10px] text-primary font-bold uppercase hover:underline">Copy to clipboard</button>
+</div>
+<pre class="text-xs font-mono text-green-400 overflow-x-auto">{
+  "event_id": "evt_9a21-b32c-5501",
+  "name": "user.login_success",
+  "actor": {
+    "id": "UID_29384",
+    "role": "student",
+    "ip_address": "192.168.1.1"
+  },
+  "context": {
+    "session_id": "sess_a82b9c",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)...",
+    "location": "Ulaanbaatar, MN"
+  },
+  "timestamp": "2023-10-27T14:20:05.123Z",
+  "metadata": {
+    "auth_provider": "google",
+    "is_first_login": false
+  }
+}</pre>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

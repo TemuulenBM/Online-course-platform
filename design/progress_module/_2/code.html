@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10">
+<div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">auto_stories</span>
+</div>
+<h1 class="font-bold text-lg tracking-tight">Learnify</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Progress Bar Container -->
+<div class="max-w-4xl mx-auto px-4 pb-2">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Хичээлийн явц</span>
+<span class="text-xs font-bold text-primary">65%</span>
+</div>
+<div class="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[65%]"></div>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-3xl mx-auto w-full px-4 py-8">
+<!-- Header Section -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-primary mb-3">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-sm font-medium">Унших хугацаа: 8 минут</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">Дизайны үндсэн зарчмууд</h2>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full uppercase tracking-wider">UI/UX Дизайн</span>
+<span class="px-3 py-1 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full uppercase tracking-wider">Анхан шат</span>
+</div>
+</div>
+<!-- Content Section -->
+<article class="prose prose-slate dark:prose-invert max-w-none">
+<p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                    Энэхүү хичээлээр бид дизайны үндсэн зарчмуудын тухай үзэх болно. Дизайн гэдэг нь зөвхөн харагдах байдал биш бөгөөд энэ нь асуудлыг шийдвэрлэх үйл явц юм. Хэрэглэгчийн туршлага (UX) болон хэрэглэгчийн интерфэйс (UI) хоёрын ялгааг ойлгох нь чухал юм.
+                </p>
+<div class="my-8 rounded-xl overflow-hidden border border-primary/20 shadow-lg">
+<div class="aspect-video bg-cover bg-center" data-alt="Modern workspace with design sketches and tablet" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNb1QBkrUfJxVdApEPQBpyenxAbIwzaOjbTMo8ji8vYT4O5SoRQD9n6BDpo7WdgE3x2--FQnh6vcdRyX1a5zckQWGZ7M2Aas1PmClyR-_iLmJmTk8_CDIFB-tjy2CQ5O8I2hm5-imONQy92NX-sBpduRiezMiMpL8ud8QSUAKpQSQgck5wZtegZuSJGhwSMwTWQkDkfoComws7TnxJ-tV9BcTEs-HnOSlp3KFPF4IOO6qASJ6UhbB_0fC_X5WsFwRZ41q5sqnqtEM')"></div>
+<div class="p-3 bg-white dark:bg-slate-900 italic text-sm text-slate-500 border-t border-primary/10">
+                        Зураг 1: Дизайны ажлын явц ба судалгаа
+                    </div>
+</div>
+<h3 class="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+<span class="size-2 bg-primary rounded-full"></span>
+                    Гол элементүүд
+                </h3>
+<p class="leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                    Сайн дизайн нь дараах үндсэн 5 зарчим дээр тогтдог. Үүнд: Контраст, Иерархи, Тэгш хэм, Ойр байдал болон Давтамж. Эдгээр элементүүдийг зөв ашигласнаар хэрэглэгчийн анхаарлыг хэрэгтэй газар нь чиглүүлж, мэдээллийг хялбар хүлээн авахад тусалдаг.
+                </p>
+<div class="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg my-8">
+<p class="text-primary font-semibold mb-1">Мэргэжилтний зөвлөгөө</p>
+<p class="italic text-slate-700 dark:text-slate-300">"Дизайн бол хэрхэн харагдах тухай биш, харин хэрхэн ажиллах тухай юм." — Стив Жобс</p>
+</div>
+<p class="leading-relaxed text-slate-700 dark:text-slate-300 mb-8">
+                    Контраст нь элементүүдийг хооронд нь ялгахад тусалдаг бол иерархи нь агуулгын ач холбогдлын дарааллыг тогтоодог. Бид дараагийн хэсэгт эдгээр тус бүрийг дэлгэрүүлэн үзэх болно.
+                </p>
+</article>
+<!-- Action Area -->
+<div class="mt-12 pt-8 border-t border-primary/10 flex flex-col items-center gap-6">
+<!-- Completed Badge (Conditional State Concept) -->
+<div class="hidden flex flex-col items-center animate-bounce-subtle">
+<div class="size-16 bg-green-500 text-white rounded-full flex items-center justify-center mb-2 shadow-lg shadow-green-500/20">
+<span class="material-symbols-outlined text-3xl">check_circle</span>
+</div>
+<p class="text-green-600 dark:text-green-400 font-bold">Хичээл амжилттай дууслаа!</p>
+</div>
+<!-- Complete Button -->
+<button class="w-full md:w-auto min-w-[240px] px-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2 group">
+                    Хичээл дуусгах
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">task_alt</span>
+</button>
+</div>
+</main>
+<!-- Navigation Footer -->
+<footer class="bg-white dark:bg-slate-900 border-t border-primary/10 mt-auto">
+<div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+<button class="flex items-center gap-2 px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium">
+<span class="material-symbols-outlined">arrow_back</span>
+                    Өмнөх
+                </button>
+<div class="hidden sm:flex items-center gap-1">
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary/20"></div>
+<div class="size-2 rounded-full bg-primary/20"></div>
+<div class="size-2 rounded-full bg-primary/20"></div>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">
+                    Дараах
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex min-h-screen overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col fixed h-full z-50">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-primary">Learnify Admin</h1>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<div class="mb-4">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-2">Үндсэн</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white font-medium cursor-pointer">
+<span class="material-symbols-outlined">bar_chart</span>
+<span>Аналитик</span>
+</div>
+<!-- Sub-links -->
+<div class="mt-2 ml-4 border-l-2 border-primary/20 space-y-1">
+<a class="block px-6 py-2 text-sm text-primary font-bold" href="#">Ерөнхий</a>
+<a class="block px-6 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Орлого</a>
+<a class="block px-6 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Элсэлт</a>
+<a class="block px-6 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Топ сургалтууд</a>
+<a class="block px-6 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Event-ууд</a>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-2">Удирдах</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary cursor-pointer transition-all">
+<span class="material-symbols-outlined">group</span>
+<span>Хэрэглэгчид</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary cursor-pointer transition-all">
+<span class="material-symbols-outlined">book_4</span>
+<span>Сургалтууд</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary cursor-pointer transition-all">
+<span class="material-symbols-outlined">payments</span>
+<span>Төлбөр</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary cursor-pointer transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span>Тохиргоо</span>
+</div>
+</div>
+</nav>
+<div class="p-6 border-t border-primary/10">
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 cursor-pointer transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium">Гарах</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-72">
+<!-- Top Navbar -->
+<header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-primary/10 px-8 flex items-center justify-between sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary/50 outline-none" placeholder="Хайлт..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+</div>
+<div class="flex items-center gap-3 border-l border-primary/10 pl-6">
+<div class="text-right">
+<p class="text-sm font-bold">Admin User</p>
+<p class="text-xs text-slate-500">Системийн админ</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border-2 border-primary/20">
+<img alt="Admin Avatar" class="w-full h-full object-cover" data-alt="Admin profile picture with professional look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9XIpxVGqvetM-NY0eud1xvG_o98nuasf_x5OGhtWNgu9TTL5BsXhKZD55jxrXczAC7VlZCG2taVVXu7BaZPHbsKGsFHOduz15I534d-2Xc_mSifFRXBvk8MeUFSPapFPRWtsyDbTPUYNFKfTssDMz8uLISl35nl-wA0R3Qwx-gelcawtE5VZlHcywbHeElOBYS07HrNeF4HQdjxJUiQoLhmvPo5-VgvECEkeQxmnSZUrxz5ERMHH-iEAS5lHLJbnZpaPVQf-2O6A"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-8">
+<div class="flex flex-col gap-2 mb-8">
+<div class="flex items-center gap-2 text-sm text-slate-400">
+<span>Аналитик</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-medium">Ерөнхий</span>
+</div>
+<h2 class="text-3xl font-extrabold tracking-tight">Хянах самбар</h2>
+<p class="text-slate-500">Learnify платформын ерөнхий статистик болон гүйцэтгэл</p>
+</div>
+<!-- Summary Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 hover:shadow-lg transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Нийт хэрэглэгч</p>
+<h3 class="text-2xl font-bold mt-1">12,450</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 hover:shadow-lg transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+5%</span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Нийт сургалт</p>
+<h3 class="text-2xl font-bold mt-1">328</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 hover:shadow-lg transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">assignment_ind</span>
+</div>
+<span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+18%</span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Нийт элсэлт</p>
+<h3 class="text-2xl font-bold mt-1">45,210</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 hover:shadow-lg transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+24%</span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Нийт орлого (MNT)</p>
+<h3 class="text-2xl font-bold mt-1">850,000,000₮</h3>
+</div>
+</div>
+<!-- Secondary Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div>
+<p class="text-slate-500 text-sm font-medium">Идэвхтэй элсэлт</p>
+<h3 class="text-xl font-bold">18,240</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<div>
+<p class="text-slate-500 text-sm font-medium">Дууссан элсэлт</p>
+<h3 class="text-xl font-bold">26,970</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined">card_membership</span>
+</div>
+<div>
+<p class="text-slate-500 text-sm font-medium">Нийт сертификат</p>
+<h3 class="text-xl font-bold">12,105</h3>
+</div>
+</div>
+</div>
+<!-- Monthly Highlights Section -->
+<div class="mb-8">
+<h4 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                        Энэ сарын онцлох үзүүлэлтүүд
+                    </h4>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Monthly New Users -->
+<div class="relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 p-8 rounded-3xl text-white">
+<div class="relative z-10">
+<p class="text-primary-100/80 text-sm font-medium mb-1">Энэ сарын шинэ хэрэглэгч</p>
+<h3 class="text-4xl font-black mb-4">+1,245</h3>
+<div class="w-full bg-white/20 h-2 rounded-full mb-2">
+<div class="bg-white h-full rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-xs text-white/80">Зорилтот түвшний 75% биелсэн</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-[120px] pointer-events-none">group_add</span>
+</div>
+<!-- Monthly New Enrollments -->
+<div class="relative overflow-hidden bg-white dark:bg-slate-900 border border-primary/10 p-8 rounded-3xl">
+<div class="relative z-10">
+<p class="text-slate-500 text-sm font-medium mb-1">Энэ сарын шинэ элсэлт</p>
+<h3 class="text-4xl font-black text-slate-900 dark:text-white mb-4">+4,820</h3>
+<div class="flex items-center gap-2 text-green-500 font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                    Өмнөх сараас 15% өссөн
+                                </div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-primary/5 text-[120px] pointer-events-none">school</span>
+</div>
+<!-- Monthly Revenue -->
+<div class="relative overflow-hidden bg-white dark:bg-slate-900 border border-primary/10 p-8 rounded-3xl">
+<div class="relative z-10">
+<p class="text-slate-500 text-sm font-medium mb-1">Энэ сарын орлого</p>
+<h3 class="text-4xl font-black text-slate-900 dark:text-white mb-4">124.5M₮</h3>
+<div class="flex items-center gap-2 text-green-500 font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                    Өмнөх сараас 8% өссөн
+                                </div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-primary/5 text-[120px] pointer-events-none">monetization_on</span>
+</div>
+</div>
+</div>
+<!-- Recent Activity/Charts Placeholder Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-primary/10">
+<div class="flex justify-between items-center mb-6">
+<h4 class="font-bold text-lg">Хэрэглэгчийн идэвх (Сүүлийн 7 хоног)</h4>
+<button class="text-primary text-sm font-bold">Бүгдийг харах</button>
+</div>
+<div class="flex items-end justify-between h-48 gap-2">
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[40%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[65%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[45%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[80%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary rounded-t-lg h-[95%] cursor-pointer"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[60%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/20 rounded-t-lg h-[55%] hover:bg-primary transition-colors cursor-pointer"></div>
+</div>
+<div class="flex justify-between mt-4 text-xs text-slate-400 font-medium px-1">
+<span>Да</span><span>Мя</span><span>Лх</span><span>Пү</span><span>Ба</span><span>Бя</span><span>Ня</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-primary/10">
+<div class="flex justify-between items-center mb-6">
+<h4 class="font-bold text-lg">Сүүлийн үеийн элсэлтүүд</h4>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-slate-200" data-alt="Avatar of student who just enrolled">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWRShZjPjYZkON4dcLS9aIwJ6mfTqDDbvfPaAMGkz4b49g7WSmBh9Uc17V-BIWtxujNkU1ZLD6gaFQiFeG_8X-WLZ4dQTv6SarmfDfiJ9vWLwtyc9UdXa0UgRSPVC-nWi0blQdugGby_VniX_vaEhOChbZWo6RYLQ31K8N2udvw4jLB5F29rvNYruKDFIVQ5GgCABFsvnlV3xVSbepuiWffAY4n4o2pgYx4FCuMj_50P7uyKx3F-M-xcDxyYc6GlKV43VEpWgZEJ0"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Б. Болор-Эрдэнэ</p>
+<p class="text-xs text-slate-500">UX/UI Design: Advanced</p>
+</div>
+<p class="text-xs text-slate-400">2 минутын өмнө</p>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="w-10 h-10 rounded-full bg-slate-200" data-alt="Avatar of student who just enrolled">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWadu1fveBARl9etJW75BM4EAISSJIKNQTJ1g4Zh_kXtfu1uteoQ_dx1IvAbYVJ5FCtbUZsMDGuapVB0ZTB1LHlywSWMMw1kAau39SrkDmtSdR0ci9ioHe4ONFP0rCrWJ54_jb6q-hgTDQyVufhz6B2HdkUuPEODrZyXyo1cj2RmhH9mfA4iYLj7qRL3CZLSSGKPMQtru2l9zLVsAxeSkltLJnUBti4622cPZcd6Sw5ZgAGSyj4hBcBg0OnW3fRpGgdI8-azFLnZE"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Т. Ананд</p>
+<p class="text-xs text-slate-500">React.js Fundamental</p>
+</div>
+<p class="text-xs text-slate-400">15 минутын өмнө</p>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="w-10 h-10 rounded-full bg-slate-200" data-alt="Avatar of student who just enrolled">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZa0tQ0-4m_Zq1mrvaYMJssQqjSxVJ5ZIePmFEDiIoP8xsv7sW2YtBaFnmS4-IRcIWW0v-g4KWPh1vTX360Zky2bsfqjlytdiLOf9HS-1OyrdTQba0Tj0tAe9ayQJNAY3MX8Kb3kmNigvyZShry_4kdFnmLTDD-uMou4UpNByzulXV4ISnS-YgYk_nWStsxHU9y2GuXOZKYDxkDkPdGa85TDPe_Rn31CIs2-cd_bLCJLqHfO3JwA4mbeBGFOckRyIEJUSuDGxsdLs"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">С. Мөнх-Оргил</p>
+<p class="text-xs text-slate-500">Digital Marketing Strategy</p>
+</div>
+<p class="text-xs text-slate-400">45 минутын өмнө</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify - Асуултын Удирдлага</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 lg:px-20 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<div class="hidden md:flex items-center bg-primary/5 dark:bg-primary/10 rounded-xl px-3 py-2 w-64 border border-primary/10">
+<span class="material-symbols-outlined text-primary/60 mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-primary/40" placeholder="Хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-xl bg-primary/5 hover:bg-primary/10 text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-xl bg-primary/5 hover:bg-primary/10 text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="size-10 rounded-full bg-primary/20 border-2 border-primary/30 overflow-hidden">
+<img alt="Профайл зураг" data-alt="Teacher profile avatar close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9KfcYs8MBMbe_UkIgTS7TGB_8PTjcaoqi1xRxbdDz3u2CagFRo0cqZN9ZWZh1jfv9rMJTdgv7ZerboGfdMd7DthLrohmAFoG2z_jhddkPz5rBwZOx-yQerN9kt_TnS_rNI6bSe_0hczX5dMxFYR2YKwKjEBuGOmfyAvnb7EbO0v83dNMfYLcZGu3-kn5WpQP7XFotuoxxQGjfdUvbdFGcri4iFjyVaP9lLggvlrdgjigL6SxJgp-Phr3nF0V3Xox_bERZAXMF0r8"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 lg:px-20 py-8">
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Left Column: Question List -->
+<div class="flex-1 space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-3xl font-black tracking-tight">Асуултын удирдлага</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Хичээлийн асуултуудыг засах болон шинээр нэмэх</p>
+</div>
+<button class="hidden lg:flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+                        Асуулт нэмэх
+                    </button>
+</div>
+<div class="space-y-3">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                        Асуултын жагсаалт
+                    </h3>
+<!-- Question Item 1 -->
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 hover:border-primary/30 transition-all shadow-sm">
+<div class="cursor-grab active:cursor-grabbing text-slate-300 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="flex-1">
+<h4 class="font-semibold text-slate-800 dark:text-slate-200 line-clamp-1">Өнгөний онолын үндсэн...</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary uppercase">Multiple Choice</span>
+<span class="text-xs font-medium text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span> Хялбар
+                                </span>
+</div>
+</div>
+<div class="text-right shrink-0">
+<p class="text-sm font-bold text-primary">10 оноо</p>
+<div class="flex gap-1 mt-1">
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-1 hover:text-red-500 transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Question Item 2 -->
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 hover:border-primary/30 transition-all shadow-sm">
+<div class="cursor-grab active:cursor-grabbing text-slate-300 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="flex-1">
+<h4 class="font-semibold text-slate-800 dark:text-slate-200 line-clamp-1">Типографийн гол...</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">True / False</span>
+<span class="text-xs font-medium text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt_2_bar</span> Дунд
+                                </span>
+</div>
+</div>
+<div class="text-right shrink-0">
+<p class="text-sm font-bold text-primary">5 оноо</p>
+<div class="flex gap-1 mt-1">
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-1 hover:text-red-500 transition-colors"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+<button class="w-full py-4 border-2 border-dashed border-primary/20 rounded-xl text-primary/60 font-medium hover:border-primary/40 hover:bg-primary/5 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+                        Шинэ асуулт энд чирч нэмэх
+                    </button>
+</div>
+</div>
+<!-- Right Column: Question Form -->
+<div class="w-full lg:w-[400px] shrink-0">
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 shadow-xl overflow-hidden sticky top-24">
+<div class="p-6 border-b border-primary/5 bg-primary/5">
+<h3 class="font-bold text-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+                            Асуулт засварлах
+                        </h3>
+</div>
+<div class="p-6 space-y-5">
+<!-- Question Type -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Асуултын төрөл</label>
+<select class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm p-3">
+<option selected="">Multiple Choice (Олон сонголттой)</option>
+<option>True / False (Үнэн / Худал)</option>
+<option>Short Answer (Богино хариулт)</option>
+</select>
+</div>
+<!-- Question Text -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Асуултын текст</label>
+<textarea class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm p-3" placeholder="Асуултаа энд бичнэ үү..." rows="3"></textarea>
+</div>
+<!-- Points & Difficulty -->
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Оноо</label>
+<input class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm p-3" type="number" value="10"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Хүндрэл</label>
+<select class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm p-3">
+<option selected="">Хялбар</option>
+<option>Дунд</option>
+<option>Хүнд</option>
+</select>
+</div>
+</div>
+<!-- Options List -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400">Хариултын хувилбарууд</label>
+<span class="text-[10px] uppercase font-bold text-primary tracking-wider">Зөв эсэх</span>
+</div>
+<div class="space-y-2">
+<!-- Option 1 -->
+<div class="flex items-center gap-3">
+<div class="flex-1 relative">
+<input class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm py-2 pl-3 pr-8" type="text" value="Үндсэн өнгө"/>
+</div>
+<input checked="" class="text-primary focus:ring-primary size-5 border-slate-300 cursor-pointer" name="correct_option" type="radio"/>
+</div>
+<!-- Option 2 -->
+<div class="flex items-center gap-3">
+<div class="flex-1 relative">
+<input class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm py-2 pl-3 pr-8" type="text" value="Туслах өнгө"/>
+</div>
+<input class="text-primary focus:ring-primary size-5 border-slate-300 cursor-pointer" name="correct_option" type="radio"/>
+</div>
+<!-- Option 3 -->
+<div class="flex items-center gap-3">
+<div class="flex-1 relative">
+<input class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm py-2 pl-3 pr-8" placeholder="Шинэ хувилбар..." type="text"/>
+</div>
+<input class="text-primary focus:ring-primary size-5 border-slate-300 cursor-pointer" name="correct_option" type="radio"/>
+</div>
+</div>
+<button class="w-full py-2 flex items-center justify-center gap-1 text-sm font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                                Хувилбар нэмэх
+                            </button>
+</div>
+<div class="flex gap-3 pt-4 border-t border-primary/5">
+<button class="flex-1 py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl font-bold text-sm transition-colors">Цуцлах</button>
+<button class="flex-[2] py-3 px-4 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-sm transition-all">Хадгалах</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Action Button -->
+<div class="lg:hidden fixed bottom-6 right-6">
+<button class="size-14 rounded-full bg-primary text-white shadow-xl shadow-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</div>
+</body></html>

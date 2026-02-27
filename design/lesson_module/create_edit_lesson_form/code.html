@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Хичээл засах</title>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239c7aff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Main Container -->
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark/50 px-6 lg:px-40 py-3 sticky top-0 z-50 backdrop-blur-md">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-tight">Learnify</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Хичээлүүд</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Суралцагчид</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Тайлан</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Section -->
+<main class="flex flex-1 justify-center py-8 px-4 md:px-10 lg:px-40">
+<div class="layout-content-container flex flex-col max-w-[800px] flex-1">
+<!-- Page Header -->
+<div class="flex flex-col gap-2 mb-8">
+<div class="flex items-center gap-2 text-primary mb-1">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="text-sm font-semibold uppercase tracking-wider">Удирдах хэсэг</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 text-3xl font-bold leading-tight">Хичээл засах / Үүсгэх</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Хичээлийн дэлгэрэнгүй мэдээллийг доорх маягтын дагуу оруулна уу.</p>
+</div>
+<!-- Form Card -->
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 p-6 md:p-8 shadow-sm">
+<form class="space-y-6">
+<!-- Course (Read Only) -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Курс</label>
+<div class="flex items-center gap-3 px-4 py-3 bg-primary/5 border border-primary/20 rounded-lg text-primary font-medium">
+<span class="material-symbols-outlined text-sm">auto_stories</span>
+<span>UX/UI Дизайны ахисан түвшний сургалт - 2024</span>
+</div>
+</div>
+<!-- Title -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="title">Гарчиг</label>
+<input class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all placeholder:text-slate-400" id="title" placeholder="Жишээ: Figma-ийн үндсэн хэрэгслүүд" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Lesson Type -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="type">Төрөл</label>
+<select class="custom-select w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all" id="type">
+<option value="VIDEO">VIDEO</option>
+<option value="TEXT">TEXT</option>
+<option value="QUIZ">QUIZ</option>
+<option value="ASSIGNMENT">ASSIGNMENT</option>
+<option value="LIVE">LIVE</option>
+</select>
+</div>
+<!-- Duration -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="duration">Үргэлжлэх хугацаа (минут)</label>
+<div class="relative">
+<input class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all placeholder:text-slate-400" id="duration" placeholder="0" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">мин</span>
+</div>
+</div>
+</div>
+<!-- Toggles Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 border-y border-slate-100 dark:border-slate-800">
+<!-- Preview Toggle -->
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Үнэгүй preview</span>
+<span class="text-xs text-slate-500">Суралцагчид бүртгүүлэхгүйгээр үзэх боломжтой</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Published Toggle -->
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Нийтлэх</span>
+<span class="text-xs text-slate-500">Олон нийтэд харагдах эсэх</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col-reverse md:flex-row items-center justify-end gap-3 pt-4">
+<button class="w-full md:w-auto px-8 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" type="button">
+                                Цуцлах
+                            </button>
+<button class="w-full md:w-auto px-10 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 active:scale-95 transition-all" type="submit">
+                                Хадгалах
+                            </button>
+</div>
+</form>
+</div>
+<!-- Footer Info -->
+<div class="mt-8 flex items-center justify-center gap-6 text-slate-400 text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span>Сүүлд шинэчлэгдсэн: Өнөөдөр 14:20</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">security</span>
+<span>Автоматаар хадгалагдсан</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

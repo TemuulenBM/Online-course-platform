@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .cert-border {
+            border: 12px solid #9c7aff20;
+            background-clip: padding-box;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="flex items-center justify-center p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Гэрчилгээний дэлгэрэнгүй</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors px-4 gap-2 text-sm font-bold">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span class="hidden md:inline">Хуваалцах</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 bg-primary text-white hover:bg-primary/90 transition-shadow shadow-lg shadow-primary/20 px-4 gap-2 text-sm font-bold">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span class="hidden md:inline">PDF татах</span>
+</button>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8 px-4 md:px-10">
+<div class="max-w-[1000px] w-full flex flex-col gap-8">
+<!-- PDF Generation Progress State -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="animate-pulse flex space-x-2">
+<div class="h-2 w-2 bg-primary rounded-full"></div>
+<div class="h-2 w-2 bg-primary rounded-full"></div>
+<div class="h-2 w-2 bg-primary rounded-full"></div>
+</div>
+<p class="text-base font-medium">PDF файл бэлтгэж байна...</p>
+</div>
+<p class="text-primary text-sm font-bold">85%</p>
+</div>
+<div class="w-full bg-primary/10 rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 85%;"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-3 italic">Өндөр чанартай хэвлэх хувилбарыг үүсгэж байна. Түр хүлээнэ үү.</p>
+</div>
+<!-- Professional Certificate Card -->
+<div class="relative bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-2xl border border-primary/20">
+<!-- Decorative background elements -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 rounded-full -ml-24 -mb-24"></div>
+<div class="cert-border m-4 md:m-8 p-8 md:p-16 flex flex-col items-center text-center relative z-10">
+<!-- Logo / Header -->
+<div class="flex flex-col items-center gap-4 mb-10">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-2">
+<span class="material-symbols-outlined text-4xl">school</span>
+</div>
+<h3 class="text-primary font-bold tracking-[0.2em] text-sm md:text-base">LEARNIFY ACADEMY</h3>
+<div class="h-px w-24 bg-primary/30"></div>
+</div>
+<h1 class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">CERTIFICATE OF COMPLETION</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg mb-2">This is to certify that</p>
+<h2 class="text-2xl md:text-4xl font-bold text-primary mb-8 italic">Бат-Эрдэнэ овогтой Тэмүүлэн</h2>
+<p class="text-slate-500 dark:text-slate-400 text-lg mb-2 max-w-2xl">
+                                has successfully completed the professional development course
+                            </p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-12">
+                                UX/UI Дизайны ахисан шатны цогц хөтөлбөр
+                            </h3>
+<!-- Verification Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 w-full items-end gap-8 mt-4 border-t border-slate-100 dark:border-slate-800 pt-10">
+<div class="flex flex-col items-center md:items-start gap-1">
+<p class="text-slate-400 text-xs uppercase tracking-widest font-bold">Олгосон огноо</p>
+<p class="text-slate-800 dark:text-slate-200 font-medium">2023 оны 10-р сарын 25</p>
+</div>
+<div class="flex flex-col items-center justify-center gap-2">
+<div class="p-2 bg-white rounded-lg border border-slate-200 shadow-sm">
+<img alt="QR code for verification" class="w-20 h-20" data-alt="QR code for certificate verification" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtA-Iz52clCo7bdz7mcsMlGnzkLUxn233fnuZQst35LGCaB7X9-lyisW1fy2C7VKEC4-pDjR4YKmB6MUkt1LCa04ZXFrKKJWIumuGK-2QWkT4PKNKrmdMjRvua9cNUrzgBty6OBuEXZPfeVWa53lgiqVodTgBB68FeNhZwSLXodLtMPnVIB5tEp7aD_u1ObublcUk7P57bfTYJhlVIagUgGJpdIGS-_2I5CoxzIv2gBna4PXsuZ8gg9tlzXjCqDkyrksFTht62uvM"/>
+</div>
+<p class="text-slate-400 text-[10px] uppercase tracking-tighter">Сканнердаж баталгаажуулна уу</p>
+</div>
+<div class="flex flex-col items-center md:items-end gap-1">
+<p class="text-slate-400 text-xs uppercase tracking-widest font-bold">Гэрчилгээний дугаар</p>
+<p class="text-slate-800 dark:text-slate-200 font-medium">#LF-2023-99283</p>
+</div>
+</div>
+<!-- Signatures -->
+<div class="flex justify-between w-full mt-16 px-4 md:px-10">
+<div class="flex flex-col items-center">
+<div class="h-12 w-32 border-b border-slate-300 mb-2 flex items-center justify-center">
+<span class="font-serif italic text-slate-400 text-xl">Signature</span>
+</div>
+<p class="text-xs font-bold text-slate-500 uppercase">Гүйцэтгэх захирал</p>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-12 w-32 border-b border-slate-300 mb-2 flex items-center justify-center">
+<span class="font-serif italic text-slate-400 text-xl">Signature</span>
+</div>
+<p class="text-xs font-bold text-slate-500 uppercase">Сургалтын менежер</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Details / Actions -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10">
+<h4 class="font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                                Гэрчилгээний тухай
+                            </h4>
+<ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+<li class="flex justify-between">
+<span>Нийт хичээлийн цаг:</span>
+<span class="font-bold text-slate-900 dark:text-white">48 цаг</span>
+</li>
+<li class="flex justify-between">
+<span>Түвшин:</span>
+<span class="font-bold text-slate-900 dark:text-white">Ахисан шат</span>
+</li>
+<li class="flex justify-between">
+<span>Хүчинтэй хугацаа:</span>
+<span class="font-bold text-slate-900 dark:text-white">Хугацаагүй</span>
+</li>
+</ul>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 flex flex-col justify-center gap-4">
+<p class="text-center text-sm text-slate-500 mb-2">Баяр хүргэе! Та энэхүү гэрчилгээг өөрийн CV болон LinkedIn профайл дээрээ нэмэх боломжтой.</p>
+<button class="w-full py-3 rounded-lg bg-[#0077b5] text-white font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+                                LinkedIn-д нэмэх
+                            </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer-style section for branding -->
+<footer class="py-10 text-center opacity-60">
+<p class="text-sm">© 2023 Learnify Academy. Бүх эрх хуулиар хамгаалагдсан.</p>
+</footer>
+</div>
+</div>
+</body></html>

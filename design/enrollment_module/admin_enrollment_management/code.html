@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex flex-col w-full min-h-screen overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold tracking-tight">Learnify Admin</h2>
+</div>
+<label class="hidden md:flex flex-col min-w-40 h-10 w-64">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-primary/5 dark:bg-primary/10 border border-primary/10">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full border-none bg-transparent focus:ring-0 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500" placeholder="Search enrollments..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Students</a>
+<a class="text-primary text-sm font-semibold border-b-2 border-primary py-1" href="#">Enrollments</a>
+</nav>
+<div class="flex gap-2 ml-4">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 dark:bg-primary/10 text-slate-700 dark:text-slate-300 hover:bg-primary/20">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 dark:bg-primary/10 text-slate-700 dark:text-slate-300 hover:bg-primary/20">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary/20 border-2 border-primary/30 ml-2 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Admin user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDId5LfCRfUDZZdBE6bWaGSvs7e6W1H6zpshmvBfLfjfgDEiftXb7hKMlHDRuyRSbmLWsOB_Bkjc0APCbVmXdMcqXO5ccITYfAwEoGp9fdsp2E1cpaFICaeUzARcQgggodhNa5aCxl7107twkS5QPFjLKwXFGck-gU-oVbQuaQY7EFbv55cHXFLOw8iF8cr-l4MHxNg53AKo9WfNqlzSVwVmxk_Y6t0SQ-7JC-6wy55XLwvz16Y7Kw2lBk0H6oSpw3gnOiLrrd9eZU"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-6 text-sm text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary" href="#">Admin</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Enrollments</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Student Details</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Profile & Main Status -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Student Header Card -->
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+<div class="relative">
+<div class="w-24 h-24 rounded-full border-4 border-primary/10 overflow-hidden bg-primary/5">
+<img class="w-full h-full object-cover" data-alt="Student profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR9nUwG4V6_8NW1JbPEpPHMPuqXSFz1WZ4YCF15uKpLVH9NADndB8eVW6KHATxSX7BOqFVsFlzJtUrSWdI1U5SV9paG6nb4D8dJUcdcBM3lRp0b1_644mRthre-BxH6EHkX6yDLjWwdGTlUNEukTxTgGeM7zi1Kl6uatl4bWSaxQPp8ZhgVNmqT2xmB2FUqBFptqlaK0lVbrb6kV2jwgmdJ_i8cL1_rLHjs-EHcygbsdIjpqv54YyLEt7-CP3j9Q5CsK4j94RfKu4"/>
+</div>
+<div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-slate-900"></div>
+</div>
+<div class="flex-1">
+<div class="flex flex-wrap items-center gap-3 mb-1">
+<h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Bat-Erdene Bold</h1>
+<span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full uppercase tracking-wider">ACTIVE</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">id_card</span> Student ID: STU-99012
+                                </p>
+<div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary">book</span>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Current Course</p>
+<p class="text-sm font-semibold">Advanced JavaScript Development</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary">event</span>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Enrollment Date</p>
+<p class="text-sm font-semibold">2023-10-15</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Enrollment Progress / Stats -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10">
+<h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">Progress Overview</h3>
+<div class="flex items-end justify-between mb-2">
+<span class="text-3xl font-bold text-primary">78%</span>
+<span class="text-sm text-slate-500">12 of 15 Modules</span>
+</div>
+<div class="w-full bg-primary/10 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10">
+<h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">Attendance Rate</h3>
+<div class="flex items-end justify-between mb-2">
+<span class="text-3xl font-bold text-primary">94%</span>
+<span class="text-sm text-slate-500">Excellent</span>
+</div>
+<div class="w-full bg-primary/10 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 94%"></div>
+</div>
+</div>
+</div>
+<!-- Enrollment Logs Table -->
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 overflow-hidden">
+<div class="p-6 border-b border-primary/10 flex justify-between items-center">
+<h3 class="font-bold">Activity Log</h3>
+<button class="text-primary text-sm font-medium hover:underline">Download PDF</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 text-slate-500 text-xs uppercase font-bold">
+<th class="px-6 py-4">Action</th>
+<th class="px-6 py-4">Status Change</th>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4">Admin</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b border-primary/5 hover:bg-primary/5">
+<td class="px-6 py-4 font-medium">Auto-renewed</td>
+<td class="px-6 py-4 text-green-500">ACTIVE</td>
+<td class="px-6 py-4 text-slate-500">2024-01-15</td>
+<td class="px-6 py-4 text-slate-500">System</td>
+</tr>
+<tr class="border-b border-primary/5 hover:bg-primary/5">
+<td class="px-6 py-4 font-medium">Payment Verified</td>
+<td class="px-6 py-4 text-slate-400">No Change</td>
+<td class="px-6 py-4 text-slate-500">2024-01-14</td>
+<td class="px-6 py-4 text-slate-500">Admin_Zolo</td>
+</tr>
+<tr class="border-b border-primary/5 hover:bg-primary/5">
+<td class="px-6 py-4 font-medium">Initial Enrollment</td>
+<td class="px-6 py-4 text-green-500">ACTIVE</td>
+<td class="px-6 py-4 text-slate-500">2023-10-15</td>
+<td class="px-6 py-4 text-slate-500">Admin_Tuya</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: Admin Actions & Controls -->
+<div class="space-y-6">
+<!-- Status Reference -->
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10">
+<h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">Status Indicators</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30">
+<span class="text-xs font-bold text-green-600 dark:text-green-400 uppercase">ACTIVE</span>
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-900/30 opacity-60">
+<span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">COMPLETED</span>
+<span class="material-symbols-outlined text-blue-500 text-sm">verified</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/20 border border-slate-200 dark:border-slate-700 opacity-60">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">EXPIRED</span>
+<span class="material-symbols-outlined text-slate-500 text-sm">history</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30 opacity-60">
+<span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase">CANCELLED</span>
+<span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+</div>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10 shadow-lg ring-1 ring-primary/5">
+<h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bolt</span> Admin Control Panel
+                        </h3>
+<div class="space-y-4">
+<!-- Complete Enrollment Action -->
+<div class="group">
+<p class="text-xs text-slate-500 mb-2 font-medium">Manually finalize this record</p>
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 px-4 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-md active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">verified</span> Complete enrollment manually
+                                </button>
+<div class="mt-2 hidden group-focus-within:block p-3 bg-primary/5 rounded-lg border border-primary/10">
+<p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-2">Энэ элсэлтийг дуусгах уу?</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary py-1.5 rounded-lg text-xs font-bold text-white">Тийм</button>
+<button class="flex-1 bg-slate-200 dark:bg-slate-800 py-1.5 rounded-lg text-xs font-bold">Болих</button>
+</div>
+</div>
+</div>
+<hr class="border-primary/5 my-4"/>
+<!-- Delete Enrollment Action -->
+<div class="group">
+<p class="text-xs text-slate-500 mb-2 font-medium">Remove record completely</p>
+<button class="w-full flex items-center justify-center gap-2 bg-transparent text-red-500 border border-red-200 dark:border-red-900/30 py-3 px-4 rounded-xl font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/10 transition-all">
+<span class="material-symbols-outlined text-sm">delete</span> Delete enrollment
+                                </button>
+<div class="mt-2 hidden group-focus-within:block p-4 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/20">
+<p class="text-xs font-bold text-red-600 dark:text-red-400 mb-1">Warning!</p>
+<p class="text-[11px] text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">Энэ элсэлтийг устгах уу? Энэ үйлдлийг буцаах боломжгүй.</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-red-500 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm">Устгах</button>
+<button class="flex-1 bg-white dark:bg-slate-800 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700">Болих</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Notes -->
+<div class="bg-primary/5 dark:bg-primary/10 p-6 rounded-xl border border-dashed border-primary/30">
+<h3 class="text-xs font-bold text-primary mb-3 uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sticky_note_2</span> Admin Notes
+                        </h3>
+<textarea class="w-full bg-white dark:bg-slate-900 border-primary/10 rounded-lg text-sm p-3 focus:ring-primary focus:border-primary placeholder:text-slate-400" placeholder="Type a private note for other admins..." rows="3"></textarea>
+<button class="mt-3 text-xs font-bold text-primary hover:text-primary/80">Save Note</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Toast Notification Example (Hidden) -->
+<div class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl translate-y-24 transition-transform duration-300 pointer-events-none">
+<span class="material-symbols-outlined text-green-400">check_circle</span>
+<p class="text-sm font-medium">Changes saved successfully</p>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify Quiz Attempt</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-6 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">auto_stories</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">Learnify</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium tracking-wide">DESIGN SYSTEM QUIZ</p>
+</div>
+</div>
+<!-- Timer and Global Progress -->
+<div class="hidden md:flex items-center gap-8 bg-slate-100 dark:bg-slate-800/50 px-6 py-2 rounded-full border border-slate-200 dark:border-slate-700">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">schedule</span>
+<span class="text-lg font-bold tabular-nums">24:45</span>
+</div>
+<div class="h-4 w-px bg-slate-300 dark:bg-slate-600"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">task_alt</span>
+<span class="text-sm font-semibold text-slate-600 dark:text-slate-300">Асуулт 3 / 10</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">help</span>
+<span class="hidden sm:inline">Тусламж</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-white font-bold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all">
+<span class="material-symbols-outlined text-lg">send</span>
+<span>Илгээх</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Side: Question Content -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Progress Bar Mobile-only visibility context -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-2">Асуулт 3</span>
+<h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">Дараах өнгөнүүдээс аль нь "Primary" өнгө вэ?</h2>
+</div>
+<div class="text-right">
+<p class="text-primary font-bold text-lg leading-none">10</p>
+<p class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-widest mt-1">оноо</p>
+</div>
+</div>
+<!-- Progress Bar Component -->
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mb-8 overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[30%] transition-all duration-500"></div>
+</div>
+<!-- Question Options -->
+<div class="space-y-3">
+<label class="group relative flex items-center p-4 rounded-xl border-2 border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 cursor-pointer hover:border-primary/50 transition-all">
+<input class="w-5 h-5 text-primary border-slate-300 focus:ring-primary focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700" name="quiz-option" type="radio"/>
+<span class="ml-4 text-slate-700 dark:text-slate-300 font-medium">Ногоон</span>
+</label>
+<label class="group relative flex items-center p-4 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/10 cursor-pointer transition-all">
+<input checked="" class="w-5 h-5 text-primary border-primary focus:ring-primary focus:ring-offset-0 dark:bg-slate-900" name="quiz-option" type="radio"/>
+<div class="ml-4 flex justify-between items-center w-full">
+<span class="text-slate-900 dark:text-white font-bold text-lg">Цэнхэр</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</label>
+<label class="group relative flex items-center p-4 rounded-xl border-2 border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 cursor-pointer hover:border-primary/50 transition-all">
+<input class="w-5 h-5 text-primary border-slate-300 focus:ring-primary focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700" name="quiz-option" type="radio"/>
+<span class="ml-4 text-slate-700 dark:text-slate-300 font-medium">Улбар шар</span>
+</label>
+<label class="group relative flex items-center p-4 rounded-xl border-2 border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 cursor-pointer hover:border-primary/50 transition-all">
+<input class="w-5 h-5 text-primary border-slate-300 focus:ring-primary focus:ring-offset-0 dark:bg-slate-900 dark:border-slate-700" name="quiz-option" type="radio"/>
+<span class="ml-4 text-slate-700 dark:text-slate-300 font-medium">Нил ягаан</span>
+</label>
+</div>
+</div>
+<!-- Footer Navigation -->
+<div class="flex items-center justify-between">
+<button class="flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm">
+<span class="material-symbols-outlined">arrow_back</span>
+                        Өмнөх
+                    </button>
+<button class="flex items-center gap-2 px-8 py-3 rounded-xl bg-slate-900 dark:bg-primary text-white font-bold hover:opacity-90 transition-all shadow-md">
+                        Дараах
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Right Side: Navigation Grid & Summary -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Question Navigator -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">grid_view</span>
+                        Асуултын жагсаалт
+                    </h3>
+<div class="grid grid-cols-5 gap-3">
+<!-- Answered -->
+<div class="aspect-square flex items-center justify-center rounded-lg bg-emerald-500 text-white font-bold text-sm cursor-pointer hover:scale-105 transition-transform">1</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-emerald-500 text-white font-bold text-sm cursor-pointer hover:scale-105 transition-transform">2</div>
+<!-- Current -->
+<div class="aspect-square flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm ring-4 ring-primary/20 cursor-pointer hover:scale-105 transition-transform shadow-lg shadow-primary/40">3</div>
+<!-- Unanswered/Remaining -->
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">4</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">5</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">6</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">7</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">8</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">9</div>
+<div class="aspect-square flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">10</div>
+</div>
+<div class="mt-8 space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="size-3 rounded-full bg-emerald-500"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Хариулсан (2)</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Одоогийн асуулт</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-3 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 border-dashed"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Хариулаагүй (7)</span>
+</div>
+</div>
+</div>
+<!-- Ad/Tip Section -->
+<div class="bg-primary/10 rounded-xl p-6 border border-primary/20 relative overflow-hidden group">
+<div class="relative z-10">
+<h4 class="text-primary font-bold mb-2">Зөвлөгөө</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Хариултаа дахин шалгахыг хүсвэл асуултын дугаар дээр дарж шууд очих боломжтой.</p>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-7xl text-primary/10 group-hover:scale-110 transition-transform">lightbulb</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Timer for Mobile -->
+<div class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+<div class="bg-slate-900/95 backdrop-blur px-6 py-3 rounded-full border border-slate-700 shadow-2xl flex items-center gap-4 text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<span class="font-bold tabular-nums">24:45</span>
+</div>
+<div class="w-px h-4 bg-slate-700"></div>
+<div class="text-xs font-bold uppercase tracking-tight">3 / 10 Асуулт</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Хэрэглэгчийн Профайл</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="flex h-full w-72 flex-col border-r border-primary/10 bg-white dark:bg-slate-900 p-6">
+<div class="flex items-center gap-3 mb-10">
+<div class="bg-primary flex items-center justify-center rounded-lg size-10 text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Learnify</h1>
+<p class="text-primary text-xs font-medium uppercase tracking-wider">Сурах талбар</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary">home</span>
+<span class="text-sm font-medium">Нүүр</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary">menu_book</span>
+<span class="text-sm font-medium">Хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary">local_library</span>
+<span class="text-sm font-medium">Миний сан</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary">notifications</span>
+<span class="text-sm font-medium">Мэдэгдэл</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-10 py-4 sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+<h2 class="text-lg font-bold tracking-tight">Хэрэглэгчийн Профайл</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-background-light dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Хайх..." type="text"/>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                        Дагах
+                    </button>
+</div>
+</header>
+<!-- Profile Content -->
+<div class="p-10 max-w-4xl mx-auto w-full">
+<!-- Main Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-primary/10 overflow-hidden mb-8">
+<!-- Profile Header Cover Gradient -->
+<div class="h-32 bg-gradient-to-r from-primary/30 via-primary/10 to-transparent"></div>
+<div class="px-8 pb-8 -mt-16 flex flex-col items-center text-center">
+<div class="relative">
+<div class="size-32 rounded-full border-4 border-white dark:border-slate-900 bg-slate-200 bg-center bg-cover shadow-xl" data-alt="User profile avatar showing a smiling person" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzq2AVoYGaNHMXfQSaswGIfoyedd_3s_oI0IE4cXM7Slt2b501UONzUlX8zWSuH0bL6xf42HBODvWoB52w6FxX_J8N7qP-Rys663yVQs7rs-sDChd9EBuIvOCnK2aO53sONPPFjnAjkSBFQLNZ_jHTFNzMeoprPcpdSJ-Fjprv4pA7P1WrOgzzTC4e1h109NedEoOYW8jfRp0uTYSiqeh8QGfn5zV_gYMlsyV4UkgOojf4sEMHuTSbj0rrdfzrMhL73ep8-WlZ9TU')">
+</div>
+<div class="absolute bottom-1 right-1 bg-green-500 border-2 border-white dark:border-slate-900 size-5 rounded-full"></div>
+</div>
+<div class="mt-4">
+<h3 class="text-2xl font-bold text-slate-900 dark:text-white">Баатарболд Төмөр</h3>
+<div class="flex items-center justify-center gap-2 text-slate-500 dark:text-slate-400 mt-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm font-medium uppercase tracking-tight">Монгол Улс, Улаанбаатар</span>
+</div>
+</div>
+<div class="mt-6 max-w-lg">
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Сайн байна уу? Би Learnify дээр UX/UI дизайн болон фронтенд хөгжүүлэлтийн чиглэлээр суралцаж байгаа оюутан байна. Миний зорилго бол технологийн салбарт өөрийн гэсэн хувь нэмэр оруулах юм.
+                            </p>
+</div>
+<!-- Action Stats -->
+<div class="grid grid-cols-3 gap-8 mt-10 w-full max-w-md border-t border-primary/5 pt-8">
+<div class="flex flex-col items-center">
+<span class="text-2xl font-bold text-primary">24</span>
+<span class="text-xs font-semibold text-slate-400 uppercase">Дуусгасан</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-2xl font-bold text-primary">12</span>
+<span class="text-xs font-semibold text-slate-400 uppercase">Үзэж буй</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-2xl font-bold text-primary">1.2k</span>
+<span class="text-xs font-semibold text-slate-400 uppercase">Дагагчид</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabs & Secondary Content -->
+<div class="flex flex-col gap-6">
+<div class="flex border-b border-primary/10">
+<button class="px-6 py-4 border-b-2 border-primary text-primary text-sm font-bold">Хичээлүүд</button>
+<button class="px-6 py-4 border-b-2 border-transparent text-slate-500 hover:text-primary text-sm font-medium transition-colors">Тэмдэглэл</button>
+<button class="px-6 py-4 border-b-2 border-transparent text-slate-500 hover:text-primary text-sm font-medium transition-colors">Ололт амжилт</button>
+</div>
+<!-- Course Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 flex gap-4 group cursor-pointer hover:border-primary/30 transition-all">
+<div class="size-20 bg-primary/10 rounded-lg flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">palette</span>
+</div>
+<div class="flex flex-col justify-center">
+<h4 class="font-bold text-slate-800 dark:text-white">Дизайн Систем Үндэс</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Дууссан: 2023.10.15</p>
+<div class="mt-2 w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-full"></div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 flex gap-4 group cursor-pointer hover:border-primary/30 transition-all">
+<div class="size-20 bg-primary/10 rounded-lg flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">code</span>
+</div>
+<div class="flex flex-col justify-center">
+<h4 class="font-bold text-slate-800 dark:text-white">React-ийн ахисан түвшин</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Явц: 75%</p>
+<div class="mt-2 w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[75%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer subtle info -->
+<footer class="mt-auto p-10 flex justify-center opacity-50 text-xs">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">shield</span>
+<span>Энэ бол олон нийтэд нээлттэй профайл хуудас юм.</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

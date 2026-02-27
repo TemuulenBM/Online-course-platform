@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="max-w-[960px] mx-auto p-4 md:p-8">
+<!-- Header Section -->
+<div class="mb-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-primary/20 pb-6">
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">124 Сэтгэгдэл</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Хичээлийн хэлэлцүүлэг</p>
+</div>
+<div class="flex items-center gap-1 bg-white dark:bg-slate-800 p-1 rounded-lg shadow-sm border border-primary/10">
+<button class="px-4 py-2 text-sm font-semibold rounded-md bg-primary text-white shadow-sm">Шинэ</button>
+<button class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-colors">Дуртай</button>
+<button class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-colors">Цаг</button>
+</div>
+</div>
+</div>
+<!-- New Comment Input Area -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-primary/10 shadow-sm mb-10 group focus-within:ring-2 focus-within:ring-primary/30 transition-all">
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar smiling person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmIgW9VIaL490jWsAztbBVjldO2XXb3Wa8YJMgDLGc8j9gYr-078_Di36G0w4B5bq5smHLVCJYu0Z9rsQ_C1MBsEPkdwFKa57zgkZD0tU3w3lrzScu5xS9HICHXmnvJmOhXUpWAqI2dGJsBOlHW1Eeq2rKgvJzSJ-8dFAX5SFW7SobusoXiIBmc96mDumUWrzDyr7A8cwRBMfj5WPpCzUjzzOruGG80c0W2m5zJKjqkYzo_9duuOSygWXF9s6ZZAKgzq0CpjSldLU"/>
+</div>
+</div>
+<div class="flex-1 space-y-4">
+<textarea class="w-full min-h-[100px] bg-transparent border-none focus:ring-0 p-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 resize-none" placeholder="Сэтгэгдэл бичих эсвэл асуулт асуух..."></textarea>
+<div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-primary/10">
+<div class="flex items-center gap-3">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-primary text-[20px]">schedule</span>
+<input class="pl-10 pr-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm w-32 focus:ring-1 focus:ring-primary" placeholder="02:30 (Цаг)" type="text"/>
+</div>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+</div>
+<button class="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+<span>Сэтгэгдэл бичих</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Comments List -->
+<div class="space-y-8">
+<!-- Parent Comment 1 -->
+<div class="flex gap-4 group/comment">
+<div class="shrink-0">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Student avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL6dU9ZoCUmFCWJss9u2BZscSzMHqDm_RffzQv0wjhYFz1hsWpLBzZn8jIq8ZtjPJYmjgOh4Dxv9xsFXoxeVaDXhmWOuQ31xzfRqoKHf-584jd36uu0h185bwNRNs0ziZ4--oxOYGs5fBbBAd8qzZtFaAlN_zcOe9Jxgs5D8JngD91Ln7DA6r5ZkOdpyHSZoO_7vxvbalvZJmrTqOW9jdcrWx7V-gQRQSzzHaI-64JrnlTGHmxlEBVOvOlpqZU9PVybcYZa7-TWVE"/>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-bold text-slate-900 dark:text-slate-100">А. Тэмүүлэн</span>
+<span class="text-xs text-slate-400 font-medium">2 цагийн өмнө</span>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover/comment:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-primary/10 rounded-full text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 hover:bg-red-500/10 rounded-full text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Энэ хэсэг маш ойлгомжтой байлаа. <span class="text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded cursor-pointer hover:bg-primary/20 transition-all">01:15</span> дээр гарч байгаа концепц маш сонирхолтой юм. Баярлалаа!
+                </p>
+<div class="flex items-center gap-6 pt-1">
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors group/vote">
+<span class="material-symbols-outlined text-[20px] group-hover/vote:fill-current">thumb_up</span>
+<span class="text-sm font-medium">12</span>
+</button>
+<button class="text-sm font-semibold text-slate-500 hover:text-primary transition-colors">Хариулах</button>
+</div>
+<!-- Threaded Reply (Instructor) -->
+<div class="mt-6 ml-4 pl-6 border-l-2 border-primary/20 space-y-4">
+<div class="flex gap-4">
+<div class="shrink-0">
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Instructor avatar professional portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-sOANZL6XkkxylR6hvGj3zefb6nSQ4vNrpf8K9qUu-h2zJIdYYkMZTDxcpg5EV4ji2I4PEGt9dSEvr2uJ2q01cWKGdzpK0XD9oVfoisjU0fkUANymH9RZxerSZmFROh-NYsTd3k-OQ2LWy0UNJ4hauLcLj_sHobl08Si_xmnwc61Wk21dESd_cjXpL1bFS8AzMMqF5ZzgR6VKB8noZvOw7wmj599onNvc_3C0y6i-A4HURgY8klPr7_xZYLcrcHX5zhK5I_H-w4E"/>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-bold text-slate-900 dark:text-slate-100 text-sm">Б. Гэрэлт-Од</span>
+<span class="px-2 py-0.5 bg-primary text-white text-[10px] font-bold rounded uppercase tracking-wider">Багш</span>
+<span class="text-xs text-slate-400">1 цагийн өмнө</span>
+</div>
+<p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                                Баярлалаа Тэмүүлэн! Хэрэв асуух зүйл гарвал хэзээ ч хамаагүй асуугаарай. Тэр хэсэг дээр анхаарах ёстой өөр нэг зүйл бол...
+                            </p>
+<div class="flex items-center gap-4 pt-1">
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+<span class="text-xs font-medium">5</span>
+</button>
+<button class="text-xs font-semibold text-slate-500 hover:text-primary transition-colors">Хариулах</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Parent Comment 2 -->
+<div class="flex gap-4 group/comment">
+<div class="shrink-0">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Female student avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi9E_nXKnErOPrMasTikQyOa7DYzri13dkR7K5xUPZaR2_w53nT1g0e4Z4ZKr_-uL1ePX6rfmx-pz_vnVLrxvmYKyVC2aP51BBv0blpkl1V_to73MNrtfdHpy7M0lQfXGnhVxDNLFz8mOxZbTdeLhO8ggW909hTLgAZK6Iiog6-oh1g-2HK5vxZnAINzEoC6rX1YnRjDZhOKnw6qxp-fuJXpOA4ZZJXjiyiQjAOS6G_Uk6b9gEW18zw49qsVo8p-O88dokJdB3-U"/>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-bold text-slate-900 dark:text-slate-100">М. Ану</span>
+<span class="text-xs text-slate-400 font-medium">5 цагийн өмнө</span>
+</div>
+</div>
+<p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Дараагийн хичээл хэзээ орох вэ? Энэ сэдэв үнэхээр чухал санагдлаа.
+                </p>
+<div class="flex items-center gap-6 pt-1">
+<button class="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="text-sm font-medium">3</span>
+</button>
+<button class="text-sm font-semibold text-slate-500 hover:text-primary transition-colors">Хариулах</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex items-center justify-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary/20 text-slate-500 hover:bg-primary/10 transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold shadow-md shadow-primary/20">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary/20 text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-all">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary/20 text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-all">3</button>
+<div class="px-2 text-slate-400">...</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary/20 text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-all">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary/20 text-slate-500 hover:bg-primary/10 transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</body></html>

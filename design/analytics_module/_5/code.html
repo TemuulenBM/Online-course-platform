@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Learnify Analytics</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary/20 border border-primary/30 overflow-hidden" data-alt="User avatar placeholder profile picture">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt8sgyyCxO_N6NdWjvZk5W7Qo58gJGJfg3KCb99aiZvilZ5RrKKjdcsFcgHo5j638xg5vp-cU3bLHrAwxAjrNCT3zPZdz5ycvPWESCAwJAinG_c_PWl9EW96vmEywASLi8nLN4x1e4IQskGdt0Njtyvk3KoaEbhnRMswBSLvkdtBeWeJtX_mOIOWdFaxfXCWL_Z8sP7MTNu5ToznT5ifwkI6REJmSfpGEeTWI2F3iwy_maNwPlTSPAomjOU08XimlbJBcgUSuqmsw"/>
+</div>
+</div>
+</header>
+<main class="flex-1 px-4 md:px-10 lg:px-20 py-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div class="flex flex-col gap-2">
+<nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+<span>Курсууд</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-medium">Advanced UI/UX Design</span>
+</nav>
+<h1 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Advanced UI/UX Design Masterclass</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Detailed performance analytics and student engagement metrics</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/20 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Тайлан татах
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">share</span>
+                            Хуваалцах
+                        </button>
+</div>
+</div>
+<!-- Primary Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-slate-800 p-6 border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Нийт элсэлт</p>
+<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">+12%</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">1,240</p>
+<div class="h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-slate-800 p-6 border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Идэвхтэй</p>
+<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">+5%</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">850</p>
+<p class="text-xs text-slate-400 mt-2">Нийт суралцагчдын 68.5%</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-slate-800 p-6 border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Төгссөн</p>
+<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full">+8%</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">320</p>
+<p class="text-xs text-slate-400 mt-2">Сүүлийн 30 хоногт</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl bg-white dark:bg-slate-800 p-6 border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Цуцалсан</p>
+<span class="bg-rose-100 text-rose-700 text-xs font-bold px-2 py-1 rounded-full">-2%</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">70</p>
+<p class="text-xs text-slate-400 mt-2">Буцаалт хийгдсэн</p>
+</div>
+</div>
+<!-- Secondary Detailed Metrics -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- Completion Rate Chart Box -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl p-6 border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white">Дуусгалтын хувь (%)</h3>
+<p class="text-sm text-slate-500">Долоо хоногоор харах</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-bold text-primary">68%</p>
+<p class="text-xs text-emerald-600 font-bold">▲ 4% өсөлттэй</p>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-4 items-end h-48 px-2">
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 40%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Да</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 65%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Мя</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 35%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Лх</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 85%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Пү</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 55%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Ба</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/20 hover:bg-primary/40 transition-colors w-full rounded-t-lg" style="height: 95%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Ша</span>
+</div>
+<div class="flex flex-col items-center gap-2 h-full justify-end">
+<div class="bg-primary/60 w-full rounded-t-lg" style="height: 45%"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Ня</span>
+</div>
+</div>
+</div>
+<!-- Side Stats Cards -->
+<div class="flex flex-col gap-4">
+<div class="flex-1 bg-gradient-to-br from-primary to-purple-600 rounded-xl p-6 text-white shadow-lg">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined p-2 bg-white/20 rounded-lg">payments</span>
+<span class="text-xs bg-white/20 px-2 py-1 rounded-full">Бүх цаг үеийн</span>
+</div>
+<p class="text-sm opacity-80 mb-1">Нийт орлого</p>
+<p class="text-3xl font-black">₮42,500,000</p>
+</div>
+<div class="flex-1 bg-white dark:bg-slate-800 rounded-xl p-6 border border-primary/10 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500">Дундаж ахиц</p>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<div class="mt-2">
+<p class="text-3xl font-bold text-slate-900 dark:text-white">74.2%</p>
+<div class="flex items-center gap-2 mt-2">
+<div class="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 74.2%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
+<div class="size-10 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Нийт хичээл</p>
+<p class="text-xl font-bold">48</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
+<div class="size-10 bg-amber-50 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Сертификат</p>
+<p class="text-xl font-bold">152</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
+<div class="size-10 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Нийт зарцуулсан цаг</p>
+<p class="text-xl font-bold">1,420ц</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
+<div class="size-10 bg-rose-50 dark:bg-rose-900/30 text-rose-600 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">star</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-slate-400">Дундаж үнэлгээ</p>
+<p class="text-xl font-bold">4.8/5</p>
+</div>
+</div>
+</div>
+<!-- Tabs Section -->
+<div class="border-b border-primary/10 mb-6">
+<div class="flex gap-8">
+<button class="px-2 py-4 border-b-2 border-primary text-primary font-bold text-sm">
+                            Оюутны жагсаалт
+                        </button>
+<button class="px-2 py-4 border-b-2 border-transparent text-slate-500 hover:text-primary transition-colors font-medium text-sm">
+                            Хичээлийн статистик
+                        </button>
+</div>
+</div>
+<!-- Content Area (Student List Example) -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-primary/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Оюутны нэр эсвэл имэйлээр хайх..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg bg-slate-50 dark:bg-slate-900 text-slate-600">
+<span class="material-symbols-outlined text-xl">filter_list</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-50 dark:bg-slate-900 text-slate-600">
+<span class="material-symbols-outlined text-xl">sort</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 text-[11px] uppercase tracking-wider font-bold">
+<tr>
+<th class="px-6 py-4">Суралцагч</th>
+<th class="px-6 py-4">Элссэн огноо</th>
+<th class="px-6 py-4">Ахиц (%)</th>
+<th class="px-6 py-4">Төлөв</th>
+<th class="px-6 py-4">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-primary/20" data-alt="Avatar of student Bolormaa">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx-A6NagDZwgT-h7uPoZVLTgWb2f_w72xGh3UGecDsu-m6dGaYKRvpuN5L080pUUUBmGDfVgX-KV2UEgHskljYLMK1yR4-M39UoFLM8szJfiK1agOL5MnVnrrobBiHFhSxMmAV5ioRqCPEe35XlQrpnYu5a-Tgx-2S4GpN4ydfu-sALZ5M_zbWLrz7CM1_JQVjIA2Y1qPKSR7hGq7fMiZSwgwhCzeMojOVnQevzhV0VY9cA1Z5M36PSkpdP7O-r7nclBY8nI2ECFU"/>
+</div>
+<div>
+<p class="font-semibold text-sm">Болормаа Энхтөр</p>
+<p class="text-xs text-slate-400">bolormaa.e@example.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">2023.11.15</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 85%;"></div>
+</div>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">85%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Идэвхтэй</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-primary/20" data-alt="Avatar of student Temuulen">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5OyvR1KpKL2VWNBwWRRWSR8YjmK5fMWuE-718pg6Xxo7sYDMgvmc98yFW70aZFAbN8p8MBzl7gJQgw3Qkycp5VECjf-2pj4xZbmMlZ63s11FHded2Ym8HNVfQA8ld4C-oP3X2R0QUwlqUL0TQg9RQQoa0_j-HBdI7x4P1GfvZ-_2Lw85Kc-3NopLUeWFP5KU11QU7-_2dwGh8vsJSlc7Ha6F7fXESoVuSCzpCB7BtQ0c8QBtFW15shW6zj6RD1FQei7TyCB-xiqA"/>
+</div>
+<div>
+<p class="font-semibold text-sm">Тэмүүлэн Ганболд</p>
+<p class="text-xs text-slate-400">temuulen.g@example.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">2023.11.12</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 100%;"></div>
+</div>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">100%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Төгссөн</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-primary/20" data-alt="Avatar of student Ariunaa">
+<img alt="Student" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhMQ3Ih3IJ5EYT5s139GGYqWyeOVxyYhhiMS2GVxYjve28S7oy-skmJU2R08snGRL0FjKurZcXqAmAmfknzSSYtw1ZydXMPmk4tsC7LP-wsFmQwDQ49qi3gq3uwToo8PdarQ2NEPPygl84OOCYpgUzYz351Bllbzy4v5bhphm0P29uPP-LU22ViPYKj-TMSlNorW1rEVdf7MIMeBhmKUgCGptRX34gHV4boP2LVHVnYYAy8Poyd_DGEwnz07emGtYNy4G35jmuZRU"/>
+</div>
+<div>
+<p class="font-semibold text-sm">Ариунаа Батбаяр</p>
+<p class="text-xs text-slate-400">ariunaa.b@example.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">2023.11.20</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 12%;"></div>
+</div>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">12%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">Идэвхгүй</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-primary/5 flex items-center justify-between">
+<p class="text-sm text-slate-500">Нийт 1,240 оюутнаас 1-3 харуулж байна</p>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg bg-slate-50 text-slate-400">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded-lg bg-primary text-white text-sm font-bold">1</button>
+<button class="px-3 py-1 rounded-lg hover:bg-primary/5 text-sm font-medium">2</button>
+<button class="px-3 py-1 rounded-lg hover:bg-primary/5 text-sm font-medium">3</button>
+<button class="p-2 rounded-lg bg-slate-50 text-slate-600">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto py-6 border-t border-primary/10 bg-white dark:bg-background-dark text-center">
+<p class="text-xs text-slate-500 font-medium">© 2024 Learnify Analytics. All rights reserved.</p>
+</footer>
+</div>
+</div>
+</body></html>
