@@ -26,6 +26,7 @@ import {
   MobileBottomNav,
   LessonCompleteButton,
 } from '@/components/lesson-viewer';
+import { QuizInfoPanel } from '@/components/quiz/QuizInfoPanel';
 
 export default function LessonViewerPage({
   params,
@@ -111,8 +112,13 @@ export default function LessonViewerPage({
         </div>
       </nav>
 
-      {/* Контент — Text/Video тусдаа layout */}
-      {contentType === 'video' ? (
+      {/* Контент — QUIZ / Video / Text тусдаа layout */}
+      {currentLesson.lessonType === 'quiz' ? (
+        /* ───────── QUIZ LAYOUT ───────── */
+        <div className="max-w-[1200px] mx-auto w-full px-4 lg:px-10 pb-10">
+          <QuizInfoPanel lessonId={lessonId} />
+        </div>
+      ) : contentType === 'video' ? (
         /* ───────── VIDEO LAYOUT ───────── */
         <div className="max-w-[1200px] mx-auto w-full px-4 lg:px-10 pb-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -103,3 +103,22 @@ export { useAdminUsers, useUpdateUserRole, useDeleteUser, useEntityAuditLogs } f
 
 // Category admin hooks
 export { useCreateCategory, useUpdateCategory, useDeleteCategory } from './use-categories-admin';
+
+// Quiz hooks
+export {
+  useQuizByLessonId,
+  useQuizById,
+  useMyAttempts,
+  useStudentAttempts,
+  useAttemptDetail,
+  useCreateQuiz,
+  useUpdateQuiz,
+  useDeleteQuiz,
+  useAddQuestion,
+  useUpdateQuestion,
+  useDeleteQuestion,
+  useReorderQuestions,
+  useStartAttempt,
+  useSubmitAttempt,
+  useGradeAttempt,
+} from './use-quizzes';

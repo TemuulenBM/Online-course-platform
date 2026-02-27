@@ -52,6 +52,15 @@ export const QUERY_KEYS = {
   discussions: {
     byCourse: (courseId: string) => ['discussions', 'course', courseId] as const,
   },
+  quizzes: {
+    byLesson: (lessonId: string) => ['quizzes', 'lesson', lessonId] as const,
+    byId: (quizId: string) => ['quizzes', 'detail', quizId] as const,
+    myAttempts: (quizId: string) => ['quizzes', 'attempts', 'my', quizId] as const,
+    studentAttempts: (quizId: string, params?: object) =>
+      ['quizzes', 'attempts', 'students', quizId, params] as const,
+    attemptDetail: (quizId: string, attemptId: string) =>
+      ['quizzes', 'attempts', 'detail', quizId, attemptId] as const,
+  },
   admin: {
     users: (params?: object) => ['admin', 'users', params] as const,
   },
@@ -89,4 +98,15 @@ export const ROUTES = {
     `/teacher/courses/${courseId}/lessons/${lessonId}/content` as const,
   PROGRESS: '/progress',
   COURSE_PROGRESS: (slug: string) => `/courses/${slug}/progress` as const,
+  QUIZ_TAKE: (quizId: string) => `/quiz/${quizId}/take` as const,
+  QUIZ_RESULTS: (quizId: string, attemptId: string) =>
+    `/quiz/${quizId}/results/${attemptId}` as const,
+  TEACHER_QUIZ: (courseId: string, lessonId: string) =>
+    `/teacher/courses/${courseId}/lessons/${lessonId}/quiz` as const,
+  TEACHER_QUIZ_QUESTIONS: (courseId: string, lessonId: string) =>
+    `/teacher/courses/${courseId}/lessons/${lessonId}/quiz/questions` as const,
+  TEACHER_QUIZ_ATTEMPTS: (courseId: string, lessonId: string) =>
+    `/teacher/courses/${courseId}/lessons/${lessonId}/quiz/attempts` as const,
+  TEACHER_QUIZ_GRADE: (courseId: string, lessonId: string, attemptId: string) =>
+    `/teacher/courses/${courseId}/lessons/${lessonId}/quiz/attempts/${attemptId}` as const,
 } as const;
