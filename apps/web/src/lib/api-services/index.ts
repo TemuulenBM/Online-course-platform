@@ -15,7 +15,7 @@ export { usersService } from './users.service';
 export { notificationsService } from './notifications.service';
 export type { Notification, NotificationListParams } from './notifications.service';
 export { certificatesService } from './certificates.service';
-export type { Certificate, MyCertificatesParams } from './certificates.service';
+export type { MyCertificatesParams, CourseCertificatesParams } from './certificates.service';
 export { lessonsService } from './lessons.service';
 export type { CreateLessonData, UpdateLessonData, ReorderLessonsData } from './lessons.service';
 export { contentService } from './content.service';

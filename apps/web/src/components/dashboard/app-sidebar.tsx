@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
+  Award,
   BarChart3,
   BookMarked,
   BookOpen,
@@ -39,6 +40,7 @@ const mainNavItems = [
   { href: '/courses', icon: BookOpen, labelKey: 'courses' },
   { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
   { href: '/progress', icon: BarChart3, labelKey: 'progress' },
+  { href: '/certificates', icon: Award, labelKey: 'certificates' },
 ] as const;
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */

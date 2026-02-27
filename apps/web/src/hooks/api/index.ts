@@ -59,7 +59,15 @@ export {
 } from './use-notifications';
 
 // Certificate hooks
-export { useMyCertificates } from './use-certificates';
+export {
+  useMyCertificates,
+  useCertificateDetail,
+  useVerifyCertificate,
+  useCourseCertificates,
+  useGenerateCertificate,
+  useDeleteCertificate,
+  useCertificatePdfPolling,
+} from './use-certificates';
 
 // Lesson hooks
 export {

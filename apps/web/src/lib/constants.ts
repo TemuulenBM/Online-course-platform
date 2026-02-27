@@ -38,6 +38,10 @@ export const QUERY_KEYS = {
   },
   certificates: {
     my: (params?: object) => ['certificates', 'my', params] as const,
+    detail: (id: string) => ['certificates', 'detail', id] as const,
+    verify: (code: string) => ['certificates', 'verify', code] as const,
+    byCourse: (courseId: string, params?: object) =>
+      ['certificates', 'course', courseId, params] as const,
   },
   lessons: {
     byCourse: (courseId: string) => ['lessons', 'course', courseId] as const,
@@ -109,4 +113,9 @@ export const ROUTES = {
     `/teacher/courses/${courseId}/lessons/${lessonId}/quiz/attempts` as const,
   TEACHER_QUIZ_GRADE: (courseId: string, lessonId: string, attemptId: string) =>
     `/teacher/courses/${courseId}/lessons/${lessonId}/quiz/attempts/${attemptId}` as const,
+  CERTIFICATES: '/certificates',
+  CERTIFICATE_DETAIL: (id: string) => `/certificates/${id}` as const,
+  CERTIFICATE_VERIFY: '/verify',
+  TEACHER_COURSE_CERTIFICATES: (courseId: string) =>
+    `/teacher/courses/${courseId}/certificates` as const,
 } as const;
