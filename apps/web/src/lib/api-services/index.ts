@@ -37,3 +37,4 @@ export { categoriesAdminService } from './categories-admin.service';
 export type { CreateCategoryData, UpdateCategoryData } from './categories-admin.service';
 export { paymentsService } from './payments.service';
 export type { MyOrdersParams, PendingOrdersParams, MyInvoicesParams } from './payments.service';
+export { analyticsService } from './analytics.service';

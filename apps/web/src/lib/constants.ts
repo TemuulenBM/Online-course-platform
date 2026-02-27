@@ -77,6 +77,20 @@ export const QUERY_KEYS = {
     invoiceDetail: (id: string) => ['payments', 'invoices', 'detail', id] as const,
     mySubscription: ['payments', 'subscription', 'my'] as const,
   },
+  analytics: {
+    overview: ['analytics', 'overview'] as const,
+    revenue: (params?: object) => ['analytics', 'revenue', params] as const,
+    enrollmentTrend: (params?: object) => ['analytics', 'enrollment-trend', params] as const,
+    popularCourses: (limit?: number) => ['analytics', 'popular-courses', limit] as const,
+    courseStats: (courseId: string) => ['analytics', 'course', courseId] as const,
+    courseStudents: (courseId: string, params?: object) =>
+      ['analytics', 'course', courseId, 'students', params] as const,
+    courseLessons: (courseId: string) => ['analytics', 'course', courseId, 'lessons'] as const,
+    events: (params?: object) => ['analytics', 'events', params] as const,
+    platformStats: ['analytics', 'platform-stats'] as const,
+    pendingItems: ['analytics', 'pending-items'] as const,
+    recentActivity: (limit?: number) => ['analytics', 'recent-activity', limit] as const,
+  },
 } as const;
 
 /**
@@ -139,4 +153,10 @@ export const ROUTES = {
   INVOICE_DETAIL: (id: string) => `/invoices/${id}` as const,
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_ORDER_DETAIL: (id: string) => `/admin/orders/${id}` as const,
+  ADMIN_ANALYTICS: '/admin/analytics',
+  ADMIN_ANALYTICS_REVENUE: '/admin/analytics/revenue',
+  ADMIN_ANALYTICS_ENROLLMENTS: '/admin/analytics/enrollment-trends',
+  ADMIN_ANALYTICS_POPULAR_COURSES: '/admin/analytics/popular-courses',
+  ADMIN_ANALYTICS_EVENTS: '/admin/analytics/events',
+  TEACHER_COURSE_ANALYTICS: (courseId: string) => `/teacher/courses/${courseId}/analytics` as const,
 } as const;

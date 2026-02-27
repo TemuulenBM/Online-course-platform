@@ -3,7 +3,19 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutGrid, Users, Shield, Layers, GraduationCap, ShoppingCart } from 'lucide-react';
+import {
+  LayoutGrid,
+  Users,
+  Shield,
+  Layers,
+  GraduationCap,
+  ShoppingCart,
+  BarChart3,
+  DollarSign,
+  TrendingUp,
+  Trophy,
+  Activity,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
@@ -16,6 +28,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -29,6 +42,15 @@ const navItems = [
   { href: '/admin/enrollments', icon: GraduationCap, labelKey: 'enrollments' },
   { href: '/admin/orders', icon: ShoppingCart, labelKey: 'pendingOrders' },
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
+] as const;
+
+/** Аналитик навигацийн зүйлс */
+const analyticsItems = [
+  { href: '/admin/analytics', icon: BarChart3, label: 'Хянах самбар' },
+  { href: '/admin/analytics/revenue', icon: DollarSign, label: 'Орлого' },
+  { href: '/admin/analytics/enrollment-trends', icon: TrendingUp, label: 'Элсэлт' },
+  { href: '/admin/analytics/popular-courses', icon: Trophy, label: 'Топ сургалтууд' },
+  { href: '/admin/analytics/events', icon: Activity, label: 'Event-ууд' },
 ] as const;
 
 /** Role badge-ийн өнгөний mapping */
@@ -83,6 +105,42 @@ export function AdminSidebar() {
                       <Link href={item.href}>
                         <item.icon className="size-5" strokeWidth={2.5} />
                         <span>{t(item.labelKey)}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Аналитик бүлэг */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="px-5 text-xs font-bold text-slate-400 uppercase tracking-widest">
+            Аналитик
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-1">
+              {analyticsItems.map((item) => {
+                const isActive =
+                  item.href === '/admin/analytics'
+                    ? pathname === '/admin/analytics'
+                    : pathname === item.href || pathname.startsWith(item.href + '/');
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      className={cn(
+                        'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
+                        'hover:bg-white/50 hover:text-gray-900',
+                        isActive &&
+                          'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
+                      )}
+                    >
+                      <Link href={item.href}>
+                        <item.icon className="size-5" strokeWidth={2.5} />
+                        <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

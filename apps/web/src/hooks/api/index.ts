@@ -156,3 +156,18 @@ export {
   useMySubscription,
   useCancelSubscription,
 } from './use-payments';
+
+// Analytics hooks
+export {
+  useAnalyticsOverview,
+  useRevenueReport,
+  useEnrollmentTrend,
+  usePopularCourses,
+  useCourseStats,
+  useCourseAnalyticsStudents,
+  useCourseLessonStats,
+  useAnalyticsEvents,
+  usePlatformStats,
+  usePendingItems,
+  useRecentActivity,
+} from './use-analytics';
