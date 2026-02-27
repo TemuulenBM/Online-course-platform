@@ -86,6 +86,7 @@ export const ROUTES = {
   MY_COURSES: '/my-courses',
   PROFILE: '/profile',
   NOTIFICATIONS: '/notifications',
+  NOTIFICATION_PREFERENCES: '/notifications/preferences',
   ADMIN: '/admin',
   LESSON_VIEWER: (slug: string, lessonId: string) =>
     `/courses/${slug}/lessons/${lessonId}` as const,

@@ -448,7 +448,21 @@
     "deleted": "Notification deleted",
     "allMarkedRead": "All notifications marked as read",
     "showingOf": "Showing {shown} of {total} notifications",
-    "unreadCount": "{count} unread"
+    "unreadCount": "{count} unread",
+    "preferences": "Notification Settings",
+    "preferencesDescription": "Configure your notification channels.",
+    "emailNotification": "Email Notification",
+    "emailDescription": "Receive new lessons and updates via email",
+    "pushNotification": "Push Notification",
+    "pushDescription": "Get instant notifications on your phone",
+    "smsNotification": "SMS Notification",
+    "smsDescription": "Receive important updates via text message",
+    "inAppNotification": "In-app Notification",
+    "inAppDescription": "In-platform notifications (Always active)",
+    "preferencesSaved": "Settings saved successfully",
+    "preferencesError": "Failed to save settings",
+    "viewNotifications": "View Notifications",
+    "preferencesLink": "Settings"
   },
   "language": {
     "toggle": "Language",

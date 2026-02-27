@@ -479,7 +479,21 @@
     "deleted": "Мэдэгдэл устгагдлаа",
     "allMarkedRead": "Бүх мэдэгдлийг уншсан болголоо",
     "showingOf": "{shown}-аас {total} мэдэгдэл харуулж байна",
-    "unreadCount": "{count} уншаагүй"
+    "unreadCount": "{count} уншаагүй",
+    "preferences": "Мэдэгдэл тохиргоо",
+    "preferencesDescription": "Мэдэгдэл хүлээн авах сувгуудаа тохируулна уу.",
+    "emailNotification": "Email мэдэгдэл",
+    "emailDescription": "Шинэ хичээл болон мэдээллийг и-мэйлээр хүлээн авах",
+    "pushNotification": "Push мэдэгдэл",
+    "pushDescription": "Гар утсанд шууд мэдэгдэл ирэх",
+    "smsNotification": "SMS мэдэгдэл",
+    "smsDescription": "Чухал мэдээллийг мессежээр авах",
+    "inAppNotification": "In-app мэдэгдэл",
+    "inAppDescription": "Платформ доторх мэдэгдлүүд (Заавал идэвхтэй)",
+    "preferencesSaved": "Тохиргоо амжилттай хадгалагдлаа",
+    "preferencesError": "Тохиргоо хадгалахад алдаа гарлаа",
+    "viewNotifications": "Мэдэгдлүүд үзэх",
+    "preferencesLink": "Тохиргоо"
   },
   "language": {
     "toggle": "Хэл",

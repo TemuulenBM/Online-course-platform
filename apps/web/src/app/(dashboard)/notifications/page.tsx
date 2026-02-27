@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   useNotifications,
@@ -22,6 +24,7 @@ import {
 import { NotificationsEmpty } from '@/components/notifications/notifications-empty';
 import { NotificationsListSkeleton } from '@/components/notifications/notification-item-skeleton';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
+import { ROUTES } from '@/lib/constants';
 
 const PAGE_LIMIT = 10;
 
@@ -92,15 +95,24 @@ export default function NotificationsPage() {
               </span>
             )}
           </div>
-          {unreadCount > 0 && (
-            <button
-              onClick={handleMarkAllRead}
-              disabled={markAllRead.isPending}
-              className="text-sm text-primary hover:text-[#7B84D9] font-semibold transition-colors disabled:opacity-50"
+          <div className="flex items-center gap-4">
+            {unreadCount > 0 && (
+              <button
+                onClick={handleMarkAllRead}
+                disabled={markAllRead.isPending}
+                className="text-sm text-primary hover:text-[#7B84D9] font-semibold transition-colors disabled:opacity-50"
+              >
+                {t('markAllRead')}
+              </button>
+            )}
+            <Link
+              href={ROUTES.NOTIFICATION_PREFERENCES}
+              className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-primary font-medium transition-colors"
             >
-              {t('markAllRead')}
-            </button>
-          )}
+              <Settings className="size-4" />
+              {t('preferencesLink')}
+            </Link>
+          </div>
         </div>
 
         {/* Filter tabs */}
