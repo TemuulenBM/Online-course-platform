@@ -2,7 +2,10 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { notificationsService } from '@/lib/api-services/notifications.service';
-import type { NotificationListParams } from '@/lib/api-services/notifications.service';
+import type {
+  NotificationListParams,
+  UpdateNotificationPreferences,
+} from '@/lib/api-services/notifications.service';
 import { QUERY_KEYS } from '@/lib/constants';
 import { useAuthStore } from '@/stores/auth-store';
 
@@ -58,6 +61,49 @@ export function useMarkNotificationRead() {
       });
       queryClient.invalidateQueries({
         queryKey: ['notifications', 'list'],
+      });
+    },
+  });
+}
+
+/** Мэдэгдэл устгах mutation */
+export function useDeleteNotification() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => notificationsService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.notifications.unreadCount,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['notifications', 'list'],
+      });
+    },
+  });
+}
+
+/** Мэдэгдлийн тохиргоо авах */
+export function useNotificationPreferences() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  return useQuery({
+    queryKey: ['notifications', 'preferences'],
+    queryFn: () => notificationsService.getPreferences(),
+    enabled: isAuthenticated,
+  });
+}
+
+/** Мэдэгдлийн тохиргоо шинэчлэх mutation */
+export function useUpdateNotificationPreferences() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateNotificationPreferences) =>
+      notificationsService.updatePreferences(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['notifications', 'preferences'],
       });
     },
   });

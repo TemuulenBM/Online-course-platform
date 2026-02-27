@@ -4,23 +4,31 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
+  Award,
+  BarChart3,
+  BookMarked,
   BookOpen,
-  Calendar,
-  HelpCircle,
+  GraduationCap,
   LayoutGrid,
-  ListTodo,
+  LogOut,
+  Receipt,
   Settings,
-  TrendingUp,
-  Users,
+  Shield,
+  ShoppingCart,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useLogout, useMyProfile } from '@/hooks/api';
+import { useAuthStore } from '@/stores/auth-store';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -32,43 +40,50 @@ import {
 const mainNavItems = [
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
   { href: '/courses', icon: BookOpen, labelKey: 'courses' },
-  { href: '/tasks', icon: ListTodo, labelKey: 'myTask' },
-  { href: '/community', icon: Users, labelKey: 'community' },
-  { href: '/report', icon: TrendingUp, labelKey: 'report' },
-  { href: '/events', icon: Calendar, labelKey: 'events' },
+  { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
+  { href: '/progress', icon: BarChart3, labelKey: 'progress' },
+  { href: '/certificates', icon: Award, labelKey: 'certificates' },
+  { href: '/orders', icon: ShoppingCart, labelKey: 'orders' },
+  { href: '/invoices', icon: Receipt, labelKey: 'invoices' },
 ] as const;
 
-/** Доод навигацийн зүйлс */
-const bottomNavItems = [
-  { href: '/settings', icon: Settings, labelKey: 'settings' },
-  { href: '/support', icon: HelpCircle, labelKey: 'support' },
-] as const;
+/** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */
+const navItemBase =
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
+const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
 
 export function AppSidebar() {
   const pathname = usePathname();
   const t = useTranslations('nav');
+  const tRoles = useTranslations('roles');
+  const logoutMutation = useLogout();
+  const user = useAuthStore((s) => s.user);
+  const { data: profile } = useMyProfile();
+  const userRole = user?.role?.toLowerCase();
+  const isTeacherOrAdmin = userRole === 'teacher' || userRole === 'admin';
+
+  const displayName = profile?.firstName
+    ? `${profile.firstName} ${profile.lastName || ''}`.trim()
+    : user?.email?.split('@')[0] || '';
+
+  const initials = profile?.firstName
+    ? `${profile.firstName[0]}${profile.lastName?.[0] || ''}`.toUpperCase()
+    : (user?.email?.[0] || 'U').toUpperCase();
+
+  const roleName = tRoles(user?.role || 'student');
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-none bg-[#F4F2F9]">
+    <Sidebar collapsible="offcanvas" className="border-none bg-background">
       {/* Лого */}
-      <SidebarHeader className="px-6 pt-8 pb-6">
-        <Link href="/dashboard" className="flex items-center gap-3 pl-2">
-          <div className="flex flex-col gap-[3px]">
-            <div className="w-5 h-1.5 bg-[#FF6B6B] rounded-full rotate-[-45deg] origin-right ml-1" />
-            <div className="w-5 h-1.5 bg-[#2E3035] rounded-full rotate-[-45deg] origin-right" />
-            <div className="w-5 h-1.5 bg-[#8A93E5] rounded-full rotate-[-45deg] origin-right" />
-          </div>
-          <span className="text-xl font-extrabold tracking-wide uppercase text-[#1B1B1B]">
-            Learnify
-          </span>
-        </Link>
+      <SidebarHeader className="px-5 pt-7 pb-4">
+        <LearnifyLogo href="/dashboard" />
       </SidebarHeader>
 
-      {/* Үндсэн навигац */}
       <SidebarContent className="px-3">
+        {/* Үндсэн навигац */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu className="gap-0.5">
               {mainNavItems.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
                 return (
@@ -76,15 +91,10 @@ export function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
-                      className={cn(
-                        'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
-                        'hover:bg-white/50 hover:text-gray-900',
-                        isActive &&
-                          'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
-                      )}
+                      className={cn(navItemBase, isActive && navItemActive)}
                     >
                       <Link href={item.href}>
-                        <item.icon className="size-5" strokeWidth={2.5} />
+                        <item.icon className="size-[18px]" />
                         <span>{t(item.labelKey)}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -94,103 +104,102 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Багшийн хэсэг */}
+        {isTeacherOrAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
+              {t('teacherSection')}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="gap-0.5">
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith('/teacher')}
+                    className={cn(navItemBase, pathname.startsWith('/teacher') && navItemActive)}
+                  >
+                    <Link href="/teacher/courses">
+                      <GraduationCap className="size-[18px]" />
+                      <span>{t('teacherCourses')}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* Админ хэсэг */}
+        {userRole === 'admin' && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
+              {t('adminSection')}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="gap-0.5">
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith('/admin')}
+                    className={cn(navItemBase, pathname.startsWith('/admin') && navItemActive)}
+                  >
+                    <Link href="/admin/users">
+                      <Shield className="size-[18px]" />
+                      <span>{t('adminPanel')}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
-      {/* Доод хэсэг: Setting, Support, Upgrade Premium */}
-      <SidebarFooter className="px-3 pb-6">
-        <SidebarMenu className="gap-1">
-          {bottomNavItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive}
-                  className={cn(
-                    'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
-                    'hover:bg-white/50 hover:text-gray-900',
-                    isActive &&
-                      'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
-                  )}
-                >
-                  <Link href={item.href}>
-                    <item.icon className="size-5" strokeWidth={2.5} />
-                    <span>{t(item.labelKey)}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          })}
+      {/* Доод хэсэг — Тохиргоо + Гарах + Хэрэглэгч */}
+      <SidebarFooter className="px-3 pb-5">
+        <SidebarMenu className="gap-0.5">
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === '/profile'}
+              className={cn(navItemBase, pathname === '/profile' && navItemActive)}
+            >
+              <Link href="/profile">
+                <Settings className="size-[18px]" />
+                <span>{t('settings')}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+              className="h-11 rounded-xl px-4 text-sm font-medium text-red-400 transition-colors hover:bg-red-50 hover:text-red-600"
+            >
+              <LogOut className="size-[18px]" />
+              <span>{t('logout')}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
 
-        <SidebarSeparator className="my-2 bg-transparent" />
+        <SidebarSeparator className="my-2" />
 
-        {/* Upgrade Premium Card */}
-        <div className="bg-white rounded-[2rem] p-6 text-center shadow-sm relative overflow-visible border border-gray-100/50">
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-20 h-20 bg-[#2E3035] rounded-full flex items-center justify-center shadow-lg border-4 border-[#F4F2F9] z-10">
-            {/* Rocket SVG illustration */}
-            <svg
-              width="44"
-              height="44"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Дөл */}
-              <ellipse cx="24" cy="42" rx="5" ry="4.5" fill="#FF9E67" />
-              <ellipse cx="24" cy="41" rx="3" ry="3.5" fill="#FFD166" />
-              <ellipse cx="24" cy="40.5" rx="1.5" ry="2" fill="#FFF3C4" />
-              {/* Rocket бие — гадна */}
-              <path d="M17 32 C17 32 15.5 22 24 12 C32.5 22 31 32 31 32 Z" fill="#A78BFA" />
-              {/* Rocket бие — дотно highlight */}
-              <path d="M19 31 C19 31 18 23 24 14 C30 23 29 31 29 31 Z" fill="#C4B5FD" />
-              {/* Rocket толгой */}
-              <path
-                d="M21.5 17 C21.5 14.5 24 10.5 24 10.5 C24 10.5 26.5 14.5 26.5 17 Z"
-                fill="#FF6B6B"
-              />
-              {/* Цонх — гадна */}
-              <circle cx="24" cy="24" r="4" fill="#1E1E2E" />
-              {/* Цонх — дотно */}
-              <circle cx="24" cy="24" r="2.8" fill="#C7D2FE" />
-              {/* Цонх — гялалз */}
-              <circle cx="22.8" cy="22.8" r="1" fill="white" />
-              {/* Зүүн жигүүр */}
-              <path d="M17 32 C14 29 12 33 12 35 L17 32 Z" fill="#FF6B6B" />
-              {/* Баруун жигүүр */}
-              <path d="M31 32 C34 29 36 33 36 35 L31 32 Z" fill="#FF6B6B" />
-            </svg>
-            {/* Гялалзсан одууд */}
-            <div className="absolute top-1 left-2 text-yellow-300 text-xs animate-pulse">
-              &#10022;
-            </div>
-            <div
-              className="absolute bottom-2 right-2 text-yellow-300 text-sm animate-pulse"
-              style={{ animationDelay: '0.5s' }}
-            >
-              &#10022;
-            </div>
-            <div
-              className="absolute top-3.5 right-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse"
-              style={{ animationDelay: '1s' }}
-            />
-            <div
-              className="absolute bottom-4 left-2.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse"
-              style={{ animationDelay: '0.3s' }}
-            />
+        {/* Хэрэглэгчийн мэдээлэл */}
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/60"
+        >
+          <Avatar className="size-9 shrink-0">
+            <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-gray-900">{displayName}</p>
+            <p className="text-[11px] text-gray-400">{roleName}</p>
           </div>
-          <div className="pt-8">
-            <h4 className="font-extrabold text-[#1B1B1B] text-[15px] mb-2 tracking-tight">
-              {t('upgradePremium')}
-            </h4>
-            <p className="text-[11px] text-gray-500 font-medium mb-5 leading-relaxed px-1">
-              {t('upgradeDescription')}
-            </p>
-            <button className="w-full bg-[#1B1B1B] text-white font-bold text-xs py-3 rounded-2xl hover:bg-black transition-colors shadow-sm">
-              {t('getPremium')}
-            </button>
-          </div>
-        </div>
+        </Link>
       </SidebarFooter>
     </Sidebar>
   );

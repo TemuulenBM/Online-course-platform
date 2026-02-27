@@ -80,7 +80,19 @@ export class EnrollmentRepository {
         take: options.limit,
         orderBy: { enrolledAt: 'desc' },
         include: {
-          course: { select: { title: true, slug: true, thumbnailUrl: true, instructorId: true } },
+          course: {
+            select: {
+              title: true,
+              slug: true,
+              thumbnailUrl: true,
+              instructorId: true,
+              instructor: {
+                select: {
+                  profile: { select: { firstName: true, lastName: true } },
+                },
+              },
+            },
+          },
         },
       }),
       this.prisma.enrollment.count({ where }),
@@ -194,6 +206,12 @@ export class EnrollmentRepository {
       ? `${profile.firstName ?? ''} ${profile.lastName ?? ''}`.trim()
       : undefined;
 
+    /** Багшийн нэрийг instructor relation-аас авах */
+    const instructorProfile = enrollment.course?.instructor?.profile;
+    const courseInstructorName = instructorProfile
+      ? `${instructorProfile.firstName ?? ''} ${instructorProfile.lastName ?? ''}`.trim()
+      : undefined;
+
     return new EnrollmentEntity({
       id: enrollment.id,
       userId: enrollment.userId,
@@ -208,6 +226,7 @@ export class EnrollmentRepository {
       courseSlug: enrollment.course?.slug,
       courseThumbnailUrl: enrollment.course?.thumbnailUrl,
       courseInstructorId: enrollment.course?.instructorId,
+      courseInstructorName: courseInstructorName || undefined,
       userName: userName || undefined,
       userEmail: enrollment.user?.email,
     });

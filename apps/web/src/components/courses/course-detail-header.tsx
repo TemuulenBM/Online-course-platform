@@ -8,21 +8,26 @@ import { ROUTES } from '@/lib/constants';
 
 interface CourseDetailHeaderProps {
   courseTitle: string;
+  categoryName?: string;
 }
 
-/** Breadcrumb навигац — Сургалтууд > Сургалтын нэр */
-export function CourseDetailHeader({ courseTitle }: CourseDetailHeaderProps) {
+/** Breadcrumb навигац — Хичээлүүд > Ангилал */
+export function CourseDetailHeader({ categoryName }: CourseDetailHeaderProps) {
   const t = useTranslations('courses');
 
   return (
     <div className="flex items-center gap-3">
       <SidebarTrigger className="md:hidden" />
-      <nav className="flex items-center gap-1.5 text-sm font-medium">
-        <Link href={ROUTES.COURSES} className="text-slate-500 hover:text-primary transition-colors">
+      <nav className="flex items-center gap-2 text-sm text-slate-500">
+        <Link href={ROUTES.COURSES} className="hover:text-primary transition-colors">
           {t('title')}
         </Link>
-        <ChevronRight className="size-4 text-slate-300" />
-        <span className="text-slate-900 dark:text-white truncate max-w-[300px]">{courseTitle}</span>
+        {categoryName && (
+          <>
+            <ChevronRight className="size-3" />
+            <span className="text-primary font-medium">{categoryName}</span>
+          </>
+        )}
       </nav>
     </div>
   );

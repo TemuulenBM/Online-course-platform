@@ -17,24 +17,19 @@ function CoursesContent() {
   const { data: categories } = useCategoryTree();
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto flex flex-col gap-8">
-        {/* Header */}
+    <div className="flex-1 overflow-y-auto p-6 lg:p-10">
+      <div className="max-w-6xl mx-auto">
+        {/* Header + Search + Category */}
         <CoursesHeader
           search={filters.search}
-          totalCount={data?.total}
+          categoryId={filters.categoryId}
+          categories={categories}
           onSearchChange={(value) => setFilter('search', value)}
+          onCategoryChange={(value) => setFilter('categoryId', value)}
         />
 
-        {/* Шүүлтүүр */}
-        <CoursesFilterBar
-          categoryId={filters.categoryId}
-          difficulty={filters.difficulty}
-          sortBy={filters.sortBy}
-          sortOrder={filters.sortOrder}
-          categories={categories}
-          onFilterChange={setFilter}
-        />
+        {/* Түвшин шүүлтүүр */}
+        <CoursesFilterBar difficulty={filters.difficulty} onFilterChange={setFilter} />
 
         {/* Контент */}
         {isLoading ? (
@@ -61,7 +56,7 @@ export default function CoursesPage() {
   return (
     <Suspense
       fallback={
-        <div className="p-6 lg:p-8">
+        <div className="p-6 lg:p-10">
           <CourseGridSkeleton />
         </div>
       }

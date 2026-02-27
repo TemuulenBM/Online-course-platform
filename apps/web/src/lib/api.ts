@@ -72,9 +72,12 @@ client.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const res = await client.post('/auth/refresh', {
-        refreshToken: tokens.refreshToken,
-      });
+      const res = await client.post(
+        '/auth/refresh',
+        { refreshToken: tokens.refreshToken },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { _retry: true } as any,
+      );
       const newTokens = res.data.data;
       useAuthStore.getState().setTokens(newTokens);
 

@@ -1,14 +1,7 @@
 'use client';
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis,
-} from '@/components/ui/pagination';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface CoursesPaginationProps {
   page: number;
@@ -44,40 +37,56 @@ export function CoursesPagination({ page, total, limit, onPageChange }: CoursesP
   };
 
   return (
-    <Pagination className="mt-8">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={() => page > 1 && onPageChange(page - 1)}
-            className={page <= 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-          />
-        </PaginationItem>
-
-        {getPageNumbers().map((p, idx) =>
-          p === 'ellipsis' ? (
-            <PaginationItem key={`ellipsis-${idx}`}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={p}>
-              <PaginationLink
-                isActive={p === page}
-                onClick={() => onPageChange(p)}
-                className="cursor-pointer"
-              >
-                {p}
-              </PaginationLink>
-            </PaginationItem>
-          ),
+    <nav className="flex justify-center items-center gap-2 mt-16">
+      <button
+        type="button"
+        onClick={() => page > 1 && onPageChange(page - 1)}
+        disabled={page <= 1}
+        className={cn(
+          'size-10 flex items-center justify-center rounded-xl transition-all',
+          page <= 1
+            ? 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-300 dark:text-slate-600 cursor-not-allowed'
+            : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary cursor-pointer',
         )}
+      >
+        <ChevronLeft className="size-4" />
+      </button>
 
-        <PaginationItem>
-          <PaginationNext
-            onClick={() => page < totalPages && onPageChange(page + 1)}
-            className={page >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+      {getPageNumbers().map((p, idx) =>
+        p === 'ellipsis' ? (
+          <span key={`ellipsis-${idx}`} className="text-slate-400 mx-1">
+            ...
+          </span>
+        ) : (
+          <button
+            key={p}
+            type="button"
+            onClick={() => onPageChange(p)}
+            className={cn(
+              'size-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all cursor-pointer',
+              p === page
+                ? 'bg-primary text-white'
+                : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-600 dark:text-slate-400 hover:text-primary',
+            )}
+          >
+            {p}
+          </button>
+        ),
+      )}
+
+      <button
+        type="button"
+        onClick={() => page < totalPages && onPageChange(page + 1)}
+        disabled={page >= totalPages}
+        className={cn(
+          'size-10 flex items-center justify-center rounded-xl transition-all',
+          page >= totalPages
+            ? 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-300 dark:text-slate-600 cursor-not-allowed'
+            : 'bg-white dark:bg-slate-800 border border-primary/10 text-slate-400 hover:text-primary cursor-pointer',
+        )}
+      >
+        <ChevronRight className="size-4" />
+      </button>
+    </nav>
   );
 }

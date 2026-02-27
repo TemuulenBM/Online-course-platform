@@ -8,10 +8,13 @@ import {
   Param,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../../common/guards/roles.guard';
 import { Roles } from '../../../../common/decorators/roles.decorator';
@@ -30,6 +33,8 @@ import { UpdateUserProfileUseCase } from '../../application/use-cases/update-use
 import { UpdateUserRoleUseCase } from '../../application/use-cases/update-user-role.use-case';
 import { ListUsersUseCase } from '../../application/use-cases/list-users.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
+import { UploadAvatarUseCase } from '../../application/use-cases/upload-avatar.use-case';
+import { GetUserStatsUseCase } from '../../application/use-cases/get-user-stats.use-case';
 
 /**
  * Хэрэглэгчийн controller.
@@ -47,6 +52,8 @@ export class UsersController {
     private readonly updateUserRoleUseCase: UpdateUserRoleUseCase,
     private readonly listUsersUseCase: ListUsersUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly uploadAvatarUseCase: UploadAvatarUseCase,
+    private readonly getUserStatsUseCase: GetUserStatsUseCase,
   ) {}
 
   @Get('me/profile')
@@ -88,6 +95,22 @@ export class UsersController {
     return profile.toResponse();
   }
 
+  @Post('me/avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Аватар зураг upload хийх' })
+  @ApiResponse({
+    status: 200,
+    description: 'Аватар амжилттай шинэчлэгдлээ',
+    type: UserProfileResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Файлын формат буруу эсвэл хэмжээ хэтэрсэн' })
+  @ApiResponse({ status: 404, description: 'Профайл олдсонгүй' })
+  async uploadAvatar(@CurrentUser('id') userId: string, @UploadedFile() file: Express.Multer.File) {
+    const profile = await this.uploadAvatarUseCase.execute(userId, file);
+    return profile.toResponse();
+  }
+
   @Get(':id/profile')
   @ApiOperation({ summary: 'Хэрэглэгчийн профайл авах' })
   @ApiResponse({ status: 200, description: 'Профайлын мэдээлэл', type: UserProfileResponseDto })
@@ -95,6 +118,13 @@ export class UsersController {
   async getUserProfile(@Param('id') userId: string) {
     const profile = await this.getUserProfileUseCase.execute(userId);
     return profile.toResponse();
+  }
+
+  @Get(':id/stats')
+  @ApiOperation({ summary: 'Хэрэглэгчийн статистик авах' })
+  @ApiResponse({ status: 200, description: 'Хэрэглэгчийн статистик (enrollment, certificate тоо)' })
+  async getUserStats(@Param('id') userId: string) {
+    return this.getUserStatsUseCase.execute(userId);
   }
 
   @Get()

@@ -18,7 +18,11 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   // Аюулгүй байдлын middleware
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
   app.use(compression());
 
   // CORS тохиргоо — зөвшөөрөгдсөн origin-уудыг хязгаарлах
