@@ -12,6 +12,14 @@ const config: NextConfig = {
     '@ocp/validation',
     '@ocp/api-client',
   ],
+  images: {
+    remotePatterns: [
+      // Unsplash — seed болон курсын зурагт ашиглагдана
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      // API сервер дээрх локал зурагт ашиглагдана
+      { protocol: 'http', hostname: 'localhost' },
+    ],
+  },
 };
 
 export default withNextIntl(config);
