@@ -87,17 +87,23 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
         uri: config.get<string>('mongodb.uri'),
       }),
     }),
-    // Bull Queue — background job processing (Redis ашиглана, TLS дэмжилттэй)
+    // Bull Queue — background job processing (REDIS_URL байвал URL-ээр, үгүй бол host/port-оор)
     BullModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        redis: {
-          host: config.get<string>('redis.host'),
-          port: config.get<number>('redis.port'),
-          password: config.get<string>('redis.password') || undefined,
-          tls: config.get('redis.tls'),
-        },
-      }),
+      useFactory: (config: ConfigService) => {
+        const redisUrl = config.get<string>('redis.url');
+        if (redisUrl) {
+          return { url: redisUrl };
+        }
+        return {
+          redis: {
+            host: config.get<string>('redis.host'),
+            port: config.get<number>('redis.port'),
+            password: config.get<string>('redis.password') || undefined,
+            tls: config.get('redis.tls'),
+          },
+        };
+      },
     }),
     PrismaModule,
     RedisModule,
