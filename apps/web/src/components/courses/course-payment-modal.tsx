@@ -206,7 +206,6 @@ export function CoursePaymentModal({ open, onClose, order, courseTitle }: Course
               />
               {previewUrl ? (
                 <div className="space-y-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previewUrl}
                     alt="Баримтын урдчилсан харагдац"
