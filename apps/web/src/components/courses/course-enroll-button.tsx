@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -14,27 +15,46 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { useCheckEnrollment, useEnroll, useCourseProgress, useCourseLessons } from '@/hooks/api';
+import type { Order } from '@ocp/shared-types';
+import {
+  useCheckEnrollment,
+  useEnroll,
+  useCourseProgress,
+  useCourseLessons,
+  useCreateOrder,
+} from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
+import { CoursePaymentModal } from './course-payment-modal';
 
 interface CourseEnrollButtonProps {
   courseId: string;
   slug: string;
   isFree: boolean;
+  courseTitle?: string;
 }
 
 /** Элсэлтийн state card — sidebar дотор 5 state харуулна */
-export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButtonProps) {
+export function CourseEnrollButton({
+  courseId,
+  slug,
+  isFree,
+  courseTitle,
+}: CourseEnrollButtonProps) {
   const t = useTranslations('courses');
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  /** Төлбөрийн modal state */
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState<Order | null>(null);
 
   const { data: enrollmentCheck, isLoading: checkLoading } = useCheckEnrollment(
     isAuthenticated ? courseId : '',
   );
   const enrollMutation = useEnroll();
+  const createOrderMutation = useCreateOrder();
 
   const isEnrolled = enrollmentCheck?.isEnrolled;
   const enrollmentStatus = enrollmentCheck?.enrollment?.status;
@@ -56,7 +76,7 @@ export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButto
     }
   };
 
-  /** Элсэх */
+  /** Үнэгүй сургалтад шууд элсэх */
   const handleEnroll = () => {
     enrollMutation.mutate(courseId, {
       onSuccess: () => {
@@ -69,6 +89,33 @@ export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButto
         toast.error(error instanceof Error ? error.message : 'Алдаа гарлаа');
       },
     });
+  };
+
+  /**
+   * Төлбөртэй сургалтад захиалга үүсгэх.
+   * Захиалга амжилттай үүссэний дараа банкны мэдээлэл + баримт upload modal нээнэ.
+   */
+  const handleBuy = () => {
+    createOrderMutation.mutate(
+      { courseId, paymentMethod: 'bank_transfer' },
+      {
+        onSuccess: (order) => {
+          setPendingOrder(order);
+          setPaymentModalOpen(true);
+        },
+        onError: (error) => {
+          const message = error instanceof Error ? error.message : 'Алдаа гарлаа';
+          /** 409 — аль хэдийн захиалга эсвэл элсэлт байна */
+          if (message.includes('409') || message.toLowerCase().includes('conflict')) {
+            toast.error(
+              'Та энэ сургалтад аль хэдийн захиалга үүсгэсэн байна. Захиалгуудаас шалгана уу.',
+            );
+          } else {
+            toast.error(message);
+          }
+        },
+      },
+    );
   };
 
   /** Нэвтрээгүй */
@@ -172,11 +219,11 @@ export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButto
           </div>
         </div>
         <button
-          onClick={handleEnroll}
-          disabled={enrollMutation.isPending}
+          onClick={isFree ? handleEnroll : handleBuy}
+          disabled={enrollMutation.isPending || createOrderMutation.isPending}
           className="w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-70 flex items-center justify-center gap-2"
         >
-          {enrollMutation.isPending ? (
+          {enrollMutation.isPending || createOrderMutation.isPending ? (
             <>
               <Loader2 className="size-4 animate-spin" />
               {t('enrolling')}
@@ -189,29 +236,39 @@ export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButto
     );
   }
 
-  /** Элсээгүй — Free эсвэл Paid */
+  /** Элсээгүй — Free: шууд элсэх / Paid: захиалга үүсгэх */
   return (
-    <button
-      onClick={handleEnroll}
-      disabled={enrollMutation.isPending}
-      className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/25 disabled:opacity-70 flex items-center justify-center gap-2"
-    >
-      {enrollMutation.isPending ? (
-        <>
-          <Loader2 className="size-4 animate-spin" />
-          {t('enrolling')}
-        </>
-      ) : isFree ? (
-        <>
-          <Gift className="size-4" />
-          {t('freeEnroll')}
-        </>
-      ) : (
-        <>
-          <ShoppingCart className="size-4" />
-          {t('buyNow')}
-        </>
-      )}
-    </button>
+    <>
+      <button
+        onClick={isFree ? handleEnroll : handleBuy}
+        disabled={enrollMutation.isPending || createOrderMutation.isPending}
+        className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/25 disabled:opacity-70 flex items-center justify-center gap-2"
+      >
+        {enrollMutation.isPending || createOrderMutation.isPending ? (
+          <>
+            <Loader2 className="size-4 animate-spin" />
+            {isFree ? t('enrolling') : 'Захиалга үүсгэж байна...'}
+          </>
+        ) : isFree ? (
+          <>
+            <Gift className="size-4" />
+            {t('freeEnroll')}
+          </>
+        ) : (
+          <>
+            <ShoppingCart className="size-4" />
+            {t('buyNow')}
+          </>
+        )}
+      </button>
+
+      {/* Төлбөрийн modal */}
+      <CoursePaymentModal
+        open={paymentModalOpen}
+        onClose={() => setPaymentModalOpen(false)}
+        order={pendingOrder}
+        courseTitle={courseTitle ?? ''}
+      />
+    </>
   );
 }
