@@ -34,7 +34,7 @@ export function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1B1B1B] dark:text-white leading-tight tracking-tight">
               {t('heroTitle')}
               <br />
-              <span className="italic bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              <span className="italic bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pr-2">
                 {t('heroTitleHighlight')}
               </span>
             </h1>
