@@ -1,15 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Flag,
-  Lock,
-  Eye,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  ChevronRight,
-} from 'lucide-react';
+import { Flag, Lock, Eye, CheckCircle, XCircle, AlertTriangle, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import Link from 'next/link';

@@ -4,7 +4,7 @@
 
 **A modern online learning platform built for the next generation of learners.**
 
-*Create courses. Learn anything. Get certified.*
+_Create courses. Learn anything. Get certified._
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org)
 [![NestJS](https://img.shields.io/badge/NestJS-10-red?style=flat-square&logo=nestjs)](https://nestjs.com)
@@ -27,6 +27,7 @@ Think of it as a Udemy-style platform tailored for the Mongolian market, with a 
 ## ✨ Features
 
 ### For Students
+
 - 🔍 Browse and search courses by category
 - 🎥 Watch video lessons with progress tracking
 - 📝 Take quizzes with auto-grading and instant feedback
@@ -35,12 +36,14 @@ Think of it as a Udemy-style platform tailored for the Mongolian market, with a 
 - 📡 Join scheduled **live classes** via Agora-powered video
 
 ### For Instructors
+
 - ✏️ Create and publish courses with rich content
 - 📊 Track student enrollment and progress analytics
 - 🔴 Schedule and host live sessions
 - 💬 Engage with students through Q&A and comments
 
 ### For Admins
+
 - 👥 Full user and role management
 - 💳 Review bank transfer receipts and approve / reject payments
 - 📈 Revenue trends, enrollment analytics, popular courses dashboard
@@ -94,22 +97,22 @@ Student selects a paid course
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Frontend** | Next.js 16, React 19, Tailwind CSS 4, shadcn/ui |
-| **Backend** | NestJS 10, TypeScript, DDD architecture |
-| **Relational DB** | PostgreSQL 16 via Prisma 6 |
-| **Document DB** | MongoDB via Mongoose (flexible content) |
-| **Caching & Jobs** | Redis + Bull Queue (background processing) |
-| **Search** | Elasticsearch |
-| **Mobile** | React Native + Expo 52 + Expo Router |
-| **Live Video** | Agora SDK (WebRTC) |
-| **File Storage** | Cloudflare R2 (prod) / Local filesystem (dev) |
-| **Video Streaming** | Cloudflare Stream |
-| **Email** | SendGrid |
-| **SMS** | Twilio |
-| **CI/CD** | GitHub Actions + Docker + GHCR |
-| **Reverse Proxy** | Nginx |
+| Category            | Technology                                      |
+| ------------------- | ----------------------------------------------- |
+| **Frontend**        | Next.js 16, React 19, Tailwind CSS 4, shadcn/ui |
+| **Backend**         | NestJS 10, TypeScript, DDD architecture         |
+| **Relational DB**   | PostgreSQL 16 via Prisma 6                      |
+| **Document DB**     | MongoDB via Mongoose (flexible content)         |
+| **Caching & Jobs**  | Redis + Bull Queue (background processing)      |
+| **Search**          | Elasticsearch                                   |
+| **Mobile**          | React Native + Expo 52 + Expo Router            |
+| **Live Video**      | Agora SDK (WebRTC)                              |
+| **File Storage**    | Cloudflare R2 (prod) / Local filesystem (dev)   |
+| **Video Streaming** | Cloudflare Stream                               |
+| **Email**           | SendGrid                                        |
+| **SMS**             | Twilio                                          |
+| **CI/CD**           | GitHub Actions + Docker + GHCR                  |
+| **Reverse Proxy**   | Nginx                                           |
 
 ---
 
@@ -168,9 +171,9 @@ pnpm dev   # Web (port 3000) + API (port 3001) concurrently
 
 ### Seed accounts
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | `admin@ocp.mn` | `Admin123!` |
+| Role    | Email            | Password      |
+| ------- | ---------------- | ------------- |
+| Admin   | `admin@ocp.mn`   | `Admin123!`   |
 | Teacher | `teacher@ocp.mn` | `Teacher123!` |
 | Student | `student@ocp.mn` | `Student123!` |
 
@@ -178,19 +181,19 @@ pnpm dev   # Web (port 3000) + API (port 3001) concurrently
 
 ## 📜 Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all apps in watch mode |
-| `pnpm build` | Production build for all apps |
-| `pnpm lint` | Run ESLint across all workspaces |
-| `pnpm format` | Run Prettier on all files |
-| `pnpm test` | Run all unit tests |
-| `pnpm docker:up` | Start Docker services |
-| `pnpm docker:down` | Stop Docker services |
-| `pnpm db:generate` | Regenerate Prisma client |
-| `pnpm db:migrate` | Apply database migrations |
-| `pnpm db:seed` | Seed sample data |
-| `pnpm db:cleanup` | Remove seeded data |
+| Command            | Description                      |
+| ------------------ | -------------------------------- |
+| `pnpm dev`         | Start all apps in watch mode     |
+| `pnpm build`       | Production build for all apps    |
+| `pnpm lint`        | Run ESLint across all workspaces |
+| `pnpm format`      | Run Prettier on all files        |
+| `pnpm test`        | Run all unit tests               |
+| `pnpm docker:up`   | Start Docker services            |
+| `pnpm docker:down` | Stop Docker services             |
+| `pnpm db:generate` | Regenerate Prisma client         |
+| `pnpm db:migrate`  | Apply database migrations        |
+| `pnpm db:seed`     | Seed sample data                 |
+| `pnpm db:cleanup`  | Remove seeded data               |
 
 ---
 
@@ -198,23 +201,23 @@ pnpm dev   # Web (port 3000) + API (port 3001) concurrently
 
 **Base URL:** `http://localhost:3001/api/v1`
 
-| Module | Endpoints | Description |
-|--------|-----------|-------------|
-| Auth | `/auth` | Register, login, token refresh |
-| Users | `/users` | Profiles, role management |
-| Courses | `/courses`, `/categories` | Course CRUD and categorization |
-| Lessons | `/lessons` | Lesson management and ordering |
-| Content | `/content` | Video and text content per lesson |
-| Enrollments | `/enrollments` | Enroll, check status, cancel |
-| Progress | `/progress` | Per-lesson and course-level tracking |
-| Quizzes | `/quizzes` | Quiz builder, attempts, grading |
-| Certificates | `/certificates` | Generate and verify PDF certificates |
-| Discussions | `/discussions` | Forum posts and lesson comments |
-| Notifications | `/notifications` | Multi-channel notification system |
-| Payments | `/payments` | Orders, invoices, admin approval |
-| Analytics | `/analytics` | Revenue, trends, event tracking |
-| Admin | `/admin` | Audit logs, settings, moderation |
-| Live Classes | `/live-sessions` | Schedule, join, Agora token |
+| Module        | Endpoints                 | Description                          |
+| ------------- | ------------------------- | ------------------------------------ |
+| Auth          | `/auth`                   | Register, login, token refresh       |
+| Users         | `/users`                  | Profiles, role management            |
+| Courses       | `/courses`, `/categories` | Course CRUD and categorization       |
+| Lessons       | `/lessons`                | Lesson management and ordering       |
+| Content       | `/content`                | Video and text content per lesson    |
+| Enrollments   | `/enrollments`            | Enroll, check status, cancel         |
+| Progress      | `/progress`               | Per-lesson and course-level tracking |
+| Quizzes       | `/quizzes`                | Quiz builder, attempts, grading      |
+| Certificates  | `/certificates`           | Generate and verify PDF certificates |
+| Discussions   | `/discussions`            | Forum posts and lesson comments      |
+| Notifications | `/notifications`          | Multi-channel notification system    |
+| Payments      | `/payments`               | Orders, invoices, admin approval     |
+| Analytics     | `/analytics`              | Revenue, trends, event tracking      |
+| Admin         | `/admin`                  | Audit logs, settings, moderation     |
+| Live Classes  | `/live-sessions`          | Schedule, join, Agora token          |
 
 Postman collections for every module are in [`files/postman/`](files/postman/).
 
@@ -233,11 +236,11 @@ Services: `api` · `web` · `nginx` · `postgres` · `mongodb` · `redis`
 
 ### CI/CD Pipeline
 
-| Workflow | Trigger | Steps |
-|----------|---------|-------|
-| **CI** | Every push & PR to main | Lint → Test → Build → Docker verify |
-| **Staging** | Merge to main | Build → Push GHCR → SSH deploy → Health check |
-| **Production** | Manual trigger | Approval gate → DB migrate → Deploy |
+| Workflow       | Trigger                 | Steps                                         |
+| -------------- | ----------------------- | --------------------------------------------- |
+| **CI**         | Every push & PR to main | Lint → Test → Build → Docker verify           |
+| **Staging**    | Merge to main           | Build → Push GHCR → SSH deploy → Health check |
+| **Production** | Manual trigger          | Approval gate → DB migrate → Deploy           |
 
 Health check: `GET /api/v1` — returns live status for PostgreSQL, Redis, and MongoDB.
 
