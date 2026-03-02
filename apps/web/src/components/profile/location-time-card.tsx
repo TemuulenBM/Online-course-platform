@@ -30,7 +30,7 @@ const TIMEZONES = [
 ];
 
 const selectStyle =
-  'w-full px-4 py-3 bg-[#f6f5f8] border-none rounded-xl focus:ring-2 focus:ring-[#9c7aff] text-slate-900 font-medium outline-none transition-all appearance-none cursor-pointer';
+  'w-full px-4 py-3 bg-muted border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 font-medium outline-none transition-all appearance-none cursor-pointer';
 
 interface LocationTimeCardProps {
   register: UseFormRegister<UpdateProfileInput>;
@@ -46,7 +46,7 @@ export function LocationTimeCard({ register, isPending, isLoading }: LocationTim
   }
 
   return (
-    <div className="bg-white rounded-3xl p-8 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
       <h3 className="text-lg font-bold text-slate-900 mb-6">Байршил ба Хугацаа</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -83,7 +83,7 @@ export function LocationTimeCard({ register, isPending, isLoading }: LocationTim
 /** Loading skeleton */
 function LocationTimeSkeleton() {
   return (
-    <div className="bg-white rounded-3xl p-8 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
       <Skeleton className="h-6 w-44 mb-6" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">

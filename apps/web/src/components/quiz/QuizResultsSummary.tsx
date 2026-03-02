@@ -76,7 +76,7 @@ export function QuizResultsSummary({
           particleCount: 150,
           spread: 80,
           origin: { y: 0.6 },
-          colors: ['#9c7aff', '#10b981', '#f59e0b', '#ec4899'],
+          colors: ['#8A93E5', '#10b981', '#f59e0b', '#ec4899'],
         });
       }, 800);
     }

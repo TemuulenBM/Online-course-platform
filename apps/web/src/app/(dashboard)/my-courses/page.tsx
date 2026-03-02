@@ -10,6 +10,7 @@ import { MyCoursesEmpty } from '@/components/my-courses/my-courses-empty';
 import { MyCoursesListSkeleton } from '@/components/my-courses/my-course-card-skeleton';
 import { CancelEnrollmentDialog } from '@/components/my-courses/cancel-enrollment-dialog';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const PAGE_LIMIT = 6;
 
@@ -47,19 +48,19 @@ export default function MyCoursesPage() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Sticky header */}
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-primary/5 px-8 py-6">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto flex flex-col gap-8">
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-3xl font-black tracking-tight">{t('title')}</h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-1">{t('subtitle')}</p>
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="md:hidden" />
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+              <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
+            </div>
           </div>
           <EnrollmentStatusFilter value={statusFilter} onChange={handleFilterChange} />
         </div>
-      </header>
-
-      <div className="p-8">
         {/* Контент */}
         {isLoading ? (
           <MyCoursesListSkeleton />
@@ -79,8 +80,8 @@ export default function MyCoursesPage() {
 
         {/* Pagination footer */}
         {!isLoading && total > 0 && enrollments.length > 0 && (
-          <div className="mt-12 flex items-center justify-between border-t border-primary/5 pt-8">
-            <p className="text-sm text-slate-500">{t('totalCourses', { count: total })}</p>
+          <div className="mt-12 flex items-center justify-between border-t border-border pt-8">
+            <p className="text-sm text-muted-foreground">{t('totalCourses', { count: total })}</p>
             {total > PAGE_LIMIT && (
               <CoursesPagination
                 page={page}

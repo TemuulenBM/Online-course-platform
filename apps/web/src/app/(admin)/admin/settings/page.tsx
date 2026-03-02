@@ -90,139 +90,136 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <header className="h-16 bg-white border-b border-slate-200 flex items-center px-8 shrink-0">
-        <SidebarTrigger className="lg:hidden mr-4" />
-        <Settings className="size-5 text-[#9c7aff] mr-2" />
-        <h2 className="text-xl font-bold">Тохиргоо</h2>
-      </header>
-
-      <div className="flex-1 overflow-y-auto p-8 bg-[#f6f5f8]">
-        <div className="max-w-[1200px] mx-auto">
-          {/* Title + Actions */}
-          <div className="flex items-center justify-between mb-6">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Title + Actions */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="lg:hidden" />
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Системийн тохиргоо</h1>
-              <p className="text-sm text-slate-500 mt-1">Платформын ерөнхий тохиргоог удирдах</p>
-            </div>
-            <Button
-              onClick={() => setIsAddOpen(true)}
-              className="bg-[#9c7aff] hover:bg-[#8b6ae8] text-white rounded-xl"
-            >
-              <Plus className="size-4 mr-2" />
-              Тохиргоо нэмэх
-            </Button>
-          </div>
-
-          {/* Category tabs + Search */}
-          <div className="flex items-center gap-4 mb-6">
-            <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1">
-              <TabsList className="bg-white border border-slate-200">
-                {categories.map((cat) => (
-                  <TabsTrigger
-                    key={cat.value}
-                    value={cat.value}
-                    className="data-[state=active]:bg-[#9c7aff] data-[state=active]:text-white rounded-lg"
-                  >
-                    {cat.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-              <input
-                className="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-[#9c7aff] focus:outline-none w-64"
-                placeholder="Хайх..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+              <h1 className="text-3xl font-bold text-foreground">Системийн тохиргоо</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Платформын ерөнхий тохиргоог удирдах
+              </p>
             </div>
           </div>
+          <Button
+            onClick={() => setIsAddOpen(true)}
+            className="bg-primary hover:bg-primary/90 text-white rounded-xl"
+          >
+            <Plus className="size-4 mr-2" />
+            Тохиргоо нэмэх
+          </Button>
+        </div>
 
-          {/* Settings table */}
-          <div className="bg-white rounded-2xl border border-[#9c7aff]/5 shadow-sm overflow-hidden">
-            {isLoading ? (
-              <div className="p-6 space-y-4">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <Skeleton className="h-5 w-40" />
-                    <Skeleton className="h-5 w-60 flex-1" />
-                    <Skeleton className="h-5 w-20" />
-                  </div>
-                ))}
-              </div>
-            ) : filteredSettings && filteredSettings.length > 0 ? (
-              <table className="w-full text-left">
-                <thead className="bg-[#9c7aff]/5">
-                  <tr>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600">Түлхүүр</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600">Утга</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600">Тайлбар</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-center">
-                      Ангилал
-                    </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-center">
-                      Public
-                    </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-right">
-                      Үйлдэл
-                    </th>
+        {/* Category tabs + Search */}
+        <div className="flex items-center gap-4 mb-6">
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1">
+            <TabsList className="bg-white border border-slate-200">
+              {categories.map((cat) => (
+                <TabsTrigger
+                  key={cat.value}
+                  value={cat.value}
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg"
+                >
+                  {cat.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+            <input
+              className="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:outline-none w-64"
+              placeholder="Хайх..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Settings table */}
+        <div className="bg-white rounded-2xl border border-primary/5 shadow-sm overflow-hidden">
+          {isLoading ? (
+            <div className="p-6 space-y-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-5 w-60 flex-1" />
+                  <Skeleton className="h-5 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : filteredSettings && filteredSettings.length > 0 ? (
+            <table className="w-full text-left">
+              <thead className="bg-primary/5">
+                <tr>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600">Түлхүүр</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600">Утга</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600">Тайлбар</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-center">
+                    Ангилал
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-center">
+                    Public
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-right">
+                    Үйлдэл
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-primary/5">
+                {filteredSettings.map((setting) => (
+                  <tr key={setting.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4">
+                      <code className="text-sm font-mono bg-slate-100 px-2 py-0.5 rounded text-primary">
+                        {setting.key}
+                      </code>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-700 max-w-[200px] truncate">
+                      {typeof setting.value === 'object'
+                        ? JSON.stringify(setting.value)
+                        : String(setting.value)}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-500 max-w-[200px] truncate">
+                      {setting.description || '—'}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <Badge variant="secondary" className="text-xs">
+                        {setting.category}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span
+                        className={`size-2 rounded-full inline-block ${setting.isPublic ? 'bg-emerald-500' : 'bg-slate-300'}`}
+                      />
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => setEditSetting(setting)}
+                          className="size-8 flex items-center justify-center rounded-lg hover:bg-primary/10 text-slate-500 hover:text-primary transition-colors"
+                        >
+                          <Pencil className="size-4" />
+                        </button>
+                        <button
+                          onClick={() => setDeleteKey(setting.key)}
+                          className="size-8 flex items-center justify-center rounded-lg hover:bg-rose-50 text-slate-500 hover:text-rose-600 transition-colors"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-[#9c7aff]/5">
-                  {filteredSettings.map((setting) => (
-                    <tr key={setting.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <code className="text-sm font-mono bg-slate-100 px-2 py-0.5 rounded text-[#9c7aff]">
-                          {setting.key}
-                        </code>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-slate-700 max-w-[200px] truncate">
-                        {typeof setting.value === 'object'
-                          ? JSON.stringify(setting.value)
-                          : String(setting.value)}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-slate-500 max-w-[200px] truncate">
-                        {setting.description || '—'}
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge variant="secondary" className="text-xs">
-                          {setting.category}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <span
-                          className={`size-2 rounded-full inline-block ${setting.isPublic ? 'bg-emerald-500' : 'bg-slate-300'}`}
-                        />
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => setEditSetting(setting)}
-                            className="size-8 flex items-center justify-center rounded-lg hover:bg-[#9c7aff]/10 text-slate-500 hover:text-[#9c7aff] transition-colors"
-                          >
-                            <Pencil className="size-4" />
-                          </button>
-                          <button
-                            onClick={() => setDeleteKey(setting.key)}
-                            className="size-8 flex items-center justify-center rounded-lg hover:bg-rose-50 text-slate-500 hover:text-rose-600 transition-colors"
-                          >
-                            <Trash2 className="size-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="py-16 text-center">
-                <Settings className="size-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500">Тохиргоо байхгүй</p>
-              </div>
-            )}
-          </div>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="py-16 text-center">
+              <Settings className="size-12 text-slate-300 mx-auto mb-3" />
+              <p className="text-slate-500">Тохиргоо байхгүй</p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -246,7 +243,7 @@ export default function AdminSettingsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Тохиргоо устгах</AlertDialogTitle>
             <AlertDialogDescription>
-              <code className="font-mono text-[#9c7aff]">{deleteKey}</code> тохиргоог устгахдаа
+              <code className="font-mono text-primary">{deleteKey}</code> тохиргоог устгахдаа
               итгэлтэй байна уу?
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -389,7 +386,7 @@ function SettingFormDialog({
                 id="isPublic"
                 checked={isPublic}
                 onChange={(e) => setIsPublic(e.target.checked)}
-                className="size-4 rounded accent-[#9c7aff]"
+                className="size-4 rounded accent-primary"
               />
               <Label htmlFor="isPublic" className="text-sm">
                 Public тохиргоо
@@ -404,7 +401,7 @@ function SettingFormDialog({
           <Button
             onClick={handleSubmit}
             disabled={isPending || (!isEdit && !key)}
-            className="bg-[#9c7aff] hover:bg-[#8b6ae8]"
+            className="bg-primary hover:bg-primary/90"
           >
             {isPending ? 'Хадгалж байна...' : 'Хадгалах'}
           </Button>

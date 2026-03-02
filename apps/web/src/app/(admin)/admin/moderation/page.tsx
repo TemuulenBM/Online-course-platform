@@ -94,134 +94,127 @@ export default function AdminModerationPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <header className="h-16 bg-white border-b border-slate-200 flex items-center px-8 shrink-0">
-        <SidebarTrigger className="lg:hidden mr-4" />
-        <ShieldAlert className="size-5 text-[#9c7aff] mr-2" />
-        <h2 className="text-xl font-bold">Модерац</h2>
-      </header>
-
-      <div className="flex-1 overflow-y-auto p-8 bg-[#f6f5f8]">
-        <div className="max-w-[1400px] mx-auto">
-          {/* Title */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-slate-900">Контент модерац</h1>
-            <p className="text-sm text-slate-500 mt-1">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-[1400px] mx-auto">
+        {/* Title */}
+        <div className="flex items-center gap-4 mb-6">
+          <SidebarTrigger className="lg:hidden" />
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Контент модерац</h1>
+            <p className="text-sm text-muted-foreground mt-1">
               Тэмдэглэгдсэн нийтлэлүүдийг хянах, approve/reject хийх
             </p>
           </div>
+        </div>
 
-          {/* Stats cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-            {statsLoading ? (
-              <>
-                <Skeleton className="h-24 rounded-2xl" />
-                <Skeleton className="h-24 rounded-2xl" />
-              </>
-            ) : (
-              <>
-                <div className="bg-white p-6 rounded-2xl border border-rose-100 shadow-sm flex items-center gap-4">
-                  <div className="size-12 rounded-xl bg-rose-100 flex items-center justify-center">
-                    <Flag className="size-5 text-rose-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-500 font-medium">Тэмдэглэгдсэн</p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {moderationStats?.flaggedCount ?? 0}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white p-6 rounded-2xl border border-amber-100 shadow-sm flex items-center gap-4">
-                  <div className="size-12 rounded-xl bg-amber-100 flex items-center justify-center">
-                    <Lock className="size-5 text-amber-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-500 font-medium">Түгжигдсэн</p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {moderationStats?.lockedCount ?? 0}
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Flagged content cards */}
-          {flaggedLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-56 rounded-2xl" />
-              ))}
-            </div>
-          ) : flaggedData && flaggedData.data.length > 0 ? (
+        {/* Stats cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+          {statsLoading ? (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <AnimatePresence>
-                  {flaggedData.data
-                    .filter((item) => !removingIds.has(item.id))
-                    .map((item) => (
-                      <FlaggedContentCard
-                        key={item.id}
-                        item={item}
-                        onApprove={() => handleApprove(item)}
-                        onReject={() => {
-                          setRejectTarget(item);
-                          setRejectReason('');
-                        }}
-                        isApproving={approveMutation.isPending}
-                      />
-                    ))}
-                </AnimatePresence>
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8 flex justify-center">
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          onClick={() => page > 1 && setPage(page - 1)}
-                          className={
-                            page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-                          }
-                        />
-                      </PaginationItem>
-                      {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => (
-                        <PaginationItem key={i + 1}>
-                          <PaginationLink
-                            isActive={i + 1 === page}
-                            onClick={() => setPage(i + 1)}
-                            className="cursor-pointer"
-                          >
-                            {i + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <PaginationNext
-                          onClick={() => page < totalPages && setPage(page + 1)}
-                          className={
-                            page >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-                          }
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
+              <Skeleton className="h-24 rounded-2xl" />
+              <Skeleton className="h-24 rounded-2xl" />
             </>
           ) : (
-            /* Empty state */
-            <div className="bg-white rounded-2xl border border-[#9c7aff]/5 shadow-sm py-20 text-center">
-              <div className="size-20 rounded-full bg-emerald-50 mx-auto mb-4 flex items-center justify-center">
-                <CheckCircle className="size-10 text-emerald-500" />
+            <>
+              <div className="bg-white p-6 rounded-2xl border border-rose-100 shadow-sm flex items-center gap-4">
+                <div className="size-12 rounded-xl bg-rose-100 flex items-center justify-center">
+                  <Flag className="size-5 text-rose-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500 font-medium">Тэмдэглэгдсэн</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {moderationStats?.flaggedCount ?? 0}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Бүх зүйл хэвийн!</h3>
-              <p className="text-slate-500">Тэмдэглэгдсэн контент байхгүй байна</p>
-            </div>
+              <div className="bg-white p-6 rounded-2xl border border-amber-100 shadow-sm flex items-center gap-4">
+                <div className="size-12 rounded-xl bg-amber-100 flex items-center justify-center">
+                  <Lock className="size-5 text-amber-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500 font-medium">Түгжигдсэн</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {moderationStats?.lockedCount ?? 0}
+                  </p>
+                </div>
+              </div>
+            </>
           )}
         </div>
+
+        {/* Flagged content cards */}
+        {flaggedLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-56 rounded-2xl" />
+            ))}
+          </div>
+        ) : flaggedData && flaggedData.data.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              <AnimatePresence>
+                {flaggedData.data
+                  .filter((item) => !removingIds.has(item.id))
+                  .map((item) => (
+                    <FlaggedContentCard
+                      key={item.id}
+                      item={item}
+                      onApprove={() => handleApprove(item)}
+                      onReject={() => {
+                        setRejectTarget(item);
+                        setRejectReason('');
+                      }}
+                      isApproving={approveMutation.isPending}
+                    />
+                  ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() => page > 1 && setPage(page - 1)}
+                        className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                    {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => (
+                      <PaginationItem key={i + 1}>
+                        <PaginationLink
+                          isActive={i + 1 === page}
+                          onClick={() => setPage(i + 1)}
+                          className="cursor-pointer"
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() => page < totalPages && setPage(page + 1)}
+                        className={
+                          page >= totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+                        }
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+          </>
+        ) : (
+          /* Empty state */
+          <div className="bg-white rounded-2xl border border-primary/5 shadow-sm py-20 text-center">
+            <div className="size-20 rounded-full bg-emerald-50 mx-auto mb-4 flex items-center justify-center">
+              <CheckCircle className="size-10 text-emerald-500" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Бүх зүйл хэвийн!</h3>
+            <p className="text-slate-500">Тэмдэглэгдсэн контент байхгүй байна</p>
+          </div>
+        )}
       </div>
 
       {/* Reject dialog */}
@@ -283,7 +276,7 @@ function FlaggedContentCard({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3 } }}
-      className="bg-white rounded-2xl border border-[#9c7aff]/5 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+      className="bg-white rounded-2xl border border-primary/5 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
     >
       {/* Header */}
       <div className="p-4 border-b border-slate-100">

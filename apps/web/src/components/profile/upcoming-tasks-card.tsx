@@ -17,13 +17,13 @@ export function UpcomingTasksCard() {
   const enrollments = data?.data ?? [];
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h4 className="font-bold text-slate-900">Идэвхтэй сургалтууд</h4>
         {enrollments.length > 0 && (
           <Link
             href={ROUTES.MY_COURSES}
-            className="text-[#9c7aff] hover:bg-[#9c7aff]/10 p-1 rounded-lg transition-colors"
+            className="text-primary hover:bg-primary/10 p-1 rounded-lg transition-colors"
           >
             <MoreHorizontal className="w-5 h-5" />
           </Link>
@@ -47,11 +47,11 @@ export function UpcomingTasksCard() {
               }
               className="flex gap-4 items-start group"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#9c7aff]/10 flex items-center justify-center shrink-0">
-                <BookOpen className="w-5 h-5 text-[#9c7aff]" />
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <BookOpen className="w-5 h-5 text-primary" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-slate-900 truncate group-hover:text-[#9c7aff] transition-colors">
+                <p className="text-sm font-bold text-slate-900 truncate group-hover:text-primary transition-colors">
                   {enrollment.courseTitle ?? 'Сургалт'}
                 </p>
                 <p className="text-xs text-slate-400">
@@ -69,7 +69,7 @@ export function UpcomingTasksCard() {
 /** Loading skeleton */
 function TasksSkeleton() {
   return (
-    <div className="bg-white rounded-3xl p-6 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
       <Skeleton className="h-5 w-36 mb-4" />
       <div className="space-y-4">
         {Array.from({ length: 2 }).map((_, i) => (

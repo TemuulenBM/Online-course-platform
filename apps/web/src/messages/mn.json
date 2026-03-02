@@ -146,6 +146,8 @@
     "weekly": "Долоо хоног",
     "monthly": "Сар",
     "hours": "Ц",
+    "studyHours": "Суралцсан цаг",
+    "today": "Өнөөдөр",
     "listTask": "Даалгаврууд",
     "dueDate": "Хугацаа"
   },
@@ -505,6 +507,7 @@
   },
   "teacher": {
     "myCourses": "Миний сургалтууд",
+    "backToDashboard": "Хяналтын самбар руу буцах",
     "curriculum": "Хичээлийн агуулга",
     "createLesson": "Хичээл нэмэх",
     "editLesson": "Хичээл засах",

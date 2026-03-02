@@ -24,7 +24,7 @@ export function CircularTimer({ elapsedSeconds, totalMinutes }: CircularTimerPro
   const dashOffset = circumference * (1 - progress);
 
   // Өнгө — 75%-аас дээш улаан, 50%-аас дээш шар
-  const strokeColor = progress >= 0.75 ? '#ef4444' : progress >= 0.5 ? '#f59e0b' : '#9c7aff';
+  const strokeColor = progress >= 0.75 ? '#ef4444' : progress >= 0.5 ? '#f59e0b' : 'var(--primary)';
 
   return (
     <div className="flex flex-col items-center gap-3">

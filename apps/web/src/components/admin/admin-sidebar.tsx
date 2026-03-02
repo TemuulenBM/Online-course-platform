@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   LayoutDashboard,
   Settings,
@@ -16,13 +17,15 @@ import {
   TrendingUp,
   Trophy,
   Activity,
+  LogOut,
+  ArrowLeft,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
-import { useMyProfile } from '@/hooks/api';
+import { useLogout, useMyProfile } from '@/hooks/api';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -34,9 +37,10 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
-/** Удирдлагын навигац — дизайнаас */
+/** Удирдлагын навигац */
 const controlItems = [
   { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Хяналтын самбар' },
   { href: '/admin/settings', icon: Settings, label: 'Тохиргоо' },
@@ -61,12 +65,10 @@ const analyticsItems = [
   { href: '/admin/analytics/events', icon: Activity, label: 'Event-ууд' },
 ] as const;
 
-/** Role badge-ийн өнгөний mapping */
-const roleBadgeVariants: Record<string, string> = {
-  admin: 'bg-red-100 text-red-700',
-  teacher: 'bg-blue-100 text-blue-700',
-  student: 'bg-green-100 text-green-700',
-};
+/** Main sidebar-тай нийцсэн nav item стиль */
+const navItemBase =
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
+const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
 
 /** Навигацийн бүлэг рендерлэх */
 function NavGroup({
@@ -75,13 +77,13 @@ function NavGroup({
 }: {
   items: ReadonlyArray<{
     href: string;
-    icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+    icon: React.ComponentType<{ className?: string }>;
     label: string;
   }>;
   pathname: string;
 }) {
   return (
-    <SidebarMenu className="gap-1">
+    <SidebarMenu className="gap-0.5">
       {items.map((item) => {
         const isActive =
           item.href === '/admin/analytics'
@@ -92,15 +94,10 @@ function NavGroup({
             <SidebarMenuButton
               asChild
               isActive={isActive}
-              className={cn(
-                'h-11 rounded-xl px-4 font-medium text-slate-600 transition-all',
-                'hover:bg-[#9c7aff]/10 hover:text-[#9c7aff]',
-                isActive &&
-                  'bg-[#9c7aff] text-white font-semibold shadow-[0_4px_15px_-3px_rgba(156,122,255,0.4)] hover:bg-[#8b6ae8] hover:text-white',
-              )}
+              className={cn(navItemBase, isActive && navItemActive)}
             >
               <Link href={item.href}>
-                <item.icon className="size-[18px]" strokeWidth={2} />
+                <item.icon className="size-[18px]" />
                 <span>{item.label}</span>
               </Link>
             </SidebarMenuButton>
@@ -113,6 +110,8 @@ function NavGroup({
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const tRoles = useTranslations('roles');
+  const logoutMutation = useLogout();
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
 
@@ -124,25 +123,22 @@ export function AdminSidebar() {
     ? `${profile.firstName[0]}${profile.lastName?.[0] || ''}`.toUpperCase()
     : (user?.email?.[0] || 'U').toUpperCase();
 
+  const roleName = tRoles(user?.role || 'student');
+
   return (
-    <Sidebar collapsible="offcanvas" className="border-none bg-white">
-      {/* Learnify лого — дизайны дагуу */}
-      <SidebarHeader className="px-6 pt-6 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="size-10 bg-[#9c7aff] rounded-lg flex items-center justify-center">
-            <GraduationCap className="size-5 text-white" strokeWidth={2.5} />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold tracking-tight">Learnify</h2>
-            <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-semibold">
-              Admin Panel
-            </p>
-          </div>
+    <Sidebar collapsible="offcanvas" className="border-none bg-background">
+      {/* Лого — LearnifyLogo + ADMIN PANEL badge */}
+      <SidebarHeader className="px-5 pt-7 pb-4">
+        <div>
+          <LearnifyLogo href="/admin/dashboard" />
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-semibold mt-1 pl-[46px]">
+            Admin Panel
+          </p>
         </div>
       </SidebarHeader>
 
       <SidebarContent className="px-3">
-        {/* Удирдлага — дизайны 4 зүйл */}
+        {/* Удирдлага */}
         <SidebarGroup>
           <SidebarGroupContent>
             <NavGroup items={controlItems} pathname={pathname} />
@@ -151,7 +147,7 @@ export function AdminSidebar() {
 
         {/* Менежмент */}
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">
+          <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
             Менежмент
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -161,7 +157,7 @@ export function AdminSidebar() {
 
         {/* Аналитик */}
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">
+          <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
             Аналитик
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -170,25 +166,49 @@ export function AdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Хэрэглэгчийн мэдээлэл — дизайны footer */}
-      <SidebarFooter className="px-4 pb-4">
-        <div className="flex items-center gap-3 p-3 bg-[#9c7aff]/5 rounded-xl">
-          <Avatar className="size-10 shrink-0">
-            <AvatarFallback className="bg-[#9c7aff]/20 text-[#9c7aff] text-sm font-bold">
+      {/* Доод хэсэг — main sidebar-тай нийцсэн */}
+      <SidebarFooter className="px-3 pb-5">
+        <SidebarMenu className="gap-0.5">
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <Link href="/dashboard">
+                <ArrowLeft className="size-[18px]" />
+                <span>Хяналтын самбар руу</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <LogOut className="size-[18px]" />
+              <span>Гарах</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        <SidebarSeparator className="my-2" />
+
+        {/* Хэрэглэгчийн мэдээлэл — main sidebar-тай ижил */}
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted"
+        >
+          <Avatar className="size-9 shrink-0">
+            <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-slate-900">{displayName}</p>
-            <p className="truncate text-xs text-slate-500">{user?.email}</p>
+            <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>
+            <p className="text-[11px] text-muted-foreground">{roleName}</p>
           </div>
-          <Badge
-            variant="secondary"
-            className={cn('text-[10px] px-1.5 py-0 shrink-0', roleBadgeVariants[user?.role || ''])}
-          >
-            {user?.role === 'admin' ? 'Admin' : user?.role === 'teacher' ? 'Багш' : 'Суралцагч'}
-          </Badge>
-        </div>
+        </Link>
       </SidebarFooter>
     </Sidebar>
   );

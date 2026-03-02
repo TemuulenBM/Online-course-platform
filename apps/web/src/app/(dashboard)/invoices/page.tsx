@@ -7,6 +7,7 @@ import { Receipt, CheckCircle, Clock, ChevronRight, HelpCircle } from 'lucide-re
 import { useMyInvoices } from '@/hooks/api';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
 import { ROUTES } from '@/lib/constants';
 
 const PAGE_LIMIT = 10;
@@ -26,42 +27,32 @@ export default function InvoicesPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto flex flex-col gap-8">
+      <div className="max-w-7xl mx-auto flex flex-col gap-8">
         {/* Header */}
         <div className="flex items-center gap-3">
           <Receipt className="size-6 text-primary" />
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {t('myInvoices')}
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('myInvoices')}</h1>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
-              {t('invoiceTotalAmount')}
-            </p>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              ₮{totalAmount.toLocaleString()}
-            </h3>
-            <div className="mt-4 flex items-center gap-2 text-xs text-slate-500 font-medium">
+          <div className="bg-card p-6 rounded-2xl border border-border">
+            <p className="text-sm text-muted-foreground mb-2">{t('invoiceTotalAmount')}</p>
+            <h3 className="text-2xl font-bold text-foreground">₮{totalAmount.toLocaleString()}</h3>
+            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground font-medium">
               <Clock className="size-3.5" />
               {t('invoiceCount', { count: totalCount })}
             </div>
           </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
-              {t('invoicePaidAmount')}
-            </p>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              ₮{totalAmount.toLocaleString()}
-            </h3>
+          <div className="bg-card p-6 rounded-2xl border border-border">
+            <p className="text-sm text-muted-foreground mb-2">{t('invoicePaidAmount')}</p>
+            <h3 className="text-2xl font-bold text-foreground">₮{totalAmount.toLocaleString()}</h3>
             <div className="mt-4 flex items-center gap-2 text-xs text-green-500 font-medium">
               <CheckCircle className="size-3.5" />
               {t('paidInvoices', { count: paidCount })}
             </div>
           </div>
-          <div className="bg-primary p-6 rounded-xl shadow-lg shadow-primary/20 flex flex-col justify-between">
+          <div className="bg-primary p-6 rounded-2xl shadow-lg shadow-primary/20 flex flex-col justify-between">
             <div>
               <p className="text-sm text-white/80 mb-2">{t('invoiceLatestDate')}</p>
               <h3 className="text-2xl font-bold text-white leading-tight">
@@ -72,33 +63,33 @@ export default function InvoicesPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
+          <div className="p-6 border-b border-border flex items-center justify-between">
             <h3 className="font-bold">{t('transactionHistory')}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {t('invoiceNumber')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {t('courseOrLesson')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {t('date')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {t('amount')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {t('status')}
                   </th>
                   <th className="px-6 py-4" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-border">
                 {isLoading
                   ? Array.from({ length: 5 }).map((_, i) => (
                       <tr key={i}>
@@ -129,18 +120,18 @@ export default function InvoicesPage() {
                       >
                         <td className="px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="font-semibold text-slate-900 dark:text-slate-100">
+                            <span className="font-semibold text-foreground">
                               {invoice.invoiceNumber}
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-400">
+                        <td className="px-6 py-4 text-sm font-medium text-muted-foreground">
                           {invoice.courseTitle || '-'}
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-500">
+                        <td className="px-6 py-4 text-sm text-muted-foreground">
                           {new Date(invoice.createdAt).toLocaleDateString('sv-SE')}
                         </td>
-                        <td className="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">
+                        <td className="px-6 py-4 font-bold text-foreground">
                           ₮{invoice.amount.toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
@@ -161,8 +152,8 @@ export default function InvoicesPage() {
 
           {/* Pagination */}
           {!isLoading && totalCount > 0 && (
-            <div className="p-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-sm text-slate-500">
+            <div className="p-6 border-t border-border flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
                 {t('showingOf', { shown: invoices.length, total: totalCount })}
               </span>
               {totalCount > PAGE_LIMIT && (
@@ -179,27 +170,23 @@ export default function InvoicesPage() {
 
         {/* Empty state */}
         {!isLoading && invoices.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="size-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Receipt className="size-10 text-primary" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              {t('noInvoices')}
-            </h3>
-            <p className="text-sm text-slate-500">{t('noInvoicesDescription')}</p>
-          </div>
+          <EmptyState
+            icon={Receipt}
+            title={t('noInvoices')}
+            description={t('noInvoicesDescription')}
+          />
         )}
 
         {/* Help */}
         {!isLoading && invoices.length > 0 && (
-          <div className="flex items-center justify-between p-6 bg-slate-100 dark:bg-slate-800/50 rounded-xl">
+          <div className="flex items-center justify-between p-6 bg-slate-100 dark:bg-slate-800/50 rounded-2xl">
             <div className="flex items-center gap-4">
               <div className="size-12 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center text-primary shadow-sm">
                 <HelpCircle className="size-5" />
               </div>
               <div>
                 <p className="font-bold">{t('invoiceHelpTitle')}</p>
-                <p className="text-sm text-slate-500">{t('invoiceHelpDesc')}</p>
+                <p className="text-sm text-muted-foreground">{t('invoiceHelpDesc')}</p>
               </div>
             </div>
           </div>

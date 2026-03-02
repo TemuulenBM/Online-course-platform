@@ -59,7 +59,7 @@ export default function AdminOrdersPage() {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
             {t('adminPendingOrders')}
           </h1>
           <p className="text-slate-500 mt-1">

@@ -58,21 +58,18 @@ export default function AdminAnalyticsDashboardPage() {
   if (statsLoading || overviewLoading) return <AnalyticsPageSkeleton />;
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Header */}
-      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center px-8 sticky top-0 z-10">
-        <SidebarTrigger className="md:hidden mr-4" />
-        <h2 className="text-xl font-bold">Аналитик</h2>
-      </header>
-
-      <div className="p-6 lg:p-8 max-w-[1400px] mx-auto">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-[1400px] mx-auto">
         {/* Breadcrumb + Title */}
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-2">
-          <span>Аналитик</span>
-          <ChevronRight className="size-3" />
-          <span className="text-primary font-medium">Ерөнхий</span>
+        <div className="flex items-center gap-4 mb-2">
+          <SidebarTrigger className="lg:hidden" />
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <span>Аналитик</span>
+            <ChevronRight className="size-3" />
+            <span className="text-primary font-medium">Ерөнхий</span>
+          </div>
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight mb-1">Хянах самбар</h2>
+        <h1 className="text-3xl font-bold tracking-tight mb-1">Хянах самбар</h1>
         <p className="text-slate-500 mb-8">Learnify платформын ерөнхий статистик болон гүйцэтгэл</p>
 
         {/* 4 Үндсэн stat card-ууд */}
@@ -180,7 +177,7 @@ export default function AdminAnalyticsDashboardPage() {
                   }}
                   labelStyle={{ fontWeight: 700 }}
                 />
-                <Bar dataKey="value" fill="#9c7aff" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

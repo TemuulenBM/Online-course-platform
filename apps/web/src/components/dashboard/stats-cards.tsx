@@ -23,7 +23,7 @@ export function StatsCards() {
       labelKey: 'enrolledCourse' as const,
       value: enrollments?.meta?.total ?? 0,
       loading: loadingEnrollments,
-      bg: 'bg-[#E8F5E9]',
+      bg: 'bg-green-50',
       border: 'border-[#C8E6C9]/50',
       iconStroke: '#66BB6A',
       iconPath: (
@@ -37,7 +37,7 @@ export function StatsCards() {
       labelKey: 'lesson' as const,
       value: progress?.total ?? 0,
       loading: loadingProgress,
-      bg: 'bg-[#F3E8FF]',
+      bg: 'bg-purple-50',
       border: 'border-[#E9D5FF]/50',
       iconStroke: '#A78BFA',
       iconPath: (
@@ -52,7 +52,7 @@ export function StatsCards() {
       labelKey: 'certificate' as const,
       value: certificates?.total ?? 0,
       loading: loadingCertificates,
-      bg: 'bg-[#FFF8E1]',
+      bg: 'bg-amber-50',
       border: 'border-[#FFECB3]/50',
       iconStroke: '#FFA726',
       iconPath: (
@@ -69,7 +69,7 @@ export function StatsCards() {
       {statsConfig.map((stat) => (
         <div
           key={stat.labelKey}
-          className={`${stat.bg} rounded-3xl p-6 flex flex-col border ${stat.border} shadow-sm relative overflow-hidden group`}
+          className={`${stat.bg} rounded-2xl p-6 flex flex-col border ${stat.border} shadow-sm relative overflow-hidden group`}
         >
           <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 z-10">
             <svg
@@ -90,11 +90,11 @@ export function StatsCards() {
             {stat.loading ? (
               <Skeleton className="h-8 w-12 mb-1 rounded-lg" />
             ) : (
-              <span className="text-[28px] font-bold text-gray-900 leading-none mb-1">
+              <span className="text-[28px] font-bold text-foreground leading-none mb-1">
                 {stat.value}
               </span>
             )}
-            <span className="text-xs font-semibold text-gray-600">{t(stat.labelKey)}</span>
+            <span className="text-xs font-semibold text-muted-foreground">{t(stat.labelKey)}</span>
           </div>
           <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/40 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
         </div>

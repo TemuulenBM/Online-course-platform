@@ -40,30 +40,36 @@ export function CoursesHeader({
     <div className="mb-10">
       <div className="flex items-center gap-3 mb-2">
         <SidebarTrigger className="md:hidden" />
-        <h1 className="text-3xl lg:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">
-          {t('catalogTitle')}
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('catalogTitle')}</h1>
       </div>
       <p className="text-slate-600 dark:text-slate-400 text-lg mb-8">{t('catalogSubtitle')}</p>
 
       <div className="flex flex-col lg:flex-row gap-4 items-center">
         <div className="relative w-full lg:flex-1">
+          <label htmlFor="course-search" className="sr-only">
+            {t('search')}
+          </label>
           <Search className="size-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
+            id="course-search"
             type="text"
             defaultValue={search}
             onChange={handleSearch}
             placeholder={t('search')}
-            className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-primary/10 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+            className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
           />
         </div>
         <div className="relative w-full lg:w-48">
+          <label htmlFor="category-select" className="sr-only">
+            {t('allCategories')}
+          </label>
           <select
+            id="category-select"
             value={categoryId || 'all'}
             onChange={(e) =>
               onCategoryChange(e.target.value === 'all' ? undefined : e.target.value)
             }
-            className="w-full appearance-none pl-4 pr-10 py-3.5 bg-white dark:bg-slate-800 border border-primary/10 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer text-sm text-slate-900 dark:text-slate-100"
+            className="w-full appearance-none pl-4 pr-10 py-3.5 bg-white dark:bg-slate-800 border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer text-sm text-slate-900 dark:text-slate-100"
           >
             <option value="all">{t('allCategories')}</option>
             {categories?.map((cat) => (

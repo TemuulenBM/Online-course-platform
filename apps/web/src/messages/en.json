@@ -146,6 +146,8 @@
     "weekly": "Weekly",
     "monthly": "Monthly",
     "hours": "H",
+    "studyHours": "Study hours",
+    "today": "Today",
     "listTask": "List Task",
     "dueDate": "Due date"
   },
@@ -474,6 +476,7 @@
   },
   "teacher": {
     "myCourses": "My Courses",
+    "backToDashboard": "Back to dashboard",
     "curriculum": "Curriculum",
     "createLesson": "Add Lesson",
     "editLesson": "Edit Lesson",

@@ -49,7 +49,7 @@ export function MyCourseCard({ enrollment, onCancel }: MyCourseCardProps) {
   return (
     <div
       className={cn(
-        'bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 shadow-sm overflow-hidden flex flex-col sm:flex-row group',
+        'bg-card rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col sm:flex-row group',
         isInactive && 'opacity-75',
       )}
     >
@@ -69,8 +69,8 @@ export function MyCourseCard({ enrollment, onCancel }: MyCourseCardProps) {
               className="object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-              <BookOpen className="size-10 text-slate-300 dark:text-slate-600" />
+            <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+              <BookOpen className="size-12 text-slate-300 dark:text-slate-600" />
             </div>
           )}
         </div>

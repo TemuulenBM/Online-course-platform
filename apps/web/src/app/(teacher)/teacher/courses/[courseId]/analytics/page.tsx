@@ -123,7 +123,7 @@ export default function CourseAnalyticsPage() {
         {/* Title */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight">
+            <h1 className="text-3xl font-bold tracking-tight">
               {course?.title || 'Сургалтын аналитик'}
             </h1>
             <p className="text-slate-500 mt-1">
@@ -201,7 +201,7 @@ export default function CourseAnalyticsPage() {
                   }}
                   formatter={(value) => [`${Number(value ?? 0)}%`, 'Дуусгалт']}
                 />
-                <Bar dataKey="rate" fill="#9c7aff" opacity={0.3} radius={[6, 6, 0, 0]} />
+                <Bar dataKey="rate" fill="var(--primary)" opacity={0.3} radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

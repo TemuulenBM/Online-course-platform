@@ -17,11 +17,11 @@ function StatCard({
   icon: React.ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="bg-white p-6 rounded-2xl border border-[#9c7aff]/5 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white p-6 rounded-2xl border border-primary/5 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-3">
         <p className="text-slate-500 text-sm font-medium">{label}</p>
-        <div className="size-9 rounded-xl bg-[#9c7aff]/5 flex items-center justify-center">
-          <Icon className="size-[18px] text-[#9c7aff]" />
+        <div className="size-9 rounded-xl bg-primary/5 flex items-center justify-center">
+          <Icon className="size-[18px] text-primary" />
         </div>
       </div>
       <div className="flex items-end gap-2">

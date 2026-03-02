@@ -35,7 +35,7 @@ function getDefaultRange() {
 
 /** Төлбөрийн хэлбэрийн placeholder өгөгдөл */
 const paymentMethodData = [
-  { name: 'Банкны карт', value: 72, amount: '₮17,640,000', color: '#9c7aff' },
+  { name: 'Банкны карт', value: 72, amount: '₮17,640,000', color: 'hsl(var(--primary))' },
   { name: 'SocialPay / QPay', value: 20, amount: '₮4,900,000', color: '#7c3aed' },
   { name: 'Дансаар', value: 8, amount: '₮1,960,000', color: '#e2e8f0' },
 ];
@@ -83,22 +83,20 @@ export default function RevenueReportPage() {
   if (revenueLoading) return <AnalyticsPageSkeleton />;
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center px-8 sticky top-0 z-10">
-        <SidebarTrigger className="md:hidden mr-4" />
-        <h2 className="text-xl font-bold">Орлогын тайлан</h2>
-      </header>
-
-      <div className="p-6 lg:p-8 max-w-[1400px] mx-auto">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-[1400px] mx-auto">
         {/* Breadcrumb + Title */}
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-2">
-          <span>Аналитик</span>
-          <ChevronRight className="size-3" />
-          <span className="text-primary font-medium">Орлого</span>
+        <div className="flex items-center gap-4 mb-2">
+          <SidebarTrigger className="lg:hidden" />
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <span>Аналитик</span>
+            <ChevronRight className="size-3" />
+            <span className="text-primary font-medium">Орлого</span>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-extrabold tracking-tight">Орлогын тайлан</h2>
+            <h1 className="text-3xl font-bold tracking-tight">Орлогын тайлан</h1>
             <p className="text-slate-500 mt-1">
               Системийн нийт борлуулалт болон орлогын явцыг хянах хэсэг
             </p>
@@ -186,7 +184,7 @@ export default function RevenueReportPage() {
                 }}
                 formatter={(value) => [formatMNT(Number(value ?? 0)), 'Орлого']}
               />
-              <Bar dataKey="revenue" fill="#9c7aff" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -24,8 +24,8 @@ export function SystemHealthWidget({ health }: { health: SystemHealthResponse | 
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-[#9c7aff]/5 shadow-sm overflow-hidden">
-      <div className="p-6 border-b border-[#9c7aff]/5 flex items-center justify-between">
+    <div className="bg-white rounded-2xl border border-primary/5 shadow-sm overflow-hidden">
+      <div className="p-6 border-b border-primary/5 flex items-center justify-between">
         <h3 className="font-bold text-lg text-slate-900">Системийн ажиллагаа (Health)</h3>
         <div className="flex items-center gap-2">
           <span
@@ -48,14 +48,14 @@ export function SystemHealthWidget({ health }: { health: SystemHealthResponse | 
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left">
-          <thead className="bg-[#9c7aff]/5">
+          <thead className="bg-primary/5">
             <tr>
               <th className="px-6 py-4 text-sm font-semibold text-slate-600">Үйлчилгээ</th>
               <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-center">Төлөв</th>
               <th className="px-6 py-4 text-sm font-semibold text-slate-600 text-right">Latency</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#9c7aff]/5">
+          <tbody className="divide-y divide-primary/5">
             {services.map((svc) => (
               <tr key={svc.name} className="hover:bg-slate-50 transition-colors">
                 <td className="px-6 py-4 font-medium text-slate-900">{svc.name}</td>

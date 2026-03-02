@@ -48,7 +48,7 @@ export default function StudentAttemptsPage({
 
       {/* Title */}
       <div>
-        <h1 className="text-3xl md:text-4xl font-black text-foreground">{t('quizAttempts')}</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t('quizAttempts')}</h1>
         <p className="text-muted-foreground mt-2">
           &quot;{quiz.title}&quot; — {t('quizAttemptsDesc')}
         </p>

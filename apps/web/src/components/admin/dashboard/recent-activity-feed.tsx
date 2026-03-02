@@ -23,7 +23,7 @@ function getActivityMeta(action: string, entityType: string) {
   const key = `${action}:${entityType}`.toLowerCase();
 
   if (key.includes('create') && entityType.toLowerCase().includes('user'))
-    return { icon: UserPlus, bg: 'bg-[#9c7aff]/10', color: 'text-[#9c7aff]' };
+    return { icon: UserPlus, bg: 'bg-primary/10', color: 'text-primary' };
   if (action === 'CREATE' && entityType.includes('ORDER'))
     return { icon: CreditCard, bg: 'bg-amber-100', color: 'text-amber-600' };
   if (action === 'APPROVE')
@@ -57,12 +57,12 @@ function getActivityDescription(action: string, entityType: string): string {
 /** Сүүлийн үйл ажиллагааны жагсаалт — slide-in анимацтай */
 export function RecentActivityFeed({ activities }: { activities: AuditLogEntry[] | undefined }) {
   return (
-    <div className="bg-white rounded-2xl border border-[#9c7aff]/5 shadow-sm h-full flex flex-col">
-      <div className="p-6 border-b border-[#9c7aff]/5 flex items-center justify-between">
+    <div className="bg-white rounded-2xl border border-primary/5 shadow-sm h-full flex flex-col">
+      <div className="p-6 border-b border-primary/5 flex items-center justify-between">
         <h3 className="font-bold text-lg text-slate-900">Сүүлийн үйл ажиллагаа</h3>
         <Link
           href={ROUTES.ADMIN_AUDIT_LOGS}
-          className="text-[#9c7aff] text-sm font-bold hover:underline"
+          className="text-primary text-sm font-bold hover:underline"
         >
           Бүгдийг харах
         </Link>

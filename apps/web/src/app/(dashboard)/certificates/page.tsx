@@ -21,20 +21,15 @@ export default function MyCertificatesPage() {
   const totalPages = Math.ceil(total / PAGE_LIMIT) || 1;
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Header */}
-      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
-        <div className="flex items-center gap-4">
+    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+      <div className="max-w-7xl mx-auto w-full space-y-8">
+        {/* Header */}
+        <div className="flex items-center gap-3">
           <SidebarTrigger className="md:hidden" />
-          <h2 className="text-xl font-bold">{t('myCertificates')}</h2>
-        </div>
-      </header>
-
-      <div className="p-4 md:p-8 max-w-7xl mx-auto w-full space-y-8">
-        {/* Title section */}
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t('achievementBadge')}</h1>
-          <p className="text-slate-500 dark:text-slate-400">{t('achievementDesc')}</p>
+          <div>
+            <h1 className="text-3xl font-bold">{t('achievementBadge')}</h1>
+            <p className="text-muted-foreground mt-1">{t('achievementDesc')}</p>
+          </div>
         </div>
 
         {/* Certificates grid */}
@@ -57,7 +52,7 @@ export default function MyCertificatesPage() {
                   type="button"
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="size-10 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="size-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -69,7 +64,7 @@ export default function MyCertificatesPage() {
                     className={`size-10 rounded-lg text-sm font-bold transition-colors ${
                       p === page
                         ? 'bg-primary text-white'
-                        : 'border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800'
+                        : 'border border-border text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     {p}
@@ -79,7 +74,7 @@ export default function MyCertificatesPage() {
                   type="button"
                   disabled={page >= totalPages}
                   onClick={() => setPage((p) => p + 1)}
-                  className="size-10 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="size-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="size-4" />
                 </button>

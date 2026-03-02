@@ -37,7 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <SidebarProvider className="bg-background">
       <AdminSidebar />
-      <SidebarInset className="overflow-y-auto bg-white lg:m-4 lg:ml-0 lg:rounded-[2.5rem] lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)]">
+      <SidebarInset className="overflow-y-auto bg-white lg:m-4 lg:ml-0 lg:rounded-3xl lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)]">
         {children}
       </SidebarInset>
     </SidebarProvider>

@@ -26,29 +26,27 @@ export function ProgressCoursesTable({ enrollments }: ProgressCoursesTableProps)
   const t = useTranslations('progress');
 
   return (
-    <div className="bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 overflow-hidden">
-      <div className="px-6 py-4 border-b border-primary/5">
-        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-          {t('myCoursesTable')}
-        </h2>
+    <div className="bg-card rounded-2xl border border-border overflow-hidden">
+      <div className="px-6 py-4 border-b border-border">
+        <h2 className="text-base font-bold text-foreground">{t('myCoursesTable')}</h2>
       </div>
 
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent border-primary/5">
-            <TableHead className="text-xs font-semibold text-slate-500 uppercase">
+          <TableRow className="hover:bg-transparent border-border">
+            <TableHead className="text-xs font-semibold text-muted-foreground uppercase">
               {t('courseName')}
             </TableHead>
-            <TableHead className="text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">
+            <TableHead className="text-xs font-semibold text-muted-foreground uppercase hidden md:table-cell">
               {t('type')}
             </TableHead>
-            <TableHead className="text-xs font-semibold text-slate-500 uppercase">
+            <TableHead className="text-xs font-semibold text-muted-foreground uppercase">
               {t('progressCol')}
             </TableHead>
-            <TableHead className="text-xs font-semibold text-slate-500 uppercase hidden sm:table-cell">
+            <TableHead className="text-xs font-semibold text-muted-foreground uppercase hidden sm:table-cell">
               {t('status')}
             </TableHead>
-            <TableHead className="text-xs font-semibold text-slate-500 uppercase hidden lg:table-cell">
+            <TableHead className="text-xs font-semibold text-muted-foreground uppercase hidden lg:table-cell">
               {t('lastUpdated')}
             </TableHead>
           </TableRow>
@@ -77,13 +75,13 @@ function ProgressCourseRow({ enrollment }: { enrollment: EnrollmentWithCourse })
   const courseSlug = enrollment.courseSlug || enrollment.courseId;
 
   return (
-    <TableRow className="hover:bg-primary/5 border-primary/5 cursor-pointer">
+    <TableRow className="hover:bg-primary/5 border-border cursor-pointer">
       <TableCell>
         <Link href={ROUTES.COURSE_PROGRESS(courseSlug)} className="flex items-center gap-3">
           <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
             <BookOpen className="size-4 text-primary" />
           </div>
-          <span className="text-sm font-medium text-slate-900 dark:text-slate-100 line-clamp-1">
+          <span className="text-sm font-medium text-foreground line-clamp-1">
             {enrollment.courseTitle || enrollment.courseId}
           </span>
         </Link>
@@ -99,7 +97,7 @@ function ProgressCourseRow({ enrollment }: { enrollment: EnrollmentWithCourse })
       <TableCell>
         <div className="min-w-[100px]">
           <Progress value={percentage} className="h-2 mb-1" />
-          <span className="text-xs text-slate-500 font-medium">{percentage}%</span>
+          <span className="text-xs text-muted-foreground font-medium">{percentage}%</span>
         </div>
       </TableCell>
       <TableCell className="hidden sm:table-cell">
@@ -115,7 +113,7 @@ function ProgressCourseRow({ enrollment }: { enrollment: EnrollmentWithCourse })
         )}
       </TableCell>
       <TableCell className="hidden lg:table-cell">
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-muted-foreground">
           {new Date(enrollment.updatedAt).toLocaleDateString('mn-MN')}
         </span>
       </TableCell>

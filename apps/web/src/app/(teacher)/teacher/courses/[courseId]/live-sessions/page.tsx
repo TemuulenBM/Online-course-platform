@@ -122,7 +122,7 @@ export default function TeacherLiveSessionsPage({
                 <ChevronRight className="size-3.5" />
                 <span className="text-primary font-medium">{course?.title ?? 'Сургалт'}</span>
               </nav>
-              <h1 className="text-3xl font-extrabold tracking-tight">Хичээлийн удирдлага</h1>
+              <h1 className="text-3xl font-bold tracking-tight">Хичээлийн удирдлага</h1>
               <p className="text-slate-500">
                 Өнөөдрийн товлогдсон болон явагдаж буй онлайн хичээлүүд
               </p>

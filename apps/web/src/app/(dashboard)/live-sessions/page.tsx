@@ -12,6 +12,7 @@ import {
 import { CategoryFilterTabs } from '@/components/live-sessions/upcoming/category-filter-tabs';
 import { CtaCard } from '@/components/live-sessions/upcoming/cta-card';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { EmptyState } from '@/components/ui/empty-state';
 
 /**
  * Удахгүй болох шууд хичээлүүд — /live-sessions
@@ -43,16 +44,16 @@ export default function LiveSessionsPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-6xl space-y-8">
+      <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <div className="flex items-center gap-3">
           <SidebarTrigger className="md:hidden" />
           <div>
-            <h1 className="flex items-center gap-3 text-3xl font-extrabold tracking-tight">
+            <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
               <Video className="size-8 text-primary" />
               Шууд хичээлүүд
             </h1>
-            <p className="mt-1 text-slate-500">
+            <p className="mt-1 text-muted-foreground">
               Удахгүй болох шууд хичээлүүдэд нэгдэж, мэдлэгээ бататгаарай.
             </p>
           </div>
@@ -94,11 +95,11 @@ export default function LiveSessionsPage() {
 
         {/* Хоосон state */}
         {!isLoading && filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-primary/20 bg-primary/5 py-20">
-            <Video className="mb-4 size-12 text-primary/40" />
-            <h3 className="mb-2 text-lg font-bold">Одоогоор шууд хичээл алга</h3>
-            <p className="text-sm text-slate-500">Удахгүй шинэ хичээлүүд нэмэгдэх болно.</p>
-          </div>
+          <EmptyState
+            icon={Video}
+            title="Одоогоор шууд хичээл алга"
+            description="Удахгүй шинэ хичээлүүд нэмэгдэх болно."
+          />
         )}
       </div>
     </div>

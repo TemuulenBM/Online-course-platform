@@ -167,7 +167,7 @@ export default function CourseStudentsPage() {
         {/* Page title */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-extrabold tracking-tight">Курсын оюутнууд</h2>
+            <h1 className="text-3xl font-bold tracking-tight">Курсын оюутнууд</h1>
             <p className="text-slate-500 mt-1">
               Энэхүү курст бүртгэлтэй оюутнуудын явц болон идэвхийг хянах.
             </p>

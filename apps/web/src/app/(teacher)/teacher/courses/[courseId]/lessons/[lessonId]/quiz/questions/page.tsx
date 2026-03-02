@@ -75,9 +75,7 @@ export default function QuestionManagementPage({
       {/* Title + Add button */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black text-foreground">
-            {t('questionManagement')}
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('questionManagement')}</h1>
           <p className="text-muted-foreground mt-2">{t('questionManagementDesc')}</p>
         </div>
         <Button

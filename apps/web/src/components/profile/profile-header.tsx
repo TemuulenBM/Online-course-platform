@@ -22,9 +22,9 @@ interface ProfileInfoCardProps {
 
 /** Role badge стиль */
 const roleBadgeStyle: Record<string, string> = {
-  STUDENT: 'bg-[#9c7aff]/20 text-[#9c7aff]',
+  STUDENT: 'bg-primary/20 text-primary',
   TEACHER: 'bg-emerald-100 text-emerald-700',
-  ADMIN: 'bg-[#9c7aff]/20 text-[#9c7aff]',
+  ADMIN: 'bg-primary/20 text-primary',
 };
 
 export function ProfileInfoCard({
@@ -83,22 +83,22 @@ export function ProfileInfoCard({
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-sm border border-[#9c7aff]/5 overflow-hidden mb-8">
+    <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden mb-8">
       {/* Gradient banner */}
-      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/30 via-[#9c7aff]/10 to-transparent" />
+      <div className="h-32 bg-gradient-to-r from-primary/30 via-primary/10 to-transparent" />
 
       <div className="px-8 pb-8 -mt-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
             {/* Аватар */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-3xl border-4 border-white bg-white shadow-xl overflow-hidden">
+              <div className="w-32 h-32 rounded-2xl border-4 border-white bg-white shadow-xl overflow-hidden">
                 <Avatar className="w-full h-full rounded-none">
                   <AvatarImage
                     src={getFileUrl(profile?.avatarUrl)}
                     className="object-cover object-top"
                   />
-                  <AvatarFallback className="bg-[#9c7aff]/10 text-[#9c7aff] text-3xl font-bold rounded-none">
+                  <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold rounded-none">
                     {initials || <User className="w-12 h-12" />}
                   </AvatarFallback>
                 </Avatar>
@@ -115,7 +115,7 @@ export function ProfileInfoCard({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadAvatar.isPending}
-                className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#9c7aff] text-white rounded-xl shadow-lg flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-50"
+                className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary text-white rounded-xl shadow-lg flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-50"
               >
                 {uploadAvatar.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -133,7 +133,7 @@ export function ProfileInfoCard({
                 </h1>
                 {user?.role && (
                   <span
-                    className={`px-3 py-1 text-xs font-bold rounded-lg border border-[#9c7aff]/20 ${roleBadgeStyle[user.role] ?? 'bg-gray-100 text-gray-600'}`}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg border border-primary/20 ${roleBadgeStyle[user.role] ?? 'bg-gray-100 text-gray-600'}`}
                   >
                     {user.role}
                   </span>
@@ -152,7 +152,7 @@ export function ProfileInfoCard({
               type="button"
               onClick={onCancel}
               disabled={!isDirty || isPending}
-              className="px-6 py-2.5 bg-[#f6f5f8] text-slate-600 font-semibold rounded-xl hover:bg-[#9c7aff]/10 hover:text-[#9c7aff] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-muted text-slate-600 font-semibold rounded-xl hover:bg-primary/10 hover:text-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Цуцлах
             </button>
@@ -160,7 +160,7 @@ export function ProfileInfoCard({
               type="button"
               onClick={onSave}
               disabled={!isDirty || isPending}
-              className="px-8 py-2.5 bg-[#9c7aff] text-white font-bold rounded-xl shadow-lg shadow-[#9c7aff]/25 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-8 py-2.5 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               Хадгалах
@@ -188,11 +188,11 @@ export function ProfileInfoCard({
 /** Loading skeleton */
 function ProfileInfoSkeleton() {
   return (
-    <div className="bg-white rounded-3xl shadow-sm border border-[#9c7aff]/5 overflow-hidden mb-8">
-      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/10 via-[#9c7aff]/5 to-transparent" />
+    <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden mb-8">
+      <div className="h-32 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent" />
       <div className="px-8 pb-8 -mt-12">
         <div className="flex flex-col md:flex-row md:items-end gap-6">
-          <Skeleton className="w-32 h-32 rounded-3xl" />
+          <Skeleton className="w-32 h-32 rounded-2xl" />
           <div className="space-y-3 mb-2">
             <Skeleton className="h-8 w-64" />
             <Skeleton className="h-5 w-48" />

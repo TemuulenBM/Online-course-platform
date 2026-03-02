@@ -52,12 +52,12 @@ export function NotificationBell() {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <button className="w-10 h-10 rounded-full border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors relative shrink-0">
+        <button className="w-11 h-11 rounded-full border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors relative shrink-0">
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
             <span
               className={cn(
-                'absolute -top-1 -right-1 flex items-center justify-center rounded-full bg-[#FF6B6B] text-white font-bold border-2 border-white dark:border-slate-900',
+                'absolute -top-1 -right-1 flex items-center justify-center rounded-full bg-destructive text-white font-bold border-2 border-white dark:border-slate-900',
                 unreadCount < 10 ? 'w-5 h-5 text-[10px]' : 'min-w-[20px] h-5 px-1 text-[9px]',
               )}
             >

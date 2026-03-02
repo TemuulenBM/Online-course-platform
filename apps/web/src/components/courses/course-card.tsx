@@ -9,9 +9,9 @@ import { ROUTES } from '@/lib/constants';
 
 /** Түвшингийн badge стиль */
 const difficultyStyles: Record<string, string> = {
-  beginner: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10',
-  intermediate: 'text-blue-500 bg-blue-50 dark:bg-blue-500/10',
-  advanced: 'text-red-500 bg-red-50 dark:bg-red-500/10',
+  beginner: 'text-emerald-700 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-500/10',
+  intermediate: 'text-blue-700 bg-blue-50 dark:text-blue-300 dark:bg-blue-500/10',
+  advanced: 'text-red-700 bg-red-50 dark:text-red-300 dark:bg-red-500/10',
 };
 
 /** Ангиллын badge bg өнгө */
@@ -43,7 +43,7 @@ export function CourseCard({ course }: CourseCardProps) {
 
   return (
     <Link href={ROUTES.COURSE_DETAIL(course.slug)}>
-      <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col h-full">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col h-full">
         {/* Thumbnail */}
         <div className="relative h-48 w-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
           {course.thumbnailUrl ? (
@@ -54,8 +54,8 @@ export function CourseCard({ course }: CourseCardProps) {
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-              <BookOpen className="size-14 text-slate-300 dark:text-slate-600" />
+            <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+              <BookOpen className="size-12 text-slate-300 dark:text-slate-600" />
             </div>
           )}
           {course.categoryName && (
@@ -116,7 +116,7 @@ export function CourseCard({ course }: CourseCardProps) {
           )}
 
           {/* Price + action */}
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-primary/5">
+          <div className="flex items-center justify-between mt-auto pt-4 border-t border-border">
             <div className="flex flex-col">
               {hasDiscount && (
                 <span className="text-slate-400 text-[10px] line-through">
@@ -129,7 +129,7 @@ export function CourseCard({ course }: CourseCardProps) {
             </div>
             <button
               type="button"
-              className="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
+              className="p-2.5 min-w-[44px] min-h-[44px] bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center"
               onClick={(e) => e.preventDefault()}
             >
               {isFree ? <PlayCircle className="size-5" /> : <ShoppingCart className="size-5" />}

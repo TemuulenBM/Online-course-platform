@@ -62,14 +62,14 @@ export function ProgressStatsCards({
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 p-5 flex items-center gap-4"
+          className="bg-card rounded-2xl border border-border p-5 flex items-center gap-4"
         >
           <div className={`size-12 rounded-xl ${card.bg} flex items-center justify-center`}>
             <card.icon className={`size-5 ${card.color}`} />
           </div>
           <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{card.label}</p>
-            <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{card.value}</p>
+            <p className="text-xs text-muted-foreground font-medium">{card.label}</p>
+            <p className="text-2xl font-bold text-foreground">{card.value}</p>
           </div>
         </div>
       ))}

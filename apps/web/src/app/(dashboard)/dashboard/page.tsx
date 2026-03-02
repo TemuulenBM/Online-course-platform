@@ -16,10 +16,16 @@ export default function DashboardPage() {
         <HeroBanner />
         <StatsCards />
         <ClassListTable />
+
+        {/* Mobile/Tablet — xl доогуур ProfileCard, TaskList доор харагдана */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 xl:hidden">
+          <ProfileCard />
+          <TaskList />
+        </div>
       </div>
 
       {/* Баруун sidebar — xl дээр харагдана */}
-      <aside className="hidden xl:flex w-[320px] shrink-0 flex-col gap-8 p-6 pt-10 border-l border-gray-100 overflow-y-auto">
+      <aside className="hidden xl:flex w-[320px] shrink-0 flex-col gap-8 p-6 pt-10 border-l border-border overflow-y-auto">
         <ProfileCard />
         <TaskList />
       </aside>

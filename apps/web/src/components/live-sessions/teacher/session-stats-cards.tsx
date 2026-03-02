@@ -53,8 +53,8 @@ export function SessionStatsCards({
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="#9c7aff"
-                fill="#9c7aff"
+                stroke="var(--primary)"
+                fill="var(--primary)"
                 strokeWidth={1.5}
                 fillOpacity={0.3}
               />
