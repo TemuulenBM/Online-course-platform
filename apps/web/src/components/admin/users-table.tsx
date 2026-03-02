@@ -1,7 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, ChevronLeft, ChevronRight, Clock, ShieldCheck, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import {
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Eye,
+  ShieldCheck,
+  Trash2,
+} from 'lucide-react';
 import { ChangeRoleDialog } from './change-role-dialog';
 import { DeleteUserDialog } from './delete-user-dialog';
 import type { AdminUser, AdminUserListMeta } from '@/lib/api-services/admin.service';
@@ -128,6 +137,13 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
+                        <Link
+                          href={`/admin/users/${user.id}?email=${encodeURIComponent(user.email)}&role=${user.role}&name=${encodeURIComponent(getUserName(user))}&createdAt=${encodeURIComponent(user.createdAt)}&emailVerified=${user.emailVerified}`}
+                          className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
+                          title="Дэлгэрэнгүй"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </Link>
                         <button
                           onClick={() => setRoleDialogUser(user)}
                           className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
@@ -191,6 +207,13 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                   <span>{new Date(user.createdAt).toLocaleDateString('sv-SE')}</span>
                 </div>
                 <div className="flex justify-end gap-2 pt-1">
+                  <Link
+                    href={`/admin/users/${user.id}?email=${encodeURIComponent(user.email)}&role=${user.role}&name=${encodeURIComponent(getUserName(user))}&createdAt=${encodeURIComponent(user.createdAt)}&emailVerified=${user.emailVerified}`}
+                    className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
+                    title="Дэлгэрэнгүй"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </Link>
                   <button
                     onClick={() => setRoleDialogUser(user)}
                     className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"

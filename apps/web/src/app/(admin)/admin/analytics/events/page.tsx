@@ -6,6 +6,7 @@ import { Download, RefreshCw, ChevronRight, ChevronDown, Copy, Check, Search } f
 import { useAnalyticsEvents } from '@/hooks/api';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
+import Link from 'next/link';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { exportToCsv, cn } from '@/lib/utils';
 import type { EventListParams, AnalyticsEvent } from '@ocp/shared-types';
@@ -124,7 +125,9 @@ export default function EventLogPage() {
         <div className="flex items-center gap-4 mb-2">
           <SidebarTrigger className="lg:hidden" />
           <div className="flex items-center gap-2 text-sm text-slate-400">
-            <span>Аналитик</span>
+            <Link href="/admin/analytics" className="hover:text-primary transition-colors">
+              Аналитик
+            </Link>
             <ChevronRight className="size-3" />
             <span className="text-primary font-medium">Event-ууд</span>
           </div>

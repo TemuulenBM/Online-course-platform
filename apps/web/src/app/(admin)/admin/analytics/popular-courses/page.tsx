@@ -19,6 +19,7 @@ import {
 
 import { usePopularCourses } from '@/hooks/api';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
+import Link from 'next/link';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { formatMNT, formatNumber, exportToCsv } from '@/lib/utils';
 
@@ -68,7 +69,9 @@ export default function PopularCoursesPage() {
         <div className="flex items-center gap-4 mb-2">
           <SidebarTrigger className="lg:hidden" />
           <div className="flex items-center gap-2 text-sm text-slate-400">
-            <span>Аналитик</span>
+            <Link href="/admin/analytics" className="hover:text-primary transition-colors">
+              Аналитик
+            </Link>
             <ChevronRight className="size-3" />
             <span className="text-primary font-medium">Топ сургалтууд</span>
           </div>

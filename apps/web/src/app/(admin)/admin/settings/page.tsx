@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Settings, Pencil, Trash2, Search } from 'lucide-react';
+import { Plus, Settings, Pencil, Trash2, Search, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import { useSettings, useUpsertSetting, useDeleteSetting } from '@/hooks/api';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -92,11 +93,18 @@ export default function AdminSettingsPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1200px] mx-auto">
-        {/* Title + Actions */}
+        {/* Breadcrumb + Title + Actions */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="lg:hidden" />
             <div>
+              <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
+                <Link href="/admin/dashboard" className="hover:text-primary transition-colors">
+                  Удирдлага
+                </Link>
+                <ChevronRight className="size-3" />
+                <span className="text-primary font-medium">Тохиргоо</span>
+              </div>
               <h1 className="text-3xl font-bold text-foreground">Системийн тохиргоо</h1>
               <p className="text-sm text-muted-foreground mt-1">
                 Платформын ерөнхий тохиргоог удирдах

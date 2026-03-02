@@ -7,6 +7,7 @@ import { useRevenueReport, useAnalyticsOverview, usePopularCourses } from '@/hoo
 import { StatCard } from '@/components/analytics/stat-card';
 import { DateRangeFilter } from '@/components/analytics/date-range-filter';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
+import Link from 'next/link';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { formatMNT, formatNumber } from '@/lib/utils';
 import type { DateRangeParams } from '@ocp/shared-types';
@@ -89,7 +90,9 @@ export default function RevenueReportPage() {
         <div className="flex items-center gap-4 mb-2">
           <SidebarTrigger className="lg:hidden" />
           <div className="flex items-center gap-2 text-sm text-slate-400">
-            <span>Аналитик</span>
+            <Link href="/admin/analytics" className="hover:text-primary transition-colors">
+              Аналитик
+            </Link>
             <ChevronRight className="size-3" />
             <span className="text-primary font-medium">Орлого</span>
           </div>

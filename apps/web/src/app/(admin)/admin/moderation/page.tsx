@@ -1,9 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { ShieldAlert, Flag, Lock, Eye, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import {
+  Flag,
+  Lock,
+  Eye,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  ChevronRight,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import {
   useModerationStats,
@@ -96,10 +105,17 @@ export default function AdminModerationPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1400px] mx-auto">
-        {/* Title */}
+        {/* Breadcrumb + Title */}
         <div className="flex items-center gap-4 mb-6">
           <SidebarTrigger className="lg:hidden" />
           <div>
+            <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
+              <Link href="/admin/dashboard" className="hover:text-primary transition-colors">
+                Удирдлага
+              </Link>
+              <ChevronRight className="size-3" />
+              <span className="text-primary font-medium">Модерац</span>
+            </div>
             <h1 className="text-3xl font-bold text-foreground">Контент модерац</h1>
             <p className="text-sm text-muted-foreground mt-1">
               Тэмдэглэгдсэн нийтлэлүүдийг хянах, approve/reject хийх
