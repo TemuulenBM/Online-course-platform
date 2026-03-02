@@ -22,10 +22,6 @@ import { PdfGeneratorService } from './infrastructure/services/pdf-generator.ser
 import { QrCodeService } from './infrastructure/services/qr-code.service';
 import { CertificateProcessor } from './infrastructure/services/certificate.processor';
 
-// Storage (Content модулийн pattern дахин ашиглах)
-import { STORAGE_SERVICE } from '../content/infrastructure/services/storage/storage.interface';
-import { LocalStorageService } from '../content/infrastructure/services/storage/local-storage.service';
-
 /**
  * Certificates модуль.
  * Сургалт дуусгасан оюутанд сертификат үүсгэх, PDF + QR код баталгаажуулалт,
@@ -53,8 +49,7 @@ import { LocalStorageService } from '../content/infrastructure/services/storage/
     PdfGeneratorService,
     QrCodeService,
     CertificateProcessor,
-    // Storage — Content модулийн IStorageService дахин ашиглах
-    { provide: STORAGE_SERVICE, useClass: LocalStorageService },
+    // STORAGE_SERVICE — StorageModule (@Global)-аас хангагдана
   ],
   exports: [CertificateRepository],
 })

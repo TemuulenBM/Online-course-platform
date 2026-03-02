@@ -41,10 +41,6 @@ import { InvoicePdfService } from './infrastructure/services/invoice-pdf.service
 // Domain
 import { PAYMENT_GATEWAY } from './domain/interfaces/payment-gateway.interface';
 
-// Storage (Content модулийн pattern дахин ашиглах)
-import { STORAGE_SERVICE } from '../content/infrastructure/services/storage/storage.interface';
-import { LocalStorageService } from '../content/infrastructure/services/storage/local-storage.service';
-
 /**
  * Payments модуль.
  * Захиалга үүсгэх, гар аргаар баталгаажуулах (банк шилжүүлэг → admin approve),
@@ -86,7 +82,7 @@ import { LocalStorageService } from '../content/infrastructure/services/storage/
     InvoicePdfService,
     // DI Tokens — ирээдүйд бодит gateway руу солих боломжтой
     { provide: PAYMENT_GATEWAY, useClass: MockPaymentGateway },
-    { provide: STORAGE_SERVICE, useClass: LocalStorageService },
+    // STORAGE_SERVICE — StorageModule (@Global)-аас хангагдана
   ],
   exports: [OrderRepository],
 })

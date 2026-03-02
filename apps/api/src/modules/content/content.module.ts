@@ -18,8 +18,6 @@ import { UploadFileUseCase } from './application/use-cases/upload-file.use-case'
 // Infrastructure
 import { ContentRepository } from './infrastructure/repositories/content.repository';
 import { ContentCacheService } from './infrastructure/services/content-cache.service';
-import { LocalStorageService } from './infrastructure/services/storage/local-storage.service';
-import { STORAGE_SERVICE } from './infrastructure/services/storage/storage.interface';
 
 /**
  * Content модуль.
@@ -42,11 +40,7 @@ import { STORAGE_SERVICE } from './infrastructure/services/storage/storage.inter
     // Infrastructure
     ContentRepository,
     ContentCacheService,
-    // Storage — interface-based DI, ирээдүйд S3/R2 руу солих боломжтой
-    {
-      provide: STORAGE_SERVICE,
-      useClass: LocalStorageService,
-    },
+    // STORAGE_SERVICE — StorageModule (@Global)-аас хангагдана, тусдаа provider шаардлагагүй
   ],
   exports: [ContentRepository],
 })
