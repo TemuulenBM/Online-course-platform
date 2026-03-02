@@ -18,6 +18,8 @@ import { RedisService, REDIS_CLIENT } from './redis.service';
           host: configService.get<string>('redis.host'),
           port: configService.get<number>('redis.port'),
           password: configService.get<string>('redis.password'),
+          // Upstash болон TLS шаарддаг Redis provider-уудад зориулсан тохиргоо
+          tls: configService.get('redis.tls'),
           lazyConnect: true,
         });
 

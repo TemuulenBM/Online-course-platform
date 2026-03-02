@@ -22,6 +22,7 @@ import agoraConfig from './config/agora.config';
 // Common modules
 import { PrismaModule } from './common/prisma/prisma.module';
 import { RedisModule } from './common/redis/redis.module';
+import { StorageModule } from './common/storage/storage.module';
 
 // Feature modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -86,7 +87,7 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
         uri: config.get<string>('mongodb.uri'),
       }),
     }),
-    // Bull Queue — background job processing (Redis ашиглана)
+    // Bull Queue — background job processing (Redis ашиглана, TLS дэмжилттэй)
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -94,11 +95,14 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
           host: config.get<string>('redis.host'),
           port: config.get<number>('redis.port'),
           password: config.get<string>('redis.password') || undefined,
+          tls: config.get('redis.tls'),
         },
       }),
     }),
     PrismaModule,
     RedisModule,
+    // StorageModule — @Global(), STORAGE_SERVICE token-г бүх модулиас ашиглах боломжтой
+    StorageModule,
     UsersModule,
     AuthModule,
     CoursesModule,

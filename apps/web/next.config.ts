@@ -4,8 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const config: NextConfig = {
-  // Docker standalone build-д шаардлагатай — хамгийн бага хэмжээний output үүсгэнэ
-  output: 'standalone',
+  // output: 'standalone' — Vercel deployment-д шаардлагагүй, Docker-д л хэрэглэнэ
   transpilePackages: [
     '@ocp/ui-components',
     '@ocp/shared-types',
@@ -18,6 +17,9 @@ const config: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       // API сервер дээрх локал зурагт ашиглагдана
       { protocol: 'http', hostname: 'localhost' },
+      // Cloudflare R2 public URL — production файл хадгалалт
+      { protocol: 'https', hostname: '*.r2.dev' },
+      { protocol: 'https', hostname: '*.cloudflarestorage.com' },
     ],
   },
 };

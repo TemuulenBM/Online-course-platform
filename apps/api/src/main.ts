@@ -25,9 +25,15 @@ async function bootstrap() {
   );
   app.use(compression());
 
-  // CORS тохиргоо — зөвшөөрөгдсөн origin-уудыг хязгаарлах
+  // CORS тохиргоо — таслалаар тусгаарлагдсан олон origin дэмжинэ
+  // Жишээ: APP_URL=https://myapp.vercel.app,http://localhost:3000
+  const rawOrigins = configService.get<string>('app.url', '');
+  const allowedOrigins = rawOrigins
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: configService.get<string>('app.url'),
+    origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
