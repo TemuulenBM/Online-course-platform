@@ -14,8 +14,6 @@ services:
       ## Үндсэн тохиргоо
       - key: NODE_ENV
         value: production
-      - key: APP_PORT
-        value: "3001"
       - key: CHROMIUM_PATH
         value: /usr/bin/chromium-browser
 
