@@ -1,6 +1,6 @@
 import { Global, Module, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Redis from 'ioredis';
+import Redis, { RedisOptions } from 'ioredis';
 import { RedisService, REDIS_CLIENT } from './redis.service';
 
 /**
@@ -17,7 +17,7 @@ import { RedisService, REDIS_CLIENT } from './redis.service';
         // REDIS_URL байвал Node.js URL class-аар parse хийж host/port/password авна
         // ioredis нь rediss:// URL-г шууд string-ээр хүлээн авдаггүй тул parse хийх шаардлагатай
         const redisUrl = configService.get<string>('redis.url');
-        let redisOptions: ConstructorParameters<typeof Redis>[0];
+        let redisOptions: RedisOptions;
         if (redisUrl) {
           const parsed = new URL(redisUrl);
           redisOptions = {
