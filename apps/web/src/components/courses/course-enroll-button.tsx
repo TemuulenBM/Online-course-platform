@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Gift,
   ShoppingCart,
@@ -13,19 +14,21 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { useCheckEnrollment, useEnroll, useCourseProgress } from '@/hooks/api';
+import { useCheckEnrollment, useEnroll, useCourseProgress, useCourseLessons } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 
 interface CourseEnrollButtonProps {
   courseId: string;
+  slug: string;
   isFree: boolean;
 }
 
 /** Элсэлтийн state card — sidebar дотор 5 state харуулна */
-export function CourseEnrollButton({ courseId, isFree }: CourseEnrollButtonProps) {
+export function CourseEnrollButton({ courseId, slug, isFree }: CourseEnrollButtonProps) {
   const t = useTranslations('courses');
+  const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const { data: enrollmentCheck, isLoading: checkLoading } = useCheckEnrollment(
@@ -42,11 +45,25 @@ export function CourseEnrollButton({ courseId, isFree }: CourseEnrollButtonProps
   );
   const progressPercentage = progress?.courseProgressPercentage ?? 0;
 
+  /** Хичээлүүд — navigate хийхэд ашиглана */
+  const { data: lessons } = useCourseLessons(isEnrolled ? courseId : '');
+  const firstLessonId = lessons?.[0]?.id;
+
+  /** Хичээл рүү navigate */
+  const goToFirstLesson = () => {
+    if (firstLessonId) {
+      router.push(ROUTES.LESSON_VIEWER(slug, firstLessonId));
+    }
+  };
+
   /** Элсэх */
   const handleEnroll = () => {
     enrollMutation.mutate(courseId, {
       onSuccess: () => {
         toast.success('Амжилттай элсэлт хийгдлээ');
+        if (firstLessonId) {
+          router.push(ROUTES.LESSON_VIEWER(slug, firstLessonId));
+        }
       },
       onError: (error) => {
         toast.error(error instanceof Error ? error.message : 'Алдаа гарлаа');
@@ -100,7 +117,11 @@ export function CourseEnrollButton({ courseId, isFree }: CourseEnrollButtonProps
             </div>
           </div>
         </div>
-        <button className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+        <button
+          onClick={goToFirstLesson}
+          disabled={!firstLessonId}
+          className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 disabled:opacity-70"
+        >
           {t('continue')}
           <ChevronRight className="size-4" />
         </button>

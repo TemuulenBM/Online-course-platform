@@ -439,7 +439,8 @@
     "enrollToAccessDesc": "You must be enrolled in this course to access this lesson.",
     "enrollNowBtn": "Enroll Now",
     "quiz": "Quiz",
-    "lessonLabel": "lessons"
+    "lessonLabel": "lessons",
+    "noVideoContent": "Video content is not available yet"
   },
   "notifications": {
     "title": "Notifications",

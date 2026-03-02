@@ -18,7 +18,7 @@ import type { LessonContent } from '@/lib/api-services/content.service';
 import { getFileUrl } from '@/lib/utils';
 
 interface LessonVideoPlayerProps {
-  content: LessonContent;
+  content: LessonContent | undefined;
   isEnrolled?: boolean;
   onEnroll?: () => void;
   enrollPending?: boolean;
@@ -63,8 +63,8 @@ export function LessonVideoPlayer({
   const [showControls, setShowControls] = useState(true);
   const [isSeeking, setIsSeeking] = useState(false);
 
-  const videoUrl = getFileUrl(content.videoUrl);
-  const thumbnailUrl = getFileUrl(content.thumbnailUrl);
+  const videoUrl = getFileUrl(content?.videoUrl);
+  const thumbnailUrl = getFileUrl(content?.thumbnailUrl);
 
   /** Controls-ийг харуулж тодорхой хугацааны дараа нуух */
   const showControlsTemporarily = useCallback(() => {
@@ -187,6 +187,18 @@ export function LessonVideoPlayer({
   }, []);
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  /** Контент байхгүй үед placeholder */
+  if (!content) {
+    return (
+      <div className="relative aspect-video bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-primary/5 flex flex-col items-center justify-center gap-3">
+        <div className="size-16 rounded-full bg-slate-800 flex items-center justify-center">
+          <Play className="size-7 text-slate-600" />
+        </div>
+        <p className="text-slate-500 text-sm">{t('noVideoContent')}</p>
+      </div>
+    );
+  }
 
   return (
     <div
