@@ -1120,7 +1120,7 @@
     "proof": "Proof",
     "verify": "Verify",
     "adminShowingOf": "Showing {shown} of {total} orders",
-    "adminOrderDetail": "Order #{id}",
+    "adminOrderDetail": "Detail",
     "adminOrderSubtitle": "Review payment proof and verify the order.",
     "backToList": "Back to list",
     "orderMeta": "Order Details",

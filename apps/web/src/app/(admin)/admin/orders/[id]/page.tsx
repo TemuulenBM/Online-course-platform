@@ -10,6 +10,7 @@ import { useOrderDetail, useApproveOrder, useRejectOrder } from '@/hooks/api';
 import { OrderStatusBadge } from '@/components/payments/order-status-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
+import { getFileUrl } from '@/lib/utils';
 
 export default function AdminOrderDetailPage() {
   const t = useTranslations('payments');
@@ -174,11 +175,11 @@ export default function AdminOrderDetailPage() {
                   <img
                     alt="Payment Receipt"
                     className="w-full h-auto object-contain max-h-[600px]"
-                    src={order.proofImageUrl}
+                    src={getFileUrl(order.proofImageUrl)}
                   />
                   <div className="absolute top-4 right-4">
                     <button
-                      onClick={() => window.open(order.proofImageUrl!, '_blank')}
+                      onClick={() => window.open(getFileUrl(order.proofImageUrl) ?? '#', '_blank')}
                       className="bg-white/90 dark:bg-slate-900/90 p-2 rounded-full shadow-lg hover:scale-105 transition-transform"
                     >
                       <ZoomIn className="size-5" />

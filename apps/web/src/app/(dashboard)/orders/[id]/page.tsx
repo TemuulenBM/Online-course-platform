@@ -19,6 +19,7 @@ import { useOrderDetail, useUploadProof } from '@/hooks/api';
 import { OrderStatusBadge } from '@/components/payments/order-status-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
+import { getFileUrl } from '@/lib/utils';
 
 export default function OrderDetailPage() {
   const t = useTranslations('payments');
@@ -220,7 +221,7 @@ export default function OrderDetailPage() {
                 <div className="p-6">
                   <div className="rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
                     <img
-                      src={order.proofImageUrl}
+                      src={getFileUrl(order.proofImageUrl)}
                       alt="Payment proof"
                       className="w-full h-auto max-h-[400px] object-contain bg-slate-50 dark:bg-slate-800"
                     />

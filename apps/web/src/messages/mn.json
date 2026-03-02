@@ -1245,7 +1245,7 @@
     "proof": "Баримт",
     "verify": "Шалгах",
     "adminShowingOf": "Нийт {total} захиалгаас {shown} үзүүлж байна",
-    "adminOrderDetail": "Захиалга #{id}",
+    "adminOrderDetail": "Дэлгэрэнгүй",
     "adminOrderSubtitle": "Хэрэглэгчийн төлбөрийн баримт болон мэдээллийг шалгах.",
     "backToList": "Жагсаалт руу буцах",
     "orderMeta": "Үйлчлүүлэгчийн мэдээлэл",
