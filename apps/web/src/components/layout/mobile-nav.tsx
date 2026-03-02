@@ -18,9 +18,9 @@ export function MobileNav() {
 
   const navLinks = [
     { href: ROUTES.COURSES, label: t('navCourses') },
-    { href: '#mentors', label: t('navMentors') },
-    { href: '#pricing', label: t('navPricing') },
-    { href: '#community', label: t('navCommunity') },
+    { href: ROUTES.MENTORS, label: t('navMentors') },
+    { href: ROUTES.PRICING, label: t('navPricing') },
+    { href: ROUTES.COMMUNITY, label: t('navCommunity') },
   ];
 
   return (

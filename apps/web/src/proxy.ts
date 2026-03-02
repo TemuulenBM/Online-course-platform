@@ -2,7 +2,17 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /** Auth шаардлагагүй public path-ууд */
-const PUBLIC_PATHS = ['/', '/login', '/register', '/forgot-password', '/reset-password'];
+const PUBLIC_PATHS = [
+  '/',
+  '/login',
+  '/register',
+  '/forgot-password',
+  '/reset-password',
+  '/mentors',
+  '/pricing',
+  '/community',
+  '/verify',
+];
 
 /** Auth-тэй хэрэглэгч орох боломжгүй path-ууд (login хуудас гэх мэт) */
 const AUTH_ONLY_PATHS = ['/login', '/register', '/forgot-password'];
