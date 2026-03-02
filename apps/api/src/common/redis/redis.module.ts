@@ -14,14 +14,18 @@ import { RedisService, REDIS_CLIENT } from './redis.service';
       provide: REDIS_CLIENT,
       useFactory: (configService: ConfigService) => {
         const logger = new Logger('RedisModule');
-        const client = new Redis({
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
-          password: configService.get<string>('redis.password'),
-          // Upstash болон TLS шаарддаг Redis provider-уудад зориулсан тохиргоо
-          tls: configService.get('redis.tls'),
-          lazyConnect: true,
-        });
+        // REDIS_URL байвал URL-ээр, үгүй бол host/port/password-аар холбогдоно
+        const redisUrl = configService.get<string>('redis.url');
+        const client = redisUrl
+          ? new Redis(redisUrl, { lazyConnect: true })
+          : new Redis({
+              host: configService.get<string>('redis.host'),
+              port: configService.get<number>('redis.port'),
+              password: configService.get<string>('redis.password'),
+              // Upstash болон TLS шаарддаг Redis provider-уудад зориулсан тохиргоо
+              tls: configService.get('redis.tls'),
+              lazyConnect: true,
+            });
 
         client.on('connect', () => {
           logger.log('Redis-тэй амжилттай холбогдлоо');
