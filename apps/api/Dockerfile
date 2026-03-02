@@ -53,6 +53,14 @@ RUN pnpm --filter @ocp/api build
 RUN apk add --no-cache python3 make g++
 RUN pnpm --filter @ocp/api --prod deploy /app/prod-deps
 
+# prod-deps-д Prisma client generate хийх
+# pnpm --prod deploy нь шинэ node_modules үүсгэдэг тул .prisma/client байхгүй болдог
+# builder-ийн devDeps-ийн prisma binary ашиглан prod-deps-д generate хийнэ
+RUN cp -r apps/api/prisma /app/prod-deps/prisma && \
+    export PATH="/app/node_modules/.bin:/app/apps/api/node_modules/.bin:$PATH" && \
+    cd /app/prod-deps && \
+    DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" prisma generate --schema=./prisma/schema.prisma
+
 # --- Production stage: хамгийн жижиг image ---
 FROM node:20-alpine AS production
 
