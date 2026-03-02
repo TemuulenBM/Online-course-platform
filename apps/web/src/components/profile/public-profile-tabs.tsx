@@ -14,22 +14,22 @@ export function PublicProfileTabs({ userId }: PublicProfileTabsProps) {
   return (
     <div className="flex flex-col gap-6">
       <Tabs defaultValue="courses">
-        <TabsList className="bg-transparent border-b border-[#9c7aff]/10 w-full justify-start rounded-none h-auto p-0">
+        <TabsList className="bg-transparent border-b border-primary/10 w-full justify-start rounded-none h-auto p-0">
           <TabsTrigger
             value="courses"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-[#9c7aff] data-[state=active]:text-[#9c7aff] data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
           >
             Хичээлүүд
           </TabsTrigger>
           <TabsTrigger
             value="notes"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-[#9c7aff] data-[state=active]:text-[#9c7aff] data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
           >
             Тэмдэглэл
           </TabsTrigger>
           <TabsTrigger
             value="achievements"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-[#9c7aff] data-[state=active]:text-[#9c7aff] data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:shadow-none px-6 py-4 text-sm font-medium"
           >
             Ололт амжилт
           </TabsTrigger>
@@ -55,8 +55,8 @@ export function PublicProfileTabs({ userId }: PublicProfileTabsProps) {
         <TabsContent value="achievements" className="mt-6">
           {stats && stats.totalCertificates > 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-16 h-16 bg-[#9c7aff]/10 rounded-2xl flex items-center justify-center mb-4">
-                <Award className="w-8 h-8 text-[#9c7aff]" />
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                <Award className="w-8 h-8 text-primary" />
               </div>
               <p className="text-lg font-bold text-slate-900">
                 {stats.totalCertificates} сертификат

@@ -191,7 +191,9 @@ function Sidebar({
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <nav className="flex h-full w-full flex-col" aria-label="Үндсэн цэс">
+            {children}
+          </nav>
         </SheetContent>
       </Sheet>
     );
@@ -233,13 +235,14 @@ function Sidebar({
         )}
         {...props}
       >
-        <div
+        <nav
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
+          aria-label="Үндсэн цэс"
           className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
-        </div>
+        </nav>
       </div>
     </div>
   );
@@ -295,6 +298,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
 function SidebarInset({ className, ...props }: React.ComponentProps<'main'>) {
   return (
     <main
+      id="main-content"
       data-slot="sidebar-inset"
       className={cn(
         'bg-background relative flex w-full flex-1 flex-col',

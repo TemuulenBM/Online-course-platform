@@ -6,19 +6,24 @@ export function HeroBanner() {
   const t = useTranslations('dashboard');
 
   return (
-    <div className="bg-[#2E3035] rounded-[2rem] p-8 md:p-10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-lg h-auto md:h-[260px]">
-      <div className="z-10 text-white max-w-[320px]">
+    <div className="bg-slate-800 rounded-2xl p-8 md:p-10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-lg h-auto md:h-[260px]">
+      <div className="z-10 text-white max-w-xs sm:max-w-sm">
         <p className="text-xs font-bold tracking-widest text-white/70 uppercase mb-3">
           {t('heroBannerLabel')}
         </p>
-        <h2 className="text-3xl font-bold leading-[1.15] mb-6">{t('heroBannerTitle')}</h2>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-[1.15] mb-6">
+          {t('heroBannerTitle')}
+        </h2>
         <button className="bg-white text-gray-900 font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-gray-100 transition-colors">
           {t('seeAll')}
         </button>
       </div>
 
       {/* Чимэглэлийн элементүүд */}
-      <div className="absolute right-0 bottom-0 top-0 w-[60%] pointer-events-none hidden md:block">
+      <div
+        className="absolute right-0 bottom-0 top-0 w-[60%] pointer-events-none hidden md:block"
+        aria-hidden="true"
+      >
         <div
           className="absolute left-[10%] bottom-[20%] text-[#95C27F] opacity-80"
           style={{ transform: 'rotate(-15deg)', fontSize: '100px' }}

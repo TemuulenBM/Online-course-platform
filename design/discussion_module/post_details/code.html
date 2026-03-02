@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify - Discussion Post</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Lexend', sans-serif; }
+        .prose p { margin-bottom: 1rem; line-height: 1.6; }
+        .prose code { background: rgba(156, 122, 255, 0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-40 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_319)">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+</g>
+<defs>
+<clippath id="clip0_6_319"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-tight">Learnify</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<button class="hidden md:flex items-center justify-center rounded-xl h-10 px-4 bg-primary text-white font-bold text-sm">Шинэ сэдэв</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBs17o6yA3QvUcVVItr4XAEOnlZNnS-P0ahrgKRBlv7XM343hSE5QjSVz75hummbuHN5ZFpYyWmiesSMf7FAkZYtDjaYneYupD3sUghrPgONty-ECLkUwqr83K23sFSgU01ktl1jaC7ESPCzVhbHCGHimLO7P_FxicOyfFZaKF15iAuw8apd8UFbXeo-EHUylIORsg0u6S7r6ZycPuoW3nuZJ4zqkql7FPCpPm7hqNTHDZlhFnlhhKULzFJ3qOG_2ccveLCdPYe2Zs");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[1000px] flex-1 px-4 md:px-10">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-6 text-sm">
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">Форум</a>
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">React Хичээл</a>
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium truncate">Custom hooks хэрхэн ашиглах вэ?</span>
+</nav>
+<!-- Main Post Wrapper -->
+<div class="flex gap-6 items-start">
+<!-- Voting Sidebar (Desktop) -->
+<div class="hidden md:flex flex-col items-center gap-2 sticky top-24">
+<button class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-primary hover:border-primary transition-all">
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+<span class="text-lg font-bold text-slate-900 dark:text-slate-100">42</span>
+<button class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-primary hover:border-primary transition-all">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<button class="mt-4 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+<div class="flex-1 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<!-- Post Header -->
+<div class="p-6 md:p-8 border-b border-slate-100 dark:border-slate-800">
+<div class="flex flex-col gap-4">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase">React</span>
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase">Frontend</span>
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase">Hooks</span>
+</div>
+<h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 leading-tight">
+                                        React дээр custom hooks хэрхэн зөв implement хийх вэ?
+                                    </h1>
+<div class="flex items-center justify-between flex-wrap gap-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Author avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiimy8O0mf57862SvzePYqtyW7fJ9UshsTaw1QwwFGa-l_QwhWgVAnqTjquNPyMyIgaM25MVaBB4tfhSqPoZtC50mJBoDZLy9LH9bdrjevu5a3GBuq1avbPafw7ehCelwkkDs38bkm4P9lCii2LoPZnSjPhsq3Cbg_oBk16eeE54nDOYQHnYFGSWiS8ltCnpecnuVur3cItp0Qz0DjBSTwXEWULC9Py1rTGcCAVYbeDlcYS8U3aQT6rKwxe2EAkMJVoM9BXpX3FbY");'></div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Ariunbold Bat-Erdene</p>
+<p class="text-xs text-slate-500">2 цагийн өмнө • 156 үзсэн</p>
+</div>
+</div>
+<!-- Admin Moderation Tools -->
+<div class="flex items-center gap-2 p-1 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<button class="p-2 text-slate-500 hover:text-primary hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all flex items-center gap-1 text-xs font-medium">
+<span class="material-symbols-outlined text-sm">keep</span> Хадах
+                                            </button>
+<button class="p-2 text-slate-500 hover:text-primary hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all flex items-center gap-1 text-xs font-medium">
+<span class="material-symbols-outlined text-sm">lock</span> Түгжих
+                                            </button>
+<button class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all flex items-center gap-1 text-xs font-medium">
+<span class="material-symbols-outlined text-sm">flag</span> Мэдээлэх
+                                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Post Content -->
+<div class="p-6 md:p-8 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
+<p>Сайн байцгаана уу? React төсөл дээр ажиллаж байхдаа давтагдаж байгаа логикуудыг <code>useCustomHook</code> болгож салгах гэж оролдож байна.</p>
+<p>Миний асуулт бол, custom hook дотор өөр hooks (жишээ нь useEffect, useState) ашиглах нь зөв үү? Мөн clean-up функцүүдийг хэрхэн зохион байгуулбал хамгийн тохиромжтой вэ?</p>
+<p>Жишээ код:</p>
+<div class="bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-sm overflow-x-auto my-4">
+<pre><code>function useWindowSize() {
+  const [size, setSize] = useState(window.innerWidth);
+
+  useEffect(() =&gt; {
+    const handleResize = () =&gt; setSize(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () =&gt; window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return size;
+}</code></pre>
+</div>
+<p>Энэ арга зөв үү эсвэл илүү оновчтой шийдэл бий юу?</p>
+</div>
+<!-- Post Footer Actions -->
+<div class="px-6 md:px-8 py-4 bg-slate-50 dark:bg-slate-800/30 flex items-center justify-between border-t border-slate-100 dark:border-slate-800">
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-slate-500 hover:text-primary font-medium text-sm">
+<span class="material-symbols-outlined text-lg">chat_bubble</span> 12 Хариулт
+                                    </button>
+<button class="flex items-center gap-2 text-slate-500 hover:text-primary font-medium text-sm">
+<span class="material-symbols-outlined text-lg">share</span> Хуваалцах
+                                    </button>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Replies Section -->
+<div class="mt-12">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Хариултууд</h3>
+<div class="flex gap-2">
+<button class="text-xs font-bold text-primary px-3 py-1.5 bg-primary/10 rounded-lg">Шинэ нь эхэндээ</button>
+<button class="text-xs font-bold text-slate-500 px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Хуучин нь эхэндээ</button>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Accepted Answer -->
+<div class="bg-emerald-50/50 dark:bg-emerald-900/10 border-2 border-emerald-500/30 rounded-xl p-6 relative">
+<div class="absolute -top-3 left-6 bg-emerald-500 text-white text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1 shadow-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[12px] font-bold">check_circle</span> Зөв хариулт
+                                </div>
+<div class="flex gap-4">
+<div class="size-10 shrink-0 rounded-full bg-cover bg-center" data-alt="Respondent avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuBYLXUghdWDrtAeKMJO_FZZDb0w20YSQT49gT9e8TeBm5nL-GqKVMJpaPKJkerDQ0vKyg8bIJdZAyeCI7jjyDXiKqksNBDgkPCUUmjxItTUmHrmiaX-gWbA60mlPAY03XYMyIA1JGePnWrbDcH_nH2z8YaFZBocDMO9szclUeeUZCq8WT7DrTPkYSvh4euF6zK9CT5wyBjX3N1peaCZ-EdR18clKC0ZP7rsd4g8Z2pNv3L2dV8l1G-kt5eLYk6iu3irK_bQVgWjE");'></div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="font-bold text-slate-900 dark:text-slate-100">Ganzorig M.</span>
+<span class="text-xs text-slate-500">1 цагийн өмнө</span>
+</div>
+<div class="flex gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<div class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+<p>Тийм ээ, таны жишээ код маш зөв байна. Custom hook-ийн гол зорилго нь React-ийн build-in hook-уудыг ашиглан логикийг encapsulate хийхэд оршдог. Таны <code>useEffect</code> доторх clean-up (window.removeEventListener) нь memory leak-ээс сэргийлэх маш чухал хэсэг юм.</p>
+</div>
+<div class="mt-4 flex items-center gap-4">
+<button class="flex items-center gap-1 text-emerald-600 font-bold text-xs">
+<span class="material-symbols-outlined text-sm">thumb_up</span> 24
+                                            </button>
+<button class="text-slate-500 text-xs font-medium">Хариу бичих</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Regular Reply -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+<div class="flex gap-4">
+<div class="size-10 shrink-0 rounded-full bg-cover bg-center" data-alt="Respondent avatar 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuACxLIQL1U7oa6Y0uG28swXrWW3G3qoJmeO11yoSu1AAJhfLR-0YLnG78duTFxYpg5vg-K4-ZhVz9tcFIoFNRophSett_mvtx9FLjiiQ-Xd0RIAv-tKvkuoVZP70TiJCg_aczAlEiZAfmd4RAZL3uYX5W97m9R5KxMx5fGtl31vIgAFEi_bKUZdHYBDXE1QTrOa-LEJSvAkWxZeDeeUO6nYihlIpiyFk4YAYcQarkUaR8ToZbCbm51YCR4VZJisTFxHUYTH_0iDA4Q");'></div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="font-bold text-slate-900 dark:text-slate-100">Solongo P.</span>
+<span class="text-xs text-slate-500">45 минутын өмнө</span>
+</div>
+</div>
+<div class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+<p>Нэмж хэлэхэд, хэрвээ та hook-ээ олон газар ашиглахаар бол debounce хийж өгвөл гүйцэтгэлд (performance) сайнаар нөлөөлнө шүү.</p>
+</div>
+<div class="mt-4 flex items-center gap-4">
+<button class="flex items-center gap-1 text-slate-500 hover:text-primary font-bold text-xs">
+<span class="material-symbols-outlined text-sm">thumb_up</span> 5
+                                            </button>
+<button class="text-slate-500 text-xs font-medium">Хариу бичих</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Locked State Message (Conditional Example) -->
+<!-- 
+                    <div class="mt-8 p-4 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center gap-3 text-slate-500 border border-dashed border-slate-300 dark:border-slate-700">
+                        <span class="material-symbols-outlined">lock</span>
+                        <p class="font-medium">Энэхүү хэлэлцүүлэг хаагдсан тул хариулт бичих боломжгүй.</p>
+                    </div>
+                    -->
+<!-- Reply Input Area -->
+<div class="mt-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-lg shadow-primary/5">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
+<span class="font-bold text-slate-900 dark:text-slate-100">Хариулах</span>
+<div class="flex gap-2">
+<button class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined text-lg">format_bold</span></button>
+<button class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined text-lg">format_italic</span></button>
+<button class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined text-lg">code</span></button>
+<button class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined text-lg">image</span></button>
+</div>
+</div>
+<div class="p-6">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-slate-700 dark:text-slate-300 resize-none placeholder-slate-400" placeholder="Таны хариулт энд..." rows="6"></textarea>
+</div>
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex justify-end">
+<button class="px-8 py-2.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all shadow-md shadow-primary/20">
+                                Хариулах
+                            </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-20 border-t border-slate-100 dark:border-slate-800 py-10 px-40">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-6 text-primary/50">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+</svg>
+</div>
+<span class="font-bold text-slate-500">Learnify Community</span>
+</div>
+<p class="text-slate-400 text-sm">© 2024 Learnify. Бүх эрх хуулиар хамгаалагдсан.</p>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

@@ -21,7 +21,7 @@ export function WelcomeHeader() {
       <div className="flex items-center gap-3">
         {/* Mobile sidebar trigger */}
         <SidebarTrigger className="md:hidden" />
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           {t('welcomeBack', { name: displayName })} <span className="text-2xl">👋🏻</span>
         </h1>
       </div>

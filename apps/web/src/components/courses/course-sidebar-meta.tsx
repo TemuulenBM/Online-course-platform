@@ -77,7 +77,12 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
         </div>
 
         {/* Худалдаж авах / Элсэх товчнууд */}
-        <CourseEnrollButton courseId={course.id} isFree={isFree} />
+        <CourseEnrollButton
+          courseId={course.id}
+          slug={course.slug}
+          isFree={isFree}
+          courseTitle={course.title}
+        />
 
         {/* Буцаан олголтын мэдэгдэл */}
         <p className="text-[11px] text-center text-slate-400 mt-4">{t('refundPolicy')}</p>

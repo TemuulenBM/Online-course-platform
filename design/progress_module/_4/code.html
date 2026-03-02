@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Видео Хичээл</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-background-dark px-6 py-3 shrink-0">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm">workspace_premium</span>
+<span class="text-xs font-semibold text-primary">Премиум эрх</span>
+</div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 rounded-full bg-primary/20 border-2 border-primary/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Хэрэглэгчийн зураг" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsBHsy-f3DoQVbCWiAwpODS2th3xc_rMjEwXQ1iydtcnGxPZeKhc2shXT7hdpVV1c6SKgn4ng25PiiK6J2qA37Fpr6Gz5gSUCxif2YNfqyjZAKDhOFo9ZoFS6Djmhe-Up8zDq8IvibtLNN3E5ht9PH4FckPxYf79reCDTYmm2OGK4Yb-KxCv8VOimv0ZnpNJMmg0BtEmxgQYz_5wJ_qWc_Mi_U_BETcmZaXxJJleasDwqXOEd-ww32voH3mGZmp4kTNMAWisg0EbM"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-80 border-r border-primary/10 bg-white dark:bg-background-dark hidden lg:flex flex-col">
+<div class="p-6 border-b border-primary/10">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">play_lesson</span>
+</div>
+<div>
+<h3 class="font-bold text-sm">UI/UX Дизайн үндэс</h3>
+<p class="text-xs text-slate-500">24 хичээл • 12 цаг</p>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[95%]"></div>
+</div>
+<p class="text-[10px] mt-2 font-medium text-slate-500 uppercase tracking-wider">Явц: 95%</p>
+</div>
+<nav class="flex-1 overflow-y-auto p-4 space-y-2">
+<div class="group flex items-center gap-3 p-3 rounded-xl bg-primary/10 text-primary cursor-pointer border border-primary/20">
+<span class="material-symbols-outlined">check_circle</span>
+<div class="flex-1">
+<p class="text-sm font-semibold">1. Оршил хэсэг</p>
+<p class="text-[11px] opacity-70">12:45</p>
+</div>
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</div>
+<div class="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-slate-400">check_circle</span>
+<div class="flex-1">
+<p class="text-sm font-medium">2. Дизайн сэтгэлгээ</p>
+<p class="text-[11px] text-slate-400">24:10</p>
+</div>
+</div>
+<div class="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors border-l-4 border-primary">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">3. Өнгөний онол</p>
+<p class="text-[11px] text-primary font-medium">Одоо үзэж байна</p>
+</div>
+</div>
+<div class="group flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer opacity-60">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+<div class="flex-1">
+<p class="text-sm font-medium">4. Типографи</p>
+<p class="text-[11px] text-slate-400">18:30</p>
+</div>
+</div>
+</nav>
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50">
+<button class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-slate-200 dark:bg-slate-800 rounded-xl text-sm font-bold hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">description</span>
+                        Материал татах
+                    </button>
+</div>
+</aside>
+<!-- Main Player Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-4 md:p-8">
+<div class="max-w-5xl mx-auto space-y-6">
+<!-- Video Player Container -->
+<div class="relative group aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl shadow-primary/10">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Видео хичээлийн ковер зураг" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDY-XqGglOrZWKL78JxJN5hsSVBLRyEOPEPdkCSLpZPhvSJegIqV_qVTgitkNMf6dbL0T9GHU-u-jt4KCpTt2fcGrV_vVWniTuEf9qx7JTUxMCYL1QEz7k3IFczEisY-TnbuzfIoYK1p3g7VJ3F7NC_aPvxSDOFAcBHb35lAR5FM6gGSx0aqiwNE_Dhi8GBQtJeN5PugE-FAUgdlpbeXV_lewY8kF9G6Jo3rNDsUttekqlCVOBhWjEogrZM66KzLuij8fIJi6J6KjY')"></div>
+<!-- Overlay Controls -->
+<div class="absolute inset-0 flex flex-col justify-between p-6 bg-gradient-to-t from-black/80 via-transparent to-black/40">
+<div class="flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity">
+<h4 class="text-white font-medium">3. Өнгөний онол - Learnify Сургалт</h4>
+<button class="text-white p-2 hover:bg-white/20 rounded-lg">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center justify-center">
+<button class="size-20 bg-primary/90 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-5xl">play_arrow</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Progress Bar -->
+<div class="relative w-full h-1.5 bg-white/30 rounded-full cursor-pointer overflow-hidden group/bar">
+<div class="absolute h-full bg-primary w-[95%]"></div>
+<div class="absolute h-4 w-4 bg-primary rounded-full top-1/2 -translate-y-1/2 left-[95%] -translate-x-1/2 shadow-lg hidden group-hover/bar:block"></div>
+</div>
+<div class="flex items-center justify-between text-white text-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer">volume_up</span>
+<span>42:15 / 45:00</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer">closed_caption</span>
+<span class="material-symbols-outlined cursor-pointer">fullscreen</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Lesson Info & Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<nav class="flex gap-2 text-xs font-medium text-primary mb-2 uppercase tracking-widest">
+<span>Модуль 1</span>
+<span>•</span>
+<span>Хичээл 3</span>
+</nav>
+<h1 class="text-2xl font-bold">Өнгөний онол ба UI дизайн дахь хэрэглээ</h1>
+</div>
+<div class="flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-sm">verified</span>
+                                    Дууссан (2023.10.24)
+                                </div>
+</div>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Энэхүү хичээлээр бид өнгөний онолын үндсэн ойлголтууд, өнгөний зохицол болон UI дизайн дээр өнгийг хэрхэн зөв сонгож ашиглах талаар үзэх болно.
+                            </p>
+<div class="flex flex-wrap gap-4 pt-4 border-t border-primary/10">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-primary">person</span>
+<span>Багш: Г.Тэмүүлэн</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-primary">forum</span>
+<span>12 сэтгэгдэл</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 flex flex-col justify-center gap-4">
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="text-sm font-medium">Хичээлийн явц</span>
+<span class="text-2xl font-bold text-primary">95%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[95%]"></div>
+</div>
+<p class="text-xs text-slate-500 text-center font-medium">Бараг дууслаа! Та хичээлээ дуусгах боломжтой.</p>
+</div>
+<!-- Complete Lesson Button -->
+<button class="w-full py-4 px-6 bg-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-primary/25 hover:bg-primary/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">task_alt</span>
+                                Хичээл дуусгах
+                            </button>
+</div>
+</div>
+<!-- Bottom Navigation Mobile -->
+<div class="lg:hidden p-4 bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 space-y-4">
+<h4 class="font-bold text-sm">Дараагийн хичээлүүд</h4>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+<span class="text-sm font-medium">4. Типографи ба фонт сонголт</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

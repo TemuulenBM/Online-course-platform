@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 /** Input стиль */
 const inputStyle =
-  'w-full px-4 py-3 bg-[#f6f5f8] border-none rounded-xl focus:ring-2 focus:ring-[#9c7aff] text-slate-900 font-medium outline-none transition-all';
+  'w-full px-4 py-3 bg-muted border-none rounded-xl focus:ring-2 focus:ring-primary text-slate-900 font-medium outline-none transition-all';
 const inputError =
   'w-full px-4 py-3 bg-red-50 border border-red-300 rounded-xl focus:ring-2 focus:ring-red-400 text-slate-900 font-medium outline-none transition-all';
 
@@ -31,7 +31,7 @@ export function BasicInfoCard({
   }
 
   return (
-    <div className="bg-white rounded-3xl p-8 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
       <h3 className="text-lg font-bold text-slate-900 mb-6">Үндсэн мэдээлэл</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -97,7 +97,7 @@ export function BasicInfoCard({
 /** Loading skeleton */
 function BasicInfoSkeleton() {
   return (
-    <div className="bg-white rounded-3xl p-8 border border-[#9c7aff]/5 shadow-sm">
+    <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
       <Skeleton className="h-6 w-40 mb-6" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">

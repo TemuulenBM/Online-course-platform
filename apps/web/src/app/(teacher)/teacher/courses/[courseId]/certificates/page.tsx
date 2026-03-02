@@ -51,7 +51,7 @@ export default function CourseCertificatesPage() {
       <div className="p-4 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
         {/* Title */}
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">{t('courseCertificates')}</h2>
+          <h1 className="text-3xl font-bold tracking-tight">{t('courseCertificates')}</h1>
           <p className="text-slate-500 text-sm">{t('courseCertificatesDesc')}</p>
         </div>
 

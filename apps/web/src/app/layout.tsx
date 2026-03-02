@@ -13,8 +13,11 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: 'Online Course Platform',
-  description: 'Learn from the best instructors',
+  title: {
+    default: 'Online Course Platform',
+    template: '%s | Learnify',
+  },
+  description: 'Монголын хамгийн том онлайн сургалтын платформ',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,6 +27,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale}>
       <body className={lexend.className}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-medium"
+        >
+          Үндсэн агуулга руу алгасах
+        </a>
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <AuthProvider>{children}</AuthProvider>

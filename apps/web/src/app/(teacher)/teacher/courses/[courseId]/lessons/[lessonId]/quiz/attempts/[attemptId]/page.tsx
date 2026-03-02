@@ -39,7 +39,7 @@ export default function ManualGradingPage({
 
       {/* Title */}
       <div>
-        <h1 className="text-3xl md:text-4xl font-black text-foreground">{t('manualGrading')}</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t('manualGrading')}</h1>
       </div>
 
       <ManualGradingPanel attemptId={attemptId} quizId={quiz?.id || ''} />

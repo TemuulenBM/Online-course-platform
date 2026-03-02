@@ -13,6 +13,7 @@ import {
 } from '@/hooks/api';
 import { CategoryTable } from '@/components/admin/category-table';
 import { CategoryForm, type CategoryFormValues } from '@/components/admin/category-form';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 export default function AdminCategoriesPage() {
   const t = useTranslations('admin');
@@ -22,6 +23,13 @@ export default function AdminCategoriesPage() {
   const deleteMutation = useDeleteCategory();
 
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  /** Dialog хаах + state цэвэрлэх */
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setEditingCategory(null);
+  };
 
   /** Ангилал нэмэх / засах */
   const handleSubmit = (values: CategoryFormValues) => {
@@ -31,7 +39,7 @@ export default function AdminCategoriesPage() {
         {
           onSuccess: () => {
             toast.success(t('categoryUpdated'));
-            setEditingCategory(null);
+            closeDialog();
           },
           onError: () => toast.error(t('categoryUpdateError')),
         },
@@ -40,6 +48,7 @@ export default function AdminCategoriesPage() {
       createMutation.mutate(values, {
         onSuccess: () => {
           toast.success(t('categoryCreated'));
+          closeDialog();
         },
         onError: () => toast.error(t('categoryCreateError')),
       });
@@ -55,10 +64,10 @@ export default function AdminCategoriesPage() {
     });
   };
 
-  /** Засах горим */
+  /** Засах горим — modal нээх */
   const handleEdit = (category: Category) => {
     setEditingCategory(category);
-    document.getElementById('add-category')?.scrollIntoView({ behavior: 'smooth' });
+    setIsDialogOpen(true);
   };
 
   return (
@@ -67,30 +76,40 @@ export default function AdminCategoriesPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-black tracking-tight">{t('categoryManagement')}</h2>
+            <h1 className="text-3xl font-bold tracking-tight">{t('categoryManagement')}</h1>
             <p className="text-slate-500 mt-1">{t('categoryManagementDesc')}</p>
           </div>
-          <a
-            href="#add-category"
+          <button
+            onClick={() => {
+              setEditingCategory(null);
+              setIsDialogOpen(true);
+            }}
             className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20 w-fit"
           >
             <Plus className="size-5" />
             <span>{t('addCategory')}</span>
-          </a>
+          </button>
         </div>
 
         {/* Хүснэгт */}
         <CategoryTable categories={categories} onEdit={handleEdit} onDelete={handleDelete} />
-
-        {/* Нэмэх / Засах форм */}
-        <CategoryForm
-          categories={categories}
-          editingCategory={editingCategory}
-          onSubmit={handleSubmit}
-          onCancel={() => setEditingCategory(null)}
-          isLoading={createMutation.isPending || updateMutation.isPending}
-        />
       </div>
+
+      {/* Нэмэх / Засах modal */}
+      <Dialog open={isDialogOpen} onOpenChange={(open) => !open && closeDialog()}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogTitle className="sr-only">
+            {editingCategory ? t('editCategoryTitle') : t('addCategoryTitle')}
+          </DialogTitle>
+          <CategoryForm
+            categories={categories}
+            editingCategory={editingCategory}
+            onSubmit={handleSubmit}
+            onCancel={closeDialog}
+            isLoading={createMutation.isPending || updateMutation.isPending}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -38,25 +38,24 @@ describe('CheckEnrollmentUseCase', () => {
     enrollmentCacheService = module.get(EnrollmentCacheService);
   });
 
-  it('элссэн — enrolled: true, status буцаах', async () => {
+  it('элссэн — isEnrolled: true, enrollment объект буцаах', async () => {
     enrollmentCacheService.checkEnrollment.mockResolvedValue(mockEnrollment);
 
     const result = await useCase.execute('user-id-1', 'course-id-1');
 
-    expect(result.enrolled).toBe(true);
-    expect(result.status).toBe('active');
-    expect(result.enrollmentId).toBe('enrollment-id-1');
-    expect(result.enrolledAt).toEqual(now);
+    expect(result.isEnrolled).toBe(true);
+    expect(result.enrollment).toBeDefined();
+    expect(result.enrollment?.id).toBe('enrollment-id-1');
+    expect(result.enrollment?.status).toBe('active');
+    expect(result.enrollment?.enrolledAt).toBe(now.toISOString());
   });
 
-  it('элсээгүй — enrolled: false', async () => {
+  it('элсээгүй — isEnrolled: false, enrollment undefined', async () => {
     enrollmentCacheService.checkEnrollment.mockResolvedValue(null);
 
     const result = await useCase.execute('user-id-1', 'course-id-1');
 
-    expect(result.enrolled).toBe(false);
-    expect(result.status).toBeNull();
-    expect(result.enrollmentId).toBeNull();
-    expect(result.enrolledAt).toBeNull();
+    expect(result.isEnrolled).toBe(false);
+    expect(result.enrollment).toBeUndefined();
   });
 });

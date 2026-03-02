@@ -29,23 +29,16 @@ export default function MyProgressPage() {
   const completedCount = enrollments.filter((e) => e.status === 'completed').length;
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Header */}
-      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden" />
-          <h2 className="text-xl font-bold">{t('myProgress')}</h2>
-        </div>
-      </header>
-
-      <div className="p-4 md:p-8 max-w-7xl mx-auto w-full space-y-8">
-        {/* Welcome section */}
+    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+      <div className="max-w-7xl mx-auto w-full space-y-8">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              {t('myProgress')}
-            </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{t('myProgressDesc')}</p>
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="md:hidden" />
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">{t('myProgress')}</h1>
+              <p className="text-sm text-muted-foreground mt-1">{t('myProgressDesc')}</p>
+            </div>
           </div>
           <Link
             href={ROUTES.MY_COURSES}
@@ -62,7 +55,7 @@ export default function MyProgressPage() {
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 p-5 flex items-center gap-4"
+                className="bg-card rounded-2xl border border-border p-5 flex items-center gap-4"
               >
                 <Skeleton className="size-12 rounded-xl" />
                 <div className="space-y-2">
@@ -93,7 +86,7 @@ export default function MyProgressPage() {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between">
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-muted-foreground">
                   {t('showingRange', {
                     from: (page - 1) * PAGE_LIMIT + 1,
                     to: Math.min(page * PAGE_LIMIT, total),
@@ -105,7 +98,7 @@ export default function MyProgressPage() {
                     type="button"
                     disabled={page <= 1}
                     onClick={() => setPage((p) => p - 1)}
-                    className="size-9 rounded-lg border border-primary/10 flex items-center justify-center hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="size-9 rounded-lg border border-border flex items-center justify-center hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="size-4" />
                   </button>
@@ -117,7 +110,7 @@ export default function MyProgressPage() {
                       className={`size-9 rounded-lg text-sm font-medium transition-colors ${
                         p === page
                           ? 'bg-primary text-white'
-                          : 'border border-primary/10 hover:bg-primary/5 text-slate-600 dark:text-slate-400'
+                          : 'border border-border hover:bg-primary/5 text-slate-600 dark:text-slate-400'
                       }`}
                     >
                       {p}
@@ -127,7 +120,7 @@ export default function MyProgressPage() {
                     type="button"
                     disabled={page >= totalPages}
                     onClick={() => setPage((p) => p + 1)}
-                    className="size-9 rounded-lg border border-primary/10 flex items-center justify-center hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="size-9 rounded-lg border border-border flex items-center justify-center hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="size-4" />
                   </button>

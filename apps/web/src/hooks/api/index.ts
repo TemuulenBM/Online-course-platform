@@ -118,7 +118,22 @@ export {
 } from './use-comments';
 
 // Admin hooks
-export { useAdminUsers, useUpdateUserRole, useDeleteUser, useEntityAuditLogs } from './use-admin';
+export {
+  useAdminUsers,
+  useUpdateUserRole,
+  useDeleteUser,
+  useEntityAuditLogs,
+  useSystemHealth,
+  useModerationStats,
+  useFlaggedContent,
+  useApproveFlaggedContent,
+  useRejectFlaggedContent,
+  useAuditLogs,
+  useAuditLogDetail,
+  useSettings,
+  useUpsertSetting,
+  useDeleteSetting,
+} from './use-admin';
 
 // Category admin hooks
 export { useCreateCategory, useUpdateCategory, useDeleteCategory } from './use-categories-admin';
@@ -156,3 +171,34 @@ export {
   useMySubscription,
   useCancelSubscription,
 } from './use-payments';
+
+// Live Session hooks
+export {
+  useUpcomingSessions,
+  useCourseSessions,
+  useLessonSession,
+  useLiveSessionDetail,
+  useSessionAttendees,
+  useCreateLiveSession,
+  useUpdateLiveSession,
+  useCancelLiveSession,
+  useStartLiveSession,
+  useEndLiveSession,
+  useJoinLiveSession,
+  useLeaveLiveSession,
+} from './use-live-sessions';
+
+// Analytics hooks
+export {
+  useAnalyticsOverview,
+  useRevenueReport,
+  useEnrollmentTrend,
+  usePopularCourses,
+  useCourseStats,
+  useCourseAnalyticsStudents,
+  useCourseLessonStats,
+  useAnalyticsEvents,
+  usePlatformStats,
+  usePendingItems,
+  useRecentActivity,
+} from './use-analytics';

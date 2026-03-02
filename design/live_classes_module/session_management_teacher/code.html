@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Хичээлийн Удирдлага</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-6 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_319)">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+</g>
+<defs><clippath id="clip0_6_319"><rect fill="white" height="48" width="48"></rect></clippath></defs>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-[-0.015em]">Learnify</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="hidden md:flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 bg-primary/10 text-primary hover:bg-primary/20 px-3 transition-colors">
+<span class="material-symbols-outlined">calendar_today</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 bg-primary/10 text-primary hover:bg-primary/20 px-3 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+</div>
+<div class="flex items-center gap-3 border-l border-primary/10 pl-4">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none">Б. Бат-Эрдэнэ</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Багш</p>
+</div>
+<div class="bg-primary/20 bg-cover bg-center rounded-full size-10 border-2 border-primary" data-alt="Teacher profile picture placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA-wHFMGWclIdGXjdzKfIAgS-xQ-6rGer6Kt33LPM4u5zEmAK4CvYhL7huPBw5fqZGBGAoubOMMYSyu9KRTlpa94VHufZa3Lctnb25o-3Yk6r4eRyOItoR3S47IB3w_jXtm4Ormm-CrNmt99mg-O9SgM9Y8Gua9UL7hwwVWl--ZBSxuU7VrGvW3C4I5Z9ts3aQ3yb6oMCf2lutiG8d7bzbdm-0gf5VC83qYJldeYo4v7r79CsozTEjM0MBGSE75lMYr24pgrFpM6FI");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-[1200px] mx-auto w-full px-4 md:px-10 py-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="text-slate-900 dark:text-slate-100 text-3xl font-black leading-tight tracking-tight">Хичээлийн удирдлага</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Өнөөдрийн товлогдсон болон явагдаж буй онлайн хичээлүүд</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-primary/30 transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                    Шинэ хичээл үүсгэх
+                </button>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Video/Agora Integration Area -->
+<div class="lg:col-span-2 flex flex-col gap-4">
+<div class="relative overflow-hidden rounded-xl bg-slate-900 aspect-video shadow-2xl border-4 border-white dark:border-slate-800">
+<div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-slate-900">
+<div class="text-center">
+<span class="material-symbols-outlined text-6xl text-white/50 mb-4">videocam_off</span>
+<p class="text-white font-medium">Agora Live Stream Placeholder</p>
+<p class="text-white/60 text-sm">Хичээл эхлүүлэх товчийг дарж холбогдоно уу</p>
+</div>
+</div>
+<!-- Overlay UI Controls -->
+<div class="absolute top-4 right-4 flex gap-2">
+<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1">
+<span class="size-1.5 bg-white rounded-full animate-pulse"></span> LIVE
+                            </span>
+<span class="bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded">01:24:32</span>
+</div>
+<div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between">
+<div class="flex gap-4">
+<button class="size-10 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/40"><span class="material-symbols-outlined">mic</span></button>
+<button class="size-10 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/40"><span class="material-symbols-outlined">videocam</span></button>
+<button class="size-10 rounded-full bg-white/20 backdrop-blur-sm text-white flex items-center justify-center hover:bg-white/40"><span class="material-symbols-outlined">screen_share</span></button>
+</div>
+<button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-bold text-sm transition-colors">
+                                Дуусгах
+                            </button>
+</div>
+</div>
+<!-- Active Session Details -->
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div class="flex-1 min-w-[200px]">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded uppercase">Явагдаж байна</span>
+<span class="text-slate-400 text-xs font-medium">ID: 88291</span>
+</div>
+<h3 class="text-xl font-bold mb-1">Мэдээллийн технологийн үндэс - Lab 04</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 14:00 - 15:30 (90 мин)
+                                </p>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-center">
+<p class="text-2xl font-black text-primary">42</p>
+<p class="text-[10px] uppercase font-bold text-slate-400">Оюутнууд</p>
+</div>
+<div class="h-10 w-px bg-primary/10"></div>
+<div class="text-center">
+<p class="text-2xl font-black text-primary">85%</p>
+<p class="text-[10px] uppercase font-bold text-slate-400">Ирц</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar: Upcoming Sessions -->
+<div class="flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-800/50 rounded-xl border border-primary/10 overflow-hidden flex flex-col h-full">
+<div class="p-4 border-b border-primary/10 bg-primary/5">
+<h4 class="font-bold flex items-center gap-2 text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                                Хичээлийн жагсаалт
+                            </h4>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-primary/10 px-2 overflow-x-auto scrollbar-hide">
+<button class="px-4 py-3 text-sm font-bold border-b-2 border-primary text-primary whitespace-nowrap">Явагдаж буй</button>
+<button class="px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 whitespace-nowrap">Товлогдсон</button>
+<button class="px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 whitespace-nowrap">Дууссан</button>
+</div>
+<!-- Session List Items -->
+<div class="flex-1 overflow-y-auto max-h-[600px] p-2 space-y-2">
+<!-- Card 1 (Active) -->
+<div class="p-4 rounded-lg bg-primary/5 border border-primary/20 transition-all hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-green-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">LIVE</span>
+<span class="text-[10px] text-slate-400 font-bold">#88291</span>
+</div>
+<h5 class="text-sm font-bold mb-1 leading-tight">Мэдээллийн технологийн үндэс</h5>
+<p class="text-xs text-slate-500 mb-3">14:00 - 15:30 • 42 суралцагч</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-white text-xs font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors">Нээх</button>
+<button class="px-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg"><span class="material-symbols-outlined text-lg">settings</span></button>
+</div>
+</div>
+<!-- Card 2 (Scheduled) -->
+<div class="p-4 rounded-lg bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 transition-all hover:border-primary/30">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Товлогдсон</span>
+<span class="text-[10px] text-slate-400 font-bold">#88302</span>
+</div>
+<h5 class="text-sm font-bold mb-1 leading-tight">Алгоритм ба Өгөгдлийн бүтэц</h5>
+<p class="text-xs text-slate-500 mb-3">Маргааш 09:00 - 10:30</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary/10 text-primary text-xs font-bold py-2 rounded-lg hover:bg-primary/20 transition-colors">Эхлүүлэх</button>
+<button class="px-2 py-2 border border-slate-200 dark:border-slate-600 text-slate-400 rounded-lg hover:text-red-500 hover:border-red-200 transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+<button class="px-2 py-2 border border-slate-200 dark:border-slate-600 text-slate-400 rounded-lg hover:text-primary hover:border-primary/20 transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+</div>
+</div>
+<!-- Card 3 (Scheduled) -->
+<div class="p-4 rounded-lg bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 transition-all hover:border-primary/30">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Товлогдсон</span>
+<span class="text-[10px] text-slate-400 font-bold">#88305</span>
+</div>
+<h5 class="text-sm font-bold mb-1 leading-tight">Програмчлалын С хэлний ахисан шат</h5>
+<p class="text-xs text-slate-500 mb-3">Бямба гараг 11:00 - 12:30</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary/10 text-primary text-xs font-bold py-2 rounded-lg hover:bg-primary/20 transition-colors">Эхлүүлэх</button>
+<button class="px-2 py-2 border border-slate-200 dark:border-slate-600 text-slate-400 rounded-lg hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-primary p-4 rounded-xl text-white">
+<p class="text-[10px] uppercase font-bold opacity-80">Нийт цаг</p>
+<p class="text-2xl font-black">24.5</p>
+</div>
+<div class="bg-slate-800 p-4 rounded-xl text-white">
+<p class="text-[10px] uppercase font-bold opacity-80">Энэ долоо хоног</p>
+<p class="text-2xl font-black">12</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

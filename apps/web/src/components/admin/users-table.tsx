@@ -1,7 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, ChevronLeft, ChevronRight, Clock, ShieldCheck, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import {
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Eye,
+  ShieldCheck,
+  Trash2,
+} from 'lucide-react';
 import { ChangeRoleDialog } from './change-role-dialog';
 import { DeleteUserDialog } from './delete-user-dialog';
 import type { AdminUser, AdminUserListMeta } from '@/lib/api-services/admin.service';
@@ -30,11 +39,11 @@ function getUserName(user: AdminUser): string {
 function getInitialStyle(role: string): string {
   switch (role) {
     case 'ADMIN':
-      return 'bg-[#9c7aff]/10 text-[#9c7aff]';
+      return 'bg-primary/10 text-primary';
     case 'TEACHER':
-      return 'bg-green-100 text-green-600';
+      return 'bg-green-100 text-green-700';
     default:
-      return 'bg-blue-100 text-blue-600';
+      return 'bg-blue-100 text-blue-700';
   }
 }
 
@@ -42,11 +51,11 @@ function getInitialStyle(role: string): string {
 function getRoleBadgeStyle(role: string): string {
   switch (role) {
     case 'ADMIN':
-      return 'bg-[#9c7aff]/20 text-[#9c7aff]';
+      return 'bg-primary/15 text-primary';
     case 'TEACHER':
-      return 'bg-green-100 text-green-700';
+      return 'bg-green-100 text-green-800';
     default:
-      return 'bg-blue-100 text-blue-700';
+      return 'bg-blue-100 text-blue-800';
   }
 }
 
@@ -62,11 +71,12 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
 
   return (
     <>
-      <div className="bg-white rounded-xl border border-[#9c7aff]/10 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+      <div className="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+        {/* Desktop table — md-ээс дээш */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-[#9c7aff]/10">
+              <tr className="bg-slate-50 border-b border-primary/10">
                 <th className="px-6 py-4 text-sm font-semibold text-slate-600">Профайл нэр</th>
                 <th className="px-6 py-4 text-sm font-semibold text-slate-600">Имэйл</th>
                 <th className="px-6 py-4 text-sm font-semibold text-slate-600">Эрх</th>
@@ -79,7 +89,7 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#9c7aff]/5">
+            <tbody className="divide-y divide-primary/5">
               {users.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-10 text-center text-slate-400">
@@ -88,8 +98,7 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                 </tr>
               ) : (
                 users.map((user) => (
-                  <tr key={user.id} className="hover:bg-[#9c7aff]/5 transition-colors">
-                    {/* Профайл нэр */}
+                  <tr key={user.id} className="hover:bg-primary/5 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div
@@ -102,11 +111,7 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                         </span>
                       </div>
                     </td>
-
-                    {/* Имэйл */}
                     <td className="px-6 py-4 text-sm text-slate-600">{user.email}</td>
-
-                    {/* Эрх */}
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleBadgeStyle(user.role)}`}
@@ -114,8 +119,6 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                         {user.role}
                       </span>
                     </td>
-
-                    {/* Баталгаажсан */}
                     <td className="px-6 py-4">
                       {user.emailVerified ? (
                         <div className="flex items-center gap-1.5 text-green-500">
@@ -129,25 +132,28 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                         </div>
                       )}
                     </td>
-
-                    {/* Бүртгүүлсэн огноо */}
                     <td className="px-6 py-4 text-sm text-slate-500">
                       {new Date(user.createdAt).toLocaleDateString('sv-SE')}
                     </td>
-
-                    {/* Үйлдэл */}
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
+                        <Link
+                          href={`/admin/users/${user.id}?email=${encodeURIComponent(user.email)}&role=${user.role}&name=${encodeURIComponent(getUserName(user))}&createdAt=${encodeURIComponent(user.createdAt)}&emailVerified=${user.emailVerified}`}
+                          className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
+                          title="Дэлгэрэнгүй"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </Link>
                         <button
                           onClick={() => setRoleDialogUser(user)}
-                          className="p-2 text-slate-400 hover:text-[#9c7aff] hover:bg-[#9c7aff]/10 rounded-lg transition-colors"
+                          className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
                           title="Эрх өөрчлөх"
                         >
                           <ShieldCheck className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => setDeleteDialogUser(user)}
-                          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center justify-center"
                           title="Устгах"
                         >
                           <Trash2 className="w-5 h-5" />
@@ -161,9 +167,76 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
           </table>
         </div>
 
+        {/* Mobile card view — md-ээс доош */}
+        <div className="md:hidden divide-y divide-primary/5">
+          {users.length === 0 ? (
+            <div className="px-6 py-10 text-center text-slate-400">Хэрэглэгч олдсонгүй</div>
+          ) : (
+            users.map((user) => (
+              <div key={user.id} className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${getInitialStyle(user.role)}`}
+                    >
+                      {getInitial(user)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">{getUserName(user)}</p>
+                      <p className="text-xs text-slate-500">{user.email}</p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleBadgeStyle(user.role)}`}
+                  >
+                    {user.role}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <div className="flex items-center gap-1.5">
+                    {user.emailVerified ? (
+                      <>
+                        <CheckCircle className="w-3.5 h-3.5 text-green-500" /> Баталгаажсан
+                      </>
+                    ) : (
+                      <>
+                        <Clock className="w-3.5 h-3.5" /> Баталгаажаагүй
+                      </>
+                    )}
+                  </div>
+                  <span>{new Date(user.createdAt).toLocaleDateString('sv-SE')}</span>
+                </div>
+                <div className="flex justify-end gap-2 pt-1">
+                  <Link
+                    href={`/admin/users/${user.id}?email=${encodeURIComponent(user.email)}&role=${user.role}&name=${encodeURIComponent(getUserName(user))}&createdAt=${encodeURIComponent(user.createdAt)}&emailVerified=${user.emailVerified}`}
+                    className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
+                    title="Дэлгэрэнгүй"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </Link>
+                  <button
+                    onClick={() => setRoleDialogUser(user)}
+                    className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex items-center justify-center"
+                    title="Эрх өөрчлөх"
+                  >
+                    <ShieldCheck className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setDeleteDialogUser(user)}
+                    className="p-2.5 min-w-[44px] min-h-[44px] text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center justify-center"
+                    title="Устгах"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
         {/* Pagination */}
         {total > 0 && (
-          <div className="px-6 py-4 bg-slate-50 flex items-center justify-between border-t border-[#9c7aff]/10">
+          <div className="px-6 py-4 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-primary/10">
             <div className="text-sm text-slate-500">
               Нийт {total} хэрэглэгчээс {from}-{to} харуулж байна
             </div>
@@ -171,7 +244,7 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
               <button
                 onClick={() => page > 1 && onPageChange(page - 1)}
                 disabled={page <= 1}
-                className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#9c7aff]/10 hover:bg-[#9c7aff]/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -181,8 +254,8 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
                   onClick={() => onPageChange(p)}
                   className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                     p === page
-                      ? 'bg-[#9c7aff] text-white'
-                      : 'border border-[#9c7aff]/10 hover:bg-[#9c7aff]/10'
+                      ? 'bg-primary text-white'
+                      : 'border border-primary/10 hover:bg-primary/10'
                   }`}
                 >
                   {p}
@@ -191,7 +264,7 @@ export function UsersTable({ users, meta, page, onPageChange }: UsersTableProps)
               <button
                 onClick={() => page < totalPages && onPageChange(page + 1)}
                 disabled={page >= totalPages}
-                className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#9c7aff]/10 hover:bg-[#9c7aff]/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

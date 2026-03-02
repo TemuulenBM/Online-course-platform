@@ -6,3 +6,5 @@ export * from './lesson';
 export * from './common';
 export * from './certificate';
 export * from './payment';
+export * from './analytics';
+export * from './live-session';

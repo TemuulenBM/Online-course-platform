@@ -9,6 +9,7 @@ import { OrderStatusBadge } from '@/components/payments/order-status-badge';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
+import { getFileUrl } from '@/lib/utils';
 import type { OrderStatus } from '@ocp/shared-types';
 
 const PAGE_LIMIT = 10;
@@ -59,7 +60,7 @@ export default function AdminOrdersPage() {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
             {t('adminPendingOrders')}
           </h1>
           <p className="text-slate-500 mt-1">
@@ -175,7 +176,7 @@ export default function AdminOrdersPage() {
                           {order.proofImageUrl ? (
                             <div className="relative group cursor-pointer size-12 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
                               <img
-                                src={order.proofImageUrl}
+                                src={getFileUrl(order.proofImageUrl)}
                                 alt="Proof"
                                 className="w-full h-full object-cover"
                               />

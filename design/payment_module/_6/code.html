@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Захиалгын дэлгэрэнгүй</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-none">Learnify</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Оюутны самбар</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">book_2</span>
+<span class="text-sm font-medium">Миний сургалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white shadow-sm shadow-primary/20" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-medium">Захиалгууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-sm font-medium">Миний санхүү</span>
+</a>
+<div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-sm font-medium">Тусламж</span>
+</a>
+</div>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary/5 rounded-xl p-4 flex items-center gap-3 border border-primary/10">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate">Б. Болд</p>
+<p class="text-xs text-slate-500 truncate">bold@student.mn</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-8 py-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<button class="lg:hidden text-slate-600">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-xl font-bold tracking-tight">Захиалгын дэлгэрэнгүй</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+</div>
+</header>
+<div class="max-w-4xl mx-auto p-8">
+<!-- Order Header Info -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-primary font-medium mb-1">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<a class="text-sm hover:underline" href="#">Бүх захиалгууд руу буцах</a>
+</div>
+<h1 class="text-3xl font-bold">Захиалгын мэдээлэл</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-2">Та төлбөрийн баримтаа хавсаргаж захиалгаа баталгаажуулна уу.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Order Summary Card -->
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                                Үндсэн мэдээлэл
+                            </h3>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-slate-50 dark:border-slate-800">
+<span class="text-slate-500 dark:text-slate-400">Захиалгын дугаар</span>
+<span class="font-semibold">#ORD-88291</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-50 dark:border-slate-800">
+<span class="text-slate-500 dark:text-slate-400">Сургалтын нэр</span>
+<span class="font-semibold">График Дизайн: Анхан шат</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-50 dark:border-slate-800">
+<span class="text-slate-500 dark:text-slate-400">Нийт дүн</span>
+<span class="font-bold text-lg text-primary">150,000 MNT</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-slate-500 dark:text-slate-400">Төлөв</span>
+<span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs font-bold uppercase tracking-wider">
+                                    Хүлээгдэж буй
+                                </span>
+</div>
+</div>
+</div>
+<!-- Upload Section -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">upload_file</span>
+                                Төлбөрийн баримт илгээх
+                            </h3>
+</div>
+<div class="p-8">
+<div class="border-2 border-dashed border-primary/20 rounded-xl p-10 flex flex-col items-center justify-center bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer">
+<div class="w-16 h-16 bg-white dark:bg-slate-800 rounded-full shadow-md flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
+</div>
+<h4 class="font-bold text-lg mb-1">Баримтын зураг эсвэл PDF оруулах</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-6 text-center">Гүйлгээний утга дээр захиалгын дугаараа <br/> бичсэн байхыг анхаарна уу.</p>
+<button class="px-6 py-2 bg-primary text-white font-bold rounded-lg shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all">
+                                    Файл сонгох
+                                </button>
+<p class="mt-4 text-xs text-slate-400 uppercase tracking-widest font-medium">PNG, JPG эсвэл PDF (Max 5MB)</p>
+</div>
+<div class="mt-8 flex justify-end">
+<button class="flex items-center gap-2 px-8 py-3 bg-primary text-white font-bold rounded-xl shadow-xl shadow-primary/25 hover:translate-y-[-2px] transition-all">
+<span>Баримт илгээх</span>
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Help/Instructions -->
+<div class="space-y-6">
+<div class="bg-gradient-to-br from-primary to-purple-600 rounded-xl p-6 text-white shadow-xl shadow-primary/20">
+<h4 class="font-bold text-lg mb-3">Заавар</h4>
+<ul class="space-y-3 text-sm opacity-90">
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-sm shrink-0">check_circle</span>
+<span>Дансаар шилжүүлэхдээ гүйлгээний утга дээр <b>#ORD-88291</b> гэж бичнэ.</span>
+</li>
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-sm shrink-0">check_circle</span>
+<span>Хаан банк: 5000123456 (Learnify ХХК)</span>
+</li>
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-sm shrink-0">check_circle</span>
+<span>Төлбөр баталгаажсаны дараа таны сургалт автоматаар идэвхжинэ.</span>
+</li>
+</ul>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+<h4 class="font-bold mb-4">Хэрэгтэй холбоосууд</h4>
+<div class="space-y-2">
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="text-sm font-medium">Нэхэмжлэх татах</span>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">download</span>
+</a>
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="text-sm font-medium">Тусламжийн төв</span>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

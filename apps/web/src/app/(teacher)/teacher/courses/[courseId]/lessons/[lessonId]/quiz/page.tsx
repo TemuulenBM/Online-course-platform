@@ -37,7 +37,7 @@ export default function QuizManagementPage({
 
       {/* Title */}
       <div>
-        <h1 className="text-3xl md:text-4xl font-black text-foreground">{t('quizSettings')}</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t('quizSettings')}</h1>
         <p className="text-muted-foreground mt-2">{t('quizSettingsDesc')}</p>
       </div>
 

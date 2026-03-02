@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify Admin - Manual Grading</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Learnify Admin</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Ангиуд</a>
+<a class="text-primary text-sm font-semibold border-b-2 border-primary" href="#">Даалгавар</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Сурагчид</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Тайлан</a>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto w-full p-4 md:p-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-6 text-sm">
+<a class="text-slate-500 hover:text-primary" href="#">Даалгаврууд</a>
+<span class="material-symbols-outlined text-xs text-slate-400">chevron_right</span>
+<a class="text-slate-500 hover:text-primary" href="#">Эссэ: Орчин үеийн түүх</a>
+<span class="material-symbols-outlined text-xs text-slate-400">chevron_right</span>
+<span class="text-slate-900 dark:text-white font-medium">Сурагч: Бат-Эрдэнэ</span>
+</nav>
+<!-- Student Info Header -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-6 mb-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-center gap-5">
+<div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-2 border-primary/20">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="Student profile portrait illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjyUtH5Y5qtEkhHIHSaqaVTEpgdLLyJMGNLGgiipR8TD8NQPqfoMF-QowTttyJuODmsaYEZMjE1iKdgKTUgJjRHLTMdsg8_DlTFiGS2xyv2OGzmKqgt8kTNKoeXR5yEIEQ7qkOsY0iDMD57c-Lt3TVUXnQZegf-wiXbOdgCGmitkjVYo2CuXw9GJYZLSZbPG49epLTT2AX5lGJS7aqEmZM5P2dLKPEOMeWE1b6R1rKJPX7wUbSHIdGkJPB_zRiyhjd86LPa2rvF_U"/>
+</div>
+<div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Бат-Эрдэнэ Ариунболд</h1>
+<div class="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+<span class="text-slate-500 text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">id_card</span> ID: #882910
+                                </span>
+<span class="text-slate-500 text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> Илгээсэн: 10-р сар 24, 14:15
+                                </span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                    Шалгагдаж байна
+                                </span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-lg">info</span> Даалгаврын мэдээлэл
+                        </button>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Essay Content -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 px-6 py-4">
+<h3 class="font-bold text-slate-900 dark:text-white">Хариултын эх бичвэр</h3>
+</div>
+<div class="p-8">
+<article class="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-4">
+<p class="font-medium text-lg text-slate-900 dark:text-white italic">Сэдэв: Аж үйлдвэрийн хувьсгалын нийгэмд үзүүлсэн нөлөө</p>
+<p>
+                                    Аж үйлдвэрийн хувьсгал нь хүн төрөлхтний түүхэн дэх хамгийн том өөрчлөлтүүдийн нэг байсан юм. 18-р зууны сүүлээс эхэлсэн энэхүү үйл явц нь зөвхөн техник технологийн дэвшил бус, нийгмийн бүтэц, амьдралын хэв маягийг бүхэлд нь өөрчилсөн билээ.
+                                </p>
+<p>
+                                    Юуны өмнө, хөдөө аж ахуйн салбараас аж үйлдвэр рүү шилжсэнээр хотжилт асар хурдацтай явагдсан. Хүмүүс илүү сайн цалинтай ажил хайж хотуудыг зорих болсон нь өнөөгийн орчин үеийн мегаполис хотуудын үндэс суурийг тавьсан юм. Гэсэн хэдий ч энэ нь эхэн үедээ ажилчдын амьдрах орчин муудах, хөдөлмөрийн хөлсний мөлжлөг зэрэг сөрөг талуудыг ч дагуулж байв.
+                                </p>
+<p>
+                                    Технологийн талаас нь авч үзвэл, уурын хөдөлгүүр зохион бүтээгдсэн нь тээвэр, үйлдвэрлэлийн салбарт хувьсгал хийсэн. Галт тэрэг болон усан онгоц бий болсноор дэлхийн худалдаа илүү хүртээмжтэй болж, улс орнуудын эдийн засгийн холбоо гүнзгийрсэн юм. 
+                                </p>
+<p>
+                                    Эцэст нь дүгнэхэд, Аж үйлдвэрийн хувьсгал нь нийгмийн анги давхаргын ялгарлыг шинээр тодорхойлсон. Хөрөнгөтөн анги болон пролетари ангийн хоорондын харилцаа нь 19-20-р зууны улс төрийн гол хөдөлгөгч хүч болсон билээ. Энэхүү түүхэн үйл явцын нөлөө өнөөдөр ч бидний өдөр тутмын амьдралд технологийн тасралтгүй хөгжил хэлбэрээр үргэлжилсээр байна.
+                                </p>
+<div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-sm text-slate-400 italic">
+                                    Үгсийн тоо: 342 үг | Сүүлд шинэчилсэн: 2023-10-24 14:10
+                                </div>
+</article>
+</div>
+</div>
+<!-- Rubric Display -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex justify-between items-center">
+<h3 class="font-bold text-slate-900 dark:text-white">Үнэлгээний шалгуур (Rubric)</h3>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Лавлах материал</span>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between mb-2">
+<span class="font-semibold text-sm">Агуулгын гүн</span>
+<span class="text-primary text-xs font-bold">8 оноо</span>
+</div>
+<p class="text-xs text-slate-500">Сэдвийн хүрээнд түүхэн баримтуудыг зөв ашиглаж, гүнзгий шинжилгээ хийсэн байдал.</p>
+</div>
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between mb-2">
+<span class="font-semibold text-sm">Бүтэц, логик</span>
+<span class="text-primary text-xs font-bold">5 оноо</span>
+</div>
+<p class="text-xs text-slate-500">Эхлэл, гол, төгсгөл хэсгийн уялдаа холбоо, санаагаа тодорхой илэрхийлсэн байдал.</p>
+</div>
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between mb-2">
+<span class="font-semibold text-sm">Найруулга зүй</span>
+<span class="text-primary text-xs font-bold">4 оноо</span>
+</div>
+<p class="text-xs text-slate-500">Зөв бичих дүрэм болон үгсийн баялаг, мэргэжлийн хэллэг ашиглалт.</p>
+</div>
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between mb-2">
+<span class="font-semibold text-sm">Эх сурвалж</span>
+<span class="text-primary text-xs font-bold">3 оноо</span>
+</div>
+<p class="text-xs text-slate-500">Ашигласан эх сурвалжийг дурдаж, зөв эшлэл авсан эсэх.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Grading Sidebar -->
+<div class="flex flex-col gap-6 lg:sticky lg:top-24 h-fit">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white mb-6">Дүгнэлт хийх</h3>
+<div class="space-y-6">
+<!-- Points Input -->
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="points">Оноо (Max 20)</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-2xl font-bold text-primary focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all" id="points" max="20" min="0" placeholder="0" type="number"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">/ 20</div>
+</div>
+</div>
+<!-- Quick Score Select -->
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors">15 (75%)</button>
+<button class="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors">18 (90%)</button>
+<button class="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors">20 (100%)</button>
+</div>
+<!-- Feedback Textarea -->
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="feedback">Багшийн зөвлөгөө</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none" id="feedback" placeholder="Сурагчид өгөх санал хүсэлт, сайжруулах зөвлөмж бичнэ үү..." rows="6"></textarea>
+</div>
+<!-- Action Button -->
+<div class="pt-4 space-y-3">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                                    Дүгнэх
+                                </button>
+<button class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium py-3 rounded-xl transition-all">
+                                    Ноорог болгож хадгалах
+                                </button>
+</div>
+</div>
+</div>
+<!-- Grading History Small Component -->
+<div class="bg-primary/5 rounded-xl border border-primary/20 p-5">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">history</span>
+<span class="font-bold text-sm text-slate-900 dark:text-white">Ангийн дундаж</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-primary">16.4</span>
+<span class="text-slate-500 text-sm mb-1">/ 20</span>
+</div>
+<div class="mt-4 w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[82%]"></div>
+</div>
+<p class="text-[10px] text-slate-500 mt-2 uppercase font-semibold">45 сурагч дүгнэгдсэн</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

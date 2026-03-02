@@ -29,14 +29,14 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-6 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-2xl p-6 shadow-sm border border-border flex flex-col sm:flex-row gap-6 hover:shadow-md transition-shadow">
       <div className="flex-1 space-y-4">
         <div>
           <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">
             {t('issuedOn', { date: formattedDate })}
           </p>
           <h3 className="text-lg font-bold leading-snug mb-1">{certificate.courseTitle}</h3>
-          <p className="text-slate-500 text-sm font-mono">{certificate.certificateNumber}</p>
+          <p className="text-muted-foreground text-sm font-mono">{certificate.certificateNumber}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button asChild size="sm" className="gap-2">

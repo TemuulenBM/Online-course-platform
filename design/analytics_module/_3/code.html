@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            background-color: rgba(156, 122, 255, 0.15);
+            color: #9c7aff;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-white">school</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Learnify Admin</h2>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-medium text-sm">Хяналтын самбар</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-active text-primary" href="#">
+<span class="material-symbols-outlined fill-1">bar_chart</span>
+<span class="font-medium text-sm">Топ сургалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">person_book</span>
+<span class="font-medium text-sm">Багш нар</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">group</span>
+<span class="font-medium text-sm">Суралцагчид</span>
+</a>
+<div class="pt-4 border-t border-primary/5 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">settings</span>
+<span class="font-medium text-sm">Тохиргоо</span>
+</a>
+</div>
+</nav>
+<div class="p-4 bg-primary/5 m-4 rounded-xl">
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm">star</span>
+</div>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Lavender Pro</span>
+</div>
+<p class="text-[11px] text-slate-500 leading-relaxed">Та бүх боломжийг ашиглаж байна.</p>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-primary/10 flex items-center justify-between px-8">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-background-dark border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Сургалт, багш хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-primary/10 rounded-lg transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-primary/10 mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="text-sm font-semibold">Админ Хэрэглэгч</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">Системийн админ</p>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-primary/20 group-hover:border-primary transition-all" data-alt="User avatar placeholder with soft purple gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa-t28xS_Qwf76JG2GNSCCWFsuQWl0skW0Uwp5LhQDF2YcPas8KJuQdIj8bi6M4aOzJr6trFQRgGMLkko8V8lbQm_wlmlTmjvy7RDSc9EcGYry3UfxxDtZyteT0j38-hZ95zDs-U45dlZf9AGgAMrN7RVYUl6uin2a1625ADEEMN7-CEIlAJ-I-RBQFVj2XmnNDeYp0-Cg67mRalvhm82zU4P1JhPDrwhxOo6q5j00tzimQPWORjei5Mt3nRsif5YCLYyfYIUmP_o"/>
+</div>
+</div>
+</header>
+<!-- Page Body -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- Page Title -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="space-y-1">
+<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Топ 10 сургалт</h1>
+<p class="text-slate-500 text-sm">Хамгийн их хандалттай болон өндөр орлоготой сургалтуудын нарийвчилсан статистик.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex flex-col min-w-40">
+<label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">Шүүлтүүр (Хязгаар)</label>
+<div class="relative">
+<select class="appearance-none w-full bg-white dark:bg-slate-900 border border-primary/20 rounded-xl px-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer transition-all">
+<option selected="" value="10">Топ 10</option>
+<option value="20">Топ 20</option>
+<option value="50">Топ 50</option>
+<option value="100">Бүгд</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">unfold_more</span>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2 h-fit self-end">
+<span class="material-symbols-outlined text-sm">download</span>
+                            Татаж авах
+                        </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 border-b border-primary/10">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Сургалтын гарчиг</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Бүртгүүлсэн тоо</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Дуусгасан тоо</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Орлого (MNT)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">design_services</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">UI/UX Дизайн анхан шат</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">1,250</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">890</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">25,000,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-500">code</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Python хөгжүүлэгч</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">1,100</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">720</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">33,000,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-500">campaign</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Дижитал Маркетинг</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">980</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">650</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">19,600,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-500">language</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Англи хэл - Intermediate</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">850</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">540</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">17,000,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-pink-500">palette</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">График Дизайн</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">720</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">480</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">14,400,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-indigo-500">analytics</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Өгөгдлийн шинжилгээ</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">680</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">390</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">27,200,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-red-500">translate</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Хятад хэл анхан шат</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">600</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">410</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">12,000,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-500">business_center</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Бизнес удирдлага</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">550</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">320</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">11,000,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-cyan-500">web</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Front-end хөгжүүлэлт</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">510</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">280</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">15,300,000₮</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-violet-500">brush</span>
+</div>
+<span class="text-sm font-semibold group-hover:text-primary transition-colors">Иллэстрейтор дээр ажиллах</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">480</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 font-medium">310</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white text-right">9,600,000₮</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination-like Footer -->
+<div class="p-4 border-t border-primary/10 flex items-center justify-between">
+<p class="text-xs text-slate-500 font-medium">Нийт 48 сургалтаас 1-10-г харуулж байна</p>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-primary/10 hover:bg-primary/5 transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg border border-primary/10 hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-primary/5 border border-primary/20 p-6 rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">trending_up</span>
+</div>
+<div>
+<p class="text-[10px] font-bold text-primary uppercase tracking-widest">Өсөлт</p>
+<h3 class="text-xl font-bold">+12.5%</h3>
+<p class="text-[10px] text-slate-500">Өмнөх сартай харьцуулахад</p>
+</div>
+</div>
+<div class="bg-emerald-500/5 border border-emerald-500/20 p-6 rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">payments</span>
+</div>
+<div>
+<p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Нийт Орлого</p>
+<h3 class="text-xl font-bold">185.1M ₮</h3>
+<p class="text-[10px] text-slate-500">Сүүлийн 30 хоногт</p>
+</div>
+</div>
+<div class="bg-indigo-500/5 border border-indigo-500/20 p-6 rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white">group_add</span>
+</div>
+<div>
+<p class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Шинэ хэрэглэгч</p>
+<h3 class="text-xl font-bold">2,481</h3>
+<p class="text-[10px] text-slate-500">Идэвхтэй суралцаж буй</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -15,7 +15,7 @@ interface StatItem {
 
 const stats: StatItem[] = [
   { value: 500, suffix: '+', labelKey: 'statCourses', icon: BookOpen, color: '#8A93E5' },
-  { value: 10000, suffix: '+', labelKey: 'statStudents', icon: Users, color: '#FF6B6B' },
+  { value: 10000, suffix: '+', labelKey: 'statStudents', icon: Users, color: '#ef4444' },
   { value: 200, suffix: '+', labelKey: 'statInstructors', icon: GraduationCap, color: '#FFD166' },
 ];
 

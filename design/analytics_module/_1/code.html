@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify Admin - Элсэлтийн хандлага</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full overflow-x-hidden">
+<!-- Sidebar -->
+<aside class="flex w-64 flex-col border-r border-primary/10 bg-white dark:bg-slate-900">
+<div class="flex h-full min-h-[700px] flex-col justify-between p-4">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3 px-2">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Learnify</h1>
+<p class="text-slate-500 text-xs font-normal">Боловсролын удирдлага</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Хянах самбар</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<p class="text-sm font-medium">Курсууд</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/30" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<p class="text-sm font-medium">Элсэлт</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Оюутнууд</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-sm font-medium">Тайлан</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors mt-10" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Тохиргоо</p>
+</a>
+</nav>
+</div>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4 px-2">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">A</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold">Админ</p>
+<p class="text-xs text-slate-500">admin@learnify.mn</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Top Navbar -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-slate-900 px-8 py-4 sticky top-0 z-10">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">Элсэлтийн хандлага</h2>
+<div class="flex items-center gap-4">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full h-10 pl-10 pr-4 rounded-xl border-none bg-primary/5 focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Хайх..." type="text"/>
+</div>
+<button class="flex size-10 items-center justify-center rounded-xl bg-primary/5 text-slate-600 dark:text-slate-400 hover:bg-primary/10">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<div class="p-8 flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
+<!-- Summary Totals -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 text-sm font-medium">Нийт элсэлт</p>
+<span class="material-symbols-outlined text-primary">person_add</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">1,284</p>
+<div class="flex items-center gap-1 mt-2 text-green-500">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<p class="text-xs font-bold">+12% өнгөрсөн сараас</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 text-sm font-medium">Амжилттай дууссан</p>
+<span class="material-symbols-outlined text-green-500">task_alt</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">942</p>
+<div class="flex items-center gap-1 mt-2 text-green-500">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<p class="text-xs font-bold">+8% өнгөрсөн сараас</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 text-sm font-medium">Цуцлагдсан</p>
+<span class="material-symbols-outlined text-red-400">cancel</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">56</p>
+<div class="flex items-center gap-1 mt-2 text-red-400">
+<span class="material-symbols-outlined text-sm">trending_down</span>
+<p class="text-xs font-bold">-2% өнгөрсөн сараас</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 text-sm font-medium">Дундаж явц</p>
+<span class="material-symbols-outlined text-blue-400">analytics</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">74%</p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-4">
+<div class="bg-primary h-full rounded-full w-[74%]"></div>
+</div>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex flex-wrap items-center justify-between gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold transition-all">Өнөөдөр</button>
+<button class="px-4 py-2 rounded-lg bg-primary/5 text-slate-600 dark:text-slate-400 text-sm font-medium hover:bg-primary/10 transition-all">Долоо хоног</button>
+<button class="px-4 py-2 rounded-lg bg-primary/5 text-slate-600 dark:text-slate-400 text-sm font-medium hover:bg-primary/10 transition-all">Сар</button>
+<button class="px-4 py-2 rounded-lg bg-primary/5 text-slate-600 dark:text-slate-400 text-sm font-medium hover:bg-primary/10 transition-all">Жил</button>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center gap-2 bg-primary/5 rounded-lg px-3 py-2 border border-primary/10">
+<span class="material-symbols-outlined text-slate-500 text-lg">calendar_today</span>
+<span class="text-sm font-medium">2023.10.01 - 2023.10.31</span>
+</div>
+<button class="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg text-sm font-bold">
+<span class="material-symbols-outlined text-lg">file_download</span>
+                        Татах
+                    </button>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-primary/5 shadow-sm min-h-[450px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Элсэлтийн явцын график</h3>
+<p class="text-sm text-slate-500">Нийт элсэлт болон дуусгасан байдлын харьцуулалт</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Элсэлт</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-green-500"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Дууссан</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-red-400"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Цуцлагдсан</span>
+</div>
+</div>
+</div>
+<!-- Custom Multi-line Chart Illustration -->
+<div class="flex-1 w-full relative group">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full border-t border-slate-100 dark:border-slate-800"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800"></div>
+</div>
+<!-- Chart Content (Simplified SVG Representation) -->
+<svg class="w-full h-full drop-shadow-lg" preserveaspectratio="none" viewbox="0 0 1000 300">
+<!-- Enrollment Count Line -->
+<path d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80" fill="none" stroke="#9c7aff" stroke-linecap="round" stroke-width="4"></path>
+<path d="M0,250 Q100,200 200,220 T400,100 T600,150 T800,50 T1000,80 V300 H0 Z" fill="url(#grad-primary)" fill-opacity="0.1"></path>
+<!-- Completed Count Line -->
+<path d="M0,280 Q100,240 200,250 T400,180 T600,200 T800,120 T1000,150" fill="none" stroke="#10b981" stroke-linecap="round" stroke-width="3"></path>
+<!-- Cancelled Count Line -->
+<path d="M0,295 Q100,290 200,292 T400,285 T600,290 T800,280 T1000,285" fill="none" stroke="#f87171" stroke-dasharray="8,4" stroke-linecap="round" stroke-width="2"></path>
+<defs>
+<lineargradient id="grad-primary" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#9c7aff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#9c7aff;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Bottom Labels -->
+<div class="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-400 font-medium px-1">
+<span>1-р долоо хоног</span>
+<span>2-р долоо хоног</span>
+<span>3-р долоо хоног</span>
+<span>4-р долоо хоног</span>
+</div>
+</div>
+</div>
+<!-- Footer Details Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-primary/5 bg-primary/5">
+<h4 class="text-sm font-bold">Сүүлийн үеийн элсэлтийн жагсаалт</h4>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead>
+<tr class="text-slate-500 border-b border-slate-100 dark:border-slate-800">
+<th class="px-6 py-4 font-medium">Оюутан</th>
+<th class="px-6 py-4 font-medium">Курс</th>
+<th class="px-6 py-4 font-medium">Огноо</th>
+<th class="px-6 py-4 font-medium">Төлөв</th>
+<th class="px-6 py-4 font-medium">Төлбөр</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="px-6 py-4 font-medium">Б. Тэмүүлэн</td>
+<td class="px-6 py-4">UI/UX Дизайн үндэс</td>
+<td class="px-6 py-4 text-slate-500">2023.10.28</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold">Дууссан</span>
+</td>
+<td class="px-6 py-4 font-bold">120,000₮</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-medium">А. Саруул</td>
+<td class="px-6 py-4">Python Програмчлал</td>
+<td class="px-6 py-4 text-slate-500">2023.10.27</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold">Идэвхтэй</span>
+</td>
+<td class="px-6 py-4 font-bold">150,000₮</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-medium">Г. Бат-Эрдэнэ</td>
+<td class="px-6 py-4">Маркетингийн стратеги</td>
+<td class="px-6 py-4 text-slate-500">2023.10.25</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 text-xs font-bold">Цуцлагдсан</span>
+</td>
+<td class="px-6 py-4 font-bold">0₮</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

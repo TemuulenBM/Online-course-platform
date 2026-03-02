@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Нэхэмжлэхийн дэлгэрэнгүй - Learnify</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 md:px-40 py-4">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_319)">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+</g>
+<defs>
+<clippath id="clip0_6_319"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-[-0.015em]">Learnify</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<button class="flex items-center justify-center rounded-xl h-10 bg-primary text-white gap-2 text-sm font-bold px-4 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>PDF татах</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Student profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIKNmMtJyiVWctoUQdXCVi32kQmkZR1fhqyWXcrNmEUkQi2wF2pByktbXJ8aYG31-AZ65jowpcn82nwgLOsBgRSx89nCWvz_hHgH4LrLFR5IAsc_5APmvpOcs1rbG7CTB-WwMAcOVdV8pTQ-4bRnx6cZL9dcr8Rpnm-1Q16O6LMCQAsW0EUX4cpzHmrAxugO_tRYPmmUvRCedef_LDnMxkoRoTgO3Skz1zKxR3MuqLU2KWSpZX2GeWRy05rrHMi8hMkrVXlIK925g");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-10 px-4 md:px-0">
+<div class="layout-content-container flex flex-col max-w-[800px] flex-1 bg-white dark:bg-slate-900 shadow-xl rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+<!-- Invoice Header Section -->
+<div class="p-8 md:p-12 border-b border-dashed border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 dark:text-slate-100 text-3xl font-bold">Нэхэмжлэх</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Гүйлгээний албан ёсны баримт</p>
+</div>
+<div class="flex flex-col md:items-end gap-1">
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 self-start md:self-end">Төлөгдсөн</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Дугаар: <span class="text-slate-900 dark:text-slate-100 font-bold">#INV-2024-0815</span></p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Огноо: <span class="text-slate-900 dark:text-slate-100 font-bold">2024 оны 3-р сарын 15</span></p>
+</div>
+</div>
+</div>
+<!-- Client & Company Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 md:p-12 bg-slate-50/50 dark:bg-slate-800/20">
+<div class="flex flex-col gap-4">
+<h3 class="text-primary text-xs font-bold uppercase tracking-widest">Төлөгч</h3>
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">person</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-lg leading-tight">Бат-Эрдэнэ Ганболд</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">bat-erdene@example.com</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">+976 9911-2233</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 md:items-end md:text-right">
+<h3 class="text-primary text-xs font-bold uppercase tracking-widest">Нийлүүлэгч</h3>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-lg leading-tight">Learnify EdTech LLC</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Улаанбаатар хот, Сүхбаатар дүүрэг</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">info@learnify.mn</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Регистр: 1234567</p>
+</div>
+</div>
+</div>
+<!-- Course Details Table -->
+<div class="p-8 md:p-12">
+<div class="w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800">
+<th class="px-4 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Сургалтын нэр</th>
+<th class="px-4 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Тоо</th>
+<th class="px-4 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Нэгж үнэ</th>
+<th class="px-4 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Нийт</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="px-4 py-6">
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold">UI/UX Дизайн ахисан түвшний сургалт</span>
+<span class="text-slate-500 dark:text-slate-400 text-xs">3 сарын хугацаатай эрх</span>
+</div>
+</td>
+<td class="px-4 py-6 text-center text-slate-700 dark:text-slate-300">1</td>
+<td class="px-4 py-6 text-right text-slate-700 dark:text-slate-300">450,000₮</td>
+<td class="px-4 py-6 text-right font-bold text-slate-900 dark:text-slate-100">450,000₮</td>
+</tr>
+<tr>
+<td class="px-4 py-6">
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold">Вэб хөгжүүлэлтийн үндэс (HTML/CSS)</span>
+<span class="text-slate-500 dark:text-slate-400 text-xs">Насан туршийн эрх</span>
+</div>
+</td>
+<td class="px-4 py-6 text-center text-slate-700 dark:text-slate-300">1</td>
+<td class="px-4 py-6 text-right text-slate-700 dark:text-slate-300">120,000₮</td>
+<td class="px-4 py-6 text-right font-bold text-slate-900 dark:text-slate-100">120,000₮</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Totals Section -->
+<div class="p-8 md:p-12 pt-0 flex flex-col items-end">
+<div class="w-full md:w-64 space-y-3">
+<div class="flex justify-between items-center text-slate-500 dark:text-slate-400">
+<span class="text-sm">Дэд дүн:</span>
+<span class="font-medium">570,000₮</span>
+</div>
+<div class="flex justify-between items-center text-slate-500 dark:text-slate-400">
+<span class="text-sm">Хөнгөлөлт (10%):</span>
+<span class="font-medium text-red-500">-57,000₮</span>
+</div>
+<div class="flex justify-between items-center text-slate-500 dark:text-slate-400">
+<span class="text-sm">НӨАТ (0%):</span>
+<span class="font-medium">0₮</span>
+</div>
+<div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<span class="text-lg font-bold text-slate-900 dark:text-slate-100">Нийт дүн:</span>
+<span class="text-xl font-bold text-primary">513,000₮</span>
+</div>
+</div>
+</div>
+<!-- Footer Note -->
+<div class="px-8 md:px-12 py-6 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span>Энэхүү баримт нь цахим гарын үсгээр баталгаажсан болно.</span>
+</div>
+<div class="flex gap-4">
+<button class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">print</span>
+</button>
+<button class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom decorative section -->
+<footer class="flex flex-col items-center justify-center py-10 gap-2 opacity-60">
+<p class="text-sm text-slate-500 dark:text-slate-400">© 2024 Learnify Боловсролын Платформ</p>
+<div class="flex gap-4">
+<div class="size-2 rounded-full bg-primary/40"></div>
+<div class="size-2 rounded-full bg-primary/40"></div>
+<div class="size-2 rounded-full bg-primary/40"></div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

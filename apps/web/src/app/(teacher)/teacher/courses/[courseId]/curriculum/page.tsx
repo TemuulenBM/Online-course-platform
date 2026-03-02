@@ -150,9 +150,9 @@ export default function CurriculumPage({ params }: CurriculumPageProps) {
             <div className="flex items-end justify-between">
               <div>
                 <div className="flex items-center gap-3">
-                  <h3 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                  <h1 className="text-3xl font-bold text-foreground tracking-tight">
                     {t('manageLessonsTitle')}
-                  </h3>
+                  </h1>
                   <Badge className={statusColors[course.status] || statusColors.draft}>
                     {t(course.status as 'draft' | 'published' | 'archived')}
                   </Badge>

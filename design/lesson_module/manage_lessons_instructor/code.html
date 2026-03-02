@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify - Manage Course Lessons</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: rgba(156, 122, 255, 0.1);
+            border-left: 4px solid #9c7aff;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">Learnify Багш</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Зааварлагчийн хэсэг</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 py-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хяналтын самбар</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-sm font-medium">Миний курсууд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg active-nav text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<span class="text-sm font-bold">Хичээл удирдах</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Оюутнууд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Тайлан</span>
+</a>
+<div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</div>
+</nav>
+<div class="p-4 bg-primary/5 m-4 rounded-xl">
+<div class="flex items-center gap-3">
+<img alt="Profile" class="size-10 rounded-full border-2 border-primary" data-alt="Instructor profile picture smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmZDYZmYH92rzpFwD6IHlLxnLU1Rdao7gj_r4lVVJIPrr3fjKDfU3Db2RpGaTN2hHqnzjwRf5MsqclyEeSuOMrYwFKSACDj7LeNUB8_SgZYiQ2QyuyTTvZnxd_XZWV_T1Sh68jbSzThJUPEo60LG9LSGk964BEv8FIBzN-FM81ka-N2Ra_oWrivQaQwnxrx6neKoMFoGIKLXq-ZRmraP6QdXqnVN-9iLXD8JF1WQVuNrNnVrJPWXfgaHDHOsEgtzcBlGY2F_jdY5A"/>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate">Б. Бат-Эрдэнэ</p>
+<p class="text-xs text-slate-500 truncate">Ахлах багш</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="h-20 bg-white dark:bg-slate-900 border-b border-primary/10 flex items-center justify-between px-8">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl">edit_calendar</span>
+<h2 class="text-xl font-bold tracking-tight">Курс удирдах</h2>
+</div>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Хичээл хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center p-2 text-slate-500 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-xl">add_circle</span>
+<span>Шинэ хичээл нэмэх</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- Breadcrumbs & Intro -->
+<div class="space-y-2">
+<nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+<a class="hover:text-primary transition-colors" href="#">Миний курсууд</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">UI/UX Дизайн анхан шат</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-bold">Хичээлүүд удирдах</span>
+</nav>
+<div class="flex items-end justify-between">
+<div>
+<h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Курсын хичээлүүд</h3>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Нийт 12 хичээл орсон байна. Дарааллыг чирч өөрчилж болно.</p>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-primary/10 p-1 rounded-lg flex gap-1">
+<button class="p-2 bg-primary/10 text-primary rounded-md"><span class="material-symbols-outlined">view_list</span></button>
+<button class="p-2 text-slate-400 hover:text-slate-600 rounded-md"><span class="material-symbols-outlined">grid_view</span></button>
+</div>
+</div>
+</div>
+<!-- Lessons Table -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-primary/5 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-primary/10">
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider w-16">#</th>
+<th class="py-4 px-2 w-10"></th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Гарчиг</th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Төрөл</th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Хугацаа</th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Урьдчилж үзэх</th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Нийтэлсэн</th>
+<th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<!-- Lesson Row 1 -->
+<tr class="group hover:bg-primary/5 transition-colors">
+<td class="py-5 px-6 font-medium text-slate-400">01</td>
+<td class="py-5 px-2">
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary cursor-grab active:cursor-grabbing">drag_indicator</span>
+</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-slate-100">UI Дизайны удиртгал</p>
+<p class="text-xs text-slate-500">Үндсэн ойлголтууд болон түүх</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-6">
+<span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-full uppercase tracking-wide border border-blue-200 dark:border-blue-800">Video</span>
+</td>
+<td class="py-5 px-6 text-sm text-center text-slate-500 font-medium">10:25</td>
+<td class="py-5 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</td>
+<td class="py-5 px-6 text-center">
+<div class="flex items-center justify-center">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+</div>
+</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Засах">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lesson Row 2 -->
+<tr class="group hover:bg-primary/5 transition-colors">
+<td class="py-5 px-6 font-medium text-slate-400">02</td>
+<td class="py-5 px-2">
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary cursor-grab active:cursor-grabbing">drag_indicator</span>
+</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">quiz</span>
+</div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-slate-100">Анхан шатны мэдлэг шалгах</p>
+<p class="text-xs text-slate-500">10 асуулттай тест</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-6">
+<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold rounded-full uppercase tracking-wide border border-amber-200 dark:border-amber-800">Quiz</span>
+</td>
+<td class="py-5 px-6 text-sm text-center text-slate-500 font-medium">15:00</td>
+<td class="py-5 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</td>
+<td class="py-5 px-6 text-center">
+<div class="flex items-center justify-center">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+</div>
+</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Засах">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lesson Row 3 -->
+<tr class="group hover:bg-primary/5 transition-colors">
+<td class="py-5 px-6 font-medium text-slate-400">03</td>
+<td class="py-5 px-2">
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary cursor-grab active:cursor-grabbing">drag_indicator</span>
+</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-slate-100">Өнгөний онол ба хэрэглээ</p>
+<p class="text-xs text-slate-500">Унших материал болон PDF</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-6">
+<span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-[10px] font-bold rounded-full uppercase tracking-wide border border-purple-200 dark:border-purple-800">Doc</span>
+</td>
+<td class="py-5 px-6 text-sm text-center text-slate-500 font-medium">05:30</td>
+<td class="py-5 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</td>
+<td class="py-5 px-6 text-center">
+<div class="flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-300">cancel</span>
+</div>
+</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Засах">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lesson Row 4 -->
+<tr class="group hover:bg-primary/5 transition-colors">
+<td class="py-5 px-6 font-medium text-slate-400">04</td>
+<td class="py-5 px-2">
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary cursor-grab active:cursor-grabbing">drag_indicator</span>
+</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-slate-100">Typography-ийн үндэс</p>
+<p class="text-xs text-slate-500">Видео зааварчилгаа</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-6">
+<span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-full uppercase tracking-wide border border-blue-200 dark:border-blue-800">Video</span>
+</td>
+<td class="py-5 px-6 text-sm text-center text-slate-500 font-medium">18:45</td>
+<td class="py-5 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</td>
+<td class="py-5 px-6 text-center">
+<div class="flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-300">cancel</span>
+</div>
+</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Засах">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Empty/Footer state -->
+<div class="p-6 bg-slate-50 dark:bg-slate-800/30 flex items-center justify-between border-t border-primary/10">
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-green-500"></span>
+<span class="text-xs text-slate-500 font-medium">Нийтэлсэн</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-slate-300"></span>
+<span class="text-xs text-slate-500 font-medium">Ноорог</span>
+</div>
+</div>
+<p class="text-xs text-slate-400">Нийт 4 хичээл харагдаж байна</p>
+</div>
+</div>
+<!-- Course Stats Placeholder -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/5 flex items-center gap-4">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-xs text-slate-500">Нийт үргэлжлэх хугацаа</p>
+<p class="text-xl font-black">49м 40с</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/5 flex items-center gap-4">
+<div class="size-12 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+<div>
+<p class="text-xs text-slate-500">Урьдчилж үзэх боломжтой</p>
+<p class="text-xl font-black">1 хичээл</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/5 flex items-center gap-4">
+<div class="size-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined">fact_check</span>
+</div>
+<div>
+<p class="text-xs text-slate-500">Дараалал баталгаажсан</p>
+<p class="text-xl font-black">Тийм</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

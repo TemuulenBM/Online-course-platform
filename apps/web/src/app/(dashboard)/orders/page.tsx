@@ -17,6 +17,7 @@ import { useMyOrders } from '@/hooks/api';
 import { OrderStatusBadge } from '@/components/payments/order-status-badge';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
 import { ROUTES } from '@/lib/constants';
 import type { Order, OrderStatus } from '@ocp/shared-types';
 
@@ -83,18 +84,18 @@ export default function OrdersPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
+      <div className="max-w-7xl mx-auto flex flex-col gap-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
               {t('myOrders')}
             </h1>
-            <p className="text-slate-500 dark:text-slate-400">{t('myOrdersSubtitle')}</p>
+            <p className="text-muted-foreground">{t('myOrdersSubtitle')}</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative min-w-[180px]">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1 ml-1">
                 {t('filterStatus')}
               </label>
               <select
@@ -103,7 +104,7 @@ export default function OrdersPage() {
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none transition-all"
+                className="w-full bg-card border border-border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none transition-all"
               >
                 {STATUS_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -116,29 +117,29 @@ export default function OrdersPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                <tr className="bg-slate-50 dark:bg-slate-800/50 border-b border-border">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     {t('courseOrLesson')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     {t('amount')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center">
                     {t('status')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     {t('date')}
                   </th>
-                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right">
                     {t('action')}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-border">
                 {isLoading
                   ? Array.from({ length: 5 }).map((_, i) => (
                       <tr key={i}>
@@ -188,7 +189,7 @@ export default function OrdersPage() {
                           <td className="px-6 py-5 text-center">
                             <OrderStatusBadge status={order.status as OrderStatus} />
                           </td>
-                          <td className="px-6 py-5 text-slate-500 dark:text-slate-400 text-sm">
+                          <td className="px-6 py-5 text-muted-foreground text-sm">
                             {new Date(order.createdAt).toLocaleDateString('sv-SE')}
                           </td>
                           <td className="px-6 py-5 text-right">
@@ -209,7 +210,7 @@ export default function OrdersPage() {
           {/* Pagination */}
           {!isLoading && totalCount > 0 && (
             <div className="px-6 py-4 flex items-center justify-between bg-slate-50 dark:bg-slate-800/20">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-muted-foreground">
                 {t('showingOf', { shown: orders.length, total: totalCount })}
               </p>
               {totalCount > PAGE_LIMIT && (
@@ -226,55 +227,47 @@ export default function OrdersPage() {
 
         {/* Empty state */}
         {!isLoading && orders.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="size-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <CreditCard className="size-10 text-primary" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              {t('noOrders')}
-            </h3>
-            <p className="text-sm text-slate-500">{t('noOrdersDescription')}</p>
-          </div>
+          <EmptyState
+            icon={CreditCard}
+            title={t('noOrders')}
+            description={t('noOrdersDescription')}
+          />
         )}
 
         {/* Summary cards */}
         {!isLoading && orders.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+            <div className="p-6 bg-card rounded-2xl border border-border flex items-center gap-4">
               <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                 <CreditCard className="size-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                   {t('totalSpent')}
                 </p>
-                <p className="text-xl font-extrabold">₮{totalSpent.toLocaleString()}</p>
+                <p className="text-xl font-bold">₮{totalSpent.toLocaleString()}</p>
               </div>
             </div>
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+            <div className="p-6 bg-card rounded-2xl border border-border flex items-center gap-4">
               <div className="size-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
                 <CheckCircle className="size-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                   {t('confirmedOrders')}
                 </p>
-                <p className="text-xl font-extrabold">
-                  {t('confirmedCount', { count: paidCount })}
-                </p>
+                <p className="text-xl font-bold">{t('confirmedCount', { count: paidCount })}</p>
               </div>
             </div>
-            <div className="p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+            <div className="p-6 bg-card rounded-2xl border border-border flex items-center gap-4">
               <div className="size-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600">
                 <Clock className="size-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                   {t('pendingOrders')}
                 </p>
-                <p className="text-xl font-extrabold">
-                  {t('pendingCount', { count: pendingCount })}
-                </p>
+                <p className="text-xl font-bold">{t('pendingCount', { count: pendingCount })}</p>
               </div>
             </div>
           </div>

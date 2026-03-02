@@ -28,7 +28,7 @@ export function CourseProgressCard() {
     totalEnrollments > 0 ? Math.round((completedCount / totalEnrollments) * 100) : 0;
 
   return (
-    <div className="bg-[#9c7aff] rounded-3xl p-8 text-white shadow-xl shadow-[#9c7aff]/20 relative overflow-hidden">
+    <div className="bg-primary rounded-2xl p-8 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
       <div className="relative z-10">
         <h4 className="text-xl font-bold mb-2">Сургалтын явц</h4>
         <p className="text-white/70 text-sm mb-6">
@@ -45,7 +45,7 @@ export function CourseProgressCard() {
 
         <Link
           href={ROUTES.MY_COURSES}
-          className="block w-full py-3 bg-white text-[#9c7aff] font-bold rounded-xl hover:bg-slate-50 transition-colors text-center"
+          className="block w-full py-3 bg-white text-primary font-bold rounded-xl hover:bg-slate-50 transition-colors text-center"
         >
           Дэлгэрэнгүй
         </Link>
@@ -60,7 +60,7 @@ export function CourseProgressCard() {
 /** Loading skeleton */
 function ProgressSkeleton() {
   return (
-    <div className="bg-[#9c7aff]/20 rounded-3xl p-8">
+    <div className="bg-primary/20 rounded-2xl p-8">
       <Skeleton className="h-6 w-36 mb-3" />
       <Skeleton className="h-4 w-full mb-6" />
       <Skeleton className="h-3 w-full rounded-full mb-6" />

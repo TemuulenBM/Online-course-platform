@@ -3,45 +3,115 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutGrid, Users, Shield, Layers, GraduationCap, ShoppingCart } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Settings,
+  ScrollText,
+  ShieldAlert,
+  Users,
+  Layers,
+  GraduationCap,
+  ShoppingCart,
+  BarChart3,
+  DollarSign,
+  TrendingUp,
+  Trophy,
+  Activity,
+  LogOut,
+  ArrowLeft,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
-import { useMyProfile } from '@/hooks/api';
+import { useLogout, useMyProfile } from '@/hooks/api';
+import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
-/** Admin sidebar навигацийн зүйлс */
-const navItems = [
-  { href: '/admin/users', icon: Users, labelKey: 'users' },
-  { href: '/admin/categories', icon: Layers, labelKey: 'categories' },
-  { href: '/admin/enrollments', icon: GraduationCap, labelKey: 'enrollments' },
-  { href: '/admin/orders', icon: ShoppingCart, labelKey: 'pendingOrders' },
-  { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
+/** Удирдлагын навигац */
+const controlItems = [
+  { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Хяналтын самбар' },
+  { href: '/admin/settings', icon: Settings, label: 'Тохиргоо' },
+  { href: '/admin/audit-logs', icon: ScrollText, label: 'Аудит лог' },
+  { href: '/admin/moderation', icon: ShieldAlert, label: 'Модерац' },
 ] as const;
 
-/** Role badge-ийн өнгөний mapping */
-const roleBadgeVariants: Record<string, string> = {
-  admin: 'bg-red-100 text-red-700',
-  teacher: 'bg-blue-100 text-blue-700',
-  student: 'bg-green-100 text-green-700',
-};
+/** Менежмент навигац */
+const managementItems = [
+  { href: '/admin/users', icon: Users, label: 'Хэрэглэгчид' },
+  { href: '/admin/categories', icon: Layers, label: 'Ангилал' },
+  { href: '/admin/enrollments', icon: GraduationCap, label: 'Элсэлт' },
+  { href: '/admin/orders', icon: ShoppingCart, label: 'Захиалга' },
+] as const;
+
+/** Аналитик навигац */
+const analyticsItems = [
+  { href: '/admin/analytics', icon: BarChart3, label: 'Хянах самбар' },
+  { href: '/admin/analytics/revenue', icon: DollarSign, label: 'Орлого' },
+  { href: '/admin/analytics/enrollment-trends', icon: TrendingUp, label: 'Элсэлт' },
+  { href: '/admin/analytics/popular-courses', icon: Trophy, label: 'Топ сургалтууд' },
+  { href: '/admin/analytics/events', icon: Activity, label: 'Event-ууд' },
+] as const;
+
+/** Main sidebar-тай нийцсэн nav item стиль */
+const navItemBase =
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
+const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
+
+/** Навигацийн бүлэг рендерлэх */
+function NavGroup({
+  items,
+  pathname,
+}: {
+  items: ReadonlyArray<{
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    label: string;
+  }>;
+  pathname: string;
+}) {
+  return (
+    <SidebarMenu className="gap-0.5">
+      {items.map((item) => {
+        const isActive =
+          item.href === '/admin/analytics'
+            ? pathname === '/admin/analytics'
+            : pathname === item.href || pathname.startsWith(item.href + '/');
+        return (
+          <SidebarMenuItem key={item.href}>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive}
+              className={cn(navItemBase, isActive && navItemActive)}
+            >
+              <Link href={item.href}>
+                <item.icon className="size-[18px]" />
+                <span>{item.label}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        );
+      })}
+    </SidebarMenu>
+  );
+}
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const t = useTranslations('admin');
   const tRoles = useTranslations('roles');
+  const logoutMutation = useLogout();
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
 
@@ -53,64 +123,92 @@ export function AdminSidebar() {
     ? `${profile.firstName[0]}${profile.lastName?.[0] || ''}`.toUpperCase()
     : (user?.email?.[0] || 'U').toUpperCase();
 
+  const roleName = tRoles(user?.role || 'student');
+
   return (
     <Sidebar collapsible="offcanvas" className="border-none bg-background">
-      <SidebarHeader className="px-6 pt-8 pb-6">
-        <div className="flex items-center gap-2 pl-2">
-          <Shield className="size-5 text-purple-600" />
-          <span className="text-lg font-bold">{t('adminPanel')}</span>
+      {/* Лого — LearnifyLogo + ADMIN PANEL badge */}
+      <SidebarHeader className="px-5 pt-7 pb-4">
+        <div>
+          <LearnifyLogo href="/admin/dashboard" />
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-semibold mt-1 pl-[46px]">
+            Admin Panel
+          </p>
         </div>
       </SidebarHeader>
 
       <SidebarContent className="px-3">
+        {/* Удирдлага */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      className={cn(
-                        'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
-                        'hover:bg-white/50 hover:text-gray-900',
-                        isActive &&
-                          'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
-                      )}
-                    >
-                      <Link href={item.href}>
-                        <item.icon className="size-5" strokeWidth={2.5} />
-                        <span>{t(item.labelKey)}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+            <NavGroup items={controlItems} pathname={pathname} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Менежмент */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
+            Менежмент
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavGroup items={managementItems} pathname={pathname} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Аналитик */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="px-4 text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
+            Аналитик
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavGroup items={analyticsItems} pathname={pathname} />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Хэрэглэгчийн мэдээлэл */}
-      <SidebarFooter className="px-3 pb-6">
-        <div className="flex items-center gap-3 px-3 py-2">
+      {/* Доод хэсэг — main sidebar-тай нийцсэн */}
+      <SidebarFooter className="px-3 pb-5">
+        <SidebarMenu className="gap-0.5">
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <Link href="/dashboard">
+                <ArrowLeft className="size-[18px]" />
+                <span>Хяналтын самбар руу</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <LogOut className="size-[18px]" />
+              <span>Гарах</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        <SidebarSeparator className="my-2" />
+
+        {/* Хэрэглэгчийн мэдээлэл — main sidebar-тай ижил */}
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted"
+        >
           <Avatar className="size-9 shrink-0">
-            <AvatarFallback className="bg-purple-100 text-purple-700 text-sm font-bold">
+            <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-gray-900">{displayName}</p>
-            <Badge
-              variant="secondary"
-              className={cn('mt-0.5 text-[10px] px-1.5 py-0', roleBadgeVariants[user?.role || ''])}
-            >
-              {tRoles(user?.role || 'student')}
-            </Badge>
+            <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>
+            <p className="text-[11px] text-muted-foreground">{roleName}</p>
           </div>
-        </div>
+        </Link>
       </SidebarFooter>
     </Sidebar>
   );

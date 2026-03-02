@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Шалгалтын мэдээлэл</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-background-dark border-r border-primary/10 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight">Learnify</h1>
+<p class="text-primary text-xs font-medium">Оюутны портал</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хяналтын самбар</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">book_5</span>
+<span class="text-sm font-medium">Миний курсууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">school</span>
+<span class="text-sm font-semibold">Шалгалтууд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Дүнгийн бүртгэл</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 rounded-lg transition-colors mt-8" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Тохиргоо</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">logout</span>
+                    Гарах
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="flex items-center justify-between px-8 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-10 border-b border-primary/5">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-slate-400">Курс</span>
+<span class="material-symbols-outlined text-xs text-slate-300">chevron_right</span>
+<span class="text-slate-400">UI Дизайн</span>
+<span class="material-symbols-outlined text-xs text-slate-300">chevron_right</span>
+<span class="text-primary font-medium">Шалгалт</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer">notifications</span>
+<div class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></div>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Student profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-gDEiB5TdxwjdQFilKMoeWZJmdzvE80i2CavdcJpanKJWKlMWgJpY0ZjMxJofE8kgJzqb2b8LfteRGUWxXpGLGdYM4KwapaBaA8nOt6mp6AzaYKGqyhILIq7pyNI6rnPgpCPAA4LIOavZSqHezjAVyhpQUd5XDuSuIFRrQH9v8O-REqq893yD6cbgXWSgim7X7YEacBlEE0Rd8S8Bm7rqjZfkFad7SURhYwDpm5jwTbavLv7ntXcJSMICOim5SuxeMrodqqkOXzo"/>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-8 py-10">
+<!-- Page Title Section -->
+<div class="mb-10">
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 mb-4">UI Дизайны анхан шатны шалгалт</h2>
+<p class="text-lg text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed">
+                        Энэхүү шалгалт нь таны өнгөний онол болон типиографийн мэдлэгийг шалгах зорилготой. Шалгалт эхлэхээс өмнө доорх мэдээлэлтэй анхааралтай танилцана уу.
+                    </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Quiz Details Section -->
+<div class="lg:col-span-2 space-y-8">
+<div class="bg-white dark:bg-slate-900 rounded-xl p-8 border border-primary/5 shadow-sm">
+<h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                                Шалгалтын мэдээлэл
+                            </h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+<div class="p-4 bg-background-light dark:bg-slate-800 rounded-xl">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Хугацаа</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">timer</span>
+<span class="text-lg font-bold">30 минут</span>
+</div>
+</div>
+<div class="p-4 bg-background-light dark:bg-slate-800 rounded-xl">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Тэнцэх босго</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">verified</span>
+<span class="text-lg font-bold">70%</span>
+</div>
+</div>
+<div class="p-4 bg-background-light dark:bg-slate-800 rounded-xl">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Нийт асуулт</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">quiz</span>
+<span class="text-lg font-bold">10 асуулт</span>
+</div>
+</div>
+<div class="p-4 bg-background-light dark:bg-slate-800 rounded-xl">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Нийт оноо</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+<span class="text-lg font-bold">100 оноо</span>
+</div>
+</div>
+<div class="p-4 bg-background-light dark:bg-slate-800 rounded-xl">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Оролдлого</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">rebase_edit</span>
+<span class="text-lg font-bold">3 оролдлого</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Previous Attempts Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-primary/5 shadow-sm">
+<div class="p-6 border-b border-primary/5 flex items-center justify-between">
+<h3 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+                                    Өмнөх оролдлогууд
+                                </h3>
+<span class="text-sm font-medium text-slate-500">Үлдсэн оролдлого: 2</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Оролдлого</th>
+<th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Оноо</th>
+<th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Хувь</th>
+<th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Төлөв</th>
+<th class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right">Огноо</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900 dark:text-slate-100">#1</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium">65 / 100</td>
+<td class="px-6 py-4 text-sm font-medium">65%</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                                                    Тэнцээгүй
+                                                </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 text-right">2024-03-10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-primary/5 text-center">
+<p class="text-sm text-primary font-medium">Та хамгийн сүүлд 65 оноо авсан байна. Тэнцэхийн тулд 70-аас дээш оноо авах шаардлагатай.</p>
+</div>
+</div>
+</div>
+<!-- Sidebar / Action Section -->
+<div class="lg:col-span-1 space-y-6">
+<div class="bg-primary rounded-xl p-8 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-4">Бэлэн үү?</h4>
+<p class="text-primary-100 text-sm mb-6 leading-relaxed opacity-90">
+                                    Шалгалт эхлэх товчийг дарснаар таны цаг тоолж эхлэх болно. Шалгалтын явцад цонхоо сольж болохгүйг анхаарна уу.
+                                </p>
+<button class="w-full py-4 bg-white text-primary rounded-xl font-black text-lg hover:bg-slate-100 transition-all transform active:scale-95 shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">play_arrow</span>
+                                    Quiz эхлүүлэх
+                                </button>
+<p class="text-xs text-center mt-4 text-primary-100 opacity-70">Нийт 3 оролдлогоос 1-ийг ашигласан</p>
+</div>
+<!-- Background Decoration -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+<div class="absolute -left-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-primary/5">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 mb-4">Шалгалтын зааварчилгаа</h4>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Асуулт бүр нэг зөв хариулттай.
+                                </li>
+<li class="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Цаг дуусмагц систем шууд хаагдана.
+                                </li>
+<li class="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Дундаас нь гарвал оролдлого тооцогдоно.
+                                </li>
+</ul>
+</div>
+<div class="p-6 bg-gradient-to-br from-primary/5 to-transparent rounded-xl border border-primary/10">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 mb-2">Тусламж хэрэгтэй юу?</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Хэрэв танд шалгалтын явцад техникийн асуудал гарвал манай тусламжийн төвтэй холбогдоорой.</p>
+<a class="text-primary text-sm font-bold flex items-center gap-1 hover:underline" href="#">
+                                Тусламж авах
+                                <span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

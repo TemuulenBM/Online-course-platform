@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Хичээл үзэх</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-xl bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined fill-1">school</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">Learnify</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Суралцагчийн систем</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/10 text-primary font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">book_2</span>
+<span class="text-sm">Миний хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-sm">Хайх</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-sm">Мэдэгдэл</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm">Тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-sm">Тусламж</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold truncate">Б. Бат-Эрдэнэ</p>
+<p class="text-xs text-slate-500">Оюутан</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Header / Breadcrumb -->
+<header class="px-8 py-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md sticky top-0 z-10">
+<div class="flex items-center gap-2 text-sm">
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">Машин сургалтын үндэс</a>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-sm">chevron_right</span>
+<span class="font-medium text-slate-900 dark:text-slate-100">Хичээл 1: Оршил</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">bookmark</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">share</span>
+</button>
+</div>
+</header>
+<!-- Video/Player Area -->
+<div class="p-8 max-w-6xl mx-auto w-full space-y-8">
+<div class="relative group aspect-video bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="Cinematic abstract technology background with purple gradients" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkov2W8Ap_LK3A94Ht90iJWiAkB56vjDvwF-zrP_rsSmXEy2OrO-rsRy5x6QsTTmZOJjHeKgbcHH-iflh-awtmqKizyOLIN89vNB_itKYik1Uk4Wlhd7SROAJF1ZvNCJpHo6kAfyE7BYwr19Pp6I0o6ckuWn0mTTmIQ9IKH9QVixjSZ2xRfKOcud9LtaEvJGxheL2LqY7sb2nYBXn3ntXUf1_4-Nr6z9BCCt5dVi0So6EN9Hk54oVrsBMlqbHdeVyRbUPVk3KjTdo');"></div>
+<!-- Restricted Content Overlay -->
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80 backdrop-blur-sm p-6 text-center">
+<div class="size-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-4xl">lock</span>
+</div>
+<h2 class="text-2xl font-bold text-white mb-2">Элсэх шаардлагатай</h2>
+<p class="text-slate-400 max-w-md mb-8">Энэ хичээлийг үзэхийн тулд та тухайн сургалтанд албан ёсоор элсэн орсон байх шаардлагатай.</p>
+<button class="px-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all transform hover:scale-105 flex items-center gap-2">
+<span>Сургалтанд элсэх</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+<!-- Video Controls Placeholder (Hidden by Overlay above but structured for design) -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4 opacity-0">
+<div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-primary rounded-full"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4 text-white">
+<span class="material-symbols-outlined">play_arrow</span>
+<span class="material-symbols-outlined">volume_up</span>
+<span class="text-xs font-medium">05:20 / 15:40</span>
+</div>
+<div class="flex items-center gap-4 text-white">
+<span class="material-symbols-outlined">settings</span>
+<span class="material-symbols-outlined">fullscreen</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Lesson Info & Metadata -->
+<div class="flex flex-col md:flex-row justify-between items-start gap-6 border-b border-slate-200 dark:border-slate-800 pb-8">
+<div class="space-y-2">
+<h1 class="text-3xl font-extrabold tracking-tight">Хичээл 1: Машин сургалтын үндсэн ойлголт</h1>
+<div class="flex items-center gap-4 text-sm font-medium">
+<span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-base">movie</span>
+                                VIDEO
+                            </span>
+<span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-base">schedule</span>
+                                15:40 минут
+                            </span>
+<span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-base">visibility</span>
+                                1.2k үзсэн
+                            </span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                            Өмнөх хичээл
+                        </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-primary text-white font-semibold hover:opacity-90 transition-all">
+                            Дараагийн хичээл
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Content Tabs/Details -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-6">
+<div class="flex gap-8 border-b border-slate-200 dark:border-slate-800">
+<button class="pb-4 border-b-2 border-primary text-primary font-bold">Тодорхойлолт</button>
+<button class="pb-4 border-b-2 border-transparent text-slate-500 font-medium hover:text-slate-700 dark:hover:text-slate-300">Татаж авах (2)</button>
+<button class="pb-4 border-b-2 border-transparent text-slate-500 font-medium hover:text-slate-700 dark:hover:text-slate-300">Хэлэлцүүлэг</button>
+</div>
+<div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
+<p>Энэхүү хичээлээр бид машин сургалт (Machine Learning) гэж юу болох, түүний хөгжлийн түүх болон орчин үеийн хэрэглээний талаар дэлгэрэнгүй авч үзэх болно. Хичээлийн төгсгөлд та дараах зүйлсийг ойлгосон байна:</p>
+<ul class="list-disc pl-5 space-y-2 mt-4">
+<li>Сургалтын алгоритмын төрлүүд (Supervised, Unsupervised)</li>
+<li>Дата бэлтгэлийн ач холбогдол</li>
+<li>Машин сургалтын амьдралын мөчлөг</li>
+</ul>
+</div>
+</div>
+<!-- Related/Curriculum Sidebar -->
+<div class="space-y-6">
+<h3 class="font-bold text-lg">Хичээлийн хөтөлбөр</h3>
+<div class="space-y-3">
+<div class="p-4 rounded-xl bg-primary/10 border border-primary/20 flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold text-primary truncate">1. Оршил</p>
+<p class="text-xs text-primary/70">15:40 • Видео</p>
+</div>
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+</div>
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center gap-4 opacity-50">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold truncate">2. Өгөгдлийн төрөл</p>
+<p class="text-xs text-slate-500">22:15 • Видео</p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center gap-4 opacity-50">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold truncate">3. Регрессийн шинжилгээ</p>
+<p class="text-xs text-slate-500">18:00 • Видео</p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center gap-4 opacity-50">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold truncate">4. Бие даах ажил 1</p>
+<p class="text-xs text-slate-500">2 хуудас • Текст</p>
+</div>
+</div>
+</div>
+<div class="p-6 rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-white space-y-4">
+<p class="text-sm font-medium opacity-90">Бүх хичээлийг үзэхийн тулд:</p>
+<p class="text-xl font-bold leading-tight">Бүрэн сургалтанд элсэж эрхээ нээгээрэй</p>
+<button class="w-full py-3 bg-white text-primary font-bold rounded-xl hover:bg-slate-50 transition-colors">
+                                Одоо элсэх
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto p-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-slate-500 dark:text-slate-400">© 2024 Learnify Education Platform. Бүх эрх хуулиар хамгаалагдсан.</p>
+<div class="flex items-center gap-6">
+<a class="text-sm text-slate-500 hover:text-primary transition-colors" href="#">Үйлчилгээний нөхцөл</a>
+<a class="text-sm text-slate-500 hover:text-primary transition-colors" href="#">Нууцлалын бодлого</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

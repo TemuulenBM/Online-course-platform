@@ -67,6 +67,17 @@ export default function LessonViewerPage({
     | number
     | undefined;
 
+  /** Видеоны байрлал шинэчлэх — throttled callback
+   *  Rules of Hooks: early return-уудаас ӨМНӨ байх ёстой */
+  const handleVideoPositionUpdate = useCallback(
+    (position: number) => {
+      if (isEnrolled && lessonId) {
+        videoPositionMutation.mutate({ lessonId, lastPositionSeconds: position });
+      }
+    },
+    [isEnrolled, lessonId, videoPositionMutation],
+  );
+
   /** Loading state */
   if (courseLoading || lessonsLoading || contentLoading) {
     return <LessonViewerSkeleton />;
@@ -83,16 +94,6 @@ export default function LessonViewerPage({
   const handleEnroll = () => {
     if (course?.id) enrollMutation.mutate(course.id);
   };
-
-  /** Видеоны байрлал шинэчлэх — throttled callback */
-  const handleVideoPositionUpdate = useCallback(
-    (position: number) => {
-      if (isEnrolled && lessonId) {
-        videoPositionMutation.mutate({ lessonId, lastPositionSeconds: position });
-      }
-    },
-    [isEnrolled, lessonId, videoPositionMutation],
-  );
 
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
@@ -228,7 +229,7 @@ export default function LessonViewerPage({
       <footer className="mt-auto px-4 lg:px-10 py-8 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            © {new Date().getFullYear()} {t('footerCopyright')}
+            {t('footerCopyright', { year: new Date().getFullYear() })}
           </p>
           <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
             <span className="hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">

@@ -38,10 +38,17 @@ export interface UpdateCourseData {
   thumbnailUrl?: string;
 }
 
+/** Backend response бүтэц — meta дотор pagination мэдээлэл байдаг */
+interface CoursesApiResponse {
+  data: Course[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+}
+
 export const coursesService = {
   list: async (params?: CourseListParams): Promise<PaginatedResponse<Course>> => {
-    const res = await client.get<ApiResponse<PaginatedResponse<Course>>>('/courses', { params });
-    return res.data.data!;
+    const res = await client.get<ApiResponse<CoursesApiResponse>>('/courses', { params });
+    const raw = res.data.data!;
+    return { data: raw.data, total: raw.meta.total, page: raw.meta.page, limit: raw.meta.limit };
   },
 
   /** Миний сургалтууд (Багш/Админ — бүх status) */

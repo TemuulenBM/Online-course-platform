@@ -25,16 +25,16 @@ export function PublicProfileCard({ profile, userId, isLoading }: PublicProfileC
   const initials = `${profile.firstName?.[0] ?? ''}${profile.lastName?.[0] ?? ''}`.toUpperCase();
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-[#9c7aff]/10 overflow-hidden mb-8">
+    <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden mb-8">
       {/* Gradient cover */}
-      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/30 via-[#9c7aff]/10 to-transparent" />
+      <div className="h-32 bg-gradient-to-r from-primary/30 via-primary/10 to-transparent" />
 
       <div className="px-8 pb-8 -mt-16 flex flex-col items-center text-center">
         {/* Аватар */}
         <div className="relative">
           <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
             <AvatarImage src={getFileUrl(profile.avatarUrl)} className="object-cover" />
-            <AvatarFallback className="bg-[#9c7aff]/10 text-[#9c7aff] text-3xl font-bold">
+            <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold">
               {initials || <User className="w-12 h-12" />}
             </AvatarFallback>
           </Avatar>
@@ -65,12 +65,12 @@ export function PublicProfileCard({ profile, userId, isLoading }: PublicProfileC
         )}
 
         {/* Stats — бодит дата */}
-        <div className="grid grid-cols-3 gap-8 mt-10 w-full max-w-md border-t border-[#9c7aff]/5 pt-8">
+        <div className="grid grid-cols-3 gap-8 mt-10 w-full max-w-md border-t border-primary/5 pt-8">
           <div className="flex flex-col items-center">
             {statsLoading ? (
               <Skeleton className="h-8 w-8 mb-1" />
             ) : (
-              <span className="text-2xl font-bold text-[#9c7aff]">
+              <span className="text-2xl font-bold text-primary">
                 {stats?.completedCourses ?? 0}
               </span>
             )}
@@ -80,7 +80,7 @@ export function PublicProfileCard({ profile, userId, isLoading }: PublicProfileC
             {statsLoading ? (
               <Skeleton className="h-8 w-8 mb-1" />
             ) : (
-              <span className="text-2xl font-bold text-[#9c7aff]">{stats?.activeCourses ?? 0}</span>
+              <span className="text-2xl font-bold text-primary">{stats?.activeCourses ?? 0}</span>
             )}
             <span className="text-xs font-semibold text-slate-400 uppercase">Үзэж буй</span>
           </div>
@@ -88,7 +88,7 @@ export function PublicProfileCard({ profile, userId, isLoading }: PublicProfileC
             {statsLoading ? (
               <Skeleton className="h-8 w-8 mb-1" />
             ) : (
-              <span className="text-2xl font-bold text-[#9c7aff]">
+              <span className="text-2xl font-bold text-primary">
                 {stats?.totalCertificates ?? 0}
               </span>
             )}
@@ -103,8 +103,8 @@ export function PublicProfileCard({ profile, userId, isLoading }: PublicProfileC
 /** Loading skeleton */
 function PublicProfileSkeleton() {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-[#9c7aff]/10 overflow-hidden mb-8">
-      <div className="h-32 bg-gradient-to-r from-[#9c7aff]/10 via-[#9c7aff]/5 to-transparent" />
+    <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden mb-8">
+      <div className="h-32 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent" />
       <div className="px-8 pb-8 -mt-16 flex flex-col items-center">
         <Skeleton className="w-32 h-32 rounded-full" />
         <Skeleton className="h-7 w-48 mt-4" />

@@ -1,10 +1,12 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCourseLessons, useCheckEnrollment, useEnroll } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ROUTES } from '@/lib/constants';
 import { CourseCurriculumItem } from './course-curriculum-item';
 
 interface CourseCurriculumProps {
@@ -16,6 +18,7 @@ interface CourseCurriculumProps {
 export function CourseCurriculum({ courseId, slug }: CourseCurriculumProps) {
   const t = useTranslations('courses');
   const tLesson = useTranslations('lessonViewer');
+  const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { data: lessons, isLoading } = useCourseLessons(courseId);
   const { data: enrollmentCheck } = useCheckEnrollment(isAuthenticated ? courseId : '');
@@ -65,7 +68,16 @@ export function CourseCurriculum({ courseId, slug }: CourseCurriculumProps) {
           </div>
           <div className="relative z-10 shrink-0">
             <button
-              onClick={() => enrollMutation.mutate(courseId)}
+              onClick={() => {
+                const firstLessonId = lessons?.[0]?.id;
+                enrollMutation.mutate(courseId, {
+                  onSuccess: () => {
+                    if (slug && firstLessonId) {
+                      router.push(ROUTES.LESSON_VIEWER(slug, firstLessonId));
+                    }
+                  },
+                });
+              }}
               disabled={enrollMutation.isPending}
               className="px-8 py-3 bg-white text-primary font-bold rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-70 flex items-center gap-2"
             >

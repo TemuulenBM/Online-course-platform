@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Learnify - Унших хичээл</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header / TopNavBar Navigation -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-slate-900 px-6 py-3 lg:px-20">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Learnify</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full text-primary text-sm font-medium">
+<span class="material-symbols-outlined text-sm">workspace_premium</span>
+<span>Идэвхтэй суралцагч</span>
+</div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary/20 border-2 border-primary/30 overflow-hidden" data-alt="User profile avatar placeholder">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRO6-efSnTKoV2vFgCkbtumx6E-7AWWyCHrg5JMz-ueSUsNelxCzlytP_rQTRjLH-4HsiPdqXNhSe5suKUbaqFwEX_mVlHQbisBDKg0JvJ-xTqKX1WyZo5TWdlZ9KBZa6gpU5EbeyJOaXiGFpMndyPPINCxOczhBA5wKZyLkfPdismwbU_qf7QIcjKdsp4b60tAMR8fBucyXUJrmlFk_xmrJW1aZSUX2ll-4quirVVaEH5EjsErxzHV8LWrUDky8uHtl39_9PDxuU"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col max-w-5xl mx-auto w-full px-4 py-8 lg:px-10">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400 mb-6">
+<a class="hover:text-primary transition-colors" href="#">Курсууд</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Санхүүгийн боловсрол</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100">Унших хичээл</span>
+</nav>
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Main Content Area -->
+<div class="flex-1">
+<div class="mb-8">
+<div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+<h1 class="text-3xl font-bold leading-tight">Хувийн санхүүгээ төлөвлөх нь</h1>
+<div class="flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                                15 минут унших
+                            </div>
+</div>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-2 mb-8">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+<span>Хичээлийн явц</span>
+<span>45%</span>
+</div>
+<div class="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 45%;"></div>
+</div>
+</div>
+<!-- Rendered HTML Content -->
+<div class="prose prose-slate dark:prose-invert max-w-none bg-white dark:bg-slate-900 p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h2 class="text-2xl font-bold mb-4">1. Оршил</h2>
+<p class="mb-6 leading-relaxed">
+                                Санхүүгийн эрх чөлөөнд хүрэх хамгийн эхний алхам бол өөрийн орлого, зарлагаа бүрэн хянах явдал юм. Хүмүүс ихэвчлэн мөнгөө хаашаа явж байгааг мэддэггүйгээс болж сарын сүүлээр санхүүгийн хүндрэлд ордог. 
+                            </p>
+<div class="my-8 rounded-xl overflow-hidden" data-alt="Financial planning and budgeting graph illustration">
+<img alt="Financial Planning" class="w-full h-auto object-cover max-h-[300px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd3lJV9Owmay_MLEqzQr2nKekJN7w4DNfKjnAt39ipioN_HapWNt85yFA98sZOxSxbEo6hxmuBiRWvCdgLwEkgdsk2h2G3tDTd_W4JtUXwUndrdcPEL53618bmsw2DI-FIswPDOXj7auGrtGVe4ue4qydFBTONo-87X5AQiTVVg12Wf6Hhxwhox5Bt2G1SFKSCd1upgyjytVNbZwXC0M0Z9FlhPyzfvQqV4KYqg1Nir0opAalI-AbKDuYItfc7Wv_JHO7AvRFB5Zs"/>
+</div>
+<h2 class="text-2xl font-bold mb-4">2. Төсөвлөлтийн 50/30/20 дүрэм</h2>
+<p class="mb-4 leading-relaxed">
+                                Энэхүү дүрэм нь таны татварын дараах цэвэр орлогыг гурван үндсэн хэсэгт хуваадаг:
+                            </p>
+<ul class="list-disc pl-6 mb-6 space-y-2">
+<li><strong>50% Хэрэгцээ:</strong> Байрны түрээс, хоол хүнс, хэрэглээний төлбөр.</li>
+<li><strong>30% Хүсэл:</strong> Чөлөөт цаг, хобби, гадуур хооллох.</li>
+<li><strong>20% Хадгаламж:</strong> Өр төлбөр барагдуулах, ирээдүйн хуримтлал.</li>
+</ul>
+<div class="bg-primary/5 border-l-4 border-primary p-4 my-6 rounded-r-lg">
+<p class="italic text-slate-700 dark:text-slate-300">
+                                    "Мөнгө бол сайн зарц боловч муу эзэн юм." — Фрэнсис Бэкон
+                                </p>
+</div>
+<p class="leading-relaxed">
+                                Өөрийн зардлаа ангилж сурснаар та ирээдүйд үүсч болох санхүүгийн эрсдэлээс өөрийгөө хамгаалаад зогсохгүй, мөрөөдлийнхөө төлөө системтэйгээр мөнгө хуримтлуулж эхлэх болно.
+                            </p>
+</div>
+</div>
+<!-- Navigation Controls -->
+<div class="flex items-center justify-between mt-10 pb-20">
+<button class="flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/20 bg-white dark:bg-slate-900 text-primary font-bold hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+                            Өмнөх
+                        </button>
+<button class="flex items-center gap-2 px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:scale-[1.02] transition-all">
+                            Дараах
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Sidebar / Course Context -->
+<aside class="w-full lg:w-80 space-y-6">
+<!-- Lesson Context Card -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg mb-4">Хичээлийн агуулга</h3>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-sm font-medium">1. Оршил</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+<span class="text-sm">2. 50/30/20 дүрэм</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-sm">3. Хадгаламжийн төрөл</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">quiz</span>
+<span class="text-sm">Шалгалт</span>
+</div>
+</div>
+</div>
+<!-- Enrollment Required Overlay (Example state) -->
+<div class="bg-primary/5 border border-primary/20 p-6 rounded-xl text-center">
+<div class="size-12 bg-primary/20 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<h3 class="font-bold mb-2">Бүртгэл шаардлагатай</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Та энэхүү хичээлийг үргэлжлүүлэн үзэхийн тулд курст бүртгүүлсэн байх шаардлагатай.</p>
+<button class="w-full py-2 bg-primary text-white rounded-lg text-sm font-bold">Бүртгүүлэх</button>
+</div>
+</aside>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="fixed bottom-0 left-0 right-0 lg:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 p-2 flex justify-around">
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-bold">Хичээл</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-bold">Хайх</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Профайл</span>
+</button>
+</nav>
+</div>
+</body></html>

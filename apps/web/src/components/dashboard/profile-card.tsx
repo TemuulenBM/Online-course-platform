@@ -45,16 +45,16 @@ export function ProfileCard() {
   const roleKey = user?.role ?? 'STUDENT';
 
   return (
-    <div className="flex flex-col bg-white rounded-3xl p-6 border border-gray-100 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)]">
+    <div className="flex flex-col bg-card rounded-2xl p-6 border border-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)]">
       {/* Профайл */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[17px] font-bold text-gray-900">{t('myProfile')}</h3>
-        <button className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors">
+        <h2 className="text-[17px] font-bold text-foreground">{t('myProfile')}</h2>
+        <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
           <MoreVertical className="w-4 h-4" />
         </button>
       </div>
 
-      <div className="flex flex-col items-center pt-2 pb-4 border-b border-gray-100">
+      <div className="flex flex-col items-center pt-2 pb-4 border-b border-border">
         {isLoading ? (
           <>
             <Skeleton className="w-24 h-24 rounded-full mb-4" />
@@ -71,9 +71,9 @@ export function ProfileCard() {
                 </AvatarFallback>
               </Avatar>
             </div>
-            <h4 className="text-[19px] font-bold text-gray-900 mb-1">{fullName}</h4>
+            <h3 className="text-[19px] font-bold text-foreground mb-1">{fullName}</h3>
             <span
-              className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${roleBadgeStyle[roleKey] ?? 'bg-gray-100 text-gray-600'}`}
+              className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${roleBadgeStyle[roleKey] ?? 'bg-muted text-muted-foreground'}`}
             >
               {tr(roleKey)}
             </span>
@@ -85,34 +85,55 @@ export function ProfileCard() {
       <div className="pt-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex flex-col">
-            <span className="text-xs font-bold text-gray-500 mb-0.5">{t('activity')}</span>
-            <span className="text-lg font-bold text-gray-900">3.5 {t('hours')}</span>
+            <span className="text-xs font-bold text-muted-foreground mb-0.5">{t('activity')}</span>
+            <span className="text-lg font-bold text-foreground">3.5 {t('hours')}</span>
           </div>
-          <button className="flex items-center gap-1.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50">
+          <button className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground bg-white border border-border px-3 py-1.5 rounded-lg hover:bg-muted">
             {t('weekly')} <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Bar chart */}
-        <div className="flex items-end justify-between h-36 relative px-1">
-          <div className="absolute top-0 left-[58%] -translate-x-1/2 bg-white border border-gray-100 shadow-lg text-[10px] font-bold px-3 py-1.5 rounded-lg text-gray-600 z-10">
-            10 hours
+        {/* Legend */}
+        <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-violet-300" />
+            <span className="text-[10px] text-muted-foreground font-medium">{t('studyHours')}</span>
           </div>
-          <div className="absolute top-[24px] left-[58%] -translate-x-1/2 w-px h-[8px] bg-gray-200 z-0" />
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]" />
+            <span className="text-[10px] text-muted-foreground font-medium">{t('today')}</span>
+          </div>
+        </div>
 
-          {ACTIVITY_DATA.map((item, i) => (
-            <div key={i} className="flex flex-col items-center gap-2.5 flex-1 group">
-              <div
-                className={`w-full max-w-[28px] rounded-lg transition-all ${
-                  item.active
-                    ? 'bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]'
-                    : 'bg-[#C4B5FD]'
-                } hover:opacity-80`}
-                style={{ height: `${item.height}px` }}
-              />
-              <span className="text-[10px] font-bold text-gray-400">{item.day}</span>
+        {/* Bar chart */}
+        <div className="flex items-end gap-1" role="img" aria-label={t('activity')}>
+          {/* Y тэнхлэг */}
+          <div className="flex flex-col justify-between h-36 pr-1 shrink-0">
+            <span className="text-[9px] text-muted-foreground">10h</span>
+            <span className="text-[9px] text-muted-foreground">5h</span>
+            <span className="text-[9px] text-muted-foreground">0h</span>
+          </div>
+
+          <div className="flex items-end justify-between flex-1 h-36 relative px-1">
+            <div className="absolute top-0 left-[58%] -translate-x-1/2 bg-white border border-border shadow-lg text-[10px] font-bold px-3 py-1.5 rounded-lg text-muted-foreground z-10">
+              10 hours
             </div>
-          ))}
+            <div className="absolute top-[24px] left-[58%] -translate-x-1/2 w-px h-[8px] bg-gray-200 z-0" />
+
+            {ACTIVITY_DATA.map((item, i) => (
+              <div key={i} className="flex flex-col items-center gap-2.5 flex-1 group">
+                <div
+                  className={`w-full max-w-[28px] rounded-lg transition-all ${
+                    item.active
+                      ? 'bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]'
+                      : 'bg-violet-300'
+                  } hover:opacity-80`}
+                  style={{ height: `${item.height}px` }}
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">{item.day}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

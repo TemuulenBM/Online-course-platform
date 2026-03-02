@@ -114,6 +114,7 @@
     "getPremium": "Get Premium",
     "upgradeDescription": "Get exclusive access, advanced tools, and support",
     "certificates": "Certificates",
+    "liveSessions": "Live Sessions",
     "teacherCourses": "Manage Courses",
     "adminPanel": "Admin Panel",
     "teacherSection": "Teacher",
@@ -145,6 +146,8 @@
     "weekly": "Weekly",
     "monthly": "Monthly",
     "hours": "H",
+    "studyHours": "Study hours",
+    "today": "Today",
     "listTask": "List Task",
     "dueDate": "Due date"
   },
@@ -436,7 +439,8 @@
     "enrollToAccessDesc": "You must be enrolled in this course to access this lesson.",
     "enrollNowBtn": "Enroll Now",
     "quiz": "Quiz",
-    "lessonLabel": "lessons"
+    "lessonLabel": "lessons",
+    "noVideoContent": "Video content is not available yet"
   },
   "notifications": {
     "title": "Notifications",
@@ -473,6 +477,7 @@
   },
   "teacher": {
     "myCourses": "My Courses",
+    "backToDashboard": "Back to dashboard",
     "curriculum": "Curriculum",
     "createLesson": "Add Lesson",
     "editLesson": "Edit Lesson",
@@ -1115,7 +1120,7 @@
     "proof": "Proof",
     "verify": "Verify",
     "adminShowingOf": "Showing {shown} of {total} orders",
-    "adminOrderDetail": "Order #{id}",
+    "adminOrderDetail": "Detail",
     "adminOrderSubtitle": "Review payment proof and verify the order.",
     "backToList": "Back to list",
     "orderMeta": "Order Details",

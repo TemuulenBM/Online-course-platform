@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learnify Admin - User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-primary">Learnify</h2>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<div class="px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Үндсэн</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Хянах самбар</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Хэрэглэгчид</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-sm font-medium">Хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Төлбөр</span>
+</a>
+<div class="pt-6 px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Тохиргоо</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Систем тохиргоо</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 px-2">
+<div class="size-10 rounded-full bg-primary/20 bg-cover bg-center" data-alt="Admin user profile avatar thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA25u6tH3QdPev6tXKGqH9C9U6HyhY9iJwZLm9uiUCAX5vEa3getehDnasfg5HUU8i4tDadHcf7eigHdG3YWfalMpYWqCIZg2Px02NKq5okyIheBA7Vz6DBwiYB2CwS8U8KvxphT-s8Hk4mPuZ56iBLb5xSXHjD2A_wDJ40jLsVvfQccgSa5a4qCWTHNlZLrpNwLVpx5ChBbbRcgBA6XmSnGttsjRs_Od3SyiZ-HN9DUIwcUEEgEWxLItxdgS89SYEefGY6PpkaB4A')"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold truncate">Админ Бат</span>
+<span class="text-xs text-slate-500">Систем администратор</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-primary/10 flex items-center justify-between px-8 shrink-0">
+<div class="flex-1 max-w-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-background-light dark:bg-background-dark border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50" placeholder="Хэрэглэгч хайх..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-2xl">help</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="flex-1 overflow-y-auto p-8">
+<!-- Page Title & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">Хэрэглэгчийн удирдлага</h1>
+<p class="text-slate-500">Нийт бүртгэлтэй хэрэглэгчдийн мэдээлэл болон эрх удирдах хэсэг</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">person_add</span>
+<span>Шинэ хэрэглэгч</span>
+</button>
+<button class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-primary/20 px-4 py-2 rounded-lg font-medium hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>Экспорт</span>
+</button>
+</div>
+</div>
+<!-- Filters -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 flex flex-wrap gap-4 items-center mb-6">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-slate-500">Шүүлтүүр:</span>
+<select class="bg-background-light dark:bg-background-dark border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary/50">
+<option>Бүгд</option>
+<option>STUDENT</option>
+<option>TEACHER</option>
+<option>ADMIN</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-slate-500">Төлөв:</span>
+<select class="bg-background-light dark:bg-background-dark border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary/50">
+<option>Идэвхтэй</option>
+<option>Түр түдгэлзүүлсэн</option>
+<option>Баталгаажаагүй</option>
+</select>
+</div>
+<button class="ml-auto text-primary text-sm font-medium hover:underline">Шүүлтүүр цэвэрлэх</button>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-primary/10">
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Профайл нэр</th>
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Имэйл</th>
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Эрх</th>
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Баталгаажсан</th>
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Бүртгүүлсэн огноо</th>
+<th class="px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300 text-right">Үйлдэл</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<!-- Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center font-bold text-xs text-primary">Б</div>
+<span class="text-sm font-medium">Бат-Очир</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">bat.ochir@example.mn</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">ADMIN</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-green-500">
+<span class="material-symbols-outlined text-base">verified</span>
+<span class="text-xs font-medium">Тийм</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">2023-10-01</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Эрх өөрчлөх">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-green-100 flex items-center justify-center font-bold text-xs text-green-600">С</div>
+<span class="text-sm font-medium">Сарантуяа</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">saraa@learnify.mn</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">TEACHER</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-green-500">
+<span class="material-symbols-outlined text-base">verified</span>
+<span class="text-xs font-medium">Тийм</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">2023-11-15</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Эрх өөрчлөх">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-100 flex items-center justify-center font-bold text-xs text-blue-600">Д</div>
+<span class="text-sm font-medium">Доржпүрэв</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">dorj88@gmail.com</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">STUDENT</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-slate-400">
+<span class="material-symbols-outlined text-base">pending</span>
+<span class="text-xs font-medium">Үгүй</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">2024-01-20</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Эрх өөрчлөх">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-100 flex items-center justify-center font-bold text-xs text-blue-600">Ц</div>
+<span class="text-sm font-medium">Цэцэгээ</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">tsetseg.un@yahoo.com</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">STUDENT</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-green-500">
+<span class="material-symbols-outlined text-base">verified</span>
+<span class="text-xs font-medium">Тийм</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">2024-02-10</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Эрх өөрчлөх">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Устгах">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between border-t border-primary/10">
+<div class="text-sm text-slate-500">
+                            Нийт 148 хэрэглэгчээс 1-4 харуулж байна
+                        </div>
+<div class="flex gap-1">
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded-lg bg-primary text-white text-sm font-medium">1</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 text-sm font-medium">2</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 text-sm font-medium">3</button>
+<button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

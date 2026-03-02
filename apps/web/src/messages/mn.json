@@ -114,6 +114,7 @@
     "getPremium": "Премиум авах",
     "upgradeDescription": "Онцгой хандалт, дэвшилтэт хэрэгсэл, тусламж авах",
     "certificates": "Сертификатууд",
+    "liveSessions": "Шууд хичээлүүд",
     "teacherCourses": "Сургалт удирдах",
     "adminPanel": "Админ хэсэг",
     "teacherSection": "Багшийн",
@@ -145,6 +146,8 @@
     "weekly": "Долоо хоног",
     "monthly": "Сар",
     "hours": "Ц",
+    "studyHours": "Суралцсан цаг",
+    "today": "Өнөөдөр",
     "listTask": "Даалгаврууд",
     "dueDate": "Хугацаа"
   },
@@ -467,7 +470,8 @@
     "enrollToAccessDesc": "Энэхүү хичээлийг үзэхийн тулд та тухайн курст бүртгүүлсэн байх шаардлагатай.",
     "enrollNowBtn": "Одоо бүртгүүлэх",
     "quiz": "Шалгалт",
-    "lessonLabel": "хичээл"
+    "lessonLabel": "хичээл",
+    "noVideoContent": "Видео контент одоогоор байхгүй байна"
   },
   "notifications": {
     "title": "Мэдэгдлүүд",
@@ -504,6 +508,7 @@
   },
   "teacher": {
     "myCourses": "Миний сургалтууд",
+    "backToDashboard": "Хяналтын самбар руу буцах",
     "curriculum": "Хичээлийн агуулга",
     "createLesson": "Хичээл нэмэх",
     "editLesson": "Хичээл засах",
@@ -1240,7 +1245,7 @@
     "proof": "Баримт",
     "verify": "Шалгах",
     "adminShowingOf": "Нийт {total} захиалгаас {shown} үзүүлж байна",
-    "adminOrderDetail": "Захиалга #{id}",
+    "adminOrderDetail": "Дэлгэрэнгүй",
     "adminOrderSubtitle": "Хэрэглэгчийн төлбөрийн баримт болон мэдээллийг шалгах.",
     "backToList": "Жагсаалт руу буцах",
     "orderMeta": "Үйлчлүүлэгчийн мэдээлэл",

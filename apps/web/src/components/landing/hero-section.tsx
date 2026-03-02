@@ -112,8 +112,8 @@ export function HeroSection() {
                 style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#FF6B6B]/10 flex items-center justify-center">
-                    <Award className="size-5 text-[#FF6B6B]" />
+                  <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
+                    <Award className="size-5 text-destructive" />
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gray-900 dark:text-white">200+</p>
@@ -142,12 +142,12 @@ export function HeroSection() {
                 {/* Graduation cap */}
                 <path d="M200 140 L240 160 L200 180 L160 160 Z" fill="#2E3035" />
                 <path d="M200 180 L200 155 L240 160 L200 180Z" fill="#1B1B1B" />
-                <rect x="197" y="130" width="6" height="15" rx="3" fill="#FF6B6B" />
-                <circle cx="200" cy="128" r="5" fill="#FF6B6B" />
+                <rect x="197" y="130" width="6" height="15" rx="3" fill="var(--destructive)" />
+                <circle cx="200" cy="128" r="5" fill="var(--destructive)" />
 
                 {/* Тасалбар шугамууд */}
                 <circle cx="300" cy="150" r="4" fill="#8A93E5" opacity="0.4" />
-                <circle cx="100" cy="250" r="6" fill="#FF6B6B" opacity="0.3" />
+                <circle cx="100" cy="250" r="6" fill="var(--destructive)" opacity="0.3" />
                 <circle cx="320" cy="280" r="3" fill="#FFD166" opacity="0.5" />
                 <rect
                   x="90"
@@ -165,7 +165,7 @@ export function HeroSection() {
                   width="15"
                   height="15"
                   rx="3"
-                  fill="#FF6B6B"
+                  fill="var(--destructive)"
                   opacity="0.15"
                   transform="rotate(-20 297 227)"
                 />

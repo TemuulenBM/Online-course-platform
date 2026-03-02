@@ -81,7 +81,7 @@ export function AvatarCropModal({ open, imageSrc, onClose, onCropDone }: AvatarC
             step={0.1}
             value={zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
-            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#9c7aff]"
+            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary"
           />
         </div>
 
@@ -90,7 +90,7 @@ export function AvatarCropModal({ open, imageSrc, onClose, onCropDone }: AvatarC
             type="button"
             onClick={onClose}
             disabled={isSaving}
-            className="px-6 py-2.5 bg-[#f6f5f8] text-slate-600 font-semibold rounded-xl hover:bg-[#9c7aff]/10 hover:text-[#9c7aff] transition-all disabled:opacity-50"
+            className="px-6 py-2.5 bg-muted text-slate-600 font-semibold rounded-xl hover:bg-primary/10 hover:text-primary transition-all disabled:opacity-50"
           >
             Цуцлах
           </button>
@@ -98,7 +98,7 @@ export function AvatarCropModal({ open, imageSrc, onClose, onCropDone }: AvatarC
             type="button"
             onClick={handleSave}
             disabled={isSaving || !croppedAreaPixels}
-            className="px-8 py-2.5 bg-[#9c7aff] text-white font-bold rounded-xl shadow-lg shadow-[#9c7aff]/25 hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
+            className="px-8 py-2.5 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
           >
             {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
             Хадгалах

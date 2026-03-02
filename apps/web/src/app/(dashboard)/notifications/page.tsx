@@ -88,9 +88,9 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white">{t('title')}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
             {unreadCount > 0 && (
-              <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#FF6B6B] text-white">
+              <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-destructive text-white">
                 {t('unreadCount', { count: unreadCount })}
               </span>
             )}

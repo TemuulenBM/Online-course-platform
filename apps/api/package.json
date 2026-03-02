@@ -16,7 +16,8 @@
     "clean": "rm -rf dist",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev --config prisma/prisma.config.ts",
-    "db:seed": "ts-node prisma/seed.ts"
+    "db:seed": "ts-node prisma/seed.ts",
+    "db:cleanup": "ts-node prisma/cleanup.ts"
   },
   "dependencies": {
     "@nestjs/bull": "^10.2.0",

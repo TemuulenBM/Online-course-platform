@@ -68,6 +68,12 @@ export const QUERY_KEYS = {
   },
   admin: {
     users: (params?: object) => ['admin', 'users', params] as const,
+    health: ['admin', 'health'] as const,
+    moderationStats: ['admin', 'moderation-stats'] as const,
+    flaggedContent: (params?: object) => ['admin', 'flagged-content', params] as const,
+    auditLogs: (params?: object) => ['admin', 'audit-logs', params] as const,
+    auditLogDetail: (id: string) => ['admin', 'audit-logs', 'detail', id] as const,
+    settings: (category?: string) => ['admin', 'settings', category] as const,
   },
   payments: {
     myOrders: (params?: object) => ['payments', 'orders', 'my', params] as const,
@@ -76,6 +82,28 @@ export const QUERY_KEYS = {
     myInvoices: (params?: object) => ['payments', 'invoices', 'my', params] as const,
     invoiceDetail: (id: string) => ['payments', 'invoices', 'detail', id] as const,
     mySubscription: ['payments', 'subscription', 'my'] as const,
+  },
+  analytics: {
+    overview: ['analytics', 'overview'] as const,
+    revenue: (params?: object) => ['analytics', 'revenue', params] as const,
+    enrollmentTrend: (params?: object) => ['analytics', 'enrollment-trend', params] as const,
+    popularCourses: (limit?: number) => ['analytics', 'popular-courses', limit] as const,
+    courseStats: (courseId: string) => ['analytics', 'course', courseId] as const,
+    courseStudents: (courseId: string, params?: object) =>
+      ['analytics', 'course', courseId, 'students', params] as const,
+    courseLessons: (courseId: string) => ['analytics', 'course', courseId, 'lessons'] as const,
+    events: (params?: object) => ['analytics', 'events', params] as const,
+    platformStats: ['analytics', 'platform-stats'] as const,
+    pendingItems: ['analytics', 'pending-items'] as const,
+    recentActivity: (limit?: number) => ['analytics', 'recent-activity', limit] as const,
+  },
+  liveSessions: {
+    upcoming: (params?: object) => ['live-sessions', 'upcoming', params] as const,
+    byCourse: (courseId: string, params?: object) =>
+      ['live-sessions', 'course', courseId, params] as const,
+    byLesson: (lessonId: string) => ['live-sessions', 'lesson', lessonId] as const,
+    detail: (id: string) => ['live-sessions', 'detail', id] as const,
+    attendees: (id: string, params?: object) => ['live-sessions', 'attendees', id, params] as const,
   },
 } as const;
 
@@ -137,6 +165,21 @@ export const ROUTES = {
   CHECKOUT: (courseId: string) => `/checkout/${courseId}` as const,
   INVOICES: '/invoices',
   INVOICE_DETAIL: (id: string) => `/invoices/${id}` as const,
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_SETTINGS: '/admin/settings',
+  ADMIN_AUDIT_LOGS: '/admin/audit-logs',
+  ADMIN_MODERATION: '/admin/moderation',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_ORDER_DETAIL: (id: string) => `/admin/orders/${id}` as const,
+  ADMIN_ANALYTICS: '/admin/analytics',
+  ADMIN_ANALYTICS_REVENUE: '/admin/analytics/revenue',
+  ADMIN_ANALYTICS_ENROLLMENTS: '/admin/analytics/enrollment-trends',
+  ADMIN_ANALYTICS_POPULAR_COURSES: '/admin/analytics/popular-courses',
+  ADMIN_ANALYTICS_EVENTS: '/admin/analytics/events',
+  TEACHER_COURSE_ANALYTICS: (courseId: string) => `/teacher/courses/${courseId}/analytics` as const,
+  LIVE_SESSIONS: '/live-sessions',
+  LIVE_CLASSROOM: (sessionId: string) => `/live-session/${sessionId}` as const,
+  COURSE_LIVE_SESSIONS: (slug: string) => `/courses/${slug}/live-sessions` as const,
+  TEACHER_LIVE_SESSIONS: (courseId: string) =>
+    `/teacher/courses/${courseId}/live-sessions` as const,
 } as const;

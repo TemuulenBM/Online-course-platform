@@ -3,14 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { BookOpen, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, BookOpen, LayoutGrid } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
 import { useMyProfile } from '@/hooks/api';
 import { LearnifyLogo } from '@/components/layout/learnify-logo';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +20,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
 /** Teacher sidebar навигацийн зүйлс */
@@ -28,13 +28,6 @@ const navItems = [
   { href: '/teacher/courses', icon: BookOpen, labelKey: 'myCourses' },
   { href: '/dashboard', icon: LayoutGrid, labelKey: 'dashboard' },
 ] as const;
-
-/** Role badge-ийн өнгөний mapping */
-const roleBadgeVariants: Record<string, string> = {
-  admin: 'bg-red-100 text-red-700',
-  teacher: 'bg-blue-100 text-blue-700',
-  student: 'bg-green-100 text-green-700',
-};
 
 export function TeacherSidebar() {
   const pathname = usePathname();
@@ -53,14 +46,14 @@ export function TeacherSidebar() {
 
   return (
     <Sidebar collapsible="offcanvas" className="border-none bg-background">
-      <SidebarHeader className="px-6 pt-8 pb-6">
-        <LearnifyLogo href="/teacher/courses" className="pl-2" />
+      <SidebarHeader className="px-5 pt-7 pb-4">
+        <LearnifyLogo href="/teacher/courses" />
       </SidebarHeader>
 
       <SidebarContent className="px-3">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu className="gap-0.5">
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
                 return (
@@ -69,14 +62,14 @@ export function TeacherSidebar() {
                       asChild
                       isActive={isActive}
                       className={cn(
-                        'h-12 rounded-2xl px-5 font-semibold text-gray-500 transition-all',
-                        'hover:bg-white/50 hover:text-gray-900',
+                        'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all',
+                        'hover:bg-primary/10 hover:text-primary',
                         isActive &&
-                          'shadow-[0_4px_15px_-3px_rgba(167,139,250,0.5)] hover:bg-[#9575ED] hover:text-white font-bold',
+                          'bg-primary text-white font-medium hover:bg-primary hover:text-white',
                       )}
                     >
                       <Link href={item.href}>
-                        <item.icon className="size-5" strokeWidth={2.5} />
+                        <item.icon className="size-[18px]" />
                         <span>{t(item.labelKey)}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -88,24 +81,40 @@ export function TeacherSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Хэрэглэгчийн мэдээлэл */}
-      <SidebarFooter className="px-3 pb-6">
-        <div className="flex items-center gap-3 px-3 py-2">
+      {/* Хяналтын самбар руу буцах */}
+      <SidebarFooter className="px-3">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+            >
+              <Link href="/dashboard">
+                <ArrowLeft className="size-4" />
+                <span>{t('backToDashboard')}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
+      {/* Хэрэглэгчийн мэдээлэл — main sidebar-тай ижил */}
+      <SidebarFooter className="px-3 pb-5">
+        <SidebarSeparator className="my-2" />
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted"
+        >
           <Avatar className="size-9 shrink-0">
-            <AvatarFallback className="bg-purple-100 text-purple-700 text-sm font-bold">
+            <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-gray-900">{displayName}</p>
-            <Badge
-              variant="secondary"
-              className={cn('mt-0.5 text-[10px] px-1.5 py-0', roleBadgeVariants[user?.role || ''])}
-            >
-              {tRoles(user?.role || 'student')}
-            </Badge>
+            <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>
+            <p className="text-[11px] text-muted-foreground">{tRoles(user?.role || 'student')}</p>
           </div>
-        </div>
+        </Link>
       </SidebarFooter>
     </Sidebar>
   );

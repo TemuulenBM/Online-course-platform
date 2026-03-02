@@ -15,6 +15,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Video,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -43,6 +44,7 @@ const mainNavItems = [
   { href: '/my-courses', icon: BookMarked, labelKey: 'myCourses' },
   { href: '/progress', icon: BarChart3, labelKey: 'progress' },
   { href: '/certificates', icon: Award, labelKey: 'certificates' },
+  { href: '/live-sessions', icon: Video, labelKey: 'liveSessions' },
   { href: '/orders', icon: ShoppingCart, labelKey: 'orders' },
   { href: '/invoices', icon: Receipt, labelKey: 'invoices' },
 ] as const;
@@ -175,7 +177,7 @@ export function AppSidebar() {
             <SidebarMenuButton
               onClick={() => logoutMutation.mutate()}
               disabled={logoutMutation.isPending}
-              className="h-11 rounded-xl px-4 text-sm font-medium text-red-400 transition-colors hover:bg-red-50 hover:text-red-600"
+              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <LogOut className="size-[18px]" />
               <span>{t('logout')}</span>
@@ -188,7 +190,7 @@ export function AppSidebar() {
         {/* Хэрэглэгчийн мэдээлэл */}
         <Link
           href="/profile"
-          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/60"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted"
         >
           <Avatar className="size-9 shrink-0">
             <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
@@ -196,8 +198,8 @@ export function AppSidebar() {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-gray-900">{displayName}</p>
-            <p className="text-[11px] text-gray-400">{roleName}</p>
+            <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>
+            <p className="text-[11px] text-muted-foreground">{roleName}</p>
           </div>
         </Link>
       </SidebarFooter>

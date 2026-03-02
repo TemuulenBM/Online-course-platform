@@ -88,7 +88,7 @@ export function EnrollmentActivityLog({ logs, isLoading }: EnrollmentActivityLog
                       {new Date(log.createdAt).toLocaleDateString('mn-MN')}
                     </TableCell>
                     <TableCell className="text-slate-500">
-                      {log.user?.email?.split('@')[0] || 'System'}
+                      {log.userEmail?.split('@')[0] || log.userName || 'System'}
                     </TableCell>
                   </TableRow>
                 );

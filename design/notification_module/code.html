@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="mn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#9c7aff",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#140f23",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen flex-col group/design-root overflow-x-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/10 bg-white dark:bg-slate-900 px-6 lg:px-40 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">Learnify</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-6 lg:px-40 py-10">
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Sidebar -->
+<aside class="w-full lg:w-64 flex flex-col gap-2">
+<div class="flex items-center gap-3 p-3 mb-4">
+<div class="bg-primary/20 rounded-full size-12 flex items-center justify-center text-primary overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Student profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3kE7DO74YtfdcEtsHkqrbM62zpBrMjkhOIPyoemQRj1Z5n4SiuffLt9bFQjlM1t7tjlH8AhkHooRmr3vN7I8zx-1IxvadA9m9gq2VgL6rQJjt7yGHNx8qqaMKIjiu1EwHIFb1513BYUwFK0-iw6FQE6n3QzIzEJOW3zANna8o_XJfk9uX3PWus6UP8TbZdAhEHxEJ_BBpuoE78_wv9JFP5KSvuPDGGJwECZfcRtiVLNnql28TJojV-4VwpWGU6ghtzFCI-auUFe8"/>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-slate-100 text-base font-semibold">Баатар. Э</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Суралцагчийн хэсэг</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/5 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-medium text-sm">Профайл</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/5 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-medium text-sm">Хичээлүүд</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/30" href="#">
+<span class="material-symbols-outlined filled-icon">notifications</span>
+<span class="font-medium text-sm">Мэдэгдэл тохиргоо</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/5 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-medium text-sm">Нууц үг</span>
+</a>
+<div class="h-px bg-slate-200 dark:bg-slate-800 my-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium text-sm">Гарах</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 max-w-2xl">
+<!-- Success Message -->
+<div class="mb-6 flex items-center gap-3 p-4 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl">
+<span class="material-symbols-outlined text-emerald-500">check_circle</span>
+<p class="text-emerald-700 dark:text-emerald-400 text-sm font-medium">Тохиргоо амжилттай хадгалагдлаа</p>
+</div>
+<div class="mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-3xl font-extrabold tracking-tight mb-2">Мэдэгдэл тохиргоо</h2>
+<p class="text-slate-500 dark:text-slate-400">Мэдэгдэл хүлээн авах сувгуудаа тохируулна уу.</p>
+</div>
+<!-- Notification Channels List -->
+<div class="space-y-4 bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<!-- Email Notification (ON) -->
+<div class="flex items-center gap-4 px-4 py-5 justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors border-b border-slate-50 dark:border-slate-800 last:border-0">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-xl bg-primary/10 shrink-0 size-12">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold">Email мэдэгдэл</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Шинэ хичээл болон мэдээллийг и-мэйлээр хүлээн авах</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-8 w-14 cursor-pointer items-center rounded-full bg-primary p-1">
+<input checked="" class="hidden" type="checkbox"/>
+<div class="h-6 w-6 rounded-full bg-white shadow-sm ml-auto"></div>
+</label>
+</div>
+</div>
+<!-- Push Notification (ON) -->
+<div class="flex items-center gap-4 px-4 py-5 justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors border-b border-slate-50 dark:border-slate-800 last:border-0">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-xl bg-primary/10 shrink-0 size-12">
+<span class="material-symbols-outlined">smartphone</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold">Push мэдэгдэл</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Гар утсанд шууд мэдэгдэл ирэх</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-8 w-14 cursor-pointer items-center rounded-full bg-primary p-1">
+<input checked="" class="hidden" type="checkbox"/>
+<div class="h-6 w-6 rounded-full bg-white shadow-sm ml-auto"></div>
+</label>
+</div>
+</div>
+<!-- SMS Notification (OFF) -->
+<div class="flex items-center gap-4 px-4 py-5 justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors border-b border-slate-50 dark:border-slate-800 last:border-0">
+<div class="flex items-center gap-4">
+<div class="text-slate-500 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 shrink-0 size-12">
+<span class="material-symbols-outlined">sms</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold">SMS мэдэгдэл</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Чухал мэдээллийг мессежээр авах</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-8 w-14 cursor-pointer items-center rounded-full bg-slate-200 dark:bg-slate-700 p-1">
+<input class="hidden" type="checkbox"/>
+<div class="h-6 w-6 rounded-full bg-white shadow-sm"></div>
+</label>
+</div>
+</div>
+<!-- In-app Notification (DISABLED/LOCKED) -->
+<div class="flex items-center gap-4 px-4 py-5 justify-between opacity-70 bg-slate-50/50 dark:bg-slate-800/30 rounded-lg border-b border-slate-50 dark:border-slate-800 last:border-0">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-xl bg-primary/20 shrink-0 size-12">
+<span class="material-symbols-outlined">apps</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold">In-app мэдэгдэл</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Платформ доторх мэдэгдлүүд (Заавал идэвхтэй)</p>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-lg">lock</span>
+<label class="relative flex h-8 w-14 cursor-not-allowed items-center rounded-full bg-primary/50 p-1">
+<input checked="" class="hidden" disabled="" type="checkbox"/>
+<div class="h-6 w-6 rounded-full bg-white shadow-sm ml-auto"></div>
+</label>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-end">
+<button class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-10 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+<span>Хадгалах</span>
+<span class="material-symbols-outlined text-xl">save</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer for mobile/bottom visual spacing -->
+<footer class="h-20"></footer>
+</div>
+</body></html>
