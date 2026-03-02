@@ -182,4 +182,7 @@ export const ROUTES = {
   COURSE_LIVE_SESSIONS: (slug: string) => `/courses/${slug}/live-sessions` as const,
   TEACHER_LIVE_SESSIONS: (courseId: string) =>
     `/teacher/courses/${courseId}/live-sessions` as const,
+  MENTORS: '/mentors',
+  PRICING: '/pricing',
+  COMMUNITY: '/community',
 } as const;

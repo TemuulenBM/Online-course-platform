@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LearnifyLogo } from './learnify-logo';
 import { MobileNav } from './mobile-nav';
+import { SearchDialog } from './search-dialog';
 import { ROUTES } from '@/lib/constants';
 import { useAuthStore } from '@/stores/auth-store';
 import { cn } from '@/lib/utils';
@@ -27,9 +27,9 @@ export function Navbar() {
 
   const navLinks = [
     { href: ROUTES.COURSES, label: t('navCourses') },
-    { href: '#mentors', label: t('navMentors') },
-    { href: '#pricing', label: t('navPricing') },
-    { href: '#community', label: t('navCommunity') },
+    { href: ROUTES.MENTORS, label: t('navMentors') },
+    { href: ROUTES.PRICING, label: t('navPricing') },
+    { href: ROUTES.COMMUNITY, label: t('navCommunity') },
   ];
 
   return (
@@ -61,10 +61,8 @@ export function Navbar() {
 
           {/* Баруун хэсэг */}
           <div className="flex items-center gap-2">
-            {/* Хайлтын icon */}
-            <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400">
-              <Search className="size-5" />
-            </Button>
+            {/* Хайлтын icon — SearchDialog trigger */}
+            <SearchDialog />
 
             {/* Auth товчлуурууд — зөвхөн desktop */}
             <div className="hidden lg:flex items-center gap-2">
