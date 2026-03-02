@@ -1,6 +1,6 @@
 import { Global, Module, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Redis from 'ioredis';
+import Redis, { RedisOptions } from 'ioredis';
 import { RedisService, REDIS_CLIENT } from './redis.service';
 
 /**
@@ -14,18 +14,30 @@ import { RedisService, REDIS_CLIENT } from './redis.service';
       provide: REDIS_CLIENT,
       useFactory: (configService: ConfigService) => {
         const logger = new Logger('RedisModule');
-        // REDIS_URL байвал URL-ээр, үгүй бол host/port/password-аар холбогдоно
+        // REDIS_URL байвал Node.js URL class-аар parse хийж host/port/password авна
+        // ioredis нь rediss:// URL-г шууд string-ээр хүлээн авдаггүй тул parse хийх шаардлагатай
         const redisUrl = configService.get<string>('redis.url');
-        const client = redisUrl
-          ? new Redis(redisUrl, { lazyConnect: true })
-          : new Redis({
-              host: configService.get<string>('redis.host'),
-              port: configService.get<number>('redis.port'),
-              password: configService.get<string>('redis.password'),
-              // Upstash болон TLS шаарддаг Redis provider-уудад зориулсан тохиргоо
-              tls: configService.get('redis.tls'),
-              lazyConnect: true,
-            });
+        let redisOptions: RedisOptions;
+        if (redisUrl) {
+          const parsed = new URL(redisUrl);
+          redisOptions = {
+            host: parsed.hostname,
+            port: parseInt(parsed.port || '6379', 10),
+            password: parsed.password || undefined,
+            // rediss:// схем бол TLS идэвхжүүлнэ (Upstash TLS)
+            tls: parsed.protocol === 'rediss:' ? {} : undefined,
+            lazyConnect: true,
+          };
+        } else {
+          redisOptions = {
+            host: configService.get<string>('redis.host'),
+            port: configService.get<number>('redis.port'),
+            password: configService.get<string>('redis.password'),
+            tls: configService.get('redis.tls'),
+            lazyConnect: true,
+          };
+        }
+        const client = new Redis(redisOptions);
 
         client.on('connect', () => {
           logger.log('Redis-тэй амжилттай холбогдлоо');
