@@ -40,9 +40,21 @@ export function useCourseFilters() {
     [searchParams, router, pathname],
   );
 
+  /** sortBy + sortOrder хоёрыг нэг router.push-д хамтад тохируулах */
+  const setSort = useCallback(
+    (sortBy: string, sortOrder: 'asc' | 'desc') => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('sortBy', sortBy);
+      params.set('sortOrder', sortOrder);
+      params.set('page', '1');
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [searchParams, router, pathname],
+  );
+
   const resetFilters = useCallback(() => {
     router.push(pathname);
   }, [router, pathname]);
 
-  return { filters, setFilter, resetFilters };
+  return { filters, setFilter, setSort, resetFilters };
 }

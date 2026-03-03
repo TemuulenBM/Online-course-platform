@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BookOpen, CheckCircle, PlayCircle, Star } from 'lucide-react';
+import { BookOpen, CheckCircle, PlayCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 
@@ -52,9 +52,9 @@ export function CourseHero({ course }: CourseHeroProps) {
         {course.title}
       </h1>
 
-      {/* Instructor + Rating мөр */}
-      <div className="flex items-center gap-4 py-2">
-        {course.instructorName && (
+      {/* Instructor мөр */}
+      {course.instructorName && (
+        <div className="flex items-center gap-4 py-2">
           <div className="flex items-center gap-2">
             <div className="size-10 rounded-full bg-primary/20 flex items-center justify-center">
               <span className="text-sm font-bold text-primary">
@@ -66,14 +66,8 @@ export function CourseHero({ course }: CourseHeroProps) {
               <p className="text-sm font-bold">{course.instructorName}</p>
             </div>
           </div>
-        )}
-        <div className="h-8 w-px bg-slate-200 dark:bg-slate-700" />
-        <div className="flex items-center gap-1 text-amber-500">
-          <Star className="size-4 fill-current" />
-          <span className="font-bold text-slate-900 dark:text-slate-100">4.8</span>
-          <span className="text-slate-400 text-xs">(128 {t('reviews')})</span>
         </div>
-      </div>
+      )}
 
       {/* Хичээлийн тухай */}
       <div className="prose dark:prose-invert max-w-none">
@@ -84,25 +78,17 @@ export function CourseHero({ course }: CourseHeroProps) {
           ))}
         </div>
 
-        {/* Сургах зүйлс жагсаалт */}
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none pl-0">
-          <li className="flex items-start gap-2 text-sm">
-            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
-            {t('learningOutcome1')}
-          </li>
-          <li className="flex items-start gap-2 text-sm">
-            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
-            {t('learningOutcome2')}
-          </li>
-          <li className="flex items-start gap-2 text-sm">
-            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
-            {t('learningOutcome3')}
-          </li>
-          <li className="flex items-start gap-2 text-sm">
-            <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
-            {t('learningOutcome4')}
-          </li>
-        </ul>
+        {/* Сургах зүйлс — жинхэнэ tag-ууд дээр суурилсан */}
+        {course.tags && course.tags.length > 0 && (
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 list-none pl-0">
+            {course.tags.map((tag) => (
+              <li key={tag} className="flex items-start gap-2 text-sm">
+                <CheckCircle className="size-4 text-primary shrink-0 mt-0.5" />
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Tags */}

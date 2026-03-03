@@ -53,7 +53,7 @@ export function CoursesFilterBar({
           onClick={onClearAll}
           className="px-4 py-2.5 min-h-[44px] rounded-full text-sm font-medium text-destructive bg-destructive/10 hover:bg-destructive/20 transition-all whitespace-nowrap"
         >
-          {t('clearFilters')}
+          {t('resetFilters')}
         </button>
       )}
     </div>

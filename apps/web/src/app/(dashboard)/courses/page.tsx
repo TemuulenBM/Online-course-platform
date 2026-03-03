@@ -12,24 +12,40 @@ import { CoursesPagination } from '@/components/courses/courses-pagination';
 
 /** Courses listing page — useSearchParams ашигладаг тул Suspense-д ороох хэрэгтэй */
 function CoursesContent() {
-  const { filters, setFilter, resetFilters } = useCourseFilters();
+  const { filters, setFilter, setSort, resetFilters } = useCourseFilters();
   const { data, isLoading } = useCourseList(filters);
   const { data: categories } = useCategoryTree();
+
+  /** Идэвхтэй шүүлтүүр байгаа эсэхийг шалгах */
+  const hasActiveFilters = !!(
+    filters.search ||
+    filters.categoryId ||
+    filters.difficulty ||
+    (filters.sortBy && filters.sortBy !== 'publishedAt')
+  );
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-10">
       <div className="max-w-7xl mx-auto">
-        {/* Header + Search + Category */}
+        {/* Header + Search + Category + Sort */}
         <CoursesHeader
           search={filters.search}
           categoryId={filters.categoryId}
           categories={categories}
+          sortBy={filters.sortBy}
+          sortOrder={filters.sortOrder}
           onSearchChange={(value) => setFilter('search', value)}
           onCategoryChange={(value) => setFilter('categoryId', value)}
+          onSortChange={setSort}
         />
 
         {/* Түвшин шүүлтүүр */}
-        <CoursesFilterBar difficulty={filters.difficulty} onFilterChange={setFilter} />
+        <CoursesFilterBar
+          difficulty={filters.difficulty}
+          hasActiveFilters={hasActiveFilters}
+          onFilterChange={setFilter}
+          onClearAll={resetFilters}
+        />
 
         {/* Контент */}
         {isLoading ? (
