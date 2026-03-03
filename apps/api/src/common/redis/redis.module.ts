@@ -20,10 +20,17 @@ import { RedisService, REDIS_CLIENT } from './redis.service';
         let redisOptions: RedisOptions;
         if (redisUrl) {
           const parsed = new URL(redisUrl);
+          // REDIS_PASSWORD тусдаа тохируулсан бол үүнийг ашиглана
+          // URL-д {password} placeholder байж болох тул REDIS_PASSWORD давамгайлна
+          const explicitPassword = configService.get<string>('redis.password');
+          const urlPassword =
+            parsed.password && !parsed.password.startsWith('{')
+              ? decodeURIComponent(parsed.password)
+              : undefined;
           redisOptions = {
             host: parsed.hostname,
             port: parseInt(parsed.port || '6379', 10),
-            password: parsed.password || undefined,
+            password: explicitPassword || urlPassword || undefined,
             // rediss:// схем бол TLS идэвхжүүлнэ (Upstash TLS)
             tls: parsed.protocol === 'rediss:' ? {} : undefined,
             lazyConnect: true,
