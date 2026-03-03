@@ -99,13 +99,21 @@ export default function LessonViewerPage({
       } else if (e.key === ' ') {
         e.preventDefault();
         const video = document.querySelector('video');
-        if (video) video.paused ? void video.play() : video.pause();
+        if (video) {
+          if (video.paused) {
+            void video.play();
+          } else {
+            video.pause();
+          }
+        }
       } else if (e.key === 'f' || e.key === 'F') {
         const video = document.querySelector('video');
         if (video) {
-          document.fullscreenElement
-            ? void document.exitFullscreen()
-            : void video.requestFullscreen();
+          if (document.fullscreenElement) {
+            void document.exitFullscreen();
+          } else {
+            void video.requestFullscreen();
+          }
         }
       }
     };
