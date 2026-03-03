@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BookOpen, Star, ShoppingCart, PlayCircle } from 'lucide-react';
+import { BookOpen, ShoppingCart, PlayCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
@@ -71,17 +71,13 @@ export function CourseCard({ course }: CourseCardProps) {
 
         {/* Content */}
         <div className="p-5 flex flex-col gap-3 flex-1">
-          {/* Түвшин + rating */}
-          <div className="flex items-center justify-between">
+          {/* Түвшин */}
+          <div className="flex items-center">
             <span
               className={`text-xs font-semibold px-2 py-0.5 rounded ${difficultyStyles[course.difficulty] || difficultyStyles.beginner}`}
             >
               {t(course.difficulty)}
             </span>
-            <div className="flex items-center text-amber-500 gap-1">
-              <Star className="size-3.5 fill-current" />
-              <span className="text-xs font-bold">4.8</span>
-            </div>
           </div>
 
           {/* Title */}

@@ -10,17 +10,23 @@ interface CoursesHeaderProps {
   search?: string;
   categoryId?: string;
   categories?: Category[];
+  sortBy?: string;
+  sortOrder?: string;
   onSearchChange: (value: string | undefined) => void;
   onCategoryChange: (value: string | undefined) => void;
+  onSortChange: (sortBy: string, sortOrder: 'asc' | 'desc') => void;
 }
 
-/** Courses хуудасны header — гарчиг + хайлт + ангилал dropdown */
+/** Courses хуудасны header — гарчиг + хайлт + ангилал + эрэмбэлэх dropdown */
 export function CoursesHeader({
   search,
   categoryId,
   categories,
+  sortBy,
+  sortOrder,
   onSearchChange,
   onCategoryChange,
+  onSortChange,
 }: CoursesHeaderProps) {
   const t = useTranslations('courses');
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -35,6 +41,19 @@ export function CoursesHeader({
     },
     [onSearchChange],
   );
+
+  /** Sort combined value-г задлан onSortChange дуудах */
+  const handleSortChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const parts = e.target.value.split('_');
+      const sb = parts[0];
+      const so = parts[1] as 'asc' | 'desc';
+      onSortChange(sb, so);
+    },
+    [onSortChange],
+  );
+
+  const sortValue = `${sortBy || 'publishedAt'}_${sortOrder || 'desc'}`;
 
   return (
     <div className="mb-10">
@@ -84,6 +103,24 @@ export function CoursesHeader({
                 </option>
               )),
             )}
+          </select>
+          <ChevronDown className="size-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+        </div>
+        {/* Эрэмбэлэх dropdown */}
+        <div className="relative w-full lg:w-44">
+          <label htmlFor="sort-select" className="sr-only">
+            {t('sortBy')}
+          </label>
+          <select
+            id="sort-select"
+            value={sortValue}
+            onChange={handleSortChange}
+            className="w-full appearance-none pl-4 pr-10 py-3.5 bg-white dark:bg-slate-800 border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer text-sm text-slate-900 dark:text-slate-100"
+          >
+            <option value="publishedAt_desc">{t('newest')}</option>
+            <option value="price_asc">{t('priceAsc')}</option>
+            <option value="price_desc">{t('priceDesc')}</option>
+            <option value="title_asc">{t('sortTitle')}</option>
           </select>
           <ChevronDown className="size-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
         </div>

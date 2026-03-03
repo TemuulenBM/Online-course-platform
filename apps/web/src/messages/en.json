@@ -242,7 +242,8 @@
     "loadMore": "Load more",
     "loginToDiscuss": "Login to participate in discussions",
     "enrollToDiscuss": "Enroll in the course to participate",
-    "noFirstLesson": "No lessons available yet"
+    "noFirstLesson": "No lessons available yet",
+    "sortTitle": "Alphabetical (A-Z)"
   },
   "myCourses": {
     "title": "My Enrollments",

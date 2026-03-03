@@ -88,26 +88,25 @@ export function CourseSidebarMeta({ course }: CourseSidebarMetaProps) {
         <p className="text-[11px] text-center text-slate-400 mt-4">{t('refundPolicy')}</p>
       </div>
 
-      {/* Юу сурах вэ? карт */}
-      <div className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/20">
-        <h5 className="font-bold mb-4 text-sm text-primary uppercase tracking-wider">
-          {t('whatYouLearn')}
-        </h5>
-        <div className="space-y-3">
-          <div className="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            <BadgeCheck className="size-5 text-primary shrink-0" />
-            <span>{t('learningBenefit1')}</span>
-          </div>
-          <div className="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            <BadgeCheck className="size-5 text-primary shrink-0" />
-            <span>{t('learningBenefit2')}</span>
-          </div>
-          <div className="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-            <BadgeCheck className="size-5 text-primary shrink-0" />
-            <span>{t('learningBenefit3')}</span>
+      {/* Юу сурах вэ? карт — зөвхөн tag байгаа үед харуулна */}
+      {course.tags && course.tags.length > 0 && (
+        <div className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/20">
+          <h5 className="font-bold mb-4 text-sm text-primary uppercase tracking-wider">
+            {t('whatYouLearn')}
+          </h5>
+          <div className="space-y-3">
+            {course.tags.slice(0, 3).map((tag) => (
+              <div
+                key={tag}
+                className="flex gap-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300"
+              >
+                <BadgeCheck className="size-5 text-primary shrink-0" />
+                <span>{tag}</span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
