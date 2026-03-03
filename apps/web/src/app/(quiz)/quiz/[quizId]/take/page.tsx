@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { QuizHeader } from '@/components/quiz/QuizHeader';
+import { QuizHelpDialog } from '@/components/quiz/QuizHelpDialog';
 import { QuestionRenderer } from '@/components/quiz/QuestionRenderer';
 import { QuestionNavigator } from '@/components/quiz/QuestionNavigator';
 import { SubmitConfirmDialog } from '@/components/quiz/SubmitConfirmDialog';
@@ -25,6 +26,7 @@ export default function QuizTakePage() {
   const quizId = params.quizId;
 
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const [showHelpDialog, setShowHelpDialog] = useState(false);
 
   /** Zustand store actions */
   const initAttempt = useQuizStore((s) => s.initAttempt);
@@ -50,6 +52,9 @@ export default function QuizTakePage() {
 
   /** Auto-submit reference (давхар дуудагдахаас хамгаалах) */
   const hasAutoSubmittedRef = useRef(false);
+  /** Хугацааны анхааруулга reference-ууд */
+  const hasWarned5MinRef = useRef(false);
+  const hasWarned1MinRef = useRef(false);
 
   /** Оролдлого эхлүүлэх / бэлэн оролдлого сэргээх */
   useEffect(() => {
@@ -72,6 +77,19 @@ export default function QuizTakePage() {
       },
     });
   }, [isHydrated, quiz, quizId]);
+
+  /** Хугацааны анхааруулга toast-ууд (5 мин, 1 мин) */
+  useEffect(() => {
+    if (!hasTimeLimit || !storeAttemptId) return;
+    if (timeRemaining <= 300 && timeRemaining > 299 && !hasWarned5MinRef.current) {
+      hasWarned5MinRef.current = true;
+      toast.warning(t('timeWarning5min'));
+    }
+    if (timeRemaining <= 60 && timeRemaining > 59 && !hasWarned1MinRef.current) {
+      hasWarned1MinRef.current = true;
+      toast.error(t('timeWarning1min'));
+    }
+  }, [timeRemaining, hasTimeLimit, storeAttemptId, t]);
 
   /** Хугацаа дуусахад автомат илгээх */
   useEffect(() => {
@@ -136,7 +154,10 @@ export default function QuizTakePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <QuizHeader onSubmit={() => setShowSubmitDialog(true)} />
+      <QuizHeader
+        onSubmit={() => setShowSubmitDialog(true)}
+        onHelp={() => setShowHelpDialog(true)}
+      />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -158,6 +179,9 @@ export default function QuizTakePage() {
         onOpenChange={setShowSubmitDialog}
         onConfirm={handleSubmitConfirm}
       />
+
+      {/* Тусламжийн dialog */}
+      <QuizHelpDialog open={showHelpDialog} onOpenChange={setShowHelpDialog} />
     </div>
   );
 }
