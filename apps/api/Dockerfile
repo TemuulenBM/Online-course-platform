@@ -91,4 +91,5 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
   CMD curl -f http://localhost:3001/api/v1 || exit 1
 
-CMD ["node", "dist/main"]
+# Migration ажиллуулаад сервер эхлүүлнэ — шинэ deploy бүрт DB schema шинэчлэгдэнэ
+CMD ["/bin/sh", "-c", "node_modules/.bin/prisma migrate deploy --config ./prisma/prisma.config.ts && node dist/main"]
