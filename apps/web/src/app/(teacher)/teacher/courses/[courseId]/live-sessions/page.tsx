@@ -66,7 +66,21 @@ export default function TeacherLiveSessionsPage({
       return acc + dur;
     }, 0);
 
-  const weeklyHours = totalHours > 0 ? Math.min(totalHours, 40) : 0;
+  // Энэ долоо хоногийн Monday-аас эхэлсэн session-уудын бодит цаг
+  const thisMonday = (() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    return d;
+  })();
+
+  const weeklyHours = sessions
+    .filter((s) => s.status === 'ended' && new Date(s.scheduledStart) >= thisMonday)
+    .reduce((acc, s) => {
+      return (
+        acc + (new Date(s.scheduledEnd).getTime() - new Date(s.scheduledStart).getTime()) / 3600000
+      );
+    }, 0);
 
   const handleCreate = useCallback(
     (data: CreateLiveSessionData) => {

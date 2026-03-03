@@ -11,7 +11,6 @@ import {
   BookOpen,
   Award,
   Clock,
-  Star,
   ChevronRight,
   Download,
   Share2,
@@ -34,9 +33,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 /** Tab сонголтууд */
 type TabType = 'students' | 'lessons';
-
-/** Долоо хоногийн товч */
-const dayLabels = ['Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Ша', 'Ня'];
 
 const PAGE_LIMIT = 10;
 
@@ -67,13 +63,14 @@ export default function CourseAnalyticsPage() {
     );
   }, [studentsData, studentSearch]);
 
-  /** Completion chart өгөгдөл (placeholder 7 хоног) */
+  /** Хичээл тус бүрийн дуусгалтын хувь — lessonStats-аас авна */
   const completionChartData = useMemo(() => {
-    return dayLabels.map((name) => ({
-      name,
-      rate: Math.round(Math.random() * 40 + 30),
+    if (!lessonStats || lessonStats.length === 0) return [];
+    return lessonStats.slice(0, 7).map((l) => ({
+      name: l.lessonTitle.length > 6 ? l.lessonTitle.slice(0, 6) + '…' : l.lessonTitle,
+      rate: l.completionRate,
     }));
-  }, []);
+  }, [lessonStats]);
 
   /** Төлөвийн badge */
   const getStatusBadge = (status: string) => {
@@ -127,7 +124,7 @@ export default function CourseAnalyticsPage() {
               {course?.title || 'Сургалтын аналитик'}
             </h1>
             <p className="text-slate-500 mt-1">
-              Detailed performance analytics and student engagement metrics
+              Хичээлийн явц болон оюутны идэвхийн дэлгэрэнгүй статистик
             </p>
           </div>
           <div className="flex gap-3">
@@ -173,7 +170,7 @@ export default function CourseAnalyticsPage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-bold">Дуусгалтын хувь (%)</h3>
-                <p className="text-sm text-slate-500">Долоо хоногоор харах</p>
+                <p className="text-sm text-slate-500">Хичээл тус бүрийн дуусгалт</p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-primary">{stats?.completionRate ?? 0}%</p>
@@ -242,7 +239,7 @@ export default function CourseAnalyticsPage() {
         </div>
 
         {/* Quick stats мөр */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
             <div className="size-10 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center rounded-lg">
               <BookOpen className="size-5" />
@@ -270,15 +267,6 @@ export default function CourseAnalyticsPage() {
               <p className="text-xl font-bold">
                 {formatDuration(stats?.totalTimeSpentSeconds ?? 0)}
               </p>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/5 shadow-sm flex items-center gap-4">
-            <div className="size-10 bg-rose-50 dark:bg-rose-900/30 text-rose-600 flex items-center justify-center rounded-lg">
-              <Star className="size-5" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-400">Дундаж үнэлгээ</p>
-              <p className="text-xl font-bold">N/A</p>
             </div>
           </div>
         </div>

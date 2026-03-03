@@ -1,10 +1,12 @@
 'use client';
 
 import { use } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ChevronRight, Loader2 } from 'lucide-react';
 import { StudentAttemptsTable } from '@/components/quiz/StudentAttemptsTable';
 import { useQuizByLessonId } from '@/hooks/api/use-quizzes';
+import { ROUTES } from '@/lib/constants';
 
 /**
  * Оюутнуудын оролдлогын жагсаалт хуудас — Багш/Админ.
@@ -32,16 +34,16 @@ export default function StudentAttemptsPage({
     <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8 space-y-8">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm">
-        <a href="/teacher/courses" className="text-muted-foreground hover:text-primary">
-          Dashboard
-        </a>
+        <Link href={ROUTES.TEACHER_COURSES} className="text-muted-foreground hover:text-primary">
+          Хянах самбар
+        </Link>
         <ChevronRight className="size-4 text-muted-foreground/40" />
-        <a
+        <Link
           href={`/teacher/courses/${courseId}/lessons/${lessonId}/quiz`}
           className="text-muted-foreground hover:text-primary"
         >
-          Quiz
-        </a>
+          Тест тохиргоо
+        </Link>
         <ChevronRight className="size-4 text-muted-foreground/40" />
         <span className="font-medium text-primary">{t('quizAttempts')}</span>
       </nav>
