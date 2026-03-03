@@ -86,6 +86,9 @@ importers:
       compression:
         specifier: ^1.8.1
         version: 1.8.1
+      dotenv:
+        specifier: ^17.3.1
+        version: 17.3.1
       helmet:
         specifier: ^8.1.0
         version: 8.1.0
@@ -174,9 +177,6 @@ importers:
       '@types/sharp':
         specifier: ^0.32.0
         version: 0.32.0
-      dotenv:
-        specifier: ^17.3.1
-        version: 17.3.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.19.11)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.19.11)(typescript@5.9.3))
