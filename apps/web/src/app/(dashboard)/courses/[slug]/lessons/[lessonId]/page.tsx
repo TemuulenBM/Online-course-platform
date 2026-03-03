@@ -1,9 +1,9 @@
 'use client';
 
-import { use } from 'react';
+import { use, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
-import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   useCourseBySlug,
   useCourseLessons,
@@ -14,6 +14,7 @@ import {
   useUpdateVideoPosition,
 } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
+import { ROUTES } from '@/lib/constants';
 import {
   LessonVideoPlayer,
   LessonTextContent,
@@ -37,6 +38,7 @@ export default function LessonViewerPage({
   const t = useTranslations('lessonViewer');
   const tCommon = useTranslations('common');
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const router = useRouter();
 
   /** Data fetching */
   const { data: course, isLoading: courseLoading } = useCourseBySlug(slug);
@@ -77,6 +79,40 @@ export default function LessonViewerPage({
     },
     [isEnrolled, lessonId, videoPositionMutation],
   );
+
+  /** Keyboard shortcuts — J/K: хичээл солих, Space: видео, F: fullscreen
+   *  Rules of Hooks: early return-уудаас ӨМНӨ байх ёстой */
+  useEffect(() => {
+    const sorted = [...(lessons ?? [])].sort((a, b) => a.orderIndex - b.orderIndex);
+    const currentIdx = sorted.findIndex((l) => l.id === lessonId);
+    const prev = currentIdx > 0 ? sorted[currentIdx - 1] : null;
+    const next = currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
+
+    const handleKey = (e: KeyboardEvent) => {
+      // Input/textarea-д бичиж байвал алгасна
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return;
+
+      if (e.key === 'j' || e.key === 'J') {
+        if (next) router.push(ROUTES.LESSON_VIEWER(slug, next.id));
+      } else if (e.key === 'k' || e.key === 'K') {
+        if (prev) router.push(ROUTES.LESSON_VIEWER(slug, prev.id));
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        const video = document.querySelector('video');
+        if (video) video.paused ? void video.play() : video.pause();
+      } else if (e.key === 'f' || e.key === 'F') {
+        const video = document.querySelector('video');
+        if (video) {
+          document.fullscreenElement
+            ? void document.exitFullscreen()
+            : void video.requestFullscreen();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [lessons, lessonId, slug, router]);
 
   /** Loading state */
   if (courseLoading || lessonsLoading || contentLoading) {

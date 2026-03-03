@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BookOpen, ShoppingCart, PlayCircle } from 'lucide-react';
+import { BookOpen, Clock, ShoppingCart, PlayCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
@@ -41,6 +41,11 @@ export function CourseCard({ course }: CourseCardProps) {
   const categorySlug = course.categoryName?.toLowerCase() || '';
   const catBg = categoryBgStyles[categorySlug] || 'bg-primary';
 
+  // Hover preview-д ашиглах duration тооцоол
+  const videoHours = Math.floor(course.durationMinutes / 60);
+  const videoMins = course.durationMinutes % 60;
+  const durationLabel = videoHours > 0 ? `${videoHours}ц ${videoMins}мин` : `${videoMins}мин`;
+
   return (
     <Link href={ROUTES.COURSE_DETAIL(course.slug)}>
       <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col h-full">
@@ -67,6 +72,27 @@ export function CourseCard({ course }: CourseCardProps) {
               </span>
             </div>
           )}
+
+          {/* Hover preview overlay — thumbnail дээр гарч ирэх */}
+          <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-200 z-20 p-5 flex flex-col gap-3 pointer-events-none">
+            <p className="text-white text-xs leading-relaxed line-clamp-5">{course.description}</p>
+            <div className="flex items-center gap-2 text-white/60 text-[10px]">
+              <Clock className="size-3 shrink-0" />
+              <span>{durationLabel}</span>
+            </div>
+            {course.tags && course.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {course.tags.slice(0, 3).map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] px-1.5 py-0.5 bg-white/10 rounded text-white/70"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content */}
