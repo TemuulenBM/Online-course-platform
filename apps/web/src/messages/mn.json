@@ -149,7 +149,13 @@
     "studyHours": "Суралцсан цаг",
     "today": "Өнөөдөр",
     "listTask": "Даалгаврууд",
-    "dueDate": "Хугацаа"
+    "dueDate": "Хугацаа",
+    "continueLearning": "Үргэлжлүүлэх",
+    "upcomingSessions": "Удахгүй болох хичээлүүд",
+    "noUpcomingSessions": "Товлогдсон хичээл байхгүй",
+    "lessonsThisWeek": "хичээл",
+    "done": "Дуусгасан",
+    "progress": "Ахиц"
   },
   "courses": {
     "title": "Сургалтууд",
