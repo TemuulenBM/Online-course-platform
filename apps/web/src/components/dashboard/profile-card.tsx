@@ -1,23 +1,15 @@
 'use client';
 
-import { ChevronDown, MoreVertical, User } from 'lucide-react';
+import { MoreVertical, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMyProfile } from '@/hooks/api';
+import { useMyProfile, useMyProgress } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getFileUrl } from '@/lib/utils';
 
-/** Mock activity өгөгдөл — долоо хоногийн цаг (pixel утга, max ~110px) */
-const ACTIVITY_DATA = [
-  { day: 'Mon', height: 33 },
-  { day: 'Tue', height: 66 },
-  { day: 'Wed', height: 44 },
-  { day: 'Thu', height: 55 },
-  { day: 'Fri', height: 94, active: true },
-  { day: 'Sat', height: 50 },
-  { day: 'Sun', height: 77 },
-];
+/** Долоо хоногийн өдрийн товчлол (Да=Mon, Ня=Sun) */
+const WEEK_DAYS = ['Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя', 'Ня'];
 
 /** Role badge-ийн өнгө */
 const roleBadgeStyle: Record<string, string> = {
@@ -26,11 +18,43 @@ const roleBadgeStyle: Record<string, string> = {
   ADMIN: 'bg-amber-50 text-amber-600',
 };
 
+/**
+ * Энэ долоо хоногийн (Да–Ня) хичээл дуусгасан тоог өдөр тус бүрд тооцоолно.
+ * completedAt нь ISO date string байна.
+ */
+function getWeeklyCompletions(
+  progressList: Array<{ completed: boolean; completedAt: string | null }>,
+): number[] {
+  const now = new Date();
+  /** Энэ долоо хоногийн Даваа гарагийн эхлэл (0:00:00) */
+  const dayOfWeek = now.getDay(); // 0=Ням, 6=Бям
+  const mondayOffset = (dayOfWeek + 6) % 7; // Даваагаас хэдэн өдрийн өмнө
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - mondayOffset);
+  monday.setHours(0, 0, 0, 0);
+
+  const counts = Array(7).fill(0); // Да=0 ... Ня=6
+
+  progressList.forEach((p) => {
+    if (!p.completed || !p.completedAt) return;
+    const completedDate = new Date(p.completedAt);
+    const diffDays = Math.floor(
+      (completedDate.getTime() - monday.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    if (diffDays >= 0 && diffDays < 7) {
+      counts[diffDays]++;
+    }
+  });
+
+  return counts;
+}
+
 export function ProfileCard() {
   const t = useTranslations('dashboard');
   const tr = useTranslations('roles');
   const user = useAuthStore((s) => s.user);
   const { data: profile, isLoading } = useMyProfile();
+  const { data: progressData } = useMyProgress({ page: 1, limit: 50 });
 
   /** Нэрийн эхний үсэг */
   const initials = profile
@@ -43,6 +67,14 @@ export function ProfileCard() {
       : (user?.email?.split('@')[0] ?? '');
 
   const roleKey = user?.role ?? 'STUDENT';
+
+  /** Энэ долоо хоногийн хичээл дуусгасан тоо (өдөр тус бүр) */
+  const weekCounts = getWeeklyCompletions(progressData?.data ?? []);
+  const totalThisWeek = weekCounts.reduce((a, b) => a + b, 0);
+  const maxCount = Math.max(...weekCounts, 1);
+
+  /** Өнөөдрийн индекс (Да=0 ... Ня=6) */
+  const todayIdx = (new Date().getDay() + 6) % 7;
 
   return (
     <div className="flex flex-col bg-card rounded-2xl p-6 border border-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.02)]">
@@ -81,23 +113,25 @@ export function ProfileCard() {
         )}
       </div>
 
-      {/* Идэвхийн график */}
+      {/* Идэвхийн график — энэ долоо хоногийн жинхэнэ өгөгдөл */}
       <div className="pt-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-5">
           <div className="flex flex-col">
             <span className="text-xs font-bold text-muted-foreground mb-0.5">{t('activity')}</span>
-            <span className="text-lg font-bold text-foreground">3.5 {t('hours')}</span>
+            <span className="text-lg font-bold text-foreground">
+              {totalThisWeek} {t('lessonsThisWeek')}
+            </span>
           </div>
-          <button className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground bg-white border border-border px-3 py-1.5 rounded-lg hover:bg-muted">
-            {t('weekly')} <ChevronDown className="w-3.5 h-3.5" />
-          </button>
+          <span className="text-xs font-bold text-muted-foreground bg-muted border border-border px-3 py-1.5 rounded-lg">
+            {t('weekly')}
+          </span>
         </div>
 
         {/* Legend */}
         <div className="flex items-center gap-4 mb-4">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-sm bg-violet-300" />
-            <span className="text-[10px] text-muted-foreground font-medium">{t('studyHours')}</span>
+            <span className="text-[10px] text-muted-foreground font-medium">{t('completed')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-sm bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]" />
@@ -105,35 +139,32 @@ export function ProfileCard() {
           </div>
         </div>
 
-        {/* Bar chart */}
-        <div className="flex items-end gap-1" role="img" aria-label={t('activity')}>
-          {/* Y тэнхлэг */}
-          <div className="flex flex-col justify-between h-36 pr-1 shrink-0">
-            <span className="text-[9px] text-muted-foreground">10h</span>
-            <span className="text-[9px] text-muted-foreground">5h</span>
-            <span className="text-[9px] text-muted-foreground">0h</span>
-          </div>
-
-          <div className="flex items-end justify-between flex-1 h-36 relative px-1">
-            <div className="absolute top-0 left-[58%] -translate-x-1/2 bg-white border border-border shadow-lg text-[10px] font-bold px-3 py-1.5 rounded-lg text-muted-foreground z-10">
-              10 hours
-            </div>
-            <div className="absolute top-[24px] left-[58%] -translate-x-1/2 w-px h-[8px] bg-gray-200 z-0" />
-
-            {ACTIVITY_DATA.map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2.5 flex-1 group">
+        {/* Bar chart — жинхэнэ өгөгдлөөр */}
+        <div
+          className="flex items-end justify-between gap-1 h-28"
+          role="img"
+          aria-label={t('activity')}
+        >
+          {WEEK_DAYS.map((day, i) => {
+            const barHeight = Math.max(6, Math.round((weekCounts[i] / maxCount) * 104));
+            const isToday = i === todayIdx;
+            return (
+              <div key={i} className="flex flex-col items-center gap-2 flex-1">
                 <div
-                  className={`w-full max-w-[28px] rounded-lg transition-all ${
-                    item.active
+                  className={`w-full max-w-[28px] rounded-lg transition-all hover:opacity-80 ${
+                    isToday
                       ? 'bg-[repeating-linear-gradient(45deg,rgba(167,139,250,0.7),rgba(167,139,250,0.7)_3px,#A78BFA_3px,#A78BFA_6px)]'
-                      : 'bg-violet-300'
-                  } hover:opacity-80`}
-                  style={{ height: `${item.height}px` }}
+                      : weekCounts[i] > 0
+                        ? 'bg-violet-300'
+                        : 'bg-muted'
+                  }`}
+                  style={{ height: `${barHeight}px` }}
+                  title={`${day}: ${weekCounts[i]} хичээл`}
                 />
-                <span className="text-[10px] font-bold text-muted-foreground">{item.day}</span>
+                <span className="text-[10px] font-bold text-muted-foreground">{day}</span>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

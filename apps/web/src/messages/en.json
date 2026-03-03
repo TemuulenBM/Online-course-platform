@@ -149,7 +149,13 @@
     "studyHours": "Study hours",
     "today": "Today",
     "listTask": "List Task",
-    "dueDate": "Due date"
+    "dueDate": "Due date",
+    "continueLearning": "Continue Learning",
+    "upcomingSessions": "Upcoming Sessions",
+    "noUpcomingSessions": "No upcoming sessions",
+    "lessonsThisWeek": "lessons",
+    "done": "Done",
+    "progress": "Progress"
   },
   "courses": {
     "title": "Courses",
