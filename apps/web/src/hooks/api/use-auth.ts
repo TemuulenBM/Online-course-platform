@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/auth-store';
 import { authService } from '@/lib/api-services/auth.service';
 import { ROUTES } from '@/lib/constants';
 
-/** Нэвтрэх mutation */
+/** Нэвтрэх mutation — rememberMe=true бол 30 хоног, false бол 7 хоногийн cookie */
 export function useLogin() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -14,13 +14,21 @@ export function useLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: authService.login,
-    onSuccess: (data) => {
+    mutationFn: ({
+      data,
+    }: {
+      data: Parameters<typeof authService.login>[0];
+      rememberMe?: boolean;
+    }) => authService.login(data),
+    onSuccess: (data, variables) => {
       setAuth(data.user, {
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
       });
-      document.cookie = 'ocp-auth=1; path=/; max-age=604800; SameSite=Lax';
+
+      /** rememberMe=true → 30 хоног, false → 7 хоног */
+      const maxAge = variables.rememberMe ? 2592000 : 604800;
+      document.cookie = `ocp-auth=1; path=/; max-age=${maxAge}; SameSite=Lax`;
       queryClient.clear();
 
       const callbackUrl = searchParams.get('callbackUrl');

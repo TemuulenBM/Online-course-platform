@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, GraduationCap, LogIn, Mail } from 'lucide-react';
+import { Check, Eye, EyeOff, GraduationCap, LogIn, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { loginSchema, type LoginInput } from '@ocp/validation';
@@ -17,6 +17,7 @@ import { ROUTES } from '@/lib/constants';
 export default function LoginPage() {
   const t = useTranslations('auth');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const loginMutation = useLogin();
 
   const {
@@ -32,7 +33,7 @@ export default function LoginPage() {
   });
 
   const onSubmit = (data: LoginInput) => {
-    loginMutation.mutate(data);
+    loginMutation.mutate({ data, rememberMe });
   };
 
   return (
@@ -124,9 +125,16 @@ export default function LoginPage() {
             />
 
             {/* Намайг сана */}
-            <div className="flex items-center gap-2.5">
-              <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                <div className="w-2.5 h-2.5 rounded-full" />
+            <div
+              className="flex items-center gap-2.5 cursor-pointer select-none"
+              onClick={() => setRememberMe((v) => !v)}
+            >
+              <div
+                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                  rememberMe ? 'bg-primary border-primary' : 'border-gray-300 hover:border-primary'
+                }`}
+              >
+                {rememberMe && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
               </div>
               <span className="text-sm text-gray-600">{t('rememberMe')}</span>
             </div>
