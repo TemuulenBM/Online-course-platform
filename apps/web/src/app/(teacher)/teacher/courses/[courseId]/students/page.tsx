@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ChevronRight,
-  UserPlus,
   Users,
   Download,
   Search,
@@ -20,7 +19,6 @@ import { useCourseById } from '@/hooks/api';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatNumber, formatDuration, exportToCsv } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/lib/constants';
@@ -180,23 +178,6 @@ export default function CourseStudentsPage() {
               <Download className="size-4" />
               CSV татах
             </button>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    disabled
-                    className="flex items-center gap-2 rounded-xl h-10 px-4 bg-primary/50 text-white text-sm font-bold cursor-not-allowed shadow-lg shadow-primary/20"
-                  >
-                    <UserPlus className="size-4" />
-                    Оюутныг урих
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Удахгүй нээгдэнэ</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
           </div>
         </div>
 
@@ -368,7 +349,7 @@ export default function CourseStudentsPage() {
               <UserCheck className="size-5" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Энэ сарын элсэлт</p>
+              <p className="text-sm text-slate-500">Идэвхтэй оюутнууд</p>
               <h3 className="text-2xl font-bold">+{formatNumber(stats?.activeEnrollments ?? 0)}</h3>
             </div>
           </div>

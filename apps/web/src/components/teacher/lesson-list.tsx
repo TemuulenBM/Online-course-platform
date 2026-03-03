@@ -79,8 +79,8 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
   );
   const previewCount = useMemo(() => sorted.filter((l) => l.isPreview).length, [sorted]);
 
-  const totalMinutes = Math.floor(totalDurationMinutes);
-  const totalSeconds = Math.round((totalDurationMinutes - totalMinutes) * 60);
+  const totalHours = Math.floor(totalDurationMinutes / 60);
+  const totalMins = totalDurationMinutes % 60;
 
   /* --- Handlers --- */
   const handleCreate = () => {
@@ -291,7 +291,7 @@ export function LessonList({ courseId, lessons, courseName }: LessonListProps) {
           <div>
             <p className="text-xs text-slate-500">{t('totalDuration')}</p>
             <p className="text-xl font-black">
-              {totalMinutes}м {totalSeconds}с
+              {totalHours > 0 ? `${totalHours}ц ${totalMins}м` : `${totalMins}м`}
             </p>
           </div>
         </div>
