@@ -49,16 +49,16 @@ This project is **not a tutorial clone** — it is a complete, production-ready 
 
 ## Key Stats
 
-| Metric | Count |
-|---|---|
-| Backend modules (NestJS) | **15** |
-| REST API endpoints | **100+** |
-| Unit tests | **700+** |
-| Shared packages | **6** |
-| PostgreSQL tables | **20+** |
-| MongoDB collections | **5** |
-| Bull Queue processors | **5** |
-| Docker services (prod) | **6** |
+| Metric                   | Count    |
+| ------------------------ | -------- |
+| Backend modules (NestJS) | **15**   |
+| REST API endpoints       | **100+** |
+| Unit tests               | **700+** |
+| Shared packages          | **6**    |
+| PostgreSQL tables        | **20+**  |
+| MongoDB collections      | **5**    |
+| Bull Queue processors    | **5**    |
+| Docker services (prod)   | **6**    |
 
 ---
 
@@ -165,48 +165,48 @@ Live video:
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| **Frontend** | Next.js 16, React 19, Tailwind CSS 4, shadcn/ui, TanStack Query 5, Zustand 5 |
-| **Backend** | NestJS 10, TypeScript 5.6, Domain-Driven Design |
-| **Relational DB** | PostgreSQL 16 via Prisma 7 |
-| **Document DB** | MongoDB 7 via Mongoose 8 (quiz questions, discussions, course content) |
-| **Caching & Queue** | Redis 7 + Bull Queue (certificates, notifications, invoices, analytics) |
-| **Search** | Elasticsearch |
-| **Mobile** | React Native + Expo 52 + Expo Router |
-| **Live Video** | Agora SDK (WebRTC token generation on server) |
-| **File Storage** | Cloudflare R2 (prod) / Local filesystem (dev) — swappable via DI token |
-| **Video Streaming** | Cloudflare Stream |
-| **PDF Generation** | Puppeteer-core (certificates A4 landscape, invoices A4 portrait) |
-| **Email** | SendGrid |
-| **SMS** | Twilio |
-| **Auth** | JWT access (15 min) + refresh tokens (7 days) with rotation, bcrypt passwords |
-| **CI/CD** | GitHub Actions — lint · test · build · Docker verify on every push |
-| **Container** | Docker multi-stage builds, non-root user, GHCR registry |
-| **Reverse Proxy** | Nginx — routing, gzip, security headers, 100 MB upload limit |
-| **Monorepo** | Turborepo + pnpm workspaces (`@ocp/` namespace) |
+| Category            | Technology                                                                    |
+| ------------------- | ----------------------------------------------------------------------------- |
+| **Frontend**        | Next.js 16, React 19, Tailwind CSS 4, shadcn/ui, TanStack Query 5, Zustand 5  |
+| **Backend**         | NestJS 10, TypeScript 5.6, Domain-Driven Design                               |
+| **Relational DB**   | PostgreSQL 16 via Prisma 7                                                    |
+| **Document DB**     | MongoDB 7 via Mongoose 8 (quiz questions, discussions, course content)        |
+| **Caching & Queue** | Redis 7 + Bull Queue (certificates, notifications, invoices, analytics)       |
+| **Search**          | Elasticsearch                                                                 |
+| **Mobile**          | React Native + Expo 52 + Expo Router                                          |
+| **Live Video**      | Agora SDK (WebRTC token generation on server)                                 |
+| **File Storage**    | Cloudflare R2 (prod) / Local filesystem (dev) — swappable via DI token        |
+| **Video Streaming** | Cloudflare Stream                                                             |
+| **PDF Generation**  | Puppeteer-core (certificates A4 landscape, invoices A4 portrait)              |
+| **Email**           | SendGrid                                                                      |
+| **SMS**             | Twilio                                                                        |
+| **Auth**            | JWT access (15 min) + refresh tokens (7 days) with rotation, bcrypt passwords |
+| **CI/CD**           | GitHub Actions — lint · test · build · Docker verify on every push            |
+| **Container**       | Docker multi-stage builds, non-root user, GHCR registry                       |
+| **Reverse Proxy**   | Nginx — routing, gzip, security headers, 100 MB upload limit                  |
+| **Monorepo**        | Turborepo + pnpm workspaces (`@ocp/` namespace)                               |
 
 ---
 
 ## Module System
 
-| Module | Endpoints | Highlights |
-|---|---|---|
-| **Auth** | 7 | JWT rotation, refresh token hashing, session management |
-| **Users** | 7 | Redis-cached profiles, role management |
-| **Courses** | 9 + 5 categories | Slug generation, DRAFT→PUBLISHED→ARCHIVED flow |
-| **Lessons** | 7 | Drag-and-drop reorder, lesson type enum |
-| **Content** | 6 | MongoDB content, S3 upload, local dev fallback |
-| **Enrollments** | 8 | Prerequisite checks, re-enrollment, auto-complete trigger |
-| **Progress** | 7 | Video position tracking, auto enrollment completion |
-| **Quizzes** | 15 | 5 question types, auto-grading, randomization, attempt limits |
-| **Certificates** | 6 | Puppeteer PDF, QR code, Bull Queue, public verification URL |
-| **Discussions** | 13 + 6 | Forum Q&A + lesson comments, voting, pin/lock/flag |
-| **Notifications** | 7 | In-app + email + SMS + push, per-user preferences |
-| **Payments** | 10 | Manual bank transfer flow, receipt upload, admin approval, invoice PDF |
-| **Analytics** | 8 | Revenue/enrollment trends, event tracking, course analytics |
-| **Admin** | 8 | Audit logs, system settings, content moderation, health check |
-| **Live Classes** | 14 | Agora token, attendance tracking, recording webhook, reminder queue |
+| Module            | Endpoints        | Highlights                                                             |
+| ----------------- | ---------------- | ---------------------------------------------------------------------- |
+| **Auth**          | 7                | JWT rotation, refresh token hashing, session management                |
+| **Users**         | 7                | Redis-cached profiles, role management                                 |
+| **Courses**       | 9 + 5 categories | Slug generation, DRAFT→PUBLISHED→ARCHIVED flow                         |
+| **Lessons**       | 7                | Drag-and-drop reorder, lesson type enum                                |
+| **Content**       | 6                | MongoDB content, S3 upload, local dev fallback                         |
+| **Enrollments**   | 8                | Prerequisite checks, re-enrollment, auto-complete trigger              |
+| **Progress**      | 7                | Video position tracking, auto enrollment completion                    |
+| **Quizzes**       | 15               | 5 question types, auto-grading, randomization, attempt limits          |
+| **Certificates**  | 6                | Puppeteer PDF, QR code, Bull Queue, public verification URL            |
+| **Discussions**   | 13 + 6           | Forum Q&A + lesson comments, voting, pin/lock/flag                     |
+| **Notifications** | 7                | In-app + email + SMS + push, per-user preferences                      |
+| **Payments**      | 10               | Manual bank transfer flow, receipt upload, admin approval, invoice PDF |
+| **Analytics**     | 8                | Revenue/enrollment trends, event tracking, course analytics            |
+| **Admin**         | 8                | Audit logs, system settings, content moderation, health check          |
+| **Live Classes**  | 14               | Agora token, attendance tracking, recording webhook, reminder queue    |
 
 ---
 
@@ -289,9 +289,9 @@ pnpm dev   # Web :3000 + API :3001 concurrently
 
 ### Seed accounts
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | `admin@ocp.mn` | `Admin123!` |
+| Role    | Email            | Password      |
+| ------- | ---------------- | ------------- |
+| Admin   | `admin@ocp.mn`   | `Admin123!`   |
 | Teacher | `teacher@ocp.mn` | `Teacher123!` |
 | Student | `student@ocp.mn` | `Student123!` |
 
@@ -299,19 +299,19 @@ pnpm dev   # Web :3000 + API :3001 concurrently
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Start all apps in watch mode |
-| `pnpm build` | Production build for all apps |
-| `pnpm lint` | ESLint across all workspaces |
-| `pnpm format` | Prettier on all files |
-| `pnpm test` | Run all unit tests |
-| `pnpm docker:up` | Start Docker services |
-| `pnpm docker:down` | Stop Docker services |
-| `pnpm db:generate` | Regenerate Prisma client |
-| `pnpm db:migrate` | Apply database migrations |
-| `pnpm db:seed` | Seed sample data |
-| `pnpm db:cleanup` | Remove seeded data |
+| Command            | Description                   |
+| ------------------ | ----------------------------- |
+| `pnpm dev`         | Start all apps in watch mode  |
+| `pnpm build`       | Production build for all apps |
+| `pnpm lint`        | ESLint across all workspaces  |
+| `pnpm format`      | Prettier on all files         |
+| `pnpm test`        | Run all unit tests            |
+| `pnpm docker:up`   | Start Docker services         |
+| `pnpm docker:down` | Stop Docker services          |
+| `pnpm db:generate` | Regenerate Prisma client      |
+| `pnpm db:migrate`  | Apply database migrations     |
+| `pnpm db:seed`     | Seed sample data              |
+| `pnpm db:cleanup`  | Remove seeded data            |
 
 ---
 
@@ -319,23 +319,23 @@ pnpm dev   # Web :3000 + API :3001 concurrently
 
 **Base URL:** `http://localhost:3001/api/v1`
 
-| Module | Base Path | Description |
-|---|---|---|
-| Auth | `/auth` | Register, login, token refresh, password reset |
-| Users | `/users` | Profiles, role management |
-| Courses | `/courses`, `/categories` | Course CRUD and categorization |
-| Lessons | `/lessons` | Lesson management and ordering |
-| Content | `/content` | Video and text content per lesson |
-| Enrollments | `/enrollments` | Enroll, check status, cancel |
-| Progress | `/progress` | Per-lesson and course-level tracking |
-| Quizzes | `/quizzes` | Quiz builder, attempts, grading |
-| Certificates | `/certificates` | Generate and verify PDF certificates |
-| Discussions | `/discussions/posts`, `/discussions/comments` | Forum and lesson comments |
-| Notifications | `/notifications` | Multi-channel notification system |
-| Payments | `/payments/orders`, `/payments/subscriptions`, `/payments/invoices` | Orders and invoices |
-| Analytics | `/analytics` | Revenue, trends, event tracking |
-| Admin | `/admin` | Audit logs, settings, moderation |
-| Live Classes | `/live-sessions` | Schedule, join, Agora token |
+| Module        | Base Path                                                           | Description                                    |
+| ------------- | ------------------------------------------------------------------- | ---------------------------------------------- |
+| Auth          | `/auth`                                                             | Register, login, token refresh, password reset |
+| Users         | `/users`                                                            | Profiles, role management                      |
+| Courses       | `/courses`, `/categories`                                           | Course CRUD and categorization                 |
+| Lessons       | `/lessons`                                                          | Lesson management and ordering                 |
+| Content       | `/content`                                                          | Video and text content per lesson              |
+| Enrollments   | `/enrollments`                                                      | Enroll, check status, cancel                   |
+| Progress      | `/progress`                                                         | Per-lesson and course-level tracking           |
+| Quizzes       | `/quizzes`                                                          | Quiz builder, attempts, grading                |
+| Certificates  | `/certificates`                                                     | Generate and verify PDF certificates           |
+| Discussions   | `/discussions/posts`, `/discussions/comments`                       | Forum and lesson comments                      |
+| Notifications | `/notifications`                                                    | Multi-channel notification system              |
+| Payments      | `/payments/orders`, `/payments/subscriptions`, `/payments/invoices` | Orders and invoices                            |
+| Analytics     | `/analytics`                                                        | Revenue, trends, event tracking                |
+| Admin         | `/admin`                                                            | Audit logs, settings, moderation               |
+| Live Classes  | `/live-sessions`                                                    | Schedule, join, Agora token                    |
 
 Postman collections for every module → [`files/postman/`](files/postman/)
 
@@ -354,11 +354,11 @@ Services: `api` · `web` · `nginx` · `postgres` · `mongodb` · `redis`
 
 ### CI/CD Pipeline
 
-| Workflow | Trigger | Steps |
-|---|---|---|
-| **CI** | Every push & PR | Lint → Test → Build → Docker verify |
-| **Staging** | Merge to `main` | Build → Push GHCR → SSH deploy → Health check |
-| **Production** | Manual trigger | GitHub Environment approval → DB migrate → Deploy |
+| Workflow       | Trigger         | Steps                                             |
+| -------------- | --------------- | ------------------------------------------------- |
+| **CI**         | Every push & PR | Lint → Test → Build → Docker verify               |
+| **Staging**    | Merge to `main` | Build → Push GHCR → SSH deploy → Health check     |
+| **Production** | Manual trigger  | GitHub Environment approval → DB migrate → Deploy |
 
 **Health check:** `GET /api/v1` — returns live status for PostgreSQL, Redis, and MongoDB.
 
