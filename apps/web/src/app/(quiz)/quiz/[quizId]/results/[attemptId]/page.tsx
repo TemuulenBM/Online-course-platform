@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { QuizResultsSummary } from '@/components/quiz/QuizResultsSummary';
 import { QuizResultsBreakdown } from '@/components/quiz/QuizResultsBreakdown';
 import { useAttemptDetail, useQuizById } from '@/hooks/api/use-quizzes';
+import { useGenerateCertificate } from '@/hooks/api/use-certificates';
+import { toast } from 'sonner';
 import { ROUTES } from '@/lib/constants';
 
 /**
@@ -20,6 +22,7 @@ export default function QuizResultsPage() {
 
   const { data: attempt, isLoading: attemptLoading } = useAttemptDetail(quizId, attemptId);
   const { data: quiz, isLoading: quizLoading } = useQuizById(quizId);
+  const generateCertMutation = useGenerateCertificate();
 
   if (attemptLoading || quizLoading) {
     return (
@@ -146,9 +149,16 @@ export default function QuizResultsPage() {
               <Button
                 variant="outline"
                 className="border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground"
+                disabled={generateCertMutation.isPending}
+                onClick={() =>
+                  generateCertMutation.mutate(quiz.courseId, {
+                    onSuccess: () => toast.success(t('certificateGenerated')),
+                    onError: (err: Error) => toast.error(err.message || t('error')),
+                  })
+                }
               >
                 <Download className="size-4" />
-                {t('downloadCertificate')}
+                {generateCertMutation.isPending ? t('submitting') : t('downloadCertificate')}
               </Button>
             </div>
           )}
