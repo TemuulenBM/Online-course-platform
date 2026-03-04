@@ -94,22 +94,12 @@ export default function TeacherLiveSessionsPage({
       );
     }, 0);
 
-  const handleCreate = useCallback(
-    (data: CreateLiveSessionData) => {
-      createMutation.mutate(data, {
-        onSuccess: () => toast.success('Шинэ хичээл амжилттай үүслээ'),
-        onError: () => toast.error('Хичээл үүсгэхэд алдаа гарлаа'),
-      });
-    },
-    [createMutation],
-  );
-
+  /** Session эхлүүлэх — SCHEDULED → LIVE + Agora холболт */
   const handleStart = useCallback(
     (session: LiveSession) => {
       startMutation.mutate(session.id, {
         onSuccess: (res) => {
           toast.success('Хичээл эхэллээ!');
-          /** Start response-оос channelName+token авсны дараа token endpoint-оос uid авна */
           refreshTokenMutation.mutate(session.id, {
             onSuccess: (tokenRes) => {
               store.initSession(
@@ -121,7 +111,6 @@ export default function TeacherLiveSessionsPage({
               );
             },
             onError: () => {
-              /** token авч чадахгүй бол start response-ийн мэдээллээр холбогдохыг оролдоно */
               store.initSession(session.id, res.channelName, res.token, 0, AGORA_APP_ID);
             },
           });
@@ -130,6 +119,39 @@ export default function TeacherLiveSessionsPage({
       });
     },
     [startMutation, refreshTokenMutation, store],
+  );
+
+  /** Товлосон хичээл үүсгэх */
+  const handleCreate = useCallback(
+    (data: CreateLiveSessionData) => {
+      createMutation.mutate(data, {
+        onSuccess: () => toast.success('Шинэ хичээл амжилттай товлогдлоо'),
+        onError: () => toast.error('Хичээл үүсгэхэд алдаа гарлаа'),
+      });
+    },
+    [createMutation],
+  );
+
+  /** Шууд эхлүүлэх — одоогийн цагаар session үүсгэж нэн даруй start хийнэ */
+  const handleStartNow = useCallback(
+    (title: string, description?: string) => {
+      const now = new Date();
+      const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      createMutation.mutate(
+        {
+          courseId,
+          title,
+          description,
+          scheduledStart: now.toISOString(),
+          scheduledEnd: twoHoursLater.toISOString(),
+        },
+        {
+          onSuccess: (session) => handleStart(session),
+          onError: () => toast.error('Хичээл эхлүүлэхэд алдаа гарлаа'),
+        },
+      );
+    },
+    [createMutation, courseId, handleStart],
   );
 
   const handleEnd = useCallback(() => {
@@ -188,7 +210,9 @@ export default function TeacherLiveSessionsPage({
           <CreateSessionDialog
             courseId={courseId}
             onSubmit={handleCreate}
+            onStartNow={handleStartNow}
             isPending={createMutation.isPending}
+            isStartingNow={createMutation.isPending && startMutation.isPending}
           />
         </div>
 
