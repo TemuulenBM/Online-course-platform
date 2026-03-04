@@ -130,6 +130,19 @@ export function useMySubscription() {
   });
 }
 
+/** Бүртгэл үүсгэх */
+export function useCreateSubscription() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { planType: string }) => paymentsService.createSubscription(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.payments.mySubscription,
+      });
+    },
+  });
+}
+
 /** Бүртгэл цуцлах */
 export function useCancelSubscription() {
   const queryClient = useQueryClient();

@@ -111,6 +111,12 @@ export const paymentsService = {
     return res.data.data!;
   },
 
+  /** Бүртгэл үүсгэх */
+  createSubscription: async (data: { planType: string }): Promise<Subscription> => {
+    const res = await client.post<ApiResponse<Subscription>>('/payments/subscriptions', data);
+    return res.data.data!;
+  },
+
   /** Бүртгэл цуцлах */
   cancelSubscription: async (id: string): Promise<Subscription> => {
     const res = await client.patch<ApiResponse<Subscription>>(

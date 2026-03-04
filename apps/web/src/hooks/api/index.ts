@@ -170,6 +170,7 @@ export {
   useInvoiceDetail,
   useMySubscription,
   useCancelSubscription,
+  useCreateSubscription,
 } from './use-payments';
 
 // Live Session hooks

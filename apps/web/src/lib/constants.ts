@@ -165,6 +165,7 @@ export const ROUTES = {
   CHECKOUT: (courseId: string) => `/checkout/${courseId}` as const,
   INVOICES: '/invoices',
   INVOICE_DETAIL: (id: string) => `/invoices/${id}` as const,
+  SUBSCRIPTIONS: '/subscriptions',
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_AUDIT_LOGS: '/admin/audit-logs',

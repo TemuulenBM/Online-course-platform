@@ -15,6 +15,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Sparkles,
   Video,
 } from 'lucide-react';
 
@@ -47,6 +48,7 @@ const mainNavItems = [
   { href: '/live-sessions', icon: Video, labelKey: 'liveSessions' },
   { href: '/orders', icon: ShoppingCart, labelKey: 'orders' },
   { href: '/invoices', icon: Receipt, labelKey: 'invoices' },
+  { href: '/subscriptions', icon: Sparkles, labelKey: 'subscriptions' },
 ] as const;
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */
