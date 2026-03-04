@@ -119,10 +119,10 @@ describe('CoursesController', () => {
       listMyCoursesUseCase.execute.mockResolvedValue(mockListResult);
 
       const query = { page: 1, limit: 20 };
-      const result = await controller.listMyCourses('user-id-1', query);
+      const result = await controller.listMyCourses('user-id-1', 'TEACHER', query);
 
       expect(result).toEqual(mockListResult);
-      expect(listMyCoursesUseCase.execute).toHaveBeenCalledWith('user-id-1', query);
+      expect(listMyCoursesUseCase.execute).toHaveBeenCalledWith('user-id-1', query, 'TEACHER');
     });
   });
 

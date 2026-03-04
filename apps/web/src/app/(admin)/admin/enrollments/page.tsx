@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { GraduationCap, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useCourseList, useCourseEnrollments } from '@/hooks/api';
+import { useMyCourses, useCourseEnrollments } from '@/hooks/api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 import type { EnrollmentStatus } from '@ocp/shared-types';
@@ -57,8 +57,8 @@ export default function AdminEnrollmentsPage() {
   const [statusFilter, setStatusFilter] = useState<EnrollmentStatus | undefined>(undefined);
   const [page, setPage] = useState(1);
 
-  /** Бүх нийтлэгдсэн сургалтуудын жагсаалт */
-  const { data: coursesData } = useCourseList({ limit: 200 });
+  /** Бүх сургалтуудын жагсаалт (бүх status, admin/teacher эрхтэй) */
+  const { data: courses = [] } = useMyCourses();
 
   /** Сонгосон сургалтын элсэлтүүд */
   const { data: enrollmentsData, isLoading: enrollmentsLoading } = useCourseEnrollments(
@@ -68,7 +68,6 @@ export default function AdminEnrollmentsPage() {
 
   const enrollments = enrollmentsData?.data ?? [];
   const meta = enrollmentsData?.meta;
-  const courses = coursesData?.data ?? [];
 
   /** Сургалт солих үед page болон filter-г reset хийнэ */
   const handleCourseChange = (courseId: string) => {

@@ -5,6 +5,7 @@ import { ListCoursesQueryDto } from '../../dto/list-courses-query.dto';
 /**
  * Миний сургалтуудын жагсаалт авах use case.
  * Багш өөрийн сургалтуудыг бүх статусаар харна.
+ * Админ бол БҮГД багшийн сургалтуудыг харна.
  */
 @Injectable()
 export class ListMyCoursesUseCase {
@@ -12,12 +13,20 @@ export class ListMyCoursesUseCase {
 
   constructor(private readonly courseRepository: CourseRepository) {}
 
-  async execute(instructorId: string, query: ListCoursesQueryDto) {
-    const result = await this.courseRepository.findByInstructorId(instructorId, {
-      page: query.page ?? 1,
-      limit: query.limit ?? 20,
-      status: query.status,
-    });
+  async execute(instructorId: string, query: ListCoursesQueryDto, role?: string) {
+    /** Админ бол бүх сургалтыг (instructorId шүүлтгүй) буцаана */
+    const isAdmin = role === 'ADMIN';
+    const result = isAdmin
+      ? await this.courseRepository.findMany({
+          page: query.page ?? 1,
+          limit: query.limit ?? 100,
+          status: query.status,
+        })
+      : await this.courseRepository.findByInstructorId(instructorId, {
+          page: query.page ?? 1,
+          limit: query.limit ?? 20,
+          status: query.status,
+        });
 
     return {
       data: result.data.map((course) => course.toResponse()),

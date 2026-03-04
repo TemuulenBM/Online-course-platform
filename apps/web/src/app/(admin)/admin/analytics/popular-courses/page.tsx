@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Download,
   ChevronRight,
@@ -16,6 +16,8 @@ import {
   Users,
   Banknote,
 } from 'lucide-react';
+
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import { usePopularCourses } from '@/hooks/api';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
@@ -56,11 +58,21 @@ export default function PopularCoursesPage() {
     );
   };
 
-  if (isLoading) return <AnalyticsPageSkeleton />;
-
   /** Нийт орлого, бүртгэл тооцоо */
   const totalRevenue = courses?.reduce((s, c) => s + c.revenue, 0) ?? 0;
   const totalEnrollments = courses?.reduce((s, c) => s + c.enrollmentCount, 0) ?? 0;
+
+  /** Chart өгөгдөл — топ 10 сургалт */
+  const chartData = useMemo(() => {
+    if (!courses) return [];
+    return courses.slice(0, 10).map((c) => ({
+      name: c.courseTitle.length > 18 ? c.courseTitle.slice(0, 18) + '…' : c.courseTitle,
+      Элсэлт: c.enrollmentCount,
+      Дуусгасан: c.completionCount,
+    }));
+  }, [courses]);
+
+  if (isLoading) return <AnalyticsPageSkeleton />;
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
@@ -108,6 +120,61 @@ export default function PopularCoursesPage() {
             </button>
           </div>
         </div>
+
+        {/* Харьцуулалтын chart */}
+        {chartData.length > 0 && (
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 p-6 mb-8 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-bold">Элсэлт vs Дуусгасан</h3>
+                <p className="text-sm text-slate-500">Сургалт тус бүрийн харьцуулалт</p>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full bg-primary" />
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                    Элсэлт
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full bg-emerald-500" />
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                    Дуусгасан
+                  </span>
+                </div>
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={Math.max(chartData.length * 48, 200)}>
+              <BarChart layout="vertical" data={chartData} barCategoryGap="30%">
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f0f5" horizontal={false} />
+                <XAxis
+                  type="number"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 11, fill: '#94a3b8' }}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={140}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 11, fill: '#94a3b8' }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                  }}
+                />
+                <Bar dataKey="Элсэлт" fill="var(--primary)" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="Дуусгасан" fill="#10B981" radius={[0, 6, 6, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
 
         {/* Хүснэгт */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 overflow-hidden shadow-sm mb-8">

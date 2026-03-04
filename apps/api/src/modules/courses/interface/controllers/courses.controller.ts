@@ -81,8 +81,12 @@ export class CoursesController {
   @Roles('TEACHER', 'ADMIN')
   @ApiOperation({ summary: 'Миний сургалтууд (Багш)' })
   @ApiResponse({ status: 200, description: 'Багшийн сургалтуудын жагсаалт' })
-  async listMyCourses(@CurrentUser('id') userId: string, @Query() query: ListCoursesQueryDto) {
-    return this.listMyCoursesUseCase.execute(userId, query);
+  async listMyCourses(
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: string,
+    @Query() query: ListCoursesQueryDto,
+  ) {
+    return this.listMyCoursesUseCase.execute(userId, query, role);
   }
 
   @Public()
