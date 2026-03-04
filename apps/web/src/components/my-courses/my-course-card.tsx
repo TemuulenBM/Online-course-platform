@@ -155,9 +155,13 @@ export function MyCourseCard({ enrollment, onCancel }: MyCourseCardProps) {
                   {t('review')}
                 </button>
               </Link>
-              <button className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 transition-colors text-sm font-medium flex items-center justify-center">
+              <Link
+                href={ROUTES.CERTIFICATES}
+                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 hover:border-primary hover:text-primary transition-colors text-sm font-medium flex items-center justify-center"
+                title={t('downloadCertificate')}
+              >
                 <Download className="size-5" />
-              </button>
+              </Link>
             </>
           )}
 
