@@ -15,22 +15,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/ui/empty-state';
 import { useMySubscription, useCancelSubscription, useCreateSubscription } from '@/hooks/api';
-import type { SubscriptionStatus } from '@ocp/shared-types';
 import { cn } from '@/lib/utils';
-
-/** Subscription статусын өнгө */
-function getStatusStyle(status: SubscriptionStatus) {
-  switch (status) {
-    case 'active':
-      return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-    case 'cancelled':
-      return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
-    case 'expired':
-      return 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
-    default:
-      return 'bg-slate-100 text-slate-600';
-  }
-}
 
 /** Төлөвлөгөөний сонголт */
 const PLAN_OPTIONS = [
