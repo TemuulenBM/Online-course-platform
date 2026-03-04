@@ -18,6 +18,8 @@ export interface LiveSessionListParams {
   page?: number;
   limit?: number;
   status?: string;
+  /** Цаг шүүлтүүр: 'upcoming' | 'past' | 'all' */
+  timeFilter?: 'upcoming' | 'past' | 'all';
 }
 
 /** Ирцийн жагсаалтын параметрүүд */

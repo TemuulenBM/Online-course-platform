@@ -145,3 +145,18 @@ export function useLeaveLiveSession() {
     mutationFn: (id: string) => liveSessionsService.leave(id),
   });
 }
+
+/** Agora token шинэчлэх (token expiry эсвэл bagsh start хийсний дараа uid/appId авах) */
+export function useRefreshAgoraToken() {
+  return useMutation({
+    mutationFn: (id: string) => liveSessionsService.refreshToken(id),
+  });
+}
+
+/** Бүх sessions — Admin удирдлагад ашиглагдана (timeFilter=all) */
+export function useAllLiveSessions(params?: LiveSessionListParams) {
+  return useQuery({
+    queryKey: QUERY_KEYS.liveSessions.upcoming({ ...params, timeFilter: 'all' }),
+    queryFn: () => liveSessionsService.listUpcoming({ ...params, timeFilter: 'all' }),
+  });
+}

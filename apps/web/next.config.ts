@@ -10,6 +10,7 @@ const config: NextConfig = {
     '@ocp/shared-types',
     '@ocp/validation',
     '@ocp/api-client',
+    'agora-rtc-react',
   ],
   images: {
     remotePatterns: [

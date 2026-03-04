@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { PlusCircle } from 'lucide-react';
+import { Calendar, PlusCircle, Video } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,60 +14,72 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import type { Lesson, CreateLiveSessionData } from '@ocp/shared-types';
+import type { CreateLiveSessionData } from '@ocp/shared-types';
 
 interface CreateSessionDialogProps {
-  /** Dropdown-д харуулах хичээлүүд */
-  lessons: Lesson[];
-  /** Хадгалахад дуудагдана */
+  /** Сургалтын ID */
+  courseId: string;
+  /** Товлосон хичээл хадгалах */
   onSubmit: (data: CreateLiveSessionData) => void;
-  /** Mutation pending эсэх */
+  /** Шууд эхлүүлэх (create + start) */
+  onStartNow: (title: string, description?: string) => void;
+  /** Хичээл үүсгэж байгаа эсэх */
   isPending?: boolean;
+  /** Шууд эхлүүлж байгаа эсэх */
+  isStartingNow?: boolean;
 }
 
+type Mode = 'now' | 'schedule';
+
 /**
- * Шинэ session товлох / засах dialog.
+ * Шинэ session үүсгэх dialog.
+ * "Шууд эхлүүлэх" горимд зөвхөн гарчиг шаардлагатай.
+ * "Товлох" горимд эхлэх/дуусах цаг бас шаардлагатай.
  */
-export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSessionDialogProps) {
+export function CreateSessionDialog({
+  courseId: _courseId,
+  onSubmit,
+  onStartNow,
+  isPending,
+  isStartingNow,
+}: CreateSessionDialogProps) {
   const [open, setOpen] = useState(false);
-  const [lessonId, setLessonId] = useState('');
+  const [mode, setMode] = useState<Mode>('now');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [scheduledStart, setScheduledStart] = useState('');
   const [scheduledEnd, setScheduledEnd] = useState('');
 
-  const liveLessons = lessons.filter((l) => l.lessonType === 'live');
-
   const resetForm = () => {
-    setLessonId('');
     setTitle('');
     setDescription('');
     setScheduledStart('');
     setScheduledEnd('');
+    setMode('now');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!lessonId || !title || !scheduledStart || !scheduledEnd) return;
+    if (!title) return;
 
-    onSubmit({
-      lessonId,
-      title,
-      description: description || undefined,
-      scheduledStart: new Date(scheduledStart).toISOString(),
-      scheduledEnd: new Date(scheduledEnd).toISOString(),
-    });
+    if (mode === 'now') {
+      onStartNow(title, description || undefined);
+    } else {
+      if (!scheduledStart || !scheduledEnd) return;
+      onSubmit({
+        courseId: _courseId,
+        title,
+        description: description || undefined,
+        scheduledStart: new Date(scheduledStart).toISOString(),
+        scheduledEnd: new Date(scheduledEnd).toISOString(),
+      });
+    }
 
     resetForm();
     setOpen(false);
   };
+
+  const loading = mode === 'now' ? isStartingNow : isPending;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -80,34 +92,41 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Шинэ шууд хичээл товлох</DialogTitle>
-          <DialogDescription>Хичээлийн мэдээлэл болон цагийг оруулна уу.</DialogDescription>
+          <DialogTitle>Шинэ шууд хичээл</DialogTitle>
+          <DialogDescription>
+            Хичээлийг яг одоо эхлүүлэх эсвэл ирээдүйд товлоно уу.
+          </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Хичээл сонгох */}
-          <div className="space-y-2">
-            <Label htmlFor="lessonId">Хичээл</Label>
-            <Select value={lessonId} onValueChange={setLessonId}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Хичээл сонгох..." />
-              </SelectTrigger>
-              <SelectContent>
-                {liveLessons.length === 0 ? (
-                  <SelectItem value="_empty" disabled>
-                    LIVE төрлийн хичээл олдсонгүй
-                  </SelectItem>
-                ) : (
-                  liveLessons.map((l) => (
-                    <SelectItem key={l.id} value={l.id}>
-                      {l.title}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+        {/* Горим сонголт */}
+        <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-200 dark:border-slate-800 p-1">
+          <button
+            type="button"
+            onClick={() => setMode('now')}
+            className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
+              mode === 'now'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Video className="size-4" />
+            Шууд эхлүүлэх
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode('schedule')}
+            className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
+              mode === 'schedule'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Calendar className="size-4" />
+            Товлох
+          </button>
+        </div>
 
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Гарчиг */}
           <div className="space-y-2">
             <Label htmlFor="title">Гарчиг</Label>
@@ -115,8 +134,9 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Жишээ: Мэдээллийн технологийн үндэс - Lab 04"
+              placeholder="Жишээ: Lab 01 — Оршил"
               required
+              autoFocus
             />
           </div>
 
@@ -131,36 +151,44 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
             />
           </div>
 
-          {/* Эхлэх цаг */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="start">Эхлэх цаг</Label>
-              <Input
-                id="start"
-                type="datetime-local"
-                value={scheduledStart}
-                onChange={(e) => setScheduledStart(e.target.value)}
-                required
-              />
+          {/* Товлох горимд л цаг харуулна */}
+          {mode === 'schedule' && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="start">Эхлэх цаг</Label>
+                <Input
+                  id="start"
+                  type="datetime-local"
+                  value={scheduledStart}
+                  onChange={(e) => setScheduledStart(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="end">Дуусах цаг</Label>
+                <Input
+                  id="end"
+                  type="datetime-local"
+                  value={scheduledEnd}
+                  onChange={(e) => setScheduledEnd(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="end">Дуусах цаг</Label>
-              <Input
-                id="end"
-                type="datetime-local"
-                value={scheduledEnd}
-                onChange={(e) => setScheduledEnd(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+          )}
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Цуцлах
             </Button>
-            <Button type="submit" disabled={isPending} className="bg-primary font-bold">
-              {isPending ? 'Хадгалж байна...' : 'Хадгалах'}
+            <Button type="submit" disabled={!!loading} className="bg-primary font-bold">
+              {loading
+                ? mode === 'now'
+                  ? 'Эхлүүлж байна...'
+                  : 'Хадгалж байна...'
+                : mode === 'now'
+                  ? 'Эхлүүлэх'
+                  : 'Хадгалах'}
             </Button>
           </DialogFooter>
         </form>

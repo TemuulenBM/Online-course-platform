@@ -7,12 +7,12 @@ import Link from 'next/link';
 
 import {
   useCourseSessions,
-  useCourseLessons,
   useCreateLiveSession,
   useStartLiveSession,
   useEndLiveSession,
   useCancelLiveSession,
   useCourseById,
+  useRefreshAgoraToken,
 } from '@/hooks/api';
 import { useLiveSessionStore } from '@/stores/live-session-store';
 import { AgoraPlaceholder } from '@/components/live-sessions/teacher/agora-placeholder';
@@ -25,6 +25,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 import type { LiveSession, CreateLiveSessionData } from '@ocp/shared-types';
 
+/** NEXT_PUBLIC_AGORA_APP_ID — frontend-д ашиглагдах public Agora App ID */
+const AGORA_APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID ?? '';
+
 /**
  * Багшийн session удирдлага — /teacher/courses/[courseId]/live-sessions
  */
@@ -36,20 +39,29 @@ export default function TeacherLiveSessionsPage({
   const { courseId } = use(params);
   const { data: course } = useCourseById(courseId);
   const { data: sessionsPaginated, isLoading } = useCourseSessions(courseId);
-  const { data: lessons } = useCourseLessons(courseId);
 
   const createMutation = useCreateLiveSession();
   const startMutation = useStartLiveSession();
   const endMutation = useEndLiveSession();
   const cancelMutation = useCancelLiveSession();
+  const refreshTokenMutation = useRefreshAgoraToken();
 
-  const { isMuted, isCameraOff, toggleMute, toggleCamera, toggleScreenShare, elapsedSeconds } =
-    useLiveSessionStore();
+  const store = useLiveSessionStore();
+  const {
+    isMuted,
+    isCameraOff,
+    isScreenSharing,
+    toggleMute,
+    toggleCamera,
+    toggleScreenShare,
+    elapsedSeconds,
+    updateToken,
+  } = store;
 
   const sessions = sessionsPaginated?.data ?? [];
   const activeSession = sessions.find((s) => s.status === 'live');
 
-  // Өнгөрсөн хугацаа format
+  /** Өнгөрсөн хугацаа format */
   const formatElapsed = (sec: number) => {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
@@ -57,7 +69,7 @@ export default function TeacherLiveSessionsPage({
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   };
 
-  // Нийт цагийн тооцоо
+  /** Нийт цагийн тооцоо */
   const totalHours = sessions
     .filter((s) => s.status === 'ended')
     .reduce((acc, s) => {
@@ -66,7 +78,7 @@ export default function TeacherLiveSessionsPage({
       return acc + dur;
     }, 0);
 
-  // Энэ долоо хоногийн Monday-аас эхэлсэн session-уудын бодит цаг
+  /** Энэ долоо хоногийн Monday-аас эхэлсэн session-уудын цаг */
   const thisMonday = (() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -82,33 +94,76 @@ export default function TeacherLiveSessionsPage({
       );
     }, 0);
 
+  /** Session эхлүүлэх — SCHEDULED → LIVE + Agora холболт */
+  const handleStart = useCallback(
+    (session: LiveSession) => {
+      startMutation.mutate(session.id, {
+        onSuccess: (res) => {
+          toast.success('Хичээл эхэллээ!');
+          refreshTokenMutation.mutate(session.id, {
+            onSuccess: (tokenRes) => {
+              store.initSession(
+                session.id,
+                res.channelName,
+                tokenRes.token,
+                tokenRes.uid,
+                AGORA_APP_ID,
+              );
+            },
+            onError: () => {
+              store.initSession(session.id, res.channelName, res.token, 0, AGORA_APP_ID);
+            },
+          });
+        },
+        onError: () => toast.error('Хичээл эхлүүлэхэд алдаа гарлаа'),
+      });
+    },
+    [startMutation, refreshTokenMutation, store],
+  );
+
+  /** Товлосон хичээл үүсгэх */
   const handleCreate = useCallback(
     (data: CreateLiveSessionData) => {
       createMutation.mutate(data, {
-        onSuccess: () => toast.success('Шинэ хичээл амжилттай үүслээ'),
+        onSuccess: () => toast.success('Шинэ хичээл амжилттай товлогдлоо'),
         onError: () => toast.error('Хичээл үүсгэхэд алдаа гарлаа'),
       });
     },
     [createMutation],
   );
 
-  const handleStart = useCallback(
-    (session: LiveSession) => {
-      startMutation.mutate(session.id, {
-        onSuccess: () => toast.success('Хичээл эхэллээ!'),
-        onError: () => toast.error('Хичээл эхлүүлэхэд алдаа гарлаа'),
-      });
+  /** Шууд эхлүүлэх — одоогийн цагаар session үүсгэж нэн даруй start хийнэ */
+  const handleStartNow = useCallback(
+    (title: string, description?: string) => {
+      const now = new Date();
+      const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      createMutation.mutate(
+        {
+          courseId,
+          title,
+          description,
+          scheduledStart: now.toISOString(),
+          scheduledEnd: twoHoursLater.toISOString(),
+        },
+        {
+          onSuccess: (session) => handleStart(session),
+          onError: () => toast.error('Хичээл эхлүүлэхэд алдаа гарлаа'),
+        },
+      );
     },
-    [startMutation],
+    [createMutation, courseId, handleStart],
   );
 
   const handleEnd = useCallback(() => {
     if (!activeSession) return;
     endMutation.mutate(activeSession.id, {
-      onSuccess: () => toast.success('Хичээл дууслаа'),
+      onSuccess: () => {
+        toast.success('Хичээл дууслаа');
+        store.clearSession();
+      },
       onError: () => toast.error('Хичээл дуусгахад алдаа гарлаа'),
     });
-  }, [endMutation, activeSession]);
+  }, [endMutation, activeSession, store]);
 
   const handleDelete = useCallback(
     (session: LiveSession) => {
@@ -119,6 +174,16 @@ export default function TeacherLiveSessionsPage({
     },
     [cancelMutation],
   );
+
+  /** Token expire — шинэ token авч store-д шинэчлэнэ */
+  const handleTokenWillExpire = useCallback(() => {
+    if (!activeSession) return;
+    refreshTokenMutation.mutate(activeSession.id, {
+      onSuccess: (res) => {
+        updateToken(res.token);
+      },
+    });
+  }, [refreshTokenMutation, activeSession, updateToken]);
 
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
@@ -143,9 +208,11 @@ export default function TeacherLiveSessionsPage({
             </div>
           </div>
           <CreateSessionDialog
-            lessons={lessons ?? []}
+            courseId={courseId}
             onSubmit={handleCreate}
+            onStartNow={handleStartNow}
             isPending={createMutation.isPending}
+            isStartingNow={createMutation.isPending && startMutation.isPending}
           />
         </div>
 
@@ -167,10 +234,16 @@ export default function TeacherLiveSessionsPage({
                 elapsed={formatElapsed(elapsedSeconds)}
                 isMuted={isMuted}
                 isCameraOff={isCameraOff}
+                isScreenSharing={isScreenSharing}
                 onToggleMute={toggleMute}
                 onToggleCamera={toggleCamera}
                 onScreenShare={toggleScreenShare}
                 onEnd={handleEnd}
+                appId={store.appId ?? undefined}
+                channelName={store.channelName ?? undefined}
+                token={store.agoraToken ?? undefined}
+                uid={store.agoraUid ?? undefined}
+                onTokenWillExpire={handleTokenWillExpire}
               />
               {activeSession && <ActiveSessionDetails session={activeSession} />}
             </div>
