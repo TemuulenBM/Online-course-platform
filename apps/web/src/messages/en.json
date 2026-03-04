@@ -120,7 +120,8 @@
     "teacherSection": "Teacher",
     "adminSection": "Admin",
     "orders": "Orders",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "subscriptions": "Subscription"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -1266,6 +1267,32 @@
     "adminAlreadyProcessed": "Already Processed",
     "adminAlreadyProcessedDesc": "This order has already been processed.",
     "adminAuditTitle": "Previous History",
-    "adminAuditDesc": "This user has previously made successful purchases."
+    "adminAuditDesc": "This user has previously made successful purchases.",
+    "mySubscription": "My Subscription",
+    "mySubscriptionSubtitle": "Manage your active plan and billing",
+    "subscriptionPlan": "Plan",
+    "subscriptionStatus": "Status",
+    "subscriptionPeriod": "Billing Period",
+    "subscriptionActive": "Active",
+    "subscriptionCancelledStatus": "Cancelled",
+    "subscriptionExpired": "Expired",
+    "subscriptionCancelAtPeriodEnd": "Your subscription will end at the current period end",
+    "cancelSubscription": "Cancel Subscription",
+    "cancelSubscriptionConfirm": "Are you sure you want to cancel your subscription?",
+    "cancelSubscriptionDesc": "You will continue to have access until the end of your current billing period.",
+    "subscriptionCancelSuccess": "Subscription cancelled successfully",
+    "subscriptionCancelError": "Failed to cancel subscription",
+    "noSubscription": "No Active Subscription",
+    "noSubscriptionDesc": "You don't have an active subscription plan",
+    "subscribePlan": "Subscribe",
+    "planMonthly": "Monthly",
+    "planYearly": "Yearly",
+    "subscriptionCreated": "Subscription created successfully!",
+    "subscriptionCreateError": "Failed to create subscription",
+    "orderTimeline": "Order Progress",
+    "timelineStep1": "Order Placed",
+    "timelineStep2": "Proof Submitted",
+    "timelineStep3": "Confirmed",
+    "orderFailed": "Order Failed"
   }
 }

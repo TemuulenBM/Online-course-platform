@@ -11,6 +11,8 @@ import {
   CloudUpload,
   Send,
   CheckCircle,
+  XCircle,
+  Circle,
   Download,
   ArrowRight,
 } from 'lucide-react';
@@ -94,6 +96,122 @@ export default function OrderDetailPage() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('orderInfo')}</h1>
           <p className="text-slate-500 dark:text-slate-400 mt-2">{t('orderInfoSubtitle')}</p>
         </div>
+
+        {/* Статусын явцын timeline */}
+        {!isLoading && order && (
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+            <h3 className="font-bold text-sm text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6">
+              {t('orderTimeline')}
+            </h3>
+            <div className="flex items-center">
+              {/* Алхам 1: Захиалга үүссэн */}
+              <div className="flex flex-col items-center flex-1">
+                <div
+                  className={`size-10 rounded-full flex items-center justify-center mb-2 ${
+                    ['pending', 'processing', 'paid'].includes(order.status)
+                      ? 'bg-primary text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  <CheckCircle className="size-5" />
+                </div>
+                <span
+                  className={`text-xs font-medium text-center ${
+                    ['pending', 'processing', 'paid'].includes(order.status)
+                      ? 'text-primary'
+                      : 'text-slate-400'
+                  }`}
+                >
+                  {t('timelineStep1')}
+                </span>
+              </div>
+
+              {/* Холбогч зураас 1→2 */}
+              <div
+                className={`h-0.5 flex-1 mx-2 rounded ${
+                  ['processing', 'paid'].includes(order.status)
+                    ? 'bg-primary'
+                    : 'bg-slate-200 dark:bg-slate-700'
+                }`}
+              />
+
+              {/* Алхам 2: Баримт илгээгдсэн */}
+              <div className="flex flex-col items-center flex-1">
+                <div
+                  className={`size-10 rounded-full flex items-center justify-center mb-2 ${
+                    order.status === 'failed'
+                      ? 'bg-red-100 dark:bg-red-900/30 text-red-500'
+                      : ['processing', 'paid'].includes(order.status)
+                        ? 'bg-primary text-white'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  {order.status === 'failed' ? (
+                    <XCircle className="size-5" />
+                  ) : ['processing', 'paid'].includes(order.status) ? (
+                    <CheckCircle className="size-5" />
+                  ) : (
+                    <Circle className="size-5" />
+                  )}
+                </div>
+                <span
+                  className={`text-xs font-medium text-center ${
+                    order.status === 'failed'
+                      ? 'text-red-500'
+                      : ['processing', 'paid'].includes(order.status)
+                        ? 'text-primary'
+                        : 'text-slate-400'
+                  }`}
+                >
+                  {t('timelineStep2')}
+                </span>
+              </div>
+
+              {/* Холбогч зураас 2→3 */}
+              <div
+                className={`h-0.5 flex-1 mx-2 rounded ${
+                  order.status === 'paid' ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'
+                }`}
+              />
+
+              {/* Алхам 3: Баталгаажсан */}
+              <div className="flex flex-col items-center flex-1">
+                <div
+                  className={`size-10 rounded-full flex items-center justify-center mb-2 ${
+                    order.status === 'paid'
+                      ? 'bg-green-500 text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  {order.status === 'paid' ? (
+                    <CheckCircle className="size-5" />
+                  ) : (
+                    <Circle className="size-5" />
+                  )}
+                </div>
+                <span
+                  className={`text-xs font-medium text-center ${
+                    order.status === 'paid'
+                      ? 'text-green-600 dark:text-green-400'
+                      : 'text-slate-400'
+                  }`}
+                >
+                  {t('timelineStep3')}
+                </span>
+              </div>
+            </div>
+
+            {/* Failed бол adminNote харуулах */}
+            {order.status === 'failed' && order.adminNote && (
+              <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  <span className="font-semibold">{t('orderFailed')}: </span>
+                  {order.adminNote}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Зүүн 2/3 — Мэдээлэл + Upload */}

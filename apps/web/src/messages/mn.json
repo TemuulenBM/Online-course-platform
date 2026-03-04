@@ -120,7 +120,8 @@
     "teacherSection": "Багшийн",
     "adminSection": "Админ",
     "orders": "Захиалгууд",
-    "invoices": "Нэхэмжлэх"
+    "invoices": "Нэхэмжлэх",
+    "subscriptions": "Бүртгэл"
   },
   "dashboard": {
     "title": "Хяналтын самбар",
@@ -1391,6 +1392,32 @@
     "adminAlreadyProcessed": "Аль хэдийн шийдвэрлэгдсэн",
     "adminAlreadyProcessedDesc": "Энэ захиалга аль хэдийн шийдвэрлэгдсэн байна.",
     "adminAuditTitle": "Өмнөх түүх",
-    "adminAuditDesc": "Хэрэглэгч өмнө нь амжилттай захиалга хийсэн байна."
+    "adminAuditDesc": "Хэрэглэгч өмнө нь амжилттай захиалга хийсэн байна.",
+    "mySubscription": "Миний бүртгэл",
+    "mySubscriptionSubtitle": "Идэвхтэй төлөвлөгөө болон тооцооллоо удирдах",
+    "subscriptionPlan": "Төлөвлөгөө",
+    "subscriptionStatus": "Төлөв",
+    "subscriptionPeriod": "Төлбөрийн хугацаа",
+    "subscriptionActive": "Идэвхтэй",
+    "subscriptionCancelledStatus": "Цуцлагдсан",
+    "subscriptionExpired": "Дууссан",
+    "subscriptionCancelAtPeriodEnd": "Таны бүртгэл одоогийн хугацааны эцэст дуусна",
+    "cancelSubscription": "Бүртгэл цуцлах",
+    "cancelSubscriptionConfirm": "Бүртгэлээ цуцлахдаа итгэлтэй байна уу?",
+    "cancelSubscriptionDesc": "Одоогийн төлбөрийн хугацаа дуустал хэвийн хандах боломжтой хэвээр байна.",
+    "subscriptionCancelSuccess": "Бүртгэл амжилттай цуцлагдлаа",
+    "subscriptionCancelError": "Бүртгэл цуцлахад алдаа гарлаа",
+    "noSubscription": "Идэвхтэй бүртгэл байхгүй",
+    "noSubscriptionDesc": "Та одоогоор идэвхтэй захиалгын төлөвлөгөөгүй байна",
+    "subscribePlan": "Бүртгүүлэх",
+    "planMonthly": "Сарын",
+    "planYearly": "Жилийн",
+    "subscriptionCreated": "Бүртгэл амжилттай үүсгэгдлээ!",
+    "subscriptionCreateError": "Бүртгэл үүсгэхэд алдаа гарлаа",
+    "orderTimeline": "Захиалгын явц",
+    "timelineStep1": "Захиалга үүссэн",
+    "timelineStep2": "Баримт илгээгдсэн",
+    "timelineStep3": "Баталгаажсан",
+    "orderFailed": "Захиалга амжилтгүй"
   }
 }
