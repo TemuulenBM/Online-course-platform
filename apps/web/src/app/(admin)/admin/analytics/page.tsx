@@ -177,7 +177,7 @@ export default function AdminAnalyticsDashboardPage() {
                   }}
                   labelStyle={{ fontWeight: 700 }}
                 />
-                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

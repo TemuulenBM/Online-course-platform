@@ -58,8 +58,6 @@ export default function PopularCoursesPage() {
     );
   };
 
-  if (isLoading) return <AnalyticsPageSkeleton />;
-
   /** Нийт орлого, бүртгэл тооцоо */
   const totalRevenue = courses?.reduce((s, c) => s + c.revenue, 0) ?? 0;
   const totalEnrollments = courses?.reduce((s, c) => s + c.enrollmentCount, 0) ?? 0;
@@ -73,6 +71,8 @@ export default function PopularCoursesPage() {
       Дуусгасан: c.completionCount,
     }));
   }, [courses]);
+
+  if (isLoading) return <AnalyticsPageSkeleton />;
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
@@ -169,7 +169,7 @@ export default function PopularCoursesPage() {
                     boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
                   }}
                 />
-                <Bar dataKey="Элсэлт" fill="hsl(var(--primary))" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="Элсэлт" fill="var(--primary)" radius={[0, 6, 6, 0]} />
                 <Bar dataKey="Дуусгасан" fill="#10B981" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>

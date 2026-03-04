@@ -36,7 +36,7 @@ function getDefaultRange() {
 
 /** Төлбөрийн хэлбэрийн placeholder өгөгдөл */
 const paymentMethodData = [
-  { name: 'Банкны карт', value: 72, amount: '₮17,640,000', color: 'hsl(var(--primary))' },
+  { name: 'Банкны карт', value: 72, amount: '₮17,640,000', color: 'var(--primary)' },
   { name: 'SocialPay / QPay', value: 20, amount: '₮4,900,000', color: '#7c3aed' },
   { name: 'Дансаар', value: 8, amount: '₮1,960,000', color: '#e2e8f0' },
 ];
@@ -187,7 +187,7 @@ export default function RevenueReportPage() {
                 }}
                 formatter={(value) => [formatMNT(Number(value ?? 0)), 'Орлого']}
               />
-              <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="revenue" fill="var(--primary)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
