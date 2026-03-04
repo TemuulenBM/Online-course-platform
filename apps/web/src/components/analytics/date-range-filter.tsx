@@ -82,7 +82,7 @@ export function DateRangeFilter({
           <div className="pt-5 flex gap-2">
             <button
               onClick={onFilter}
-              className="bg-slate-900 dark:bg-primary text-white px-6 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+              className="bg-primary text-white px-6 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
             >
               Шүүх
             </button>
