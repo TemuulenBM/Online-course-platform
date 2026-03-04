@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Download, RefreshCw, ChevronRight, ChevronDown, Copy, Check, Search } from 'lucide-react';
+
+import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 
 import { useAnalyticsEvents } from '@/hooks/api';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
@@ -48,6 +50,24 @@ export default function EventLogPage() {
   const { data, isLoading, refetch } = useAnalyticsEvents(params);
   const events = data?.data ?? [];
   const total = data?.total ?? 0;
+
+  /** Category-ийн өнгө */
+  const categoryChartColors: Record<string, string> = {
+    AUTHENTICATION: '#10B981',
+    NAVIGATION: '#3B82F6',
+    CONTENT: '#8B5CF6',
+    BILLING: '#F59E0B',
+    SYSTEM: '#EF4444',
+  };
+
+  /** Category хуваарилалтын chart өгөгдөл */
+  const categoryChartData = useMemo(() => {
+    const counts: Record<string, number> = {};
+    events.forEach((e) => {
+      counts[e.eventCategory] = (counts[e.eventCategory] ?? 0) + 1;
+    });
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [events]);
 
   /** Row toggle */
   const toggleExpand = (id: string) => {
@@ -221,6 +241,55 @@ export default function EventLogPage() {
             </div>
           </div>
         </div>
+
+        {/* Category хуваарилалтын chart */}
+        {categoryChartData.length > 0 && (
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 p-6 mb-6 shadow-sm">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="shrink-0">
+                <h3 className="font-bold">Event ангиллын хуваарилалт</h3>
+                <p className="text-sm text-slate-500">Одоогийн хуудасны {events.length} event</p>
+              </div>
+              <div className="flex items-center gap-6">
+                <ResponsiveContainer width={160} height={160}>
+                  <PieChart>
+                    <Pie
+                      data={categoryChartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={45}
+                      outerRadius={70}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {categoryChartData.map((entry) => (
+                        <Cell
+                          key={entry.name}
+                          fill={categoryChartColors[entry.name] ?? '#94a3b8'}
+                        />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip
+                      contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="flex flex-col gap-2">
+                  {categoryChartData.map((entry) => (
+                    <div key={entry.name} className="flex items-center gap-2 text-sm">
+                      <div
+                        className="size-3 rounded-full shrink-0"
+                        style={{ backgroundColor: categoryChartColors[entry.name] ?? '#94a3b8' }}
+                      />
+                      <span className="text-slate-600 dark:text-slate-400">{entry.name}</span>
+                      <span className="font-bold ml-2">{entry.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Хүснэгт */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 shadow-sm overflow-hidden mb-8">
