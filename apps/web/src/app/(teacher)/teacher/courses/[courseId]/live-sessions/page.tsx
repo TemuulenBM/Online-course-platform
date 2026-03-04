@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import {
   useCourseSessions,
-  useCourseLessons,
   useCreateLiveSession,
   useStartLiveSession,
   useEndLiveSession,
@@ -40,7 +39,6 @@ export default function TeacherLiveSessionsPage({
   const { courseId } = use(params);
   const { data: course } = useCourseById(courseId);
   const { data: sessionsPaginated, isLoading } = useCourseSessions(courseId);
-  const { data: lessons } = useCourseLessons(courseId);
 
   const createMutation = useCreateLiveSession();
   const startMutation = useStartLiveSession();
@@ -188,7 +186,7 @@ export default function TeacherLiveSessionsPage({
             </div>
           </div>
           <CreateSessionDialog
-            lessons={lessons ?? []}
+            courseId={courseId}
             onSubmit={handleCreate}
             isPending={createMutation.isPending}
           />

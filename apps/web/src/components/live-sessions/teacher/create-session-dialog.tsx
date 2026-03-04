@@ -14,18 +14,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import type { Lesson, CreateLiveSessionData } from '@ocp/shared-types';
+import type { CreateLiveSessionData } from '@ocp/shared-types';
 
 interface CreateSessionDialogProps {
-  /** Dropdown-д харуулах хичээлүүд */
-  lessons: Lesson[];
+  /** Сургалтын ID — backend-д LIVE хичээл автоматаар үүсгэхэд ашиглана */
+  courseId: string;
   /** Хадгалахад дуудагдана */
   onSubmit: (data: CreateLiveSessionData) => void;
   /** Mutation pending эсэх */
@@ -33,20 +26,17 @@ interface CreateSessionDialogProps {
 }
 
 /**
- * Шинэ session товлох / засах dialog.
+ * Шинэ session товлох dialog.
+ * courseId ашиглан backend автоматаар LIVE хичээл үүсгэж, session-д холбоно.
  */
-export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSessionDialogProps) {
+export function CreateSessionDialog({ courseId, onSubmit, isPending }: CreateSessionDialogProps) {
   const [open, setOpen] = useState(false);
-  const [lessonId, setLessonId] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [scheduledStart, setScheduledStart] = useState('');
   const [scheduledEnd, setScheduledEnd] = useState('');
 
-  const liveLessons = lessons.filter((l) => l.lessonType === 'live');
-
   const resetForm = () => {
-    setLessonId('');
     setTitle('');
     setDescription('');
     setScheduledStart('');
@@ -55,10 +45,10 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!lessonId || !title || !scheduledStart || !scheduledEnd) return;
+    if (!title || !scheduledStart || !scheduledEnd) return;
 
     onSubmit({
-      lessonId,
+      courseId,
       title,
       description: description || undefined,
       scheduledStart: new Date(scheduledStart).toISOString(),
@@ -85,29 +75,6 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Хичээл сонгох */}
-          <div className="space-y-2">
-            <Label htmlFor="lessonId">Хичээл</Label>
-            <Select value={lessonId} onValueChange={setLessonId}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Хичээл сонгох..." />
-              </SelectTrigger>
-              <SelectContent>
-                {liveLessons.length === 0 ? (
-                  <SelectItem value="_empty" disabled>
-                    LIVE төрлийн хичээл олдсонгүй
-                  </SelectItem>
-                ) : (
-                  liveLessons.map((l) => (
-                    <SelectItem key={l.id} value={l.id}>
-                      {l.title}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-
           {/* Гарчиг */}
           <div className="space-y-2">
             <Label htmlFor="title">Гарчиг</Label>
@@ -115,7 +82,7 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Жишээ: Мэдээллийн технологийн үндэс - Lab 04"
+              placeholder="Жишээ: Мэдээллийн технологийн үндэс — Lab 04"
               required
             />
           </div>
@@ -131,7 +98,7 @@ export function CreateSessionDialog({ lessons, onSubmit, isPending }: CreateSess
             />
           </div>
 
-          {/* Эхлэх цаг */}
+          {/* Эхлэх / Дуусах цаг */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="start">Эхлэх цаг</Label>

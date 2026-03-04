@@ -65,7 +65,8 @@ export interface AgoraTokenResponse {
 
 /** Session үүсгэх DTO */
 export interface CreateLiveSessionData {
-  lessonId: string;
+  lessonId?: string;
+  courseId?: string;
   title: string;
   description?: string;
   scheduledStart: string;
