@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Archive, BookOpen, Globe, Pencil, Users } from 'lucide-react';
+import { Archive, BookOpen, Globe, Pencil, Users, Video } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Course } from '@ocp/shared-types';
 import { ROUTES } from '@/lib/constants';
@@ -121,6 +121,13 @@ export function TeacherCoursesTable({ courses, onPublish, onArchive }: TeacherCo
                       title={te('students')}
                     >
                       <Users className="size-4" />
+                    </Link>
+                    <Link
+                      href={ROUTES.TEACHER_COURSE_LIVE_SESSIONS(course.id)}
+                      className="p-1.5 hover:bg-primary/10 rounded text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
+                      title="Шууд хичээлүүд"
+                    >
+                      <Video className="size-4" />
                     </Link>
                     {course.status === 'draft' && (
                       <button

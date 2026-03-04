@@ -135,6 +135,8 @@ export const ROUTES = {
   ADMIN_ENROLLMENTS: '/admin/enrollments',
   ADMIN_ENROLLMENT_DETAIL: (id: string) => `/admin/enrollments/${id}` as const,
   TEACHER_STUDENTS: (courseId: string) => `/teacher/courses/${courseId}/students` as const,
+  TEACHER_COURSE_LIVE_SESSIONS: (courseId: string) =>
+    `/teacher/courses/${courseId}/live-sessions` as const,
   PUBLIC_PROFILE: (userId: string) => `/profile/${userId}` as const,
   TEACHER_LESSON_CONTENT: (courseId: string, lessonId: string) =>
     `/teacher/courses/${courseId}/lessons/${lessonId}/content` as const,
