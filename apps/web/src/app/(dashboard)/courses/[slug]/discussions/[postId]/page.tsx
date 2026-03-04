@@ -8,6 +8,7 @@ import {
   useCourseBySlug,
   useDiscussionPost,
   useAddReply,
+  useUpdateReply,
   useVoteDiscussionPost,
   usePinPost,
   useLockPost,
@@ -25,6 +26,7 @@ import { PostDetailSkeleton } from '@/components/discussions/detail/post-detail-
 import { VoteSidebar } from '@/components/discussions/detail/vote-sidebar';
 import { ReplyCard } from '@/components/discussions/detail/reply-card';
 import { ReplyInput } from '@/components/discussions/detail/reply-input';
+import { DiscussionRichEditor } from '@/components/discussions/discussion-rich-editor';
 
 export default function PostDetailPage({
   params,
@@ -41,6 +43,7 @@ export default function PostDetailPage({
   const { data: post, isLoading } = useDiscussionPost(postId);
 
   const addReplyMutation = useAddReply(courseId, postId);
+  const updateReplyMutation = useUpdateReply(courseId, postId);
   const voteMutation = useVoteDiscussionPost(courseId, postId);
   const pinMutation = usePinPost(courseId, postId);
   const lockMutation = useLockPost(courseId, postId);
@@ -49,6 +52,9 @@ export default function PostDetailPage({
   const deleteReplyMutation = useDeleteReply(courseId, postId);
 
   const [deleteReplyId, setDeleteReplyId] = useState<string | null>(null);
+  const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [editContentHtml, setEditContentHtml] = useState('');
 
   /** Эрхийн шалгалт */
   const userRole = user?.role;
@@ -75,6 +81,27 @@ export default function PostDetailPage({
   /** Accept answer */
   const handleAccept = (replyId: string) => {
     acceptMutation.mutate(replyId);
+  };
+
+  /** Reply засах эхлүүлэх */
+  const handleStartEdit = (reply: { replyId: string; content: string; contentHtml?: string }) => {
+    setEditingReplyId(reply.replyId);
+    setEditContent(reply.content);
+    setEditContentHtml(reply.contentHtml || reply.content);
+  };
+
+  /** Reply засалт хадгалах */
+  const handleSaveEdit = () => {
+    if (!editingReplyId || !editContent.trim()) return;
+    updateReplyMutation.mutate(
+      { replyId: editingReplyId, content: editContent, contentHtml: editContentHtml },
+      {
+        onSuccess: () => {
+          toast.success(t('replyUpdated'));
+          setEditingReplyId(null);
+        },
+      },
+    );
   };
 
   /** Delete reply */
@@ -168,31 +195,93 @@ export default function PostDetailPage({
           </div>
 
           {/* Accepted answer эхэлж харагдана */}
-          {acceptedReply && (
-            <ReplyCard
-              reply={acceptedReply}
-              isAccepted
-              isOwner={user?.id === acceptedReply.authorId}
-              canAccept={false}
-              onAccept={() => {}}
-              onEdit={() => {}}
-              onDelete={() => setDeleteReplyId(acceptedReply.replyId)}
-            />
-          )}
+          {acceptedReply &&
+            (editingReplyId === acceptedReply.replyId ? (
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-primary/30 p-5 space-y-3">
+                <DiscussionRichEditor
+                  content={editContentHtml}
+                  onChange={(html, text) => {
+                    setEditContentHtml(html);
+                    setEditContent(text);
+                  }}
+                  minHeight="100px"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setEditingReplyId(null)}
+                    className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors"
+                  >
+                    {t('cancel')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveEdit}
+                    disabled={updateReplyMutation.isPending || !editContent.trim()}
+                    className="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  >
+                    {t('save')}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <ReplyCard
+                reply={acceptedReply}
+                isAccepted
+                isOwner={user?.id === acceptedReply.authorId}
+                canAccept={false}
+                onAccept={() => {}}
+                onEdit={() => handleStartEdit(acceptedReply)}
+                onDelete={() => setDeleteReplyId(acceptedReply.replyId)}
+              />
+            ))}
 
           {/* Бусад хариултууд */}
-          {otherReplies?.map((reply) => (
-            <ReplyCard
-              key={reply.replyId}
-              reply={reply}
-              isAccepted={false}
-              isOwner={user?.id === reply.authorId || isModOrAdmin}
-              canAccept={(isPostOwner || isModOrAdmin) && post.postType === 'question'}
-              onAccept={() => handleAccept(reply.replyId)}
-              onEdit={() => {}}
-              onDelete={() => setDeleteReplyId(reply.replyId)}
-            />
-          ))}
+          {otherReplies?.map((reply) =>
+            editingReplyId === reply.replyId ? (
+              <div
+                key={reply.replyId}
+                className="bg-white dark:bg-slate-900 rounded-xl border border-primary/30 p-5 space-y-3"
+              >
+                <DiscussionRichEditor
+                  content={editContentHtml}
+                  onChange={(html, text) => {
+                    setEditContentHtml(html);
+                    setEditContent(text);
+                  }}
+                  minHeight="100px"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setEditingReplyId(null)}
+                    className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors"
+                  >
+                    {t('cancel')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveEdit}
+                    disabled={updateReplyMutation.isPending || !editContent.trim()}
+                    className="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  >
+                    {t('save')}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <ReplyCard
+                key={reply.replyId}
+                reply={reply}
+                isAccepted={false}
+                isOwner={user?.id === reply.authorId || isModOrAdmin}
+                canAccept={(isPostOwner || isModOrAdmin) && post.postType === 'question'}
+                onAccept={() => handleAccept(reply.replyId)}
+                onEdit={() => handleStartEdit(reply)}
+                onDelete={() => setDeleteReplyId(reply.replyId)}
+              />
+            ),
+          )}
 
           {!post.replies?.length && (
             <p className="text-sm text-slate-400 text-center py-8">{t('noReplies')}</p>

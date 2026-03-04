@@ -28,6 +28,7 @@ import {
   LessonCompleteButton,
 } from '@/components/lesson-viewer';
 import { QuizInfoPanel } from '@/components/quiz/QuizInfoPanel';
+import { LessonComments } from '@/components/lesson-viewer/lesson-comments';
 
 export default function LessonViewerPage({
   params,
@@ -160,8 +161,10 @@ export default function LessonViewerPage({
       {/* Контент — QUIZ / Video / Text тусдаа layout */}
       {currentLesson.lessonType === 'quiz' ? (
         /* ───────── QUIZ LAYOUT ───────── */
-        <div className="max-w-[1200px] mx-auto w-full px-4 lg:px-10 pb-10">
+        <div className="max-w-[1200px] mx-auto w-full px-4 lg:px-10 pb-10 space-y-8">
           <QuizInfoPanel lessonId={lessonId} />
+          {/* Хичээлийн сэтгэгдлүүд */}
+          <LessonComments lessonId={lessonId} />
         </div>
       ) : contentType === 'video' ? (
         /* ───────── VIDEO LAYOUT ───────── */
@@ -200,6 +203,8 @@ export default function LessonViewerPage({
               {lessons && (
                 <LessonNavigation lessons={lessons} currentLessonId={lessonId} slug={slug} />
               )}
+              {/* Хичээлийн сэтгэгдлүүд */}
+              <LessonComments lessonId={lessonId} />
             </div>
 
             {/* Баруун sidebar — attachments + course progress */}
@@ -249,6 +254,8 @@ export default function LessonViewerPage({
               {lessons && (
                 <LessonNavigation lessons={lessons} currentLessonId={lessonId} slug={slug} />
               )}
+              {/* Хичээлийн сэтгэгдлүүд */}
+              <LessonComments lessonId={lessonId} />
             </div>
 
             {/* Баруун sidebar — section outline + enrollment CTA */}
