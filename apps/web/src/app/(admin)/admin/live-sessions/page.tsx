@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { format } from 'date-fns';
-import { mn } from 'date-fns/locale';
 import {
   Video,
   Radio,
@@ -142,7 +140,11 @@ function AttendeesDialog({
                 <div className="shrink-0 text-right">
                   <p className="text-xs font-semibold text-slate-700">{a.durationMinutes} мин</p>
                   <p className="text-[10px] text-slate-400">
-                    {format(new Date(a.joinedAt), 'HH:mm')}
+                    {new Date(a.joinedAt).toLocaleTimeString('mn-MN', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    })}
                   </p>
                 </div>
               </div>
@@ -333,10 +335,20 @@ export default function AdminLiveSessionsPage() {
                         <td className="px-5 py-4">
                           <div className="flex flex-col gap-0.5">
                             <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                              {format(new Date(s.scheduledStart), 'yyyy.MM.dd', { locale: mn })}
+                              {new Date(s.scheduledStart)
+                                .toLocaleDateString('mn-MN', {
+                                  year: 'numeric',
+                                  month: '2-digit',
+                                  day: '2-digit',
+                                })
+                                .replace(/\//g, '.')}
                             </span>
                             <span className="text-xs text-slate-400">
-                              {format(new Date(s.scheduledStart), 'HH:mm')}
+                              {new Date(s.scheduledStart).toLocaleTimeString('mn-MN', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false,
+                              })}
                             </span>
                           </div>
                         </td>

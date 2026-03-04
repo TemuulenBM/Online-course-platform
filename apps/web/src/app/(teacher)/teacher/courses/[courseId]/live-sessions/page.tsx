@@ -25,9 +25,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 import type { LiveSession, CreateLiveSessionData } from '@ocp/shared-types';
 
-/** NEXT_PUBLIC_AGORA_APP_ID — frontend-д ашиглагдах public Agora App ID */
-const AGORA_APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID ?? '';
-
 /**
  * Багшийн session удирдлага — /teacher/courses/[courseId]/live-sessions
  */
@@ -100,6 +97,7 @@ export default function TeacherLiveSessionsPage({
       startMutation.mutate(session.id, {
         onSuccess: (res) => {
           toast.success('Хичээл эхэллээ!');
+          /** refreshToken дуудаж uid авах — start response-д uid байхгүй */
           refreshTokenMutation.mutate(session.id, {
             onSuccess: (tokenRes) => {
               store.initSession(
@@ -107,11 +105,12 @@ export default function TeacherLiveSessionsPage({
                 res.channelName,
                 tokenRes.token,
                 tokenRes.uid,
-                AGORA_APP_ID,
+                res.appId,
               );
             },
             onError: () => {
-              store.initSession(session.id, res.channelName, res.token, 0, AGORA_APP_ID);
+              /** refreshToken алдаатай бол start response-оос авсан token + uid=0 ашиглана */
+              store.initSession(session.id, res.channelName, res.token, 0, res.appId);
             },
           });
         },

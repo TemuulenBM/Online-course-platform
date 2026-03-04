@@ -46,6 +46,7 @@ export interface JoinSessionResponse {
   token: string;
   channelName: string;
   uid: number;
+  appId: string;
 }
 
 /** Start session response — Agora token-тэй */
@@ -53,6 +54,7 @@ export interface StartSessionResponse {
   session: LiveSession;
   token: string;
   channelName: string;
+  appId: string;
 }
 
 /** Agora token refresh response */

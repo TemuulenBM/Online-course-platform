@@ -20,9 +20,6 @@ import { ReactionOverlay } from '@/components/live-sessions/classroom/reaction-o
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROUTES } from '@/lib/constants';
 
-/** NEXT_PUBLIC_AGORA_APP_ID — frontend-д ашиглагдах public Agora App ID */
-const AGORA_APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID ?? '';
-
 /**
  * Оюутны live classroom — /live-session/[sessionId]
  */
@@ -41,15 +38,11 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
   const store = useLiveSessionStore();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  /** Mount: session-д нэгдэх */
+  /** Mount: session-д нэгдэх — appId backend response-оос авна */
   useEffect(() => {
-    if (!AGORA_APP_ID) {
-      toast.error('NEXT_PUBLIC_AGORA_APP_ID тохируулаагүй байна');
-    }
-
     joinMutation.mutate(sessionId, {
       onSuccess: (res) => {
-        store.initSession(sessionId, res.channelName, res.token, res.uid, AGORA_APP_ID);
+        store.initSession(sessionId, res.channelName, res.token, res.uid, res.appId);
       },
       onError: () => {
         toast.error('Хичээлд нэгдэхэд алдаа гарлаа');

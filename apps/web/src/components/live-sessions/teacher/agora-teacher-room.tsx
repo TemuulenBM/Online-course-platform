@@ -99,7 +99,9 @@ function AgoraTeacherRoomInner({
         videoTrack={localCameraTrack}
         className="absolute inset-0"
         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        cover={
+      >
+        {/* Камер унтарсан үед placeholder */}
+        {isCameraOff && (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-slate-900">
             <div className="flex flex-col items-center gap-3">
               <User className="size-16 text-white/40" />
@@ -108,8 +110,8 @@ function AgoraTeacherRoomInner({
               </p>
             </div>
           </div>
-        }
-      />
+        )}
+      </LocalUser>
 
       {/* Оролцогчдын жижиг preview — баруун дээд */}
       {remoteUsers.length > 0 && (

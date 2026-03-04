@@ -122,17 +122,20 @@ function AgoraRoomInner({
           cameraOn={!isCameraOff}
           micOn={!isMuted}
           videoTrack={localCameraTrack}
-          cover={
+          className="h-full w-full"
+        >
+          {/* Камер унтарсан үед placeholder */}
+          {isCameraOff && (
             <div className="flex h-full w-full items-center justify-center bg-slate-800">
               <div className="flex flex-col items-center gap-1">
                 <User className="size-6 text-white/40" />
-                <span className="text-[10px] text-white/40 truncate max-w-[80px] px-1">
+                <span className="truncate max-w-[80px] px-1 text-[10px] text-white/40">
                   {userName ?? 'Та'}
                 </span>
               </div>
             </div>
-          }
-        />
+          )}
+        </LocalUser>
       </div>
 
       {/* Бусад оролцогчид — баруун дээд */}
