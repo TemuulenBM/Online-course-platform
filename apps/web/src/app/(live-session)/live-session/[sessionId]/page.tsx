@@ -56,7 +56,6 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
         router.push(ROUTES.LIVE_SESSIONS);
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   /** Agora connection change — connected болоход timer эхлүүлнэ */

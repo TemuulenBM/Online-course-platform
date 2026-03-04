@@ -18,7 +18,6 @@ import Link from 'next/link';
 import { useAllLiveSessions, useSessionAttendees, useCancelLiveSession } from '@/hooks/api';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { LiveSession, SessionAttendee, LiveSessionStatus } from '@ocp/shared-types';
