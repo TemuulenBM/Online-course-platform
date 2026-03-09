@@ -30,6 +30,11 @@ import { GetPlatformStatsUseCase } from './application/use-cases/get-platform-st
 import { GetPendingItemsUseCase } from './application/use-cases/get-pending-items.use-case';
 import { GetRecentActivityUseCase } from './application/use-cases/get-recent-activity.use-case';
 
+// Use Cases — DLQ (Dead Letter Queue)
+import { ListFailedJobsUseCase } from './application/use-cases/list-failed-jobs.use-case';
+import { RetryFailedJobUseCase } from './application/use-cases/retry-failed-job.use-case';
+import { ResolveFailedJobUseCase } from './application/use-cases/resolve-failed-job.use-case';
+
 // Infrastructure
 import { AuditLogRepository } from './infrastructure/repositories/audit-log.repository';
 import { SystemSettingRepository } from './infrastructure/repositories/system-setting.repository';
@@ -40,6 +45,7 @@ import { AdminProcessor } from './infrastructure/services/admin.processor';
 // Бусад модулиудын repository/service-ийг авахын тулд import
 import { DiscussionsModule } from '../discussions/discussions.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { DlqModule } from '../../common/dlq/dlq.module';
 
 /**
  * Admin модуль.
@@ -53,6 +59,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ConfigModule,
     DiscussionsModule,
     NotificationsModule,
+    DlqModule,
   ],
   controllers: [AuditLogController, SystemSettingsController, AdminDashboardController],
   providers: [
@@ -75,6 +82,10 @@ import { NotificationsModule } from '../notifications/notifications.module';
     GetPlatformStatsUseCase,
     GetPendingItemsUseCase,
     GetRecentActivityUseCase,
+    // Use Cases — DLQ
+    ListFailedJobsUseCase,
+    RetryFailedJobUseCase,
+    ResolveFailedJobUseCase,
     // Infrastructure
     AuditLogRepository,
     SystemSettingRepository,

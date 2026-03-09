@@ -270,6 +270,18 @@ PostgreSQL (Prisma) = relational data; MongoDB (Mongoose) = flexible content. UU
 - Bull: session-started, session-ended (markAllLeft), session-reminder (15 мин), recording-ready
 - Webhook: `x-agora-signature` HMAC-SHA256 verification
 
+### DLQ Module (Common — Production Readiness)
+
+`apps/api/src/common/dlq/` — Bull queue failed job tracking + admin alerting
+**Exports**: `DlqRepository`, `DlqService` | **Deps**: BullModule (бүх 6 queue), PrismaModule, RedisModule
+
+- `FailedJob` PostgreSQL model — queue нэр, severity, status, job data хадгална
+- Severity mapping: payments/certificates=CRITICAL, live-classes=HIGH, notifications=MEDIUM, analytics/admin=LOW
+- CRITICAL/HIGH failed job → admin-д IN_APP notification шууд DB-д (infinite loop хамгаалалт)
+- Alert rate limit: Redis key `dlq:alert:{queueName}` TTL 300s
+- Admin endpoints: `GET /admin/dashboard/failed-jobs`, `POST /:id/retry`, `PATCH /:id/resolve`
+- `GetPendingItemsUseCase`-д `failedJobs` count нэмэгдсэн
+
 ### Web App Setup (Phase 7 - Frontend)
 
 - Next.js 16.1 + React 19.2 + Tailwind CSS 4 + shadcn/ui (new-york, 24 components) + React Query 5.62 + Zustand 5.0

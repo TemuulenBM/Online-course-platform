@@ -25,6 +25,7 @@ import agoraConfig from './config/agora.config';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { RedisModule } from './common/redis/redis.module';
 import { StorageModule } from './common/storage/storage.module';
+import { DlqModule } from './common/dlq/dlq.module';
 
 // Feature modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -141,6 +142,8 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
     AnalyticsModule,
     AdminModule,
     LiveClassesModule,
+    // DLQ — Bull queue-д бүх retry дууссан job-уудыг DB-д хадгалж, admin-д alert илгээнэ
+    DlqModule,
   ],
   controllers: [AppController],
   providers: [

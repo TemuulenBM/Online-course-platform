@@ -1,0 +1,18 @@
+# Dependabot — dependency vulnerability автоматаар шалгаж, PR үүсгэнэ
+version: 2
+updates:
+  # npm dependency шинэчлэлт (долоо хоног бүр)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    # Security update-д зөвхөн patch version шинэчлэлт
+    versioning-strategy: increase
+
+  # GitHub Actions workflow шинэчлэлт
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
