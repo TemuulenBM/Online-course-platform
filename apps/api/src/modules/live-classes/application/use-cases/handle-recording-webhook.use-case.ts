@@ -1,4 +1,9 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bull';
@@ -21,17 +26,22 @@ export class HandleRecordingWebhookUseCase {
   ) {}
 
   async execute(dto: RecordingWebhookDto, signature?: string): Promise<void> {
-    /** 1. Webhook signature шалгах */
+    /** 1. Webhook signature шалгах — webhookSecret заавал тохируулагдсан байх ёстой */
     const webhookSecret = this.configService.get<string>('agora.webhookSecret');
-    if (webhookSecret && signature) {
-      const expectedSignature = crypto
-        .createHmac('sha256', webhookSecret)
-        .update(JSON.stringify(dto))
-        .digest('hex');
-
-      if (signature !== expectedSignature) {
-        throw new BadRequestException('Webhook signature буруу');
-      }
+    if (!webhookSecret) {
+      throw new InternalServerErrorException(
+        'AGORA_WEBHOOK_SECRET тохируулагдаагүй байна. Webhook endpoint ажиллахгүй.',
+      );
+    }
+    if (!signature) {
+      throw new BadRequestException('Webhook signature толгой байхгүй байна (x-agora-signature)');
+    }
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(JSON.stringify(dto))
+      .digest('hex');
+    if (signature !== expectedSignature) {
+      throw new BadRequestException('Webhook signature буруу байна');
     }
 
     /** 2. Channel нэрээс session олох */

@@ -92,15 +92,26 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const redisUrl = config.get<string>('redis.url');
-        if (redisUrl) {
-          return { url: redisUrl };
-        }
+        const baseConfig = redisUrl
+          ? { url: redisUrl }
+          : {
+              redis: {
+                host: config.get<string>('redis.host'),
+                port: config.get<number>('redis.port'),
+                password: config.get<string>('redis.password') || undefined,
+                tls: config.get('redis.tls'),
+              },
+            };
         return {
-          redis: {
-            host: config.get<string>('redis.host'),
-            port: config.get<number>('redis.port'),
-            password: config.get<string>('redis.password') || undefined,
-            tls: config.get('redis.tls'),
+          ...baseConfig,
+          // Бүх queue-д хамаарах default тохиргоо
+          // Job 3 удаа retry, exponential backoff (2s, 4s, 8s)
+          // Амжилттай job-уудаас 100-г, failed job-уудаас 500-г хадгалж лог харах боломж олгоно
+          defaultJobOptions: {
+            attempts: 3,
+            backoff: { type: 'exponential', delay: 2000 },
+            removeOnComplete: 100,
+            removeOnFail: 500,
           },
         };
       },

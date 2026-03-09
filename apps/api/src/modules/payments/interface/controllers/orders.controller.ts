@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   ParseUUIDPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
@@ -109,7 +110,24 @@ export class OrdersController {
 
   /** Баримт upload хийх */
   @Post(':id/upload-proof')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: 10 * 1024 * 1024 }, // 10MB — payments.module.ts-тэй нийцнэ
+      // Зөвхөн зураг болон PDF файл хүлээн авна (төлбөрийн баримт)
+      fileFilter: (_req, file, cb) => {
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+        if (!allowedMimeTypes.includes(file.mimetype)) {
+          return cb(
+            new BadRequestException(
+              `Зөвшөөрөгдөхгүй файлын төрөл: ${file.mimetype}. Зөвхөн JPEG, PNG, WebP, PDF файл байршуулна уу.`,
+            ),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+    }),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Төлбөрийн баримт upload хийх' })
   @ApiResponse({ status: 200, description: 'Баримт хадгалагдлаа' })
