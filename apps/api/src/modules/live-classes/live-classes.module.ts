@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bull';
+import { Module, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import { BullModule, InjectQueue } from '@nestjs/bull';
 import { ConfigModule } from '@nestjs/config';
+import { Queue } from 'bull';
 
 /** Хамааралтай модулиуд */
 import { LessonsModule } from '../lessons/lessons.module';
@@ -26,6 +27,7 @@ import { LeaveLiveSessionUseCase } from './application/use-cases/leave-live-sess
 import { GetAttendeesUseCase } from './application/use-cases/get-attendees.use-case';
 import { GenerateAgoraTokenUseCase } from './application/use-cases/generate-agora-token.use-case';
 import { HandleRecordingWebhookUseCase } from './application/use-cases/handle-recording-webhook.use-case';
+import { CleanupStaleLiveSessionsUseCase } from './application/use-cases/cleanup-stale-live-sessions.use-case';
 
 /** Infrastructure */
 import { LiveSessionRepository } from './infrastructure/repositories/live-session.repository';
@@ -67,6 +69,7 @@ import { AGORA_SERVICE } from './domain/interfaces/agora-service.interface';
     GetAttendeesUseCase,
     GenerateAgoraTokenUseCase,
     HandleRecordingWebhookUseCase,
+    CleanupStaleLiveSessionsUseCase,
 
     /** Infrastructure */
     LiveSessionRepository,
@@ -79,4 +82,50 @@ import { AGORA_SERVICE } from './domain/interfaces/agora-service.interface';
   ],
   exports: [LiveSessionRepository],
 })
-export class LiveClassesModule {}
+export class LiveClassesModule implements OnApplicationBootstrap {
+  private readonly logger = new Logger(LiveClassesModule.name);
+
+  constructor(
+    private readonly cleanupStaleLiveSessionsUseCase: CleanupStaleLiveSessionsUseCase,
+    @InjectQueue('live-classes') private readonly liveClassesQueue: Queue,
+  ) {}
+
+  /**
+   * Backend эхлэхэд:
+   * 1. Stale LIVE session-уудыг шууд цэвэрлэнэ
+   * 2. 30 мин тутам давтагдах cleanup job бүртгэнэ
+   */
+  async onApplicationBootstrap(): Promise<void> {
+    /** 1. Шууд цэвэрлэгээ */
+    try {
+      const cleaned = await this.cleanupStaleLiveSessionsUseCase.execute();
+      if (cleaned > 0) {
+        this.logger.warn(`Bootstrap: ${cleaned} stale LIVE session цэвэрлэгдлээ`);
+      }
+    } catch (error) {
+      this.logger.error(
+        'Bootstrap stale session цэвэрлэгээ амжилтгүй',
+        error instanceof Error ? error.stack : String(error),
+      );
+    }
+
+    /** 2. Repeatable job — 30 мин тутам */
+    try {
+      await this.liveClassesQueue.add(
+        'cleanup-stale-sessions',
+        {},
+        {
+          repeat: { every: 30 * 60 * 1000 },
+          removeOnComplete: true,
+          removeOnFail: false,
+        },
+      );
+      this.logger.log('Stale session cleanup repeatable job бүртгэгдлээ (30 мин тутам)');
+    } catch (error) {
+      this.logger.error(
+        'Repeatable job бүртгэхэд алдаа',
+        error instanceof Error ? error.stack : String(error),
+      );
+    }
+  }
+}
