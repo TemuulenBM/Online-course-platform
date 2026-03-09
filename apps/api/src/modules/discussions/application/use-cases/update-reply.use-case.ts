@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nest
 import { DiscussionPostRepository } from '../../infrastructure/repositories/discussion-post.repository';
 import { DiscussionCacheService } from '../../infrastructure/services/discussion-cache.service';
 import { DiscussionPostEntity } from '../../domain/entities/discussion-post.entity';
+import { sanitizeRichHtml, sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Хариулт шинэчлэх use case.
@@ -43,10 +44,14 @@ export class UpdateReplyUseCase {
       throw new ForbiddenException('Зөвхөн хариултын эзэмшигч эсвэл админ шинэчлэх боломжтой');
     }
 
-    /** 4. Хариулт шинэчлэх */
+    /** 4. XSS хамгаалалт — HTML контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(dto.content);
+    const cleanContentHtml = sanitizeRichHtml(dto.contentHtml);
+
+    /** 5. Хариулт шинэчлэх */
     const updated = await this.postRepository.updateReply(postId, replyId, {
-      content: dto.content,
-      contentHtml: dto.contentHtml,
+      content: cleanContent,
+      contentHtml: cleanContentHtml,
     });
 
     /** 5. Кэш устгах */

@@ -36,9 +36,12 @@ function validateRequiredEnvVars(): void {
     'REDIS_HOST',
   ];
 
-  // Production орчинд Redis нууц үг заавал байх ёстой — auth-гүй Redis нь нийтийн сүлжээнд аюултай
+  // Production орчинд нэмэлт шалгалтууд
   if (process.env.NODE_ENV === 'production') {
+    // Redis нууц үг заавал — auth-гүй Redis нь нийтийн сүлжээнд аюултай
     required.push('REDIS_PASSWORD');
+    // APP_URL заавал — CORS зөв ажиллахын тулд origin тодорхой байх ёстой
+    required.push('APP_URL');
   }
 
   const missing = required.filter((key) => !process.env[key]);

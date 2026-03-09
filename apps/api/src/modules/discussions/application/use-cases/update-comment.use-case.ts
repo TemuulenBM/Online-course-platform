@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nest
 import { LessonCommentRepository } from '../../infrastructure/repositories/lesson-comment.repository';
 import { DiscussionCacheService } from '../../infrastructure/services/discussion-cache.service';
 import { LessonCommentEntity } from '../../domain/entities/lesson-comment.entity';
+import { sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Хичээлийн сэтгэгдэл шинэчлэх use case.
@@ -33,9 +34,12 @@ export class UpdateCommentUseCase {
       throw new ForbiddenException('Зөвхөн өөрийн сэтгэгдлийг засварлах боломжтой');
     }
 
-    /** 3. Сэтгэгдэл шинэчлэх */
+    /** 3. XSS хамгаалалт — контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(data.content);
+
+    /** 4. Сэтгэгдэл шинэчлэх */
     const updated = await this.commentRepository.update(commentId, {
-      content: data.content,
+      content: cleanContent,
     });
     if (!updated) {
       throw new NotFoundException('Сэтгэгдэл олдсонгүй');
