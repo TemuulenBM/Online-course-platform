@@ -1,4 +1,4 @@
-import { IsString, IsUUID, IsOptional, IsNumber, Min, MinLength } from 'class-validator';
+import { IsString, IsUUID, IsOptional, IsNumber, Min, MinLength, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
@@ -19,6 +19,7 @@ export class CreateCommentDto {
   })
   @IsString({ message: 'Агуулга тэмдэгт мөр байх ёстой' })
   @MinLength(1, { message: 'Агуулга хоосон байж болохгүй' })
+  @MaxLength(10000, { message: 'Сэтгэгдэл хамгийн ихдээ 10,000 тэмдэгт байна' })
   content!: string;
 
   @ApiProperty({

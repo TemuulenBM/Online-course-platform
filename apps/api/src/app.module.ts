@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { APP_GUARD, APP_FILTER } from '@nestjs/core';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
+import { StaticFilesMiddleware } from './common/middleware/static-files.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -23,6 +25,7 @@ import agoraConfig from './config/agora.config';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { RedisModule } from './common/redis/redis.module';
 import { StorageModule } from './common/storage/storage.module';
+import { DlqModule } from './common/dlq/dlq.module';
 
 // Feature modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -44,6 +47,8 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
 
 @Module({
   imports: [
+    // Sentry — алдаа бүртгэл, гүйцэтгэлийн хяналт (SENTRY_DSN тохируулагдсан үед идэвхждэг)
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
@@ -92,15 +97,28 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const redisUrl = config.get<string>('redis.url');
-        if (redisUrl) {
-          return { url: redisUrl };
-        }
+        const baseConfig = redisUrl
+          ? { url: redisUrl }
+          : {
+              redis: {
+                host: config.get<string>('redis.host'),
+                port: config.get<number>('redis.port'),
+                password: config.get<string>('redis.password') || undefined,
+                tls: config.get('redis.tls'),
+              },
+            };
         return {
-          redis: {
-            host: config.get<string>('redis.host'),
-            port: config.get<number>('redis.port'),
-            password: config.get<string>('redis.password') || undefined,
-            tls: config.get('redis.tls'),
+          ...baseConfig,
+          // Бүх queue-д хамаарах default тохиргоо
+          // Job 3 удаа retry, exponential backoff (2s, 4s, 8s)
+          // Амжилттай job-уудаас 100-г, failed job-уудаас 500-г хадгалж лог харах боломж олгоно
+          defaultJobOptions: {
+            attempts: 3,
+            backoff: { type: 'exponential', delay: 2000 },
+            removeOnComplete: 100,
+            removeOnFail: 500,
+            // Job-ийн хамгийн их ажиллах хугацаа — Puppeteer PDF зэрэг удаан job hang хийхээс хамгаалах
+            timeout: 120000, // 2 минут
           },
         };
       },
@@ -124,12 +142,21 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
     AnalyticsModule,
     AdminModule,
     LiveClassesModule,
+    // DLQ — Bull queue-д бүх retry дууссан job-уудыг DB-д хадгалж, admin-д alert илгээнэ
+    DlqModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    // Sentry global filter — бүх unhandled exception-г Sentry-д илгээнэ
+    { provide: APP_FILTER, useClass: SentryGlobalFilter },
     // ThrottlerGuard бүх endpoint-д автомат ажиллана
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  // /uploads/ статик файлуудад extension whitelist + Content-Disposition middleware холбоно
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(StaticFilesMiddleware).forRoutes('/uploads/*');
+  }
+}

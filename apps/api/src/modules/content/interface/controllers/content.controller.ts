@@ -15,6 +15,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { BadRequestException } from '@nestjs/common';
+import { basename } from 'path';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../../../common/guards/roles.guard';
@@ -131,8 +133,35 @@ export class ContentController {
       limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
       storage: diskStorage({
         destination: './uploads/temp',
-        filename: (_req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
+        // Path traversal хамгаалалт: originalname-аас зам хасаж, UUID prefix нэмнэ
+        filename: (_req, file, cb) => {
+          const safeName = basename(file.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+          cb(null, `${Date.now()}-${safeName}`);
+        },
       }),
+      // MIME type whitelist — зөвхөн зөвшөөрөгдсөн файлын төрлийг хүлээн авна
+      fileFilter: (_req, file, cb) => {
+        const allowedMimeTypes = [
+          'video/mp4',
+          'video/webm',
+          'video/ogg',
+          'video/quicktime',
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/gif',
+          'application/pdf',
+          'text/vtt',
+          'text/plain',
+        ];
+        if (!allowedMimeTypes.includes(file.mimetype)) {
+          return cb(
+            new BadRequestException(`Зөвшөөрөгдөхгүй файлын төрөл: ${file.mimetype}`),
+            false,
+          );
+        }
+        cb(null, true);
+      },
     }),
   )
   @ApiConsumes('multipart/form-data')

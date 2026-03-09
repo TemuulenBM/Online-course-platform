@@ -3,12 +3,14 @@ import { GetPendingItemsUseCase } from '../../application/use-cases/get-pending-
 import { PrismaService } from '../../../../common/prisma/prisma.service';
 import { DiscussionPostRepository } from '../../../discussions/infrastructure/repositories/discussion-post.repository';
 import { AdminCacheService } from '../../infrastructure/services/admin-cache.service';
+import { DlqRepository } from '../../../../common/dlq/dlq.repository';
 
 describe('GetPendingItemsUseCase', () => {
   let useCase: GetPendingItemsUseCase;
   let prisma: any;
   let postRepository: jest.Mocked<DiscussionPostRepository>;
   let cacheService: jest.Mocked<AdminCacheService>;
+  let dlqRepository: jest.Mocked<DlqRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +28,10 @@ describe('GetPendingItemsUseCase', () => {
           provide: AdminCacheService,
           useValue: { getPendingItems: jest.fn(), setPendingItems: jest.fn() },
         },
+        {
+          provide: DlqRepository,
+          useValue: { countPending: jest.fn().mockResolvedValue(2) },
+        },
       ],
     }).compile();
 
@@ -33,10 +39,17 @@ describe('GetPendingItemsUseCase', () => {
     prisma = module.get(PrismaService);
     postRepository = module.get(DiscussionPostRepository);
     cacheService = module.get(AdminCacheService);
+    dlqRepository = module.get(DlqRepository);
   });
 
   it('кэшнээс олдвол шууд буцаана', async () => {
-    const cached = { pendingOrders: 5, processingOrders: 2, flaggedPosts: 3, totalPending: 10 };
+    const cached = {
+      pendingOrders: 5,
+      processingOrders: 2,
+      flaggedPosts: 3,
+      failedJobs: 2,
+      totalPending: 12,
+    };
     cacheService.getPendingItems.mockResolvedValue(cached);
 
     const result = await useCase.execute();
@@ -51,6 +64,7 @@ describe('GetPendingItemsUseCase', () => {
 
     expect(result).toHaveProperty('pendingOrders');
     expect(result).toHaveProperty('flaggedPosts');
+    expect(result).toHaveProperty('failedJobs');
     expect(result).toHaveProperty('totalPending');
     expect(cacheService.setPendingItems).toHaveBeenCalled();
   });

@@ -6,6 +6,7 @@ import { SessionAttendeeRepository } from '../../infrastructure/repositories/ses
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { LiveSessionEntity } from '../../domain/entities/live-session.entity';
 import { EnrollmentEntity } from '../../../enrollments/domain/entities/enrollment.entity';
+import { ConfigService } from '@nestjs/config';
 import { AGORA_SERVICE } from '../../domain/interfaces/agora-service.interface';
 
 describe('JoinLiveSessionUseCase', () => {
@@ -69,6 +70,10 @@ describe('JoinLiveSessionUseCase', () => {
             generateRtcToken: jest.fn().mockReturnValue('mock-token'),
             generateChannelName: jest.fn().mockReturnValue('ocp-live-session-1'),
           },
+        },
+        {
+          provide: ConfigService,
+          useValue: { get: jest.fn().mockReturnValue('mock-app-id') },
         },
       ],
     }).compile();

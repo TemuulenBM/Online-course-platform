@@ -11,6 +11,7 @@ import { CourseRepository } from '../../../courses/infrastructure/repositories/c
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
 import { DiscussionPostEntity } from '../../domain/entities/discussion-post.entity';
+import { sanitizeRichHtml, sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Хэлэлцүүлгийн нийтлэл үүсгэх use case.
@@ -79,16 +80,20 @@ export class CreatePostUseCase {
       );
     }
 
-    /** 6. Нийтлэл үүсгэх */
+    /** 6. XSS хамгаалалт — HTML контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(dto.content);
+    const cleanContentHtml = sanitizeRichHtml(dto.contentHtml);
+
+    /** 7. Нийтлэл үүсгэх */
     const post = await this.postRepository.create({
       courseId: dto.courseId,
       lessonId: dto.lessonId,
       authorId: userId,
       postType: dto.postType,
-      title: dto.title,
-      content: dto.content,
-      contentHtml: dto.contentHtml,
-      tags: dto.tags,
+      title: dto.title ? sanitizePlainText(dto.title) : undefined,
+      content: cleanContent,
+      contentHtml: cleanContentHtml,
+      tags: dto.tags?.map((tag) => sanitizePlainText(tag)),
     });
 
     this.logger.log(

@@ -20,7 +20,7 @@ describe('LoginUseCase', () => {
     email: 'test@example.com',
     passwordHash: 'hashed-password',
     role: 'STUDENT',
-    emailVerified: false,
+    emailVerified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
     lastLoginAt: null,

@@ -160,6 +160,7 @@ export class LiveSessionsController {
       session: result.session.toResponse(),
       token: result.token,
       channelName: result.channelName,
+      appId: result.appId,
     };
   }
 
@@ -179,6 +180,7 @@ export class LiveSessionsController {
       token: result.token,
       channelName: result.channelName,
       uid: result.uid,
+      appId: result.appId,
     };
   }
 

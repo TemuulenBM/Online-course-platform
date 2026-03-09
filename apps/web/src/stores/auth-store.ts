@@ -36,9 +36,11 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'ocp-auth-storage',
+      // accessToken-г localStorage-д хадгалахгүй — XSS халдлагаас хамгаалах
+      // Зөвхөн refreshToken хадгалж, page reload үед шинэ accessToken авна
       partialize: (state) => ({
         user: state.user,
-        tokens: state.tokens,
+        tokens: state.tokens ? ({ refreshToken: state.tokens.refreshToken } as AuthTokens) : null,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => (state) => {

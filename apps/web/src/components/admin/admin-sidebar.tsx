@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Trophy,
   Activity,
+  Video,
   LogOut,
   ArrowLeft,
 } from 'lucide-react';
@@ -54,6 +55,7 @@ const managementItems = [
   { href: '/admin/categories', icon: Layers, label: 'Ангилал' },
   { href: '/admin/enrollments', icon: GraduationCap, label: 'Элсэлт' },
   { href: '/admin/orders', icon: ShoppingCart, label: 'Захиалга' },
+  { href: '/admin/live-sessions', icon: Video, label: 'Шууд хичээлүүд' },
 ] as const;
 
 /** Аналитик навигац */

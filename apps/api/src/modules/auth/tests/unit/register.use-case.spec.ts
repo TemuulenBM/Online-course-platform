@@ -6,6 +6,8 @@ import { TokenService } from '../../infrastructure/services/token.service';
 import { SessionRepository } from '../../infrastructure/repositories/session.repository';
 import { RefreshTokenRepository } from '../../infrastructure/repositories/refresh-token.repository';
 import { UserProfileRepository } from '../../../users/infrastructure/repositories/user-profile.repository';
+import { EmailVerificationRepository } from '../../infrastructure/repositories/email-verification.repository';
+import { NotificationService } from '../../../notifications/application/services/notification.service';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { RegisterDto } from '../../dto/register.dto';
 
@@ -65,6 +67,16 @@ describe('RegisterUseCase', () => {
           useValue: {
             create: jest.fn(),
           },
+        },
+        {
+          provide: EmailVerificationRepository,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
+        {
+          provide: NotificationService,
+          useValue: { send: jest.fn().mockResolvedValue(undefined) },
         },
       ],
     }).compile();

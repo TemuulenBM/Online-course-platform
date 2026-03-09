@@ -22,7 +22,8 @@ model User {
   profile        UserProfile?
   sessions       Session[]
   refreshTokens  RefreshToken[]
-  passwordResets PasswordReset[]
+  passwordResets      PasswordReset[]
+  emailVerifications  EmailVerification[]
   courses        Course[]
   enrollments    Enrollment[]
   userProgress   UserProgress[]
@@ -71,6 +72,7 @@ model Session {
 
   @@index([userId])
   @@index([token])
+  @@index([expiresAt]) // Хугацаа дууссан session-уудыг цэвэрлэх cleanup query-д
   @@map("sessions")
 }
 
@@ -86,6 +88,7 @@ model RefreshToken {
 
   @@index([userId])
   @@index([token])
+  @@index([expiresAt]) // Хугацаа дууссан token-уудыг цэвэрлэх cleanup query-д
   @@map("refresh_tokens")
 }
 
@@ -102,6 +105,21 @@ model PasswordReset {
   @@index([userId])
   @@index([token])
   @@map("password_resets")
+}
+
+model EmailVerification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("email_verifications")
 }
 
 enum Role {
@@ -213,6 +231,7 @@ model Course {
   @@index([instructorId])
   @@index([categoryId])
   @@index([status])
+  @@index([status, createdAt]) // PUBLISHED сургалтыг шинээс хуучин руу жагсаах
   @@map("courses")
 }
 
@@ -282,6 +301,7 @@ model Enrollment {
   @@index([userId])
   @@index([courseId])
   @@index([status])
+  @@index([userId, status]) // "Миний ACTIVE элсэлтүүд" query-д
   @@map("enrollments")
 }
 
@@ -381,6 +401,7 @@ model Notification {
 
   @@index([userId])
   @@index([userId, read])
+  @@index([userId, createdAt]) // Мэдэгдэл pagination — шинэ → хуучин дарааллаар
   @@index([type])
   @@map("notifications")
 }
@@ -443,6 +464,7 @@ model Subscription {
 
   @@index([userId])
   @@index([status])
+  @@index([status, currentPeriodEnd]) // Хугацаа дууссан subscription-уудыг хайх
   @@map("subscriptions")
 }
 
@@ -477,6 +499,7 @@ model AnalyticsEvent {
   @@index([eventName])
   @@index([eventCategory])
   @@index([createdAt])
+  @@index([eventName, createdAt]) // Event trending query-д
   @@map("analytics_events")
 }
 
@@ -566,4 +589,27 @@ model SessionAttendee {
   @@index([liveSessionId])
   @@index([userId])
   @@map("session_attendees")
+}
+
+/// Bull Queue-д 3 удаа retry бүтэлгүй болсон job-уудыг хадгалах (Dead Letter Queue)
+model FailedJob {
+  id           String    @id @default(uuid())
+  queueName    String    @map("queue_name")
+  jobName      String    @map("job_name")
+  jobId        String    @map("job_id")
+  jobData      Json      @map("job_data")
+  errorMessage String    @map("error_message")
+  errorStack   String?   @map("error_stack")
+  attemptsMade Int       @map("attempts_made")
+  severity     String    @default("MEDIUM")
+  status       String    @default("PENDING")
+  resolvedBy   String?   @map("resolved_by")
+  resolvedAt   DateTime? @map("resolved_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@index([queueName])
+  @@index([status])
+  @@index([severity])
+  @@index([createdAt])
+  @@map("failed_jobs")
 }

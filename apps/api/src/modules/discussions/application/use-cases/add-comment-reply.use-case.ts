@@ -6,6 +6,7 @@ import { CourseRepository } from '../../../courses/infrastructure/repositories/c
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { DiscussionCacheService } from '../../infrastructure/services/discussion-cache.service';
 import { LessonCommentEntity } from '../../domain/entities/lesson-comment.entity';
+import { sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Хичээлийн сэтгэгдэлд хариулт нэмэх use case.
@@ -58,11 +59,14 @@ export class AddCommentReplyUseCase {
     /** 3. Хариултын ID үүсгэх */
     const replyId = new Types.ObjectId().toString();
 
-    /** 4. Хариулт нэмэх */
+    /** 4. XSS хамгаалалт — контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(data.content);
+
+    /** 5. Хариулт нэмэх */
     const updated = await this.commentRepository.addReply(commentId, {
       replyId,
       userId,
-      content: data.content,
+      content: cleanContent,
     });
 
     if (!updated) {

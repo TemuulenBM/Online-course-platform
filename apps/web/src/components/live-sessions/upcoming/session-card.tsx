@@ -35,6 +35,7 @@ export function SessionCard({ session }: SessionCardProps) {
         <div className="absolute bottom-2 right-2">
           <CountdownBadge
             targetDate={session.scheduledStart}
+            status={session.status}
             compact
             className="bg-black/60 text-white backdrop-blur-md"
           />

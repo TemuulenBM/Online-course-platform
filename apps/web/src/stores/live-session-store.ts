@@ -12,6 +12,8 @@ interface LiveSessionState {
   agoraToken: string | null;
   /** Agora UID */
   agoraUid: number | null;
+  /** Agora App ID (NEXT_PUBLIC_AGORA_APP_ID-аас авна) */
+  appId: string | null;
 
   /** Холболтын state */
   isConnected: boolean;
@@ -29,9 +31,17 @@ interface LiveSessionState {
   activeTab: 'info' | 'notes' | 'qa';
 
   /** Actions */
-  initSession: (sessionId: string, channelName: string, token: string, uid: number) => void;
+  initSession: (
+    sessionId: string,
+    channelName: string,
+    token: string,
+    uid: number,
+    appId: string,
+  ) => void;
   setConnected: (connected: boolean) => void;
   setConnecting: (connecting: boolean) => void;
+  /** Token шинэчлэх — Agora token expiry callback-д ашиглагдана */
+  updateToken: (token: string) => void;
   toggleMute: () => void;
   toggleCamera: () => void;
   toggleScreenShare: () => void;
@@ -47,6 +57,7 @@ export const useLiveSessionStore = create<LiveSessionState>((set) => ({
   channelName: null,
   agoraToken: null,
   agoraUid: null,
+  appId: null,
   isConnected: false,
   isConnecting: false,
   isMuted: false,
@@ -55,18 +66,20 @@ export const useLiveSessionStore = create<LiveSessionState>((set) => ({
   elapsedSeconds: 0,
   activeTab: 'info',
 
-  initSession: (sessionId, channelName, token, uid) =>
+  initSession: (sessionId, channelName, token, uid, appId) =>
     set({
       sessionId,
       channelName,
       agoraToken: token,
       agoraUid: uid,
+      appId,
       isConnecting: true,
       isConnected: false,
     }),
 
   setConnected: (connected) => set({ isConnected: connected, isConnecting: false }),
   setConnecting: (connecting) => set({ isConnecting: connecting }),
+  updateToken: (token) => set({ agoraToken: token }),
   toggleMute: () => set((s) => ({ isMuted: !s.isMuted })),
   toggleCamera: () => set((s) => ({ isCameraOff: !s.isCameraOff })),
   toggleScreenShare: () => set((s) => ({ isScreenSharing: !s.isScreenSharing })),
@@ -80,6 +93,7 @@ export const useLiveSessionStore = create<LiveSessionState>((set) => ({
       channelName: null,
       agoraToken: null,
       agoraUid: null,
+      appId: null,
       isConnected: false,
       isConnecting: false,
       isMuted: false,

@@ -7,6 +7,9 @@ import { GetRecentActivityUseCase } from '../../application/use-cases/get-recent
 import { GetModerationStatsUseCase } from '../../application/use-cases/get-moderation-stats.use-case';
 import { ListFlaggedContentUseCase } from '../../application/use-cases/list-flagged-content.use-case';
 import { ReviewFlaggedContentUseCase } from '../../application/use-cases/review-flagged-content.use-case';
+import { ListFailedJobsUseCase } from '../../application/use-cases/list-failed-jobs.use-case';
+import { RetryFailedJobUseCase } from '../../application/use-cases/retry-failed-job.use-case';
+import { ResolveFailedJobUseCase } from '../../application/use-cases/resolve-failed-job.use-case';
 
 describe('AdminDashboardController', () => {
   let controller: AdminDashboardController;
@@ -29,6 +32,9 @@ describe('AdminDashboardController', () => {
         { provide: GetModerationStatsUseCase, useValue: { execute: jest.fn() } },
         { provide: ListFlaggedContentUseCase, useValue: { execute: jest.fn() } },
         { provide: ReviewFlaggedContentUseCase, useValue: { execute: jest.fn() } },
+        { provide: ListFailedJobsUseCase, useValue: { execute: jest.fn() } },
+        { provide: RetryFailedJobUseCase, useValue: { execute: jest.fn() } },
+        { provide: ResolveFailedJobUseCase, useValue: { execute: jest.fn() } },
       ],
     }).compile();
 

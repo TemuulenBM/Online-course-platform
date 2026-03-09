@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { SessionAttendeeRepository } from '../../infrastructure/repositories/session-attendee.repository';
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
@@ -22,6 +23,7 @@ export class JoinLiveSessionUseCase {
     private readonly sessionAttendeeRepository: SessionAttendeeRepository,
     private readonly enrollmentRepository: EnrollmentRepository,
     @Inject(AGORA_SERVICE) private readonly agoraService: IAgoraService,
+    private readonly configService: ConfigService,
   ) {}
 
   async execute(
@@ -33,6 +35,7 @@ export class JoinLiveSessionUseCase {
     token: string;
     channelName: string;
     uid: number;
+    appId: string;
   }> {
     /** 1. Session олдох + LIVE шалгах */
     const session = await this.liveSessionRepository.findById(sessionId);
@@ -70,7 +73,9 @@ export class JoinLiveSessionUseCase {
     const role = isInstructor ? 'publisher' : 'subscriber';
     const token = this.agoraService.generateRtcToken(channelName, uid, role);
 
-    return { session, token, channelName, uid };
+    const appId = this.configService.get<string>('agora.appId') || '';
+
+    return { session, token, channelName, uid, appId };
   }
 
   /** userId-аас deterministic uid үүсгэнэ (CRC32-like hash) */

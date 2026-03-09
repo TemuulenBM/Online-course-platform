@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsUUID, IsOptional, IsInt, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsOptional, IsInt, Min, MaxLength } from 'class-validator';
 
 /** Текст контент тавих DTO */
 export class SetTextContentDto {
@@ -13,6 +13,7 @@ export class SetTextContentDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(500000, { message: 'HTML контент хамгийн ихдээ 500,000 тэмдэгт байна' })
   html!: string;
 
   @ApiPropertyOptional({
@@ -21,6 +22,7 @@ export class SetTextContentDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500000, { message: 'Markdown контент хамгийн ихдээ 500,000 тэмдэгт байна' })
   markdown?: string;
 
   @ApiPropertyOptional({

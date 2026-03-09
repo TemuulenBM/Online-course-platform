@@ -14,19 +14,23 @@ import { LogoutUseCase } from './application/use-cases/logout.use-case';
 import { ForgotPasswordUseCase } from './application/use-cases/forgot-password.use-case';
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.use-case';
 import { GetCurrentUserUseCase } from './application/use-cases/get-current-user.use-case';
+import { VerifyEmailUseCase } from './application/use-cases/verify-email.use-case';
+import { ResendVerificationEmailUseCase } from './application/use-cases/resend-verification-email.use-case';
 
 // Repositories
 import { UserRepository } from './infrastructure/repositories/user.repository';
 import { SessionRepository } from './infrastructure/repositories/session.repository';
 import { RefreshTokenRepository } from './infrastructure/repositories/refresh-token.repository';
 import { PasswordResetRepository } from './infrastructure/repositories/password-reset.repository';
+import { EmailVerificationRepository } from './infrastructure/repositories/email-verification.repository';
 
 // Services
 import { TokenService } from './infrastructure/services/token.service';
 import { JwtStrategy } from './infrastructure/services/jwt.strategy';
 
-// Users модулиас
+// Хамааралтай модулиуд
 import { UsersModule } from '../users/users.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 /**
  * Auth модуль.
@@ -36,6 +40,7 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     UsersModule,
+    NotificationsModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -57,11 +62,14 @@ import { UsersModule } from '../users/users.module';
     ForgotPasswordUseCase,
     ResetPasswordUseCase,
     GetCurrentUserUseCase,
+    VerifyEmailUseCase,
+    ResendVerificationEmailUseCase,
     // Repositories
     UserRepository,
     SessionRepository,
     RefreshTokenRepository,
     PasswordResetRepository,
+    EmailVerificationRepository,
     // Services
     TokenService,
     JwtStrategy,

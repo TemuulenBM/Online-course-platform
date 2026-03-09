@@ -24,15 +24,15 @@ export function SessionListCard({
 }: SessionListCardProps) {
   const isLive = session.status === 'live';
   const isScheduled = session.status === 'scheduled';
+  const isEnded = session.status === 'ended';
 
-  const startTime = new Date(session.scheduledStart).toLocaleTimeString('mn-MN', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const endTime = new Date(session.scheduledEnd).toLocaleTimeString('mn-MN', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  /** Дууссан session-д бодит цаг, бусадд товлосон цаг харуулна */
+  const startTime = new Date(
+    isEnded && session.actualStart ? session.actualStart : session.scheduledStart,
+  ).toLocaleTimeString('mn-MN', { hour: '2-digit', minute: '2-digit' });
+  const endTime = new Date(
+    isEnded && session.actualEnd ? session.actualEnd : session.scheduledEnd,
+  ).toLocaleTimeString('mn-MN', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div

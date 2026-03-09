@@ -12,7 +12,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+    const connectionLimit = parseInt(process.env.DATABASE_CONNECTION_LIMIT || '10', 10);
+    const poolTimeout = parseInt(process.env.DATABASE_POOL_TIMEOUT || '10', 10);
+    const adapter = new PrismaPg({
+      connectionString: process.env.DATABASE_URL,
+      max: connectionLimit,
+      idleTimeoutMillis: poolTimeout * 1000,
+    });
     super({ adapter });
   }
 

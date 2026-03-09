@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { ConfigService } from '@nestjs/config';
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { LiveClassesCacheService } from '../../infrastructure/services/live-classes-cache.service';
 import { IAgoraService, AGORA_SERVICE } from '../../domain/interfaces/agora-service.interface';
@@ -23,6 +24,7 @@ export class StartLiveSessionUseCase {
     private readonly liveClassesCacheService: LiveClassesCacheService,
     @Inject(AGORA_SERVICE) private readonly agoraService: IAgoraService,
     @InjectQueue('live-classes') private readonly liveClassesQueue: Queue,
+    private readonly configService: ConfigService,
   ) {}
 
   async execute(
@@ -32,6 +34,7 @@ export class StartLiveSessionUseCase {
     session: LiveSessionEntity;
     token: string;
     channelName: string;
+    appId: string;
   }> {
     /** 1. Session олдох */
     const session = await this.liveSessionRepository.findById(sessionId);
@@ -72,6 +75,8 @@ export class StartLiveSessionUseCase {
       courseId: session.courseId,
     });
 
-    return { session: updated, token, channelName };
+    const appId = this.configService.get<string>('agora.appId') || '';
+
+    return { session: updated, token, channelName, appId };
   }
 }

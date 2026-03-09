@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useRef } from 'react';
+import { use, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -8,6 +8,7 @@ import {
   useLiveSessionDetail,
   useJoinLiveSession,
   useLeaveLiveSession,
+  useRefreshAgoraToken,
   useSessionAttendees,
 } from '@/hooks/api';
 import { useLiveSessionStore } from '@/stores/live-session-store';
@@ -29,20 +30,22 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
   const { data: session, isLoading } = useLiveSessionDetail(sessionId);
   const joinMutation = useJoinLiveSession();
   const leaveMutation = useLeaveLiveSession();
+  const refreshTokenMutation = useRefreshAgoraToken();
   const { data: attendeesPaginated } = useSessionAttendees(sessionId, undefined, {
     refetchInterval: 10000,
   });
 
   const store = useLiveSessionStore();
+  /** Stable Zustand action selectors — store бүхэлдээ dependency болохоос зайлсхийнэ */
+  const setConnected = useLiveSessionStore((s) => s.setConnected);
+  const incrementElapsed = useLiveSessionStore((s) => s.incrementElapsed);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Mount: session-д нэгдэх
+  /** Mount: session-д нэгдэх — appId backend response-оос авна */
   useEffect(() => {
     joinMutation.mutate(sessionId, {
       onSuccess: (res) => {
-        store.initSession(sessionId, res.channelName, res.token, res.uid);
-        // Simulate connection delay
-        setTimeout(() => store.setConnected(true), 2000);
+        store.initSession(sessionId, res.channelName, res.token, res.uid, res.appId);
       },
       onError: () => {
         toast.error('Хичээлд нэгдэхэд алдаа гарлаа');
@@ -51,30 +54,49 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
     });
   }, [sessionId]);
 
-  // Timer — секунд тоолох
+  /** Agora connection change — connected болоход timer эхлүүлнэ */
+  const handleConnectionChange = useCallback(
+    (connected: boolean) => {
+      setConnected(connected);
+      if (connected && !timerRef.current) {
+        timerRef.current = setInterval(() => {
+          incrementElapsed();
+        }, 1000);
+      }
+    },
+    [setConnected, incrementElapsed],
+  );
+
+  /** Token expire — шинэ token авч store-д шинэчлэнэ */
+  const handleTokenWillExpire = useCallback(() => {
+    refreshTokenMutation.mutate(sessionId, {
+      onSuccess: (res) => {
+        store.updateToken(res.token);
+      },
+    });
+  }, [refreshTokenMutation, sessionId, store]);
+
+  /** Cleanup on unmount */
   useEffect(() => {
-    if (store.isConnected && !timerRef.current) {
-      timerRef.current = setInterval(() => {
-        store.incrementElapsed();
-      }, 1000);
-    }
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
     };
-  }, [store.isConnected]);
+  }, []);
 
-  // Гарах handler
+  /** Гарах handler */
   const handleLeave = () => {
     leaveMutation.mutate(sessionId);
     store.clearSession();
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     router.push(ROUTES.LIVE_SESSIONS);
   };
 
-  // Session хугацаа (минутаар)
   const durationMinutes = session
     ? Math.round(
         (new Date(session.scheduledEnd).getTime() - new Date(session.scheduledStart).getTime()) /
@@ -112,6 +134,10 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
           </div>
 
           <VideoContainer
+            appId={store.appId ?? undefined}
+            channelName={store.channelName ?? undefined}
+            token={store.agoraToken ?? undefined}
+            uid={store.agoraUid ?? undefined}
             isConnecting={store.isConnecting}
             isConnected={store.isConnected}
             isMuted={store.isMuted}
@@ -122,6 +148,8 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
             onToggleCamera={store.toggleCamera}
             onToggleScreenShare={store.toggleScreenShare}
             onEndCall={handleLeave}
+            onConnectionChange={handleConnectionChange}
+            onTokenWillExpire={handleTokenWillExpire}
           />
 
           {/* Reactions */}

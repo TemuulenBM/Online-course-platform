@@ -88,8 +88,10 @@ ENV APP_PORT=3001
 
 EXPOSE 3001
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-  CMD curl -f http://localhost:3001/api/v1 || exit 1
+# curl -f ашиглахгүй — health endpoint 503 буцаахад (degraded) container restart loop үүсгэнэ
+# Оронд нь response-д "status" талбар байгаа эсэхийг шалгана (ok эсвэл degraded хоёулаа зөвшөөрнө)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+  CMD curl -s http://localhost:3001/api/v1 | grep -q '"status"' || exit 1
 
 # Migration ажиллуулаад сервер эхлүүлнэ — шинэ deploy бүрт DB schema шинэчлэгдэнэ
 CMD ["/bin/sh", "-c", "node_modules/.bin/prisma migrate deploy --config ./prisma/prisma.config.ts && node dist/main"]

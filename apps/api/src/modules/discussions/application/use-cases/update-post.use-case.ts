@@ -8,6 +8,7 @@ import {
 import { DiscussionPostRepository } from '../../infrastructure/repositories/discussion-post.repository';
 import { DiscussionCacheService } from '../../infrastructure/services/discussion-cache.service';
 import { DiscussionPostEntity } from '../../domain/entities/discussion-post.entity';
+import { sanitizeRichHtml, sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Нийтлэл шинэчлэх use case.
@@ -49,12 +50,16 @@ export class UpdatePostUseCase {
       throw new BadRequestException('Түгжигдсэн нийтлэлийг шинэчлэх боломжгүй');
     }
 
-    /** 4. Нийтлэл шинэчлэх */
+    /** 4. XSS хамгаалалт — HTML контентыг цэвэрлэх */
+    const cleanContent = dto.content ? sanitizePlainText(dto.content) : undefined;
+    const cleanContentHtml = dto.contentHtml ? sanitizeRichHtml(dto.contentHtml) : undefined;
+
+    /** 5. Нийтлэл шинэчлэх */
     const updated = await this.postRepository.update(postId, {
-      title: dto.title,
-      content: dto.content,
-      contentHtml: dto.contentHtml,
-      tags: dto.tags,
+      title: dto.title ? sanitizePlainText(dto.title) : undefined,
+      content: cleanContent,
+      contentHtml: cleanContentHtml,
+      tags: dto.tags?.map((tag) => sanitizePlainText(tag)),
     });
 
     /** 5. Кэш устгах */

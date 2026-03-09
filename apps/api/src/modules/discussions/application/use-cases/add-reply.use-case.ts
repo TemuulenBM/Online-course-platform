@@ -11,6 +11,7 @@ import { DiscussionCacheService } from '../../infrastructure/services/discussion
 import { CourseRepository } from '../../../courses/infrastructure/repositories/course.repository';
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { DiscussionPostEntity } from '../../domain/entities/discussion-post.entity';
+import { sanitizeRichHtml, sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Нийтлэлд хариулт нэмэх use case.
@@ -61,12 +62,16 @@ export class AddReplyUseCase {
     /** 4. Хариултын ID үүсгэх */
     const replyId = new Types.ObjectId().toString();
 
-    /** 5. Хариулт нэмэх */
+    /** 5. XSS хамгаалалт — HTML контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(dto.content);
+    const cleanContentHtml = sanitizeRichHtml(dto.contentHtml);
+
+    /** 6. Хариулт нэмэх */
     const updated = await this.postRepository.addReply(postId, {
       replyId,
       authorId: userId,
-      content: dto.content,
-      contentHtml: dto.contentHtml,
+      content: cleanContent,
+      contentHtml: cleanContentHtml,
     });
 
     /** 6. Кэш устгах */

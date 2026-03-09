@@ -19,6 +19,19 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1536M
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
     networks:
       - app-network
 
@@ -32,6 +45,19 @@ services:
       - .env
     environment:
       NODE_ENV: production
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
     networks:
       - app-network
 
@@ -73,6 +99,9 @@ services:
     image: mongo:7
     container_name: ocp-mongodb-prod
     restart: unless-stopped
+    # --auth: Баталгаажуулалтыг заавал шаарда — MONGO_INITDB_ROOT_* тохируулсан ч
+    # тусгайлан --auth нэмэхгүй бол зарим тохиолдолд нэвтрэлт алгасагдаж болно
+    command: mongod --auth
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-ocp_user}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}

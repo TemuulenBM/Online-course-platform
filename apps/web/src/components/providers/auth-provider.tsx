@@ -17,6 +17,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isHydrated) return;
 
     const validateAuth = async () => {
+      // accessToken байхгүй ч refreshToken байвал шинэ token авах оролдлого хийнэ
+      if (!tokens?.accessToken && tokens?.refreshToken) {
+        try {
+          const newTokens = await authService.refresh(tokens.refreshToken);
+          const user = await authService.getMe();
+          setAuth(user, newTokens);
+          setCookie();
+        } catch {
+          clearAuth();
+          removeCookie();
+        } finally {
+          setIsValidating(false);
+        }
+        return;
+      }
+
       if (!tokens?.accessToken) {
         removeCookie();
         setIsValidating(false);

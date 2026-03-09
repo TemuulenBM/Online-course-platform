@@ -9,6 +9,7 @@ import { getQueueToken } from '@nestjs/bull';
 import { ScheduleLiveSessionUseCase } from '../../application/use-cases/schedule-live-session.use-case';
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { LessonRepository } from '../../../lessons/infrastructure/repositories/lesson.repository';
+import { CourseRepository } from '../../../courses/infrastructure/repositories/course.repository';
 import { LiveSessionEntity } from '../../domain/entities/live-session.entity';
 import { LessonEntity } from '../../../lessons/domain/entities/lesson.entity';
 import { CreateLiveSessionDto } from '../../dto/create-live-session.dto';
@@ -67,6 +68,10 @@ describe('ScheduleLiveSessionUseCase', () => {
         },
         {
           provide: LessonRepository,
+          useValue: { findById: jest.fn(), getNextOrderIndex: jest.fn(), create: jest.fn() },
+        },
+        {
+          provide: CourseRepository,
           useValue: { findById: jest.fn() },
         },
         { provide: getQueueToken('live-classes'), useValue: mockQueue },

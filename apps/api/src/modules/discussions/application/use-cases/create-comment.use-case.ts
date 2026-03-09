@@ -5,6 +5,7 @@ import { CourseRepository } from '../../../courses/infrastructure/repositories/c
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { DiscussionCacheService } from '../../infrastructure/services/discussion-cache.service';
 import { LessonCommentEntity } from '../../domain/entities/lesson-comment.entity';
+import { sanitizePlainText } from '../../../../common/utils/sanitize.util';
 
 /**
  * Хичээлийн сэтгэгдэл үүсгэх use case.
@@ -55,12 +56,15 @@ export class CreateCommentUseCase {
     /** 3. Багшийн хариулт эсэхийг автомат тодорхойлох */
     const isInstructorReply = course?.instructorId === userId;
 
-    /** 4. Сэтгэгдэл үүсгэх */
+    /** 4. XSS хамгаалалт — контентыг цэвэрлэх */
+    const cleanContent = sanitizePlainText(data.content);
+
+    /** 5. Сэтгэгдэл үүсгэх */
     const comment = await this.commentRepository.create({
       lessonId: data.lessonId,
       userId,
       parentCommentId: data.parentCommentId,
-      content: data.content,
+      content: cleanContent,
       timestampSeconds: data.timestampSeconds,
       isInstructorReply,
     });

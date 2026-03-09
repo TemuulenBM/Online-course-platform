@@ -50,4 +50,12 @@ export class UserRepository {
       data: { lastLoginAt: new Date() },
     });
   }
+
+  /** Имэйл баталгаажсан гэж тэмдэглэнэ */
+  async updateEmailVerified(userId: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { emailVerified: true },
+    });
+  }
 }

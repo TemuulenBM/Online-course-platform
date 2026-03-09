@@ -133,7 +133,7 @@ export class LiveSessionRepository {
     };
   }
 
-  /** Удахгүй эхлэх session-ууд (SCHEDULED + LIVE, scheduledStart >= now) */
+  /** Удахгүй эхлэх session-ууд (SCHEDULED: scheduledStart >= now, LIVE: бүгд) */
   async findUpcoming(options: { page: number; limit: number }): Promise<{
     data: LiveSessionEntity[];
     total: number;
@@ -143,9 +143,13 @@ export class LiveSessionRepository {
     const { page, limit } = options;
     const skip = (page - 1) * limit;
 
+    /**
+     * LIVE session-ийн scheduledStart нь өнгөрсөн цаг байдаг (эхэлсэн тул).
+     * Иймд AND logic ашигласан ч LIVE session шүүгдэн хасагддаг байсан.
+     * OR-оор: SCHEDULED → scheduledStart >= now, LIVE → бүгдийг харуулна.
+     */
     const where: Prisma.LiveSessionWhereInput = {
-      status: { in: ['SCHEDULED', 'LIVE'] },
-      scheduledStart: { gte: new Date() },
+      OR: [{ status: 'SCHEDULED', scheduledStart: { gte: new Date() } }, { status: 'LIVE' }],
     };
 
     const [sessions, total] = await Promise.all([

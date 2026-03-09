@@ -9,6 +9,8 @@ import { IPushService, PUSH_SERVICE } from './push.service';
 /**
  * Мэдэгдэл илгээх Bull Queue processor.
  * Background-д email, SMS, push notification илгээнэ.
+ * Best-effort: алдаа гарсан ч exception шидэхгүй — notification алдагдах нь
+ * critical биш, retry-оос илүү graceful failure чухал.
  */
 @Processor('notifications')
 export class NotificationProcessor {
@@ -34,13 +36,21 @@ export class NotificationProcessor {
     const { to, subject, htmlContent, notificationId } = job.data;
     this.logger.log(`Email илгээж эхэллээ: ${to} (notification: ${notificationId})`);
 
-    const emailEnabled = this.configService.get<boolean>('notification.emailEnabled');
-    if (!emailEnabled) {
-      this.logger.debug('Email илгээлт идэвхгүй болсон (config)');
-      return;
+    try {
+      const emailEnabled = this.configService.get<boolean>('notification.emailEnabled');
+      if (!emailEnabled) {
+        this.logger.debug('Email илгээлт идэвхгүй болсон (config)');
+        return;
+      }
+      await this.emailService.sendEmail(to, subject, htmlContent);
+      this.logger.log(`Email амжилттай илгээгдлээ: ${to}`);
+    } catch (error) {
+      // Best-effort: notification алдагдах нь critical биш
+      this.logger.error(
+        `Email илгээхэд алдаа гарлаа: ${to}`,
+        error instanceof Error ? error.stack : String(error),
+      );
     }
-
-    await this.emailService.sendEmail(to, subject, htmlContent);
   }
 
   /** SMS илгээх process */
@@ -55,13 +65,20 @@ export class NotificationProcessor {
     const { to, message, notificationId } = job.data;
     this.logger.log(`SMS илгээж эхэллээ: ${to} (notification: ${notificationId})`);
 
-    const smsEnabled = this.configService.get<boolean>('notification.smsEnabled');
-    if (!smsEnabled) {
-      this.logger.debug('SMS илгээлт идэвхгүй болсон (config)');
-      return;
+    try {
+      const smsEnabled = this.configService.get<boolean>('notification.smsEnabled');
+      if (!smsEnabled) {
+        this.logger.debug('SMS илгээлт идэвхгүй болсон (config)');
+        return;
+      }
+      await this.smsService.sendSms(to, message);
+      this.logger.log(`SMS амжилттай илгээгдлээ: ${to}`);
+    } catch (error) {
+      this.logger.error(
+        `SMS илгээхэд алдаа гарлаа: ${to}`,
+        error instanceof Error ? error.stack : String(error),
+      );
     }
-
-    await this.smsService.sendSms(to, message);
   }
 
   /** Push notification илгээх process */
@@ -78,12 +95,19 @@ export class NotificationProcessor {
     const { userId, title, body, data, notificationId } = job.data;
     this.logger.log(`Push илгээж эхэллээ: userId=${userId} (notification: ${notificationId})`);
 
-    const pushEnabled = this.configService.get<boolean>('notification.pushEnabled');
-    if (!pushEnabled) {
-      this.logger.debug('Push notification илгээлт идэвхгүй болсон (config)');
-      return;
+    try {
+      const pushEnabled = this.configService.get<boolean>('notification.pushEnabled');
+      if (!pushEnabled) {
+        this.logger.debug('Push notification илгээлт идэвхгүй болсон (config)');
+        return;
+      }
+      await this.pushService.sendPush(userId, title, body, data);
+      this.logger.log(`Push амжилттай илгээгдлээ: userId=${userId}`);
+    } catch (error) {
+      this.logger.error(
+        `Push notification илгээхэд алдаа гарлаа: userId=${userId}`,
+        error instanceof Error ? error.stack : String(error),
+      );
     }
-
-    await this.pushService.sendPush(userId, title, body, data);
   }
 }
