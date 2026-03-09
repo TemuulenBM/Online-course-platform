@@ -36,6 +36,9 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
   });
 
   const store = useLiveSessionStore();
+  /** Stable Zustand action selectors — store бүхэлдээ dependency болохоос зайлсхийнэ */
+  const setConnected = useLiveSessionStore((s) => s.setConnected);
+  const incrementElapsed = useLiveSessionStore((s) => s.incrementElapsed);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   /** Mount: session-д нэгдэх — appId backend response-оос авна */
@@ -54,14 +57,14 @@ export default function LiveClassroomPage({ params }: { params: Promise<{ sessio
   /** Agora connection change — connected болоход timer эхлүүлнэ */
   const handleConnectionChange = useCallback(
     (connected: boolean) => {
-      store.setConnected(connected);
+      setConnected(connected);
       if (connected && !timerRef.current) {
         timerRef.current = setInterval(() => {
-          store.incrementElapsed();
+          incrementElapsed();
         }, 1000);
       }
     },
-    [store],
+    [setConnected, incrementElapsed],
   );
 
   /** Token expire — шинэ token авч store-д шинэчлэнэ */

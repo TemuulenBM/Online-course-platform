@@ -7,6 +7,8 @@ import { useCountdown } from '@/hooks/use-countdown';
 interface CountdownBadgeProps {
   /** Session эхлэх хугацаа (ISO 8601) */
   targetDate: string;
+  /** Session статус — 'live' бол ШУУД badge харуулна */
+  status?: string;
   /** Compact горим — зөвхөн цаг:мин:сек */
   compact?: boolean;
   className?: string;
@@ -15,9 +17,26 @@ interface CountdownBadgeProps {
 /**
  * Бодит цагийн countdown badge.
  * Ойртох тусам өнгө шилжинэ: slate → amber → red.
+ * LIVE session бол "ШУУД НЭВТРҮҮЛЖ БАЙНА" badge харуулна.
  */
-export function CountdownBadge({ targetDate, compact, className }: CountdownBadgeProps) {
+export function CountdownBadge({ targetDate, status, compact, className }: CountdownBadgeProps) {
   const { formatted, isUrgent, isImminent, isExpired } = useCountdown(targetDate);
+
+  /** LIVE session — ШУУД badge */
+  if (status === 'live') {
+    return (
+      <span
+        className={cn(
+          'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold',
+          'bg-red-500 text-white',
+          className,
+        )}
+      >
+        <span className="size-1.5 animate-pulse rounded-full bg-white" />
+        {compact ? 'ШУУД' : 'ШУУД НЭВТРҮҮЛЖ БАЙНА'}
+      </span>
+    );
+  }
 
   if (isExpired) {
     return (

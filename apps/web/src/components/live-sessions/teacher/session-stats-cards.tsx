@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 interface SessionStatsCardsProps {
@@ -11,13 +12,20 @@ interface SessionStatsCardsProps {
   attendanceTrend?: number[];
 }
 
+/** Default sparkline өгөгдөл — component гадна тогтмол reference */
+const DEFAULT_TREND = [65, 72, 80, 75, 85, 90, 88];
+
 /** Нийт цаг + Энэ долоо хоног — sparkline-тэй stat cards. */
 export function SessionStatsCards({
   totalHours,
   weeklyHours,
-  attendanceTrend = [65, 72, 80, 75, 85, 90, 88],
+  attendanceTrend = DEFAULT_TREND,
 }: SessionStatsCardsProps) {
-  const sparkData = attendanceTrend.map((v, i) => ({ idx: i, value: v }));
+  // useMemo ашиглан render бүрт шинэ массив үүсэхээс сэргийлнэ — recharts infinite loop-оос хамгаална
+  const sparkData = useMemo(
+    () => attendanceTrend.map((v, i) => ({ idx: i, value: v })),
+    [attendanceTrend],
+  );
 
   return (
     <div className="grid grid-cols-2 gap-4">

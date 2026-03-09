@@ -31,7 +31,11 @@ export function FeaturedSessionCard({ session }: FeaturedSessionCardProps) {
       <div className="relative h-64 overflow-hidden bg-gradient-to-br from-primary/30 to-slate-800 md:h-auto md:w-2/5">
         <div className="absolute inset-0 z-10 bg-primary/20 transition-colors group-hover:bg-primary/10" />
         <div className="absolute left-4 top-4 z-20">
-          <CountdownBadge targetDate={session.scheduledStart} className="bg-red-600 text-white" />
+          <CountdownBadge
+            targetDate={session.scheduledStart}
+            status={session.status}
+            className="bg-red-600 text-white"
+          />
         </div>
         {/* Placeholder pattern */}
         <div className="flex h-full items-center justify-center">
@@ -48,7 +52,7 @@ export function FeaturedSessionCard({ session }: FeaturedSessionCardProps) {
             </span>
           )}
           <span className="text-sm text-slate-400">•</span>
-          <CountdownBadge targetDate={session.scheduledStart} compact />
+          <CountdownBadge targetDate={session.scheduledStart} status={session.status} compact />
         </div>
 
         <h3 className="mb-4 text-2xl font-bold transition-colors group-hover:text-primary">

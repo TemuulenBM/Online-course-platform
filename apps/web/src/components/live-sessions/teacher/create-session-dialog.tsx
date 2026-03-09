@@ -14,6 +14,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { CreateLiveSessionData } from '@ocp/shared-types';
 
 interface CreateSessionDialogProps {
@@ -21,8 +28,8 @@ interface CreateSessionDialogProps {
   courseId: string;
   /** Товлосон хичээл хадгалах */
   onSubmit: (data: CreateLiveSessionData) => void;
-  /** Шууд эхлүүлэх (create + start) */
-  onStartNow: (title: string, description?: string) => void;
+  /** Шууд эхлүүлэх (create + start), durationMinutes — хичээлийн үргэлжлэх хугацаа */
+  onStartNow: (title: string, durationMinutes: number, description?: string) => void;
   /** Хичээл үүсгэж байгаа эсэх */
   isPending?: boolean;
   /** Шууд эхлүүлж байгаа эсэх */
@@ -47,12 +54,14 @@ export function CreateSessionDialog({
   const [mode, setMode] = useState<Mode>('now');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [durationMinutes, setDurationMinutes] = useState('60');
   const [scheduledStart, setScheduledStart] = useState('');
   const [scheduledEnd, setScheduledEnd] = useState('');
 
   const resetForm = () => {
     setTitle('');
     setDescription('');
+    setDurationMinutes('60');
     setScheduledStart('');
     setScheduledEnd('');
     setMode('now');
@@ -63,7 +72,7 @@ export function CreateSessionDialog({
     if (!title) return;
 
     if (mode === 'now') {
-      onStartNow(title, description || undefined);
+      onStartNow(title, parseInt(durationMinutes, 10), description || undefined);
     } else {
       if (!scheduledStart || !scheduledEnd) return;
       onSubmit({
@@ -150,6 +159,25 @@ export function CreateSessionDialog({
               placeholder="Хичээлийн товч тайлбар..."
             />
           </div>
+
+          {/* Шууд эхлүүлэх горимд үргэлжлэх хугацаа сонгоно */}
+          {mode === 'now' && (
+            <div className="space-y-2">
+              <Label htmlFor="duration">Үргэлжлэх хугацаа</Label>
+              <Select value={durationMinutes} onValueChange={setDurationMinutes}>
+                <SelectTrigger id="duration">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="30">30 минут</SelectItem>
+                  <SelectItem value="60">1 цаг</SelectItem>
+                  <SelectItem value="90">1.5 цаг</SelectItem>
+                  <SelectItem value="120">2 цаг</SelectItem>
+                  <SelectItem value="180">3 цаг</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           {/* Товлох горимд л цаг харуулна */}
           {mode === 'schedule' && (

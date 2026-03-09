@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import AgoraRTC, {
   AgoraRTCProvider,
   LocalUser,
@@ -18,9 +18,6 @@ import AgoraRTC, {
 } from 'agora-rtc-react';
 import { Mic, MicOff, MonitorUp, User, Video, VideoOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-/** Багшийн Agora client singleton */
-const teacherClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
 interface AgoraTeacherRoomProps {
   appId: string;
@@ -64,9 +61,9 @@ function AgoraTeacherRoomInner({
   /** Channel-д нэгдэх */
   useJoin({ appid: appId, channel: channelName, token, uid }, true);
 
-  /** Локал медиа tracks */
+  /** Локал медиа tracks — screen share идэвхтэй үед камерыг зогсооно (Agora нэг видео track л зөвшөөрнө) */
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(!isMuted);
-  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff);
+  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff && !isScreenSharing);
   const { screenTrack } = useLocalScreenTrack(isScreenSharing, {}, 'disable');
 
   /** Бичлэг publish — screen share идэвхтэй бол camera оронд нь */
@@ -115,7 +112,7 @@ function AgoraTeacherRoomInner({
 
       {/* Оролцогчдын жижиг preview — баруун дээд */}
       {remoteUsers.length > 0 && (
-        <div className="absolute right-3 top-14 flex flex-col gap-1.5">
+        <div className="absolute right-3 top-14 z-10 flex flex-col gap-1.5">
           {remoteUsers.slice(0, 3).map((user) => (
             <div
               key={user.uid}
@@ -133,7 +130,7 @@ function AgoraTeacherRoomInner({
       )}
 
       {/* LIVE badge + Timer */}
-      <div className="absolute right-4 top-4 flex gap-2">
+      <div className="absolute right-4 top-4 z-10 flex gap-2">
         {isLive && (
           <span className="flex items-center gap-1 rounded bg-red-500 px-2 py-1 text-[10px] font-bold text-white">
             <span className="size-1.5 animate-pulse rounded-full bg-white" />
@@ -147,14 +144,14 @@ function AgoraTeacherRoomInner({
 
       {/* Оролцогчдын тоо */}
       {remoteUsers.length > 0 && (
-        <div className="absolute left-4 top-4 flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-[11px] text-white backdrop-blur-sm">
+        <div className="absolute left-4 top-4 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-[11px] text-white backdrop-blur-sm">
           <User className="size-3" />
           <span>{remoteUsers.length}</span>
         </div>
       )}
 
       {/* Controls */}
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/80 to-transparent p-6">
+      <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between bg-gradient-to-t from-black/80 to-transparent p-6">
         <div className="flex gap-3">
           <button
             onClick={onToggleMute}
@@ -203,8 +200,11 @@ function AgoraTeacherRoomInner({
  * AgoraRTCProvider wrapper + inner teacher room.
  */
 export function AgoraTeacherRoom(props: AgoraTeacherRoomProps) {
+  /** Mount бүрт шинэ client үүсгэнэ — module-level singleton ашиглахгүй.
+   *  Ингэснээр remount дээр хуучин published tracks-ийн conflict гарахгүй. */
+  const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
   return (
-    <AgoraRTCProvider client={teacherClient}>
+    <AgoraRTCProvider client={client}>
       <AgoraTeacherRoomInner {...props} />
     </AgoraRTCProvider>
   );

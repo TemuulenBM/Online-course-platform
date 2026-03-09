@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import AgoraRTC, {
   AgoraRTCProvider,
   LocalUser,
@@ -18,9 +18,6 @@ import AgoraRTC, {
   useRemoteUsers,
 } from 'agora-rtc-react';
 import { User } from 'lucide-react';
-
-/** Agora RTC client singleton — module level-д үүсгэнэ */
-const agoraClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
 interface AgoraRoomProps {
   appId: string;
@@ -58,9 +55,9 @@ function AgoraRoomInner({
   /** Агаарт нэгдэх */
   useJoin({ appid: appId, channel: channelName, token, uid }, true);
 
-  /** Локал медиа tracks */
+  /** Локал медиа tracks — screen share идэвхтэй үед камерыг зогсооно (Agora нэг видео track л зөвшөөрнө) */
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(!isMuted);
-  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff);
+  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff && !isScreenSharing);
   const { screenTrack } = useLocalScreenTrack(isScreenSharing, {}, 'disable');
 
   /** Бичлэг publish хийх — screen share идэвхтэй бол camera-г оронд нь дамжуулна */
@@ -160,8 +157,11 @@ function AgoraRoomInner({
  * AgoraRTCProvider wrapper + inner room.
  */
 export function AgoraRoom(props: AgoraRoomProps) {
+  /** Mount бүрт шинэ client үүсгэнэ — module-level singleton ашиглахгүй.
+   *  Ингэснээр remount дээр хуучин published tracks-ийн conflict гарахгүй. */
+  const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
   return (
-    <AgoraRTCProvider client={agoraClient}>
+    <AgoraRTCProvider client={client}>
       <AgoraRoomInner {...props} />
     </AgoraRTCProvider>
   );

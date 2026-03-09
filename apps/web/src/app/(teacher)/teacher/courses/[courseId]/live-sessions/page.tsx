@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useCallback } from 'react';
+import { use, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
@@ -55,8 +55,61 @@ export default function TeacherLiveSessionsPage({
     updateToken,
   } = store;
 
+  /** Stable Zustand action selectors — store бүхэлдээ dependency болохоос зайлсхийнэ */
+  const setConnected = useLiveSessionStore((s) => s.setConnected);
+  const incrementElapsed = useLiveSessionStore((s) => s.incrementElapsed);
+
+  /** Таймерийн ref — Agora холболт тогтоогдоход interval эхлүүлнэ */
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  /** Agora холбогдсон/тасарсан үед дуудагдана */
+  const handleConnectionChange = useCallback(
+    (connected: boolean) => {
+      setConnected(connected);
+      if (connected && !timerRef.current) {
+        timerRef.current = setInterval(() => incrementElapsed(), 1000);
+      } else if (!connected && timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    },
+    [setConnected, incrementElapsed],
+  );
+
+  /** Cleanup: component unmount үед timer цэвэрлэнэ */
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, []);
+
   const sessions = sessionsPaginated?.data ?? [];
   const activeSession = sessions.find((s) => s.status === 'live');
+
+  /**
+   * Auto-reconnect: LIVE session байвал + store хоосон бол (page refresh)
+   * refreshToken-оор Agora холболтыг автоматаар сэргээнэ.
+   */
+  useEffect(() => {
+    if (activeSession && !store.channelName) {
+      refreshTokenMutation.mutate(activeSession.id, {
+        onSuccess: (tokenRes) => {
+          store.initSession(
+            activeSession.id,
+            tokenRes.channelName,
+            tokenRes.token,
+            tokenRes.uid,
+            tokenRes.appId,
+          );
+        },
+      });
+    }
+    // activeSession.id өөрчлөгдөх эсвэл store хоосон болоход л ажиллана
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSession?.id]);
 
   /** Өнгөрсөн хугацаа format */
   const formatElapsed = (sec: number) => {
@@ -133,16 +186,16 @@ export default function TeacherLiveSessionsPage({
 
   /** Шууд эхлүүлэх — одоогийн цагаар session үүсгэж нэн даруй start хийнэ */
   const handleStartNow = useCallback(
-    (title: string, description?: string) => {
+    (title: string, durationMinutes: number, description?: string) => {
       const now = new Date();
-      const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      const scheduledEnd = new Date(now.getTime() + durationMinutes * 60 * 1000);
       createMutation.mutate(
         {
           courseId,
           title,
           description,
           scheduledStart: now.toISOString(),
-          scheduledEnd: twoHoursLater.toISOString(),
+          scheduledEnd: scheduledEnd.toISOString(),
         },
         {
           onSuccess: (session) => handleStart(session),
@@ -153,12 +206,36 @@ export default function TeacherLiveSessionsPage({
     [createMutation, courseId, handleStart],
   );
 
+  /** Явагдаж буй session-д дахин нэгдэх — refreshToken дуудаж store шинэчлэнэ */
+  const handleRejoin = useCallback(
+    (session: LiveSession) => {
+      refreshTokenMutation.mutate(session.id, {
+        onSuccess: (tokenRes) => {
+          store.initSession(
+            session.id,
+            tokenRes.channelName,
+            tokenRes.token,
+            tokenRes.uid,
+            tokenRes.appId,
+          );
+        },
+        onError: () => toast.error('Session-д нэгдэхэд алдаа гарлаа'),
+      });
+    },
+    [refreshTokenMutation, store],
+  );
+
   const handleEnd = useCallback(() => {
     if (!activeSession) return;
     endMutation.mutate(activeSession.id, {
       onSuccess: () => {
         toast.success('Хичээл дууслаа');
         store.clearSession();
+        /** Timer зогсооно — clearSession нь elapsedSeconds-г 0 болгох ч interval-г устгахгүй */
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
       },
       onError: () => toast.error('Хичээл дуусгахад алдаа гарлаа'),
     });
@@ -243,6 +320,7 @@ export default function TeacherLiveSessionsPage({
                 token={store.agoraToken ?? undefined}
                 uid={store.agoraUid ?? undefined}
                 onTokenWillExpire={handleTokenWillExpire}
+                onConnectionChange={handleConnectionChange}
               />
               {activeSession && <ActiveSessionDetails session={activeSession} />}
             </div>
@@ -251,6 +329,7 @@ export default function TeacherLiveSessionsPage({
             <div className="flex flex-col gap-6">
               <SessionListSidebar
                 sessions={sessions}
+                onOpen={handleRejoin}
                 onStart={handleStart}
                 onDelete={handleDelete}
               />
