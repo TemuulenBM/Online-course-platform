@@ -52,3 +52,6 @@ elasticsearch_data/
 # Uploads (local dev)
 apps/api/uploads/
 apps/web/next-env.d.ts
+
+# Database backups
+backups/

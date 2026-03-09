@@ -3,6 +3,8 @@ import axios, { AxiosInstance } from 'axios';
 export interface ApiClientConfig {
   baseURL: string;
   accessToken?: string;
+  /** Request timeout миллисекундээр (default: 30000ms) */
+  timeout?: number;
 }
 
 export class ApiClient {
@@ -11,6 +13,7 @@ export class ApiClient {
   constructor(config: ApiClientConfig) {
     this.client = axios.create({
       baseURL: config.baseURL,
+      timeout: config.timeout ?? 30000,
       headers: {
         'Content-Type': 'application/json',
         ...(config.accessToken && {

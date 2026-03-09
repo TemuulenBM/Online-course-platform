@@ -1,64 +1,48 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Rules
 
-1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Variable нэр англиар байж болно, гэхдээ хэрэглэгчтэй ярих бүх текст монголоор байна.
-2. **Код дотор монголоор бичих**: Хөгжүүлэлтийн явцад бүх comment, JSDoc/TSDoc docblock, тайлбар зэргийг ЗААВАЛ монгол хэлээр бичнэ. Variable болон function нэрс англиар байна, харин тэдгээрийн тайлбар, comment-ууд монголоор байна.
-3. **Commit message монголоор бичих**: Commit message-ийг ЗААВАЛ монгол хэлээр бичнэ.
-4. **Commit-д authored текст бичихгүй**: `Co-Authored-By` мөрийг commit message-д хэзээ ч оруулахгүй.
-5. **Системийн архитектурыг дагах**: `files/architecture.mmd` дээрх архитектурыг чанд дагана — модулийн бүтэц, өгөгдлийн урсгал, технологийн сонголтуудыг өөрчлөхгүй.
-6. **Модулиудыг дараалалтай хөгжүүлэх**: `files/Дараалал.docx` дээрх дарааллыг баримтлана:
-   - Phase 1: Auth Module → User Module
-   - Phase 2: Course Module → Lesson Module → Content Module
-   - Phase 3: Enrollment → Progress → Quiz → Certificate Module
-   - Phase 4: Discussion → Notification Module
-   - Phase 5: Payment → Analytics → Admin Module
-   - Phase 6: Live Class Module
-   - Phase 7: React Native Mobile App
-7. **Төлөвлөгөө/баримт бичгийг дагах**: `files/` дотор байгаа бүх баримт бичгүүдийг (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглана. Шинэ шийдвэр гаргахдаа эдгээр баримт бичигтэй нийцэж байгаа эсэхийг шалгана.
-8. **Тест заавал бичих**: Хөгжүүлэлтийн явцад код бичихдээ ЗААВАЛ тест дагалдуулна. Модуль бүрийн `tests/` хавтаст unit болон integration тест бичнэ. Use case (application давхарга), controller (interface давхарга), repository (infrastructure давхарга) тус бүрд тест бичнэ. Тест бичээгүй код commit хийхгүй.
-9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: Модулийн хөгжүүлэлт бүрэн дууссаны дараа CLAUDE.md-ийн `## Implemented Modules` хэсэгт тухайн модулийн мэдээллийг нэмнэ: гол endpoint-ууд, export хийсэн service-ууд, хамаарал (dependencies), онцлог шийдвэрүүд. Ингэснээр дараагийн conversation-д кодыг дахин судлах шаардлагагүй болж token хэмнэнэ.
-10. **Commit хийхийн өмнө Prettier format ажиллуулах**: Код commit хийхийн өмнө ЗААВАЛ `pnpm format` ажиллуулж бүх файлыг форматлана. CI pipeline дээр Prettier шалгалт байгаа тул форматлаагүй код push хийвэл lint алдаа гарна.
-11. **Модуль дуусмагц API шалгах + Postman collection бэлтгэх**: Модулийн хөгжүүлэлт дууссаны дараа ЗААВАЛ бүх API endpoint-уудыг ажиллуулж шалгана (server ажиллуулж, request илгээж, response зөв эсэхийг баталгаажуулна). Бүх API зөв ажиллаж байгаа нь батлагдсаны дараа тухайн модулийн Postman collection JSON файлыг `files/postman/` хавтаст үүсгэнэ. Collection нь бүх endpoint-ийн request, header, body, environment variable-уудыг агуулсан байна. Swagger ашиглахгүй — Postman-ийг API баримтжуулалт, тестийн үндсэн хэрэгсэл болгон ашиглана.
+1. **Монгол хэлээр харилцах**: Хэрэглэгчтэй ЗААВАЛ монгол хэлээр, тайлбарлах өнгөөр харилцана. Variable нэр англиар, ярих текст монголоор.
+2. **Код дотор монголоор бичих**: Comment, JSDoc/TSDoc docblock, тайлбар ЗААВАЛ монгол хэлээр. Variable/function нэрс англиар.
+3. **Commit message монголоор бичих**.
+4. **Commit-д `Co-Authored-By` хэзээ ч оруулахгүй**.
+5. **Системийн архитектурыг дагах**: `files/architecture.mmd` — модулийн бүтэц, өгөгдлийн урсгал, технологийг өөрчлөхгүй.
+6. **Модулиудыг дараалалтай хөгжүүлэх** (`files/Дараалал.docx`): Phase 1: Auth→Users | Phase 2: Courses→Lessons→Content | Phase 3: Enrollments→Progress→Quizzes→Certificates | Phase 4: Discussions→Notifications | Phase 5: Payments→Analytics→Admin | Phase 6: Live Classes | Phase 7: Mobile App
+7. **`files/` дотор байгаа баримт бичгүүдийг** (архитектур, database schema, MongoDB collections) лавлагаа болгон ашиглах.
+8. **Тест заавал бичих**: `tests/` хавтаст unit + integration тест. Use case, controller, repository тус бүрд тест. Тестгүй код commit хийхгүй.
+9. **Модуль дуусмагц CLAUDE.md шинэчлэх**: `## Implemented Modules`-д endpoint, export service, хамаарал, онцлог шийдвэрүүдийг нэмэх.
+10. **Commit-ийн өмнө `pnpm format`** ажиллуулах. CI дээр Prettier шалгалт байгаа.
+11. **Модуль дуусмагц API шалгах + Postman collection** бэлтгэх (`files/postman/`). Swagger ашиглахгүй.
+
+## Шийдвэр гаргах горим
+
+Модуль дизайн, API структур, DB schema шийдэхдээ дараах **3 өнцгөөс** шүүмжлэн, дараа нь шийдэл санал болго:
+
+1. **🔵 Мэргэжлийн инженер өнцөг**: "Мэргэжлийн NestJS инженер энэ кодыг юу гэж харах вэ? Техникийн өр, scalability асуудал байна уу?"
+2. **🔴 Шүүмжлэгч өнцөг (Devil's Advocate)**: "Миний бодоогүй ямар асуудал байна? 6 сарын дараа энэ кодыг засварлахад ямар бэрхшээл гарах вэ?"
+3. **🟢 Хэрэглэгч & Интеграцийн өнцөг**: "Frontend developer энэ API-г consume хийхэд хэр хялбар вэ? Response бүтэц, error message, HTTP status code зөв тодорхойлогдсон уу? Эцсийн хэрэглэгч (сурагч, багш, admin) энэ feature-г ашиглахад ямар UX асуудал гарч болзошгүй вэ? Loading state, validation error, edge case-ийг frontend хэрхэн зохицуулах вэ?"
+
+Эдгээр асуултад хариулсны дараа эцсийн шийдлийг санал болго.
+
+---
 
 ## Project Overview
 
-Turborepo monorepo бүхий онлайн сургалтын платформ. `@ocp/` namespace, pnpm workspaces.
+Turborepo monorepo онлайн сургалтын платформ. `@ocp/` namespace, pnpm workspaces.
 
 ## Commands
 
 ```bash
-# Development
-pnpm dev                    # Start all apps (api :3001, web :3000)
-pnpm dev --filter @ocp/api  # Start API only
-pnpm dev --filter @ocp/web  # Start web only
-
-# Build
+pnpm dev                    # Бүх apps (api :3001, web :3000)
+pnpm dev --filter @ocp/api  # API only
+pnpm dev --filter @ocp/web  # Web only
 pnpm build                  # Build all
-pnpm build --filter @ocp/api
-
-# Lint & Test
-pnpm lint
-pnpm test
-pnpm --filter @ocp/api test             # All API tests
+pnpm lint && pnpm test      # Lint + Test
+pnpm --filter @ocp/api test             # API тест
 pnpm --filter @ocp/api test -- --watch  # Watch mode
-pnpm --filter @ocp/api test:e2e         # E2E tests
-
-# Database
-pnpm docker:up              # Start PostgreSQL, MongoDB, Redis, Elasticsearch
-pnpm docker:down
-pnpm db:generate             # Generate Prisma client
-pnpm db:migrate              # Run migrations (uses prisma.config.ts)
-
-# Formatting
-pnpm format                  # Prettier on all files
-
-# Docker (Production)
-docker compose -f docker-compose.prod.yml build   # Бүх image build
-docker compose -f docker-compose.prod.yml up -d    # Production орчин ажиллуулах
-docker compose -f docker-compose.prod.yml down     # Зогсоох
+pnpm docker:up / pnpm docker:down       # PostgreSQL, MongoDB, Redis, Elasticsearch
+pnpm db:generate && pnpm db:migrate     # Prisma client + migrations
+pnpm format                             # Prettier
 ```
 
 ## Tech Stack
@@ -67,752 +51,228 @@ docker compose -f docker-compose.prod.yml down     # Зогсоох
 - **API**: NestJS 10 + Prisma 6 (PostgreSQL) + Mongoose (MongoDB)
 - **Mobile**: React Native + Expo 52 + Expo Router
 - **Infra**: Redis (cache/queue via Bull), Elasticsearch (search)
-- **CI/CD**: GitHub Actions, Docker (multi-stage), Nginx (reverse proxy), GHCR (container registry)
+- **CI/CD**: GitHub Actions, Docker (multi-stage), Nginx, GHCR
 - **External**: Stripe, SendGrid, Twilio, Agora SDK, Cloudflare R2/Stream
 
 ## Monorepo Structure
 
-```
-apps/
-  api/          # NestJS backend — port 3001, prefix /api/v1
-  web/          # Next.js App Router — port 3000
-  mobile/       # React Native Expo app
-packages/
-  typescript-config/   # Shared tsconfig (base, nestjs, nextjs, react-native, library)
-  eslint-config/       # Shared ESLint rules
-  shared-types/        # TypeScript interfaces shared across all apps
-  validation/          # Zod schemas shared across all apps
-  api-client/          # Axios-based API client
-  ui-components/       # Shared React UI components
-tools/                 # Dev scripts (seed, module generator)
-files/                 # Architecture docs & design documents
-.github/workflows/     # CI/CD pipelines (ci, deploy-staging, deploy-production)
-nginx/                 # Nginx reverse proxy тохиргоо
-```
+`apps/`: api (NestJS :3001, /api/v1), web (Next.js :3000), mobile (Expo)
+`packages/`: typescript-config, eslint-config, shared-types, validation, api-client, ui-components
+`tools/`: Dev scripts | `files/`: Architecture docs | `.github/workflows/`: CI/CD | `nginx/`: Reverse proxy
 
 ## NestJS Backend Architecture
 
-### DDD Module Structure
+### DDD Module Structure (`apps/api/src/modules/{name}/`)
 
-Each of the 15 modules in `apps/api/src/modules/` follows this pattern:
+`domain/` (entities, value-objects) → `application/` (use-cases) → `infrastructure/` (repositories) → `interface/` (controllers) → `dto/` → `tests/` → `{name}.module.ts`
 
-```
-modules/{name}/
-  domain/           # Entities, value objects, domain events
-  application/      # Use cases (business logic)
-  infrastructure/   # Repositories (Prisma/Mongoose), external services
-  interface/        # Controllers (REST endpoints)
-  dto/              # Request/response DTOs with validation
-  tests/            # unit/ and integration/
-  {name}.module.ts  # NestJS module definition
-```
-
-### Modules (15 total)
-
-auth, users, courses, lessons, content, enrollments, progress, quizzes, certificates, discussions, notifications, payments, analytics, admin, live-classes
+15 модуль: auth, users, courses, lessons, content, enrollments, progress, quizzes, certificates, discussions, notifications, payments, analytics, admin, live-classes
 
 ### Key Directories
 
-- `apps/api/src/common/` — Shared guards (JWT, Roles), decorators (@CurrentUser, @Roles, @Public), interceptors, filters, pipes, utils, redis (@Global RedisModule + RedisService), prisma (@Global PrismaModule)
-- `apps/api/src/common/constants/` — Дахин ашиглах constants (throttle limits гэх мэт)
-- `apps/api/src/config/` — NestJS `registerAs` configs: app, database, mongodb, redis, jwt, throttle, s3, stripe, elasticsearch, mail
-- `apps/api/prisma/` — `schema.prisma` (models) + `prisma.config.ts` (migration URL config, Prisma 7 pattern)
+- `apps/api/src/common/` — Guards (JWT, Roles), Decorators (@CurrentUser, @Roles, @Public), Interceptors, Filters, Pipes, Utils, Redis (@Global), Prisma (@Global)
+- `apps/api/src/common/constants/` — Throttle limits гэх мэт дахин ашиглах constants
+- `apps/api/src/config/` — `registerAs` configs: app, database, mongodb, redis, jwt, throttle, s3, stripe, elasticsearch, mail, storage, agora, notification
+- `apps/api/prisma/` — `schema.prisma` + `prisma.config.ts`
 
 ### Dual-Database Pattern
 
-PostgreSQL (Prisma) holds relational data; MongoDB (Mongoose) holds flexible-schema content. Linked by UUID references. Typical pattern: query PostgreSQL for metadata, then fetch rich content from MongoDB.
+PostgreSQL (Prisma) = relational data; MongoDB (Mongoose) = flexible content. UUID references-ээр холбогдоно.
 
 ### Key Data Flows
 
-- Progress events → Redis message queue → analytics/notification workers
-- Video uploads → S3/R2 → Cloudflare Stream transcoding → webhook → Content module
-- Stripe payment webhooks → enrollment creation + invoice generation
-- Certificate generation → Bull Queue background job
+- Progress events → Redis queue → analytics/notification workers
+- Video uploads → S3/R2 → Cloudflare Stream → webhook → Content module
+- Payment approved → Bull Queue → enrollment + invoice + notification
+- Certificate/Invoice generation → Bull Queue → Puppeteer PDF
 
 ## Reference Documents
 
-- [architecture.mmd](files/architecture.mmd) — Full system architecture (Mermaid graph)
-- [database-diagram.mermaid](files/database-diagram.mermaid) — PostgreSQL ER diagram (20+ tables)
-- [mongodb-collections.md](files/mongodb-collections.md) — MongoDB collection schemas with cross-DB query patterns
+- `files/architecture.mmd` — System architecture (Mermaid)
+- `files/database-diagram.mermaid` — PostgreSQL ER diagram (20+ tables)
+- `files/mongodb-collections.md` — MongoDB schemas + cross-DB query patterns
 
 ## CI/CD & Docker
 
-### GitHub Actions Workflows
+- **CI** (`.github/workflows/ci.yml`): push/PR trigger, 4 job — `lint`, `test` (PG/Mongo/Redis services), `build`, `docker-build`
+- **Deploy Staging**: push to main → GHCR push (`ocp-api:staging`, `ocp-web:staging`) → SSH deploy → health check
+- **Deploy Production**: workflow_dispatch → GHCR push → Environment approval → DB migration → deploy
+- **Docker**: Multi-stage (Node 20 Alpine, pnpm), API non-root user (`nestjs`), Web standalone output
+- **docker-compose.prod.yml**: api, web, nginx, postgres, mongodb, redis on `app-network`
+- **nginx**: `/api/` → api:3001, `/` → web:3000, gzip, security headers, 100M upload
+- **Branch Protection**: PR шаардлагатай, `lint`+`test`+`build` status checks, force push хориглосон
+- **Health Check** `GET /api/v1` (@Public): PG + Redis + MongoDB connectivity → `ok`(200) / `degraded`(503)
 
-**CI Pipeline** (`.github/workflows/ci.yml`):
+## API Gateway (`main.ts`)
 
-- **Trigger**: push (бүх branch), pull_request (main руу)
-- **Concurrency**: branch бүрт нэг CI — хуучин run автомат cancel
-- 4 job: `lint` (ESLint + Prettier), `test` (PostgreSQL/MongoDB/Redis services, Prisma migrate, unit тест), `build` (API build), `docker-build` (PR дээр Docker image verify)
-
-**Deploy Staging** (`.github/workflows/deploy-staging.yml`):
-
-- **Trigger**: push to main (PR merge-ийн дараа)
-- Docker image build → GHCR push (`ghcr.io/OWNER/ocp-api:staging`, `ocp-web:staging`) → SSH deploy → health check
-
-**Deploy Production** (`.github/workflows/deploy-production.yml`):
-
-- **Trigger**: workflow_dispatch (manual button), tag input optional
-- GHCR push (`production` + timestamp tag) → GitHub Environment approval → DB migration → deploy → health check
-
-### Docker
-
-- **API** (`apps/api/Dockerfile`): Multi-stage (base → deps → builder → production). Node 20 Alpine, pnpm, bcrypt build tools (python3, make, g++), Prisma generate dummy URL, non-root user (`nestjs`), `node dist/main`
-- **Web** (`apps/web/Dockerfile`): Multi-stage Next.js standalone. `next.config.ts`-д `output: 'standalone'` нэмэгдсэн
-- **docker-compose.prod.yml**: api, web, nginx, postgres, mongodb, redis — бүгд `app-network` дээр
-- **nginx** (`nginx/nginx.conf`): `/api/` → api:3001, `/uploads/` → api:3001, `/` → web:3000, `/_next/static/` immutable cache, gzip, security headers, 100M upload
-
-### Branch Protection (GitHub Rulesets)
-
-- main branch: PR заавал шаардана, 3 status check шаардлагатай (`lint`, `test`, `build`), force push хориглосон
-
-### ESLint 9 Flat Config
-
-- `packages/eslint-config/*.mjs` — base, nestjs, nextjs, react-native config-ууд (ESLint 9 flat config format)
-- App бүрт `eslint.config.mjs` — тохирох shared config import хийнэ
-- `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin` + `eslint-config-prettier`
-
-### Health Check Endpoint
-
-`GET /api/v1` — `@Public()`, JWT шаардахгүй:
-
-- PostgreSQL (`$queryRawUnsafe('SELECT 1')`), Redis (`set`/`get` health:check), MongoDB (`readyState`) connectivity шалгана
-- Response: `{ status: 'ok' | 'degraded', timestamp, services: { database, redis, mongodb } }`
-- `ok` → HTTP 200, `degraded` → HTTP 503 (Docker healthcheck болон deployment verify-д ашиглагдана)
+- `helmet()`, `compression()`, `enableCors()`, `ValidationPipe` (whitelist+transform), `AllExceptionsFilter`, `HttpExceptionFilter`, `LoggingInterceptor`, `TransformInterceptor` (`{ success, data }` wrapper)
+- **Rate Limiting**: Global 3 tier (3/sec, 20/10sec, 100/min). Auth: 5/min. Password reset: 3/min. Constants: `common/constants/throttle.constants.ts`
 
 ---
 
-## Implemented Modules
+## Implemented Modules — Common Patterns
 
-<!-- Модуль бүрэн дууссаны дараа энд нэмнэ: endpoint-ууд, export service-ууд, хамаарал, онцлог шийдвэрүүд -->
+Бүх модулиуд дараах нийтлэг pattern-ийг дагана:
+
+- **Redis кэш**: TTL 15 мин (900s). Dashboard/overview кэш 5 мин (300s). Жагсаалт ихэвчлэн кэшлэхгүй
+- **Route дараалал**: Specific routes (`/my`, `/course/:id`, `/slug/:slug`) нь generic `/:id`-ээс ЗААВАЛ ӨМНӨ бүртгэгдэнэ
+- **Эрхийн шалгалт**: Use-case түвшинд (guard биш) — эзэмшигч / instructor / ADMIN
+- **Bull Queue processors**: Graceful error handling — try/catch, log, exception шидэхгүй
+- **@Global() модулиуд**: PrismaModule, RedisModule — бусад модулиуд дахин import хийхгүй
+- **DI Token pattern**: Interface-ээр inject (`STORAGE_SERVICE`, `PAYMENT_GATEWAY`, `AGORA_SERVICE`, `EMAIL_SERVICE`, `SMS_SERVICE`, `PUSH_SERVICE`) — ирээдүйд implementation солих боломжтой
+- **Upsert семантик**: Content, Progress, NotificationPreference, SystemSettings — байвал update, байхгүй бол create
 
 ### Auth Module (Phase 1)
 
-**Endpoints** (`/api/v1/auth`):
+`/api/v1/auth` — 7 endpoints (register, login, refresh, logout, forgot-password, reset-password, me)
+**Exports**: `UserRepository`, `TokenService` | **Deps**: PassportModule, JwtModule, ConfigModule, UsersModule
 
-- `POST /register` — Шинэ хэрэглэгч бүртгүүлэх (public)
-- `POST /login` — Нэвтрэх (public)
-- `POST /refresh` — Токен шинэчлэх (public)
-- `POST /logout` — Системээс гарах (JWT required)
-- `POST /forgot-password` — Нууц үг сэргээх хүсэлт (public)
-- `POST /reset-password` — Нууц үг шинэчлэх (public)
-- `GET /me` — Одоогийн хэрэглэгчийн мэдээлэл (JWT required)
-
-**Export хийсэн service-ууд**: `UserRepository`, `TokenService`
-
-**Хамаарал**: `PrismaModule` (@Global), `PassportModule`, `JwtModule`, `ConfigModule`, `UsersModule`
-
-**Онцлог шийдвэрүүд**:
-
-- JWT access token (15 мин) + Refresh token (7 хоног) — Token rotation хэрэглэнэ
-- Refresh token-ийг SHA-256 хэшлэж хадгална (bcrypt биш — хурдны учир)
-- User enumeration хамгаалалт: login болон forgot-password дээр ижил хариу буцаана
-- Нууц үг шинэчлэхэд бүх сесси болон refresh token цуцлагдана
-- `PrismaModule` нь `@Global()` — бусад модулиуд дахин import хийх шаардлагагүй
-- firstName/lastName RegisterDto-д байгаа — Users модуль хэрэгжсэний дараа UserProfile-д хадгалагдана
-- Auth модуль `UsersModule`-г import хийж `UserProfileRepository`-г ашиглана (register үед profile үүсгэх)
-
-**Тест**: 7 test suite, 22 unit тест (use-case + controller)
+- JWT access (15 мин) + refresh (7 хоног), token rotation, refresh SHA-256 хэш
+- User enumeration хамгаалалт, нууц үг солиход бүх сесси цуцлагдана
+- Register үед UserProfile автомат үүсгэнэ (UsersModule-аар)
 
 ### Users Module (Phase 1)
 
-**Endpoints** (`/api/v1/users`):
+`/api/v1/users` — 7 endpoints (me/profile CRUD, /:id/profile, admin: list, role change, delete)
+**Exports**: `UserProfileRepository` | **Deps**: (global only)
 
-- `GET /me/profile` — Миний профайл авах (JWT required)
-- `POST /me/profile` — Миний профайл үүсгэх (JWT required)
-- `PATCH /me/profile` — Миний профайл шинэчлэх (JWT required)
-- `GET /:id/profile` — Хэрэглэгчийн профайл авах (JWT required)
-- `GET /` — Хэрэглэгчдийн жагсаалт pagination-тэй (ADMIN only)
-- `PATCH /:id/role` — Хэрэглэгчийн эрх солих (ADMIN only)
-- `DELETE /:id` — Хэрэглэгч устгах (ADMIN only)
-
-**Export хийсэн service-ууд**: `UserProfileRepository`
-
-**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- UserProfile нь User-тэй one-to-one хамаарал (`@unique` on userId)
-- Redis кэшлэлт: профайл авах үед Redis-ээс эхлээд, байхгүй бол DB (TTL 15 мин, `user:profile:{userId}` key)
-- Профайл шинэчлэх/устгах үед кэш invalidate хийгдэнэ
-- Auth модулийн RegisterUseCase-д profile үүсгэлт нэмэгдсэн (firstName, lastName хадгалагдана)
-- `RedisModule` нь `@Global()` — common/redis/ дотор, ioredis ашиглана
-- Admin endpoint-ууд `@Roles('ADMIN')` + `RolesGuard`-аар хамгаалагдсан
-- Профайл шинэчлэхэд өөрийн эсвэл admin эрхийн шалгалт (`ForbiddenException`)
-
-**Тест**: 8 test suite, 25 unit тест (use-case + controller + cache service)
-
-### API Gateway тохиргоо
-
-**Middleware** (`main.ts`):
-
-- `helmet()` — Security headers (X-Frame-Options, X-Content-Type-Options, CSP гэх мэт)
-- `compression()` — Response compression
-- `enableCors()` — Origin хязгаарлалт (`app.url` config-оос), credentials: true
-- `useGlobalPipes(ValidationPipe)` — whitelist + transform
-- `useGlobalFilters(AllExceptionsFilter, HttpExceptionFilter)` — Бүх алдааг нэг хэлбэрээр буцаах
-- `useGlobalInterceptors(LoggingInterceptor, TransformInterceptor)` — Лог + `{ success, data }` wrapper
-
-**Rate Limiting** (`@nestjs/throttler`):
-
-- Global: 3 давхар хязгаарлалт (short: 3 req/sec, medium: 20 req/10sec, long: 100 req/min)
-- `ThrottlerModule.forRootAsync` — `throttle.config.ts`-ээс ConfigService-ээр уншина (env-ээр тохируулах боломжтой)
-- `APP_GUARD` → `ThrottlerGuard` бүх endpoint-д автомат ажиллана
-- Auth endpoint-д хатуу хязгаарлалт: `AUTH_THROTTLE` (5 req/min), `PASSWORD_RESET_THROTTLE` (3 req/min)
-- Constants: `common/constants/throttle.constants.ts` — controller-уудад `@Throttle()` decorator-т дахин ашиглана
-
-**Config файлууд**: `config/throttle.config.ts` (`registerAs('throttle')`) — env variables: `THROTTLE_SHORT_TTL`, `THROTTLE_SHORT_LIMIT`, `THROTTLE_AUTH_LIMIT` гэх мэт
+- UserProfile one-to-one User, Redis кэш `user:profile:{userId}`
+- Admin endpoints `@Roles('ADMIN')` + `RolesGuard`
 
 ### Courses Module (Phase 2)
 
-**Endpoints** (`/api/v1/courses`):
+`/api/v1/courses` — 9 endpoints | `/api/v1/categories` — 5 endpoints
+**Exports**: `CourseRepository`, `CategoryRepository` | **Deps**: (global only)
 
-- `POST /courses` — Шинэ сургалт үүсгэх (TEACHER, ADMIN)
-- `GET /courses` — Сургалтуудын жагсаалт pagination-тэй (@Public, PUBLISHED only)
-- `GET /courses/my` — Миний сургалтууд (TEACHER, ADMIN, бүх status)
-- `GET /courses/slug/:slug` — Slug-аар сургалт авах (@Public, PUBLISHED only)
-- `GET /courses/:id` — ID-аар сургалт авах (@Public, PUBLISHED only)
-- `PATCH /courses/:id` — Сургалт шинэчлэх (эзэмшигч/ADMIN)
-- `PATCH /courses/:id/publish` — DRAFT→PUBLISHED (эзэмшигч/ADMIN)
-- `PATCH /courses/:id/archive` — PUBLISHED→ARCHIVED (эзэмшигч/ADMIN)
-- `DELETE /courses/:id` — Сургалт устгах (ADMIN only)
-
-**Endpoints** (`/api/v1/categories`):
-
-- `POST /categories` — Ангилал үүсгэх (ADMIN)
-- `GET /categories` — Ангиллуудын жагсаалт мод бүтцээр (@Public)
-- `GET /categories/:id` — Ангиллын дэлгэрэнгүй + coursesCount (@Public)
-- `PATCH /categories/:id` — Ангилал шинэчлэх (ADMIN)
-- `DELETE /categories/:id` — Ангилал устгах (ADMIN)
-
-**Export хийсэн service-ууд**: `CourseRepository`, `CategoryRepository`
-
-**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Categories нь Courses модуль дотор — тусдаа модуль биш, тус controller-тэй
-- Status flow: DRAFT → PUBLISHED → ARCHIVED (нэг чиглэлтэй, буцаахгүй)
-- Public endpoint дээр зөвхөн PUBLISHED — use-case түвшинд шүүнэ
-- Эзэмшигч/admin эрхийн шалгалт — use-case түвшинд (guard биш)
-- Slug utility: `common/utils/slug.util.ts` — `generateSlug()` + `generateUniqueSlug()`
+- Categories нь Courses модуль дотор, тус controller-тэй
+- Status flow: DRAFT → PUBLISHED → ARCHIVED (нэг чиглэлтэй)
+- Public endpoint-д зөвхөн PUBLISHED, slug utility `common/utils/slug.util.ts`
 - Prisma Decimal → number хөрвүүлэлт entity constructor дотор
-- Redis кэшлэлт: `course:{id}` (TTL 15 мин), `category:tree` key
-- Кэш invalidate: сургалт шинэчлэх/устгах/нийтлэх/архивлах үед
-- Hard delete — Phase 3 (Enrollment, Progress) хүртэл soft delete шаардлагагүй
-- Route дараалал: `/courses/my`, `/courses/slug/:slug` нь `/courses/:id`-ээс ӨМНӨ
-
-**Тест**: 14 test suite, 54 unit тест (use-case + controller + cache service)
 
 ### Lessons Module (Phase 2)
 
-**Endpoints** (`/api/v1/lessons`):
+`/api/v1/lessons` — 7 endpoints (CRUD, reorder, publish toggle, course/:courseId list)
+**Exports**: `LessonRepository` | **Deps**: CoursesModule
 
-- `POST /lessons` — Шинэ хичээл үүсгэх (TEACHER, ADMIN)
-- `GET /lessons/course/:courseId` — Сургалтын хичээлүүдийн жагсаалт (@Public, published only)
-- `PATCH /lessons/reorder` — Хичээлүүдийн дарааллыг өөрчлөх (TEACHER, ADMIN)
-- `GET /lessons/:id` — Хичээлийн дэлгэрэнгүй (@Public, published only)
-- `PATCH /lessons/:id` — Хичээл шинэчлэх (эзэмшигч/ADMIN)
-- `PATCH /lessons/:id/publish` — Нийтлэлт toggle (эзэмшигч/ADMIN)
-- `DELETE /lessons/:id` — Хичээл устгах (эзэмшигч/ADMIN)
-
-**Export хийсэн service-ууд**: `LessonRepository`
-
-**Хамаарал**: `PrismaModule` (@Global), `RedisModule` (@Global), `CoursesModule` (CourseRepository ашиглах)
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL metadata — MongoDB контент Content модульд хамаарна
-- `orderIndex` автоматаар тавигдана (max+1), reorder endpoint-ээр өөрчлөгдөнө
-- Pagination байхгүй — хичээлүүд (10-100) цөөн тул бүгдийг нэг дор авна
-- `courseId` update хийхгүй — хичээлийг сургалт хооронд зөөхгүй
-- `isPublished` boolean toggle — Course-ийн DRAFT→PUBLISHED биш
-- Эрхийн шалгалт: use-case түвшинд, Course.instructorId-г шалгана
-- Redis кэшлэлт: `lesson:{id}`, `lessons:course:{courseId}` (TTL 15 мин)
-- Зөвхөн published жагсаалтыг кэшлэнэ, owner/admin DB-ээс шууд
+- `orderIndex` auto max+1, reorder endpoint, pagination-гүй (цөөн хичээл)
 - `LessonType` enum: VIDEO, TEXT, QUIZ, ASSIGNMENT, LIVE
-- Cascade delete: Course устгахад хичээлүүд автоматаар устна
-- Route дараалал: `/lessons/course/:courseId`, `/lessons/reorder` нь `/lessons/:id`-ээс ӨМНӨ
-
-**Тест**: 9 test suite, 45 unit тест (use-case + controller + cache service)
+- Cascade delete: Course устгахад хичээлүүд автомат устна
 
 ### Content Module (Phase 2)
 
-**Endpoints** (`/api/v1/content`):
+`/api/v1/content` — 6 endpoints (text/video set, lesson/:lessonId get/update/delete, upload)
+**Exports**: `ContentRepository` | **Deps**: MongooseModule, LessonsModule
 
-- `POST /content/text` — Текст контент тавих (TEACHER, ADMIN)
-- `POST /content/video` — Видео контент тавих (TEACHER, ADMIN)
-- `GET /content/lesson/:lessonId` — Хичээлийн контент авах (@Public, published only)
-- `PATCH /content/lesson/:lessonId` — Контент шинэчлэх (эзэмшигч/ADMIN)
-- `DELETE /content/lesson/:lessonId` — Контент устгах (эзэмшигч/ADMIN)
-- `POST /content/lesson/:lessonId/upload` — Файл upload (TEACHER, ADMIN)
-
-**Export хийсэн service-ууд**: `ContentRepository`
-
-**Хамаарал**: `MongooseModule`, `LessonsModule` (LessonRepository), `RedisModule` (@Global), `PrismaModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- MongoDB-г анх удаа ашигласан модуль — `MongooseModule.forRootAsync()` app.module.ts-д нэмэгдсэн
-- Нэг хичээлд нэг content document (`lessonId` unique index) — original doc-ийн per-course nested бүтцийг хялбарчилсан
-- `IStorageService` interface + `LocalStorageService` — DI token `STORAGE_SERVICE`-ээр inject, ирээдүйд S3/R2 руу солих боломжтой
-- `contentType` нь lesson.lessonType-тэй таарах ёстой — mismatch бол BadRequestException
-- Set endpoint нь upsert семантиктай — контент байвал шинэчлэх, байхгүй бол үүсгэх
-- Upload endpoint-д fileType query param: `video | thumbnail | attachment | subtitle`
-- Redis кэш: `content:lesson:{lessonId}` (TTL 15 мин)
-- Static file serving: `main.ts`-д `useStaticAssets` нэмэгдсэн (`/uploads/` prefix)
-- `storage.config.ts` config нэмэгдсэн (provider, localUploadDir, maxFileSizeMb)
-- Mongoose schema: `course_content` collection, timestamps автомат
-
-**Тест**: 7 test suite, 38 unit тест (use-case + controller + cache service)
+- MongoDB анхны модуль — `course_content` collection, `lessonId` unique
+- `IStorageService` + `LocalStorageService` (DI token `STORAGE_SERVICE`)
+- `contentType` ↔ `lesson.lessonType` таарах ёстой
+- Upload fileType: video | thumbnail | attachment | subtitle
 
 ### Enrollments Module (Phase 3)
 
-**Endpoints** (`/api/v1/enrollments`):
+`/api/v1/enrollments` — 8 endpoints (enroll, my, course/:courseId, check/:courseId, cancel, complete, delete)
+**Exports**: `EnrollmentRepository` | **Deps**: CoursesModule
 
-- `POST /enrollments` — Сургалтад элсэх (JWT required)
-- `GET /enrollments/my` — Миний элсэлтүүд pagination-тэй (JWT required)
-- `GET /enrollments/course/:courseId` — Сургалтын оюутнуудын жагсаалт (TEACHER, ADMIN)
-- `GET /enrollments/check/:courseId` — Элсэлтийн статус шалгах (JWT required)
-- `GET /enrollments/:id` — Элсэлтийн дэлгэрэнгүй (JWT required, өөрийн/эзэмшигч/ADMIN)
-- `PATCH /enrollments/:id/cancel` — Элсэлт цуцлах (JWT required, өөрийн/ADMIN)
-- `PATCH /enrollments/:id/complete` — Элсэлт дуусгах (ADMIN only)
-- `DELETE /enrollments/:id` — Элсэлт устгах (ADMIN only)
-
-**Export хийсэн service-ууд**: `EnrollmentRepository`
-
-**Хамаарал**: `CoursesModule` (CourseRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- `@@unique([userId, courseId])` — Нэг хэрэглэгчид нэг сургалтад нэг элсэлт
-- Зөвхөн PUBLISHED сургалтад элсэх боломжтой
-- Re-enrollment: CANCELLED/EXPIRED элсэлтийг ACTIVE руу update (шинээр үүсгэхгүй)
-- Prerequisite шалгалт: `Prerequisite` model-ээс required course ID-уудыг аваад, хэрэглэгч бүгдийг COMPLETED болсон эсэхийг шалгана
-- Төлбөр шалгахгүй (Payment модуль Phase 5-д)
-- ADMIN-only complete — Progress модуль хэрэгжсэний дараа автомат болно
-- Redis кэш: `enrollment:{id}`, `enrollment:check:{userId}:{courseId}` (TTL 15 мин)
-- Жагсаалт кэшлэхгүй — зөвхөн дан элсэлт + check кэшлэнэ
-- Эрхийн шалгалт use-case түвшинд: өөрийн элсэлт / сургалтын эзэмшигч / ADMIN
-- Route дараалал: `/enrollments/my`, `/enrollments/course/:courseId`, `/enrollments/check/:courseId` нь `/:id`-ээс ӨМНӨ
-
-**Тест**: 10 test suite, 42 unit тест (use-case + controller + cache service)
+- `@@unique([userId, courseId])`, зөвхөн PUBLISHED-д элсэх
+- Re-enrollment: CANCELLED/EXPIRED → ACTIVE update
+- Prerequisite шалгалт: бүх required courses COMPLETED байх ёстой
 
 ### Progress Module (Phase 3)
 
-**Endpoints** (`/api/v1/progress`):
+`/api/v1/progress` — 7 endpoints (my, course/:courseId, lesson progress CRUD, complete, video position)
+**Exports**: `ProgressRepository`, `CompleteLessonUseCase` | **Deps**: EnrollmentsModule, LessonsModule
 
-- `GET /progress/my` — Миний ахицуудын жагсаалт pagination-тэй (JWT required)
-- `GET /progress/course/:courseId` — Сургалтын ахицын нэгтгэл (JWT required)
-- `GET /progress/lessons/:lessonId` — Хичээлийн ахиц авах (JWT required)
-- `POST /progress/lessons/:lessonId` — Хичээлийн ахиц шинэчлэх (JWT required)
-- `POST /progress/lessons/:lessonId/complete` — Хичээл дуусгах (JWT required)
-- `PATCH /progress/lessons/:lessonId/position` — Видеоны байрлал шинэчлэх (JWT required)
-- `DELETE /progress/:id` — Ахиц устгах (ADMIN only)
-
-**Export хийсэн service-ууд**: `ProgressRepository`
-
-**Хамаарал**: `EnrollmentsModule` (EnrollmentRepository), `LessonsModule` (LessonRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- `@@unique([userId, lessonId])` — Нэг хэрэглэгчид нэг хичээлд нэг ахиц
-- Upsert семантик: progress байвал шинэчлэх, байхгүй бол үүсгэх
-- **Auto-complete enrollment**: Бүх published хичээл дуусахад enrollment автоматаар COMPLETED болно (`CompleteLessonUseCase` дотор)
-- `timeSpentSeconds` additive: Шинэ зарцуулсан хугацааг хуучин дээр нэмнэ
-- Видео progressPercentage автоматаар тооцоолно: `Math.min(100, Math.round((lastPositionSeconds / (durationMinutes * 60)) * 100))`
-- TEXT/QUIZ/ASSIGNMENT хичээлд зөвхөн 0% (эхлээгүй) эсвэл 100% (complete) — дунд шат байхгүй
-- Зөвхөн published хичээлд, ACTIVE элсэлттэй хэрэглэгчид ахиц бүртгэнэ
-- Redis кэш: `progress:lesson:{userId}:{lessonId}`, `progress:course:{userId}:{courseId}` (TTL 15 мин)
-- Enrollment кэш invalidation: auto-complete үед `enrollment:{id}`, `enrollment:check:{userId}:{courseId}` түлхүүрүүд устгагдана
-- GetLessonProgress-д ахиц олдоогүй бол default утга буцаана (0%, false) — NotFoundException биш
-- GetCourseProgress: нэгтгэл буцаана (totalLessons, completedLessons, courseProgressPercentage, totalTimeSpentSeconds, lessons[])
-- Route дараалал: `/progress/my`, `/progress/course/:courseId` нь `/progress/lessons/:lessonId`-ээс ӨМНӨ
-
-**Тест**: 9 test suite, 37 unit тест (use-case + controller + cache service)
+- `@@unique([userId, lessonId])`, upsert семантик
+- **Auto-complete enrollment**: Бүх published хичээл дуусахад enrollment → COMPLETED
+- Video progressPercentage: `lastPositionSeconds / (durationMinutes * 60) * 100`
+- TEXT/QUIZ/ASSIGNMENT: зөвхөн 0% эсвэл 100%
 
 ### Quizzes Module (Phase 3)
 
-**Endpoints** (`/api/v1/quizzes`):
+`/api/v1/quizzes` — 15 endpoints (quiz CRUD, questions CRUD+reorder, attempts start/submit/grade, lists)
+**Exports**: `QuizRepository` | **Deps**: MongooseModule, LessonsModule, EnrollmentsModule, ProgressModule
 
-- `POST /quizzes` — Quiz үүсгэх (TEACHER, ADMIN — lessonType=QUIZ шаардлагатай)
-- `GET /quizzes/lesson/:lessonId` — Хичээлийн quiz авах (@Public)
-- `GET /quizzes/:id` — Quiz дэлгэрэнгүй + асуултууд (TEACHER/ADMIN: хариултуудтай, STUDENT: хариултгүй)
-- `PATCH /quizzes/:id` — Quiz тохиргоо шинэчлэх (эзэмшигч/ADMIN)
-- `DELETE /quizzes/:id` — Quiz устгах (эзэмшигч/ADMIN)
-- `POST /quizzes/:id/questions` — Асуулт нэмэх (TEACHER, ADMIN)
-- `PATCH /quizzes/:id/questions/:questionId` — Асуулт шинэчлэх (TEACHER, ADMIN)
-- `DELETE /quizzes/:id/questions/:questionId` — Асуулт устгах (TEACHER, ADMIN)
-- `PATCH /quizzes/:id/questions/reorder` — Асуултуудын дараалал солих (TEACHER, ADMIN)
-- `POST /quizzes/:id/attempts` — Quiz оролдлого эхлүүлэх (JWT required, ACTIVE enrollment)
-- `GET /quizzes/:id/attempts/my` — Миний оролдлогууд (JWT required)
-- `GET /quizzes/:id/attempts/students` — Оюутнуудын оролдлогууд (TEACHER, ADMIN)
-- `GET /quizzes/:id/attempts/:attemptId` — Оролдлогын дэлгэрэнгүй (JWT required)
-- `POST /quizzes/:id/attempts/:attemptId/submit` — Хариулт илгээх + auto-grade (JWT required)
-- `PATCH /quizzes/attempts/:attemptId/grade` — Essay/code гараар дүгнэх (TEACHER, ADMIN)
-
-**Export хийсэн service-ууд**: `QuizRepository`
-
-**Хамаарал**: `MongooseModule` (quiz_questions, quiz_answers), `LessonsModule` (LessonRepository), `EnrollmentsModule` (EnrollmentRepository), `ProgressModule` (CompleteLessonUseCase), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Dual-database: PostgreSQL (quiz metadata + attempt results) + MongoDB (questions + answers)
-- Асуултын 5 төрөл: `multiple_choice`, `true_false`, `fill_blank` (auto-grade), `code_challenge`, `essay` (гараар дүгнэх)
-- `QuizGradingService`: multiple_choice, true_false, fill_blank автомат дүгнэнэ; code_challenge, essay → pointsEarned=0, гараар дүгнэх хүртэл
-- `CompleteLessonUseCase` интеграц: quiz тэнцсэн бол хичээл автомат complete → enrollment auto-complete
-- `CompleteLessonUseCase` ConflictException-г try/catch-аар алгасна (дахин тэнцсэн тохиолдол)
-- `ProgressModule` exports-д `CompleteLessonUseCase` нэмэгдсэн
-- Attempt lifecycle: `startAttempt` → `submitAttempt` → auto-grade → (optional) `gradeAttempt`
-- `maxAttempts` null бол хязгааргүй оролдлого; `timeLimitMinutes` null бол хугацааны хязгааргүй
-- `randomizeQuestions`, `randomizeOptions` тохиргоо — Fisher-Yates shuffle алгоритм
-- Зөв хариулт нуулт: StartAttempt-д isCorrect, correctAnswer, solution зэрэг талбарууд strip хийгдэнэ
-- Redis кэш: `quiz:{id}`, `quiz:lesson:{lessonId}`, `quiz:questions:{quizId}`, `quiz:attempts:{quizId}:{userId}` (TTL 15 мин)
-- Route дараалал: `/quizzes/lesson/:lessonId`, `/quizzes/attempts/:attemptId/grade` нь `/quizzes/:id`-ээс ӨМНӨ; `/quizzes/:id/questions/reorder` нь `/:id/questions/:questionId`-ээс ӨМНӨ; `/attempts/my`, `/attempts/students` нь `/attempts/:attemptId`-ээс ӨМНӨ
-
-**Тест**: 8 test suite, 68 unit тест (use-case + controller + cache service + grading service)
+- Dual-database: PostgreSQL (quiz meta + attempts) + MongoDB (questions + answers)
+- 5 question type: multiple_choice, true_false, fill_blank (auto-grade), code_challenge, essay (manual)
+- `QuizGradingService` auto-grade, quiz тэнцсэн бол `CompleteLessonUseCase` → enrollment auto-complete
+- Fisher-Yates shuffle (randomizeQuestions/Options), зөв хариулт student-ээс нуугдана
 
 ### Certificates Module (Phase 3)
 
-**Endpoints** (`/api/v1/certificates`):
+`/api/v1/certificates` — 6 endpoints (verify/:code public, my, course/:courseId, generate/:courseId, detail, delete)
+**Exports**: `CertificateRepository` | **Deps**: BullModule, EnrollmentsModule, CoursesModule, ConfigModule
 
-- `GET /certificates/verify/:verificationCode` — Сертификат баталгаажуулах (@Public, JWT шаардлагагүй)
-- `GET /certificates/my` — Миний сертификатууд pagination-тэй (JWT required)
-- `GET /certificates/course/:courseId` — Сургалтын сертификатуудын жагсаалт (TEACHER, ADMIN)
-- `POST /certificates/generate/:courseId` — Сертификат гараар үүсгэх (JWT required, COMPLETED enrollment шаардлагатай)
-- `GET /certificates/:id` — Сертификатын дэлгэрэнгүй (JWT required, эзэмшигч/багш/ADMIN)
-- `DELETE /certificates/:id` — Сертификат устгах (ADMIN only)
-
-**Export хийсэн service-ууд**: `CertificateRepository`
-
-**Хамаарал**: `BullModule` (certificates queue), `EnrollmentsModule` (EnrollmentRepository), `CoursesModule` (CourseRepository), `PrismaModule` (@Global), `RedisModule` (@Global), `ConfigModule`
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- `@@unique([userId, courseId])` — Нэг хэрэглэгчид нэг сургалтад нэг сертификат
-- **Auto-generate trigger**: `CompleteLessonUseCase`-д enrollment auto-complete болоход Bull Queue-ээр `generate-auto` job нэмэгдэнэ (`progress.module.ts`-д `BullModule.registerQueue({ name: 'certificates' })` нэмэгдсэн)
-- `BullModule.forRootAsync()` app.module.ts-д нэмэгдсэн (Redis config ашиглан)
-- **CertificateProcessor** (Bull Queue): `generate` + `generate-auto` 2 process. Auto-generate нь давхардал шалгаад certificate record үүсгээд generate рүү шилжинэ
-- Certificate number формат: `OCP-YYYY-XXXXXXXX` (hex random), P2002 unique violation дээр retry (3 удаа)
-- Verification code: `crypto.randomUUID()` dash-гүй (32 тэмдэгт)
-- **Puppeteer-core** + HTML template: A4 landscape PDF сертификат, QR код embed хийгдсэн
-- `CHROMIUM_PATH` env variable — Docker-д `/usr/bin/chromium-browser`, dev-д system Chromium
-- Content модулийн `IStorageService` + `LocalStorageService` pattern дахин ашигласан (`STORAGE_SERVICE` DI token)
-- `pdfUrl`, `qrCodeUrl` nullable — Bull processor async шинэчлэнэ
-- Redis кэш: `certificate:{id}`, `certificate:verify:{verificationCode}` (TTL 900s / 15 мин)
-- Эрхийн шалгалт: эзэмшигч / сургалтын багш (courseInstructorId) / ADMIN — use-case түвшинд
-- Public verify endpoint: JWT шаардлагагүй, verification code-оор сертификат хайна
-- Docker Dockerfile-д Chromium + шрифтүүд нэмэгдсэн (`chromium nss freetype harfbuzz ca-certificates ttf-freefont`)
-- Route дараалал: `/certificates/verify/:verificationCode`, `/certificates/my`, `/certificates/course/:courseId` нь `/:id`-ээс ӨМНӨ
-
-**Тест**: 11 test suite, 40 unit тест (use-case + controller + cache service + processor + pdf + qr)
+- `@@unique([userId, courseId])`, auto-generate: enrollment COMPLETED → Bull Queue → PDF
+- Puppeteer-core + HTML template → A4 landscape PDF + QR code
+- Certificate number: `OCP-YYYY-XXXXXXXX`, verification code: UUID 32 char
+- `CHROMIUM_PATH` env — Docker: `/usr/bin/chromium-browser`
 
 ### Discussions Module (Phase 4)
 
-**Endpoints — Discussion Posts** (`/api/v1/discussions/posts`):
+`/api/v1/discussions/posts` — 13 endpoints | `/api/v1/discussions/comments` — 6 endpoints
+**Exports**: `DiscussionPostRepository`, `LessonCommentRepository` | **Deps**: MongooseModule, CoursesModule, LessonsModule, EnrollmentsModule
 
-- `GET /discussions/posts/course/:courseId` — Сургалтын нийтлэлүүдийн жагсаалт (@Public, pagination+filter+search+sort)
-- `POST /discussions/posts` — Нийтлэл үүсгэх (JWT required, enrolled/instructor/admin)
-- `GET /discussions/posts/:id` — Нийтлэлийн дэлгэрэнгүй (@Public, viewCount increment)
-- `PATCH /discussions/posts/:id` — Нийтлэл шинэчлэх (эзэмшигч/ADMIN, isLocked шалгалт)
-- `DELETE /discussions/posts/:id` — Нийтлэл устгах (эзэмшигч/ADMIN)
-- `POST /discussions/posts/:id/replies` — Хариулт нэмэх (enrolled/instructor/admin, isLocked шалгалт)
-- `PATCH /discussions/posts/:id/replies/:replyId` — Хариулт шинэчлэх (хариулт эзэмшигч/ADMIN)
-- `DELETE /discussions/posts/:id/replies/:replyId` — Хариулт устгах (хариулт эзэмшигч/ADMIN)
-- `POST /discussions/posts/:id/vote` — Санал өгөх up/down toggle (enrolled/instructor/admin)
-- `POST /discussions/posts/:id/accept/:replyId` — Зөв хариулт хүлээн авах (асуулт эзэмшигч/ADMIN)
-- `POST /discussions/posts/:id/pin` — Нийтлэл pin/unpin toggle (TEACHER, ADMIN)
-- `POST /discussions/posts/:id/lock` — Нийтлэл lock/unlock toggle (TEACHER, ADMIN)
-- `POST /discussions/posts/:id/flag` — Нийтлэл flag/unflag хийх (TEACHER, ADMIN)
-
-**Endpoints — Lesson Comments** (`/api/v1/discussions/comments`):
-
-- `GET /discussions/comments/lesson/:lessonId` — Хичээлийн сэтгэгдлүүдийн жагсаалт (@Public, pagination+sort)
-- `POST /discussions/comments` — Сэтгэгдэл үүсгэх (enrolled/instructor/admin)
-- `PATCH /discussions/comments/:id` — Сэтгэгдэл шинэчлэх (эзэмшигч/ADMIN)
-- `DELETE /discussions/comments/:id` — Сэтгэгдэл устгах (эзэмшигч/ADMIN)
-- `POST /discussions/comments/:id/replies` — Сэтгэгдэлд хариулт нэмэх (enrolled/instructor/admin)
-- `POST /discussions/comments/:id/upvote` — Upvote toggle (enrolled/instructor/admin)
-
-**Export хийсэн service-ууд**: `DiscussionPostRepository`, `LessonCommentRepository`
-
-**Хамаарал**: `MongooseModule` (discussion_posts, lesson_comments), `CoursesModule` (CourseRepository), `LessonsModule` (LessonRepository), `EnrollmentsModule` (EnrollmentRepository), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- **MongoDB-only модуль** — PostgreSQL таблиц нэмэгдээгүй, UUID reference-ээр PostgreSQL-тэй холбогдоно
-- 2 MongoDB collection: `discussion_posts` (Форум/Q&A) + `lesson_comments` (Хичээлийн сэтгэгдэл)
-- 2 Controller: `DiscussionPostsController` (13 endpoint) + `LessonCommentsController` (6 endpoint)
-- Vote tracking: `voters: [{ userId, voteType }]` массив embed — давхар vote-оос хамгаална. `toResponse(currentUserId)`-д voters нуугдана, зөвхөн `userVote` буцаана
-- Upvote (lesson comments): Зөвхөн upvote (downvote-гүй), `upvoterIds` массив toggle. `toResponse(currentUserId)`-д upvoterIds нуугдана, зөвхөн `hasUpvoted` буцаана
-- `isInstructorReply` авто-илрүүлэлт — `CourseRepository.findById()` → `instructorId === userId`
-- View count: Энгийн `$inc` increment, per-user tracking байхгүй
-- Enrollment-based authorization: use-case түвшинд enrolled/instructor/admin шалгалт
-- Pin/Lock/Flag toggle: `TEACHER` болон `ADMIN` зөвхөн хийх боломжтой
-- Accept answer: `postType=question` зөвхөн, хуучин accepted answer автомат unset
-- Delete reply: accepted answer устгавал `isAnswered` reset хийгдэнэ
-- Redis кэш: `discussion:post:{id}`, `comment:{id}` (TTL 900s / 15 мин). Жагсаалт кэшлэхгүй
-- Route дараалал: `course/:courseId` нь `:id`-ээс ӨМНӨ; `lesson/:lessonId` нь `:id`-ээс ӨМНӨ
-
-**Тест**: 16 test suite, ~75 unit тест (use-case + controller + cache service)
+- **MongoDB-only** — 2 collection: `discussion_posts` (forum/Q&A) + `lesson_comments`
+- Vote tracking: `voters[]` embed (up/down), lesson comments: upvote only (`upvoterIds[]`)
+- Pin/Lock/Flag toggle (TEACHER/ADMIN), accept answer (question owner)
+- Enrollment-based authorization, `isInstructorReply` auto-detect
 
 ### Notifications Module (Phase 4)
 
-**Endpoints** (`/api/v1/notifications`):
+`/api/v1/notifications` — 7 endpoints (unread-count, preferences, mark-all-read, list, read, delete)
+**Exports**: `NotificationService` (send, sendBulk) | **Deps**: BullModule, ConfigModule
 
-- `GET /notifications/unread-count` — Уншаагүй мэдэгдлийн тоо (JWT required)
-- `GET /notifications/preferences` — Мэдэгдлийн тохиргоо авах (JWT required)
-- `PATCH /notifications/mark-all-read` — Бүх мэдэгдлийг уншсан болгох (JWT required)
-- `PATCH /notifications/preferences` — Мэдэгдлийн тохиргоо шинэчлэх (JWT required)
-- `GET /notifications` — Мэдэгдлүүдийн жагсаалт pagination+filter (JWT required)
-- `PATCH /notifications/:id/read` — Нэг мэдэгдлийг уншсан болгох (JWT required, эзэмшигч)
-- `DELETE /notifications/:id` — Мэдэгдэл устгах (JWT required, эзэмшигч/ADMIN)
-
-**Export хийсэн service-ууд**: `NotificationService` (send, sendBulk — бусад модулиас дуудагдана)
-
-**Хамаарал**: `BullModule` (notifications queue), `ConfigModule`, `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- **Multi-channel architecture**: IN_APP (заавал) + Email (SendGrid) + SMS (Twilio placeholder) + Push (Expo placeholder)
-- `NotificationService.send()` workflow: DB бичих → кэш invalidate → preference шалгах → config шалгах → Bull Queue job нэмэх
-- `NotificationService.sendBulk()`: `Promise.all` ашиглан олон хэрэглэгчид параллелиар илгээх
-- **Bull Queue processor** (`NotificationProcessor`): `send-email`, `send-sms`, `send-push` гэсэн 3 process handler — тус бүр config шалгаж service дуудна
-- **DI Token pattern**: `EMAIL_SERVICE` → `SendGridEmailService`, `SMS_SERVICE` → `PlaceholderSmsService`, `PUSH_SERVICE` → `PlaceholderPushService` — ирээдүйд солих боломжтой
-- `notification.config.ts`: Email (SendGrid API key, from), SMS (Twilio), Push тохиргоо — env variables-ээр удирдана
-- **NotificationPreference**: Хэрэглэгч бүр email/push/sms идэвхтэй/идэвхгүй болгох боломжтой. Тохиргоо байхгүй бол default (email:true, push:true, sms:false)
-- Upsert семантик: preference байвал update, байхгүй бол create
-- Эрхийн шалгалт use-case түвшинд: өөрийн мэдэгдэл / ADMIN
-- Redis кэш: `notification:{id}`, `notification:unread:{userId}`, `notification:prefs:{userId}` (TTL 900s / 15 мин)
-- Route дараалал: `/unread-count`, `/preferences`, `/mark-all-read` нь `/:id`-ээс ӨМНӨ
-
-**Тест**: 11 test suite, 51 unit тест (use-case + controller + cache service + notification service + processor)
+- **Multi-channel**: IN_APP (заавал) + Email (SendGrid) + SMS (Twilio placeholder) + Push (Expo placeholder)
+- `NotificationService.send(userId, payload)` — 2 параметр, бусад модулиас дуудагдана
+- Bull Queue: `send-email`, `send-sms`, `send-push` process handlers
+- NotificationPreference upsert, default: email:true, push:true, sms:false
 
 ### Payments Module (Phase 5)
 
-**Endpoints — Orders** (`/api/v1/payments/orders`):
+`/api/v1/payments/orders` — 7 endpoints | `/subscriptions` — 3 | `/invoices` — 2
+**Exports**: `OrderRepository` | **Deps**: BullModule, MulterModule, CoursesModule, EnrollmentsModule, NotificationsModule, ConfigModule
 
-- `POST /payments/orders` — Захиалга үүсгэх (JWT + Throttle 5/min)
-- `GET /payments/orders/my` — Миний захиалгууд pagination+status filter (JWT required)
-- `GET /payments/orders/pending` — Хүлээгдэж буй захиалгууд (ADMIN only)
-- `GET /payments/orders/:id` — Захиалгын дэлгэрэнгүй (JWT required, эзэмшигч/instructor/ADMIN)
-- `POST /payments/orders/:id/upload-proof` — Төлбөрийн баримт upload (JWT + Multer)
-- `PATCH /payments/orders/:id/approve` — Захиалга баталгаажуулах (ADMIN only)
-- `PATCH /payments/orders/:id/reject` — Захиалга татгалзах (ADMIN only)
-
-**Endpoints — Subscriptions** (`/api/v1/payments/subscriptions`):
-
-- `POST /payments/subscriptions` — Бүртгэл эхлүүлэх (JWT + Throttle 3/min)
-- `GET /payments/subscriptions/my` — Миний бүртгэл (JWT required)
-- `PATCH /payments/subscriptions/:id/cancel` — Бүртгэл цуцлах (JWT required, эзэмшигч/ADMIN)
-
-**Endpoints — Invoices** (`/api/v1/payments/invoices`):
-
-- `GET /payments/invoices/my` — Миний нэхэмжлэхүүд pagination-тэй (JWT required)
-- `GET /payments/invoices/:id` — Нэхэмжлэхийн дэлгэрэнгүй (JWT required, эзэмшигч/ADMIN)
-
-**Export хийсэн service-ууд**: `OrderRepository`
-
-**Хамаарал**: `BullModule` (payments queue), `MulterModule`, `ConfigModule`, `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- **Manual Payment flow**: Монголд Stripe ажиллахгүй, QPay/SocialPay бизнес данс шаардлагатай → Банк шилжүүлэг + Admin approve арга сонгосон
-- Flow: Order(PENDING) → Upload proof(PROCESSING) → Admin approve(PAID) → Bull Queue → Enrollment + Invoice + Notification
-- **IPaymentGateway DI Token pattern**: `PAYMENT_GATEWAY` → `MockPaymentGateway` — ирээдүйд QPay/Stripe руу хялбар солих боломжтой
-- `STORAGE_SERVICE` → `LocalStorageService` (Content модулийн pattern дахин ашигласан)
-- **Bull Queue processor** 3 process: `payment-approved` (enrollment + invoice + notification + PDF queue), `payment-rejected` (notification), `generate-invoice-pdf` (Puppeteer PDF)
-- **InvoicePdfService**: Puppeteer-core + HTML template → A4 portrait PDF нэхэмжлэх
-- Invoice number формат: `INV-YYYY-XXXXXXXX` (hex random), P2002 unique violation дээр retry (3 удаа)
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- Үнэгүй сургалтад захиалга үүсгэхгүй (BadRequestException → /enrollments руу чиглүүлнэ)
-- Давхар захиалга/элсэлт шалгалт: ACTIVE/COMPLETED enrollment болон PENDING/PROCESSING/PAID order байвал ConflictException
-- Хямдралтай үнэ байвал `discountPrice` ашиглана
-- Валют default: MNT (stripe.config-оос)
-- Redis кэш: `order:{id}`, `subscription:{id}`, `subscription:user:{userId}` (TTL 900s / 15 мин)
-- Throttle constants: `PAYMENT_THROTTLE` (5/min), `SUBSCRIPTION_THROTTLE` (3/min)
-- Route дараалал: `/my`, `/pending` нь `/:id`-ээс ӨМНӨ
-
-**Тест**: 18 test suite, 75 unit тест (use-case + controller + cache service + processor + mock gateway)
+- **Manual Payment**: Банк шилжүүлэг + Admin approve (Монголд Stripe ажиллахгүй)
+- Flow: Order(PENDING) → Upload proof(PROCESSING) → Admin approve(PAID) → Bull → Enrollment + Invoice + Notification
+- `IPaymentGateway` → `MockPaymentGateway` (DI token), ирээдүйд QPay/Stripe
+- InvoicePdfService: Puppeteer → A4 PDF, `INV-YYYY-XXXXXXXX` format
+- Үнэгүй сургалтад захиалга үүсгэхгүй, валют default MNT
 
 ### Analytics Module (Phase 5)
 
-**Endpoints — Dashboard** (`/api/v1/analytics/dashboard`) — ADMIN only:
+`/api/v1/analytics/dashboard` — 4 endpoints (ADMIN) | `/analytics/courses` — 3 (TEACHER/ADMIN) | `/analytics/events` — 2
+**Exports**: `AnalyticsEventRepository` | **Deps**: BullModule, CoursesModule, EnrollmentsModule, ConfigModule
 
-- `GET /analytics/dashboard/overview` — Ерөнхий тоон үзүүлэлтүүд (нийт хэрэглэгч, сургалт, элсэлт, орлого, сертификат, энэ сарын шинэ бүртгэл/элсэлт/орлого)
-- `GET /analytics/dashboard/revenue` — Орлогын тайлан (period: day/month/year, dateFrom, dateTo)
-- `GET /analytics/dashboard/enrollments` — Элсэлтийн трэнд (period: day/month/year, dateFrom, dateTo)
-- `GET /analytics/dashboard/popular-courses` — Топ сургалтууд (limit query param)
-
-**Endpoints — Course Analytics** (`/api/v1/analytics/courses`) — TEACHER, ADMIN:
-
-- `GET /analytics/courses/:courseId` — Сургалтын дэлгэрэнгүй статистик (enrollment, completion rate, revenue, avg progress)
-- `GET /analytics/courses/:courseId/students` — Оюутнуудын ахиц жагсаалт (pagination)
-- `GET /analytics/courses/:courseId/lessons` — Хичээл тус бүрийн статистик (completion rate, avg time)
-
-**Endpoints — Event Tracking** (`/api/v1/analytics/events`):
-
-- `POST /analytics/events/track` — Event бүртгэх (@Public, JWT optional)
-- `GET /analytics/events` — Event жагсаалт (ADMIN only, pagination + filters)
-
-**Export хийсэн service-ууд**: `AnalyticsEventRepository`
-
-**Хамаарал**: `BullModule` (analytics queue), `ConfigModule`, `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- **Hybrid арга**: AnalyticsEvent таблиц (client-side event tracking) + Aggregation from existing tables (enrollments, orders, progress, certificates)
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- **AnalyticsAggregationRepository**: `$queryRawUnsafe` ашиглан SQL aggregate (COUNT, SUM, AVG, date_trunc, GROUP BY) — Prisma tagged template UUID/text type mismatch-аас зайлсхийсэн
-- `Prisma.raw()` ашиглан `date_trunc('month', column)` SQL identifier-ийг template-д оруулсан
-- **Bull Queue**: `track-event` process-ээр event-ууд async бүртгэгдэнэ (endpoint хурдан `{ queued: true }` буцаана)
-- **Analytics processor**: Алдаа гарсан ч exception шидэхгүй (graceful handling — log хийж алгасна)
-- Redis кэш TTL: overview 300s (5 мин), бусад бүгд 900s (15 мин)
-- Кэш key-ууд: `analytics:overview`, `analytics:revenue:{period}:{from}:{to}`, `analytics:enrollments:{period}:{from}:{to}`, `analytics:popular:{limit}`, `analytics:course:{courseId}`
-- Dashboard endpoints: `@Roles('ADMIN')` — зөвхөн ADMIN
-- Course analytics: TEACHER (өөрийн сургалт) + ADMIN — use-case түвшинд CourseRepository.findById → instructorId шалгалт
-- Track event: `@Public()` — JWT optional, client-side event бүртгэхэд ашиглана
-- Revenue/Enrollment trend: default last 12 months, period param-аар бүлэглэнэ
-- Prisma column type бүгд `text` (uuid биш) — raw query-д `::uuid` cast хэрэглэхгүй
-
-**Тест**: 14 test suite, 68 unit тест (use-case + controller + cache service + processor)
+- Hybrid: AnalyticsEvent таблиц (event tracking) + Aggregation from existing tables
+- `AnalyticsAggregationRepository`: `$queryRawUnsafe` SQL aggregate — Prisma text type, `::uuid` cast хэрэглэхгүй
+- `Prisma.raw()` ашиглан `date_trunc` SQL identifier embed
+- Track event: @Public, JWT optional, Bull Queue async
 
 ### Admin Module (Phase 5)
 
-**Endpoints — Audit Logs** (`/api/v1/admin/audit-logs`) — ADMIN only:
+`/api/v1/admin/audit-logs` — 3 endpoints | `/admin/settings` — 5 | `/admin/dashboard` — 8
+**Exports**: `AuditLogService` (log — Bull Queue async) | **Deps**: BullModule, DiscussionsModule, NotificationsModule, ConfigModule
 
-- `GET /admin/audit-logs` — Audit log жагсаалт pagination + filters (userId, entityType, action, dateFrom, dateTo)
-- `GET /admin/audit-logs/entity/:entityType/:entityId` — Entity-ийн audit trail
-- `GET /admin/audit-logs/:id` — Нэг audit log дэлгэрэнгүй
-
-**Endpoints — System Settings** (`/api/v1/admin/settings`) — ADMIN only (public хэсэг JWT-гүй):
-
-- `GET /admin/settings` — Бүх тохиргоо жагсаалт (category filter)
-- `GET /admin/settings/public` — Public тохиргоо (@Public — JWT шаардлагагүй)
-- `GET /admin/settings/:key` — Key-аар нэг тохиргоо
-- `PUT /admin/settings/:key` — Тохиргоо upsert + audit log
-- `DELETE /admin/settings/:key` — Тохиргоо устгах + audit log
-
-**Endpoints — Admin Dashboard** (`/api/v1/admin/dashboard`) — ADMIN only:
-
-- `GET /admin/dashboard/health` — Системийн health (PostgreSQL, Redis, MongoDB)
-- `GET /admin/dashboard/stats` — Ерөнхий статистик (users, courses, enrollments, certificates, orders)
-- `GET /admin/dashboard/pending` — Хүлээгдэж буй зүйлүүд (pending orders, flagged posts)
-- `GET /admin/dashboard/activity` — Сүүлийн admin үйлдлүүд (audit logs-оос)
-- `GET /admin/dashboard/moderation` — Moderation статистик (flagged, locked тоо)
-- `GET /admin/dashboard/moderation/flagged` — Тэмдэглэгдсэн контент жагсаалт (pagination)
-- `PATCH /admin/dashboard/moderation/flagged/:id/approve` — Approve — unflag хийх
-- `PATCH /admin/dashboard/moderation/flagged/:id/reject` — Reject — delete + notification илгээх
-
-**Export хийсэн service-ууд**: `AuditLogService` (log — бусад модулиуд Bull Queue-ээр async audit log бүртгэх боломжтой)
-
-**Хамаарал**: `BullModule` (admin queue), `ConfigModule`, `DiscussionsModule` (DiscussionPostRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- Зөвхөн PostgreSQL (AuditLog, SystemSetting) — MongoDB шаардлагагүй (DiscussionPostRepository-г cross-module ашиглана)
-- **Audit Log async (Bull Queue)**: `AuditLogService.log()` → Bull Queue → `AdminProcessor` → DB бичих. Endpoint-ийн хариу удаашруулахгүй
-- **AuditLogService** export хийгдсэн — бусад модулиуд `AdminModule` import хийж `AuditLogService.log()` дуудаж болно
-- **DiscussionPostRepository**-д 3 method нэмэгдсэн: `findFlagged()`, `countFlagged()`, `countLocked()` — Admin moderation-д ашиглагдана
-- **System Settings**: Prisma `upsert` + PUT semantic, upsert/delete үед автомат audit log бүртгэгдэнэ
-- **RolesGuard засвар**: `@Public()` decorator-тэй endpoint дээр role шалгалтыг skip хийхээр `IS_PUBLIC_KEY` шалгалт нэмэгдсэн
-- `ReviewFlaggedContentUseCase`: approve → unflag, reject → delete + NotificationService.send(userId, payload) — 2 тусдаа параметр
-- Redis кэш TTL: dashboard 300s (5 мин), settings/moderation 900s (15 мин)
-- Кэш key-ууд: `admin:settings:*`, `admin:dashboard:*`, `admin:moderation:*`
-- **AdminProcessor**: Алдаа гарсан ч exception шидэхгүй (graceful handling — log хийж алгасна)
-- Dashboard vs Analytics: Analytics = бизнесийн тоон үзүүлэлт (revenue, enrollments). Admin Dashboard = үйлдлийн хяналт (pending items, health, audit activity)
-
-**Тест**: 20 test suite, 64 unit тест (use-case + controller + cache service + audit log service + processor)
+- AuditLog async: `AuditLogService.log()` → Bull Queue → DB (endpoint удаашруулахгүй)
+- SystemSettings: Prisma upsert + auto audit log
+- Moderation: DiscussionPostRepository `findFlagged()`, `countFlagged()`, `countLocked()`
+- `RolesGuard` засвар: `@Public()` + `@Roles()` хамт байхад `IS_PUBLIC_KEY` шалгалт
 
 ### Live Classes Module (Phase 6)
 
-**Endpoints** (`/api/v1/live-sessions`):
+`/api/v1/live-sessions` — 14 endpoints (CRUD, start/end, join/leave, attendees, token, webhook/recording)
+**Exports**: `LiveSessionRepository` | **Deps**: BullModule, LessonsModule, CoursesModule, EnrollmentsModule, NotificationsModule, ConfigModule
 
-- `POST /live-sessions` — Session товлох (TEACHER/ADMIN)
-- `GET /live-sessions/upcoming` — Удахгүй эхлэх sessions (@Public)
-- `GET /live-sessions/course/:courseId` — Сургалтын sessions (JWT, enrolled/instructor/ADMIN)
-- `GET /live-sessions/lesson/:lessonId` — Хичээлийн session (@Public)
-- `POST /live-sessions/webhook/recording` — Бичлэгийн webhook (@Public, HMAC-SHA256 signature)
-- `GET /live-sessions/:id` — Session дэлгэрэнгүй (JWT)
-- `PATCH /live-sessions/:id` — Session шинэчлэх (owner/ADMIN, SCHEDULED only)
-- `DELETE /live-sessions/:id` — Session цуцлах (owner/ADMIN, SCHEDULED only)
-- `POST /live-sessions/:id/start` — Session эхлүүлэх (instructor only, SCHEDULED→LIVE)
-- `POST /live-sessions/:id/end` — Session дуусгах (instructor only, LIVE→ENDED)
-- `POST /live-sessions/:id/join` — Нэгдэх + Agora token авах (enrolled/instructor/ADMIN)
-- `POST /live-sessions/:id/leave` — Гарах (leftAt + durationMinutes тооцоолол)
-- `GET /live-sessions/:id/attendees` — Ирцийн жагсаалт (instructor/ADMIN, pagination)
-- `GET /live-sessions/:id/token` — Agora token шинэчлэх (enrolled/instructor/ADMIN)
-
-**Export хийсэн service-ууд**: `LiveSessionRepository`
-
-**Хамаарал**: `BullModule` (live-classes queue), `ConfigModule`, `LessonsModule` (LessonRepository), `CoursesModule` (CourseRepository), `EnrollmentsModule` (EnrollmentRepository), `NotificationsModule` (NotificationService), `PrismaModule` (@Global), `RedisModule` (@Global)
-
-**Онцлог шийдвэрүүд**:
-
-- **WebSocket шаардлагагүй** — Agora SDK client-side WebRTC-г бүрэн зохицуулдаг. Server зөвхөн RTC token үүсгэнэ
-- **DI Token pattern**: `AGORA_SERVICE` → `AgoraTokenService`. Ирээдүйд 100ms/Jitsi руу солих боломжтой
-- `agora-token` npm package ашиглан `RtcTokenBuilder.buildTokenWithUid()` дуудна
-- Channel name формат: `ocp-live-{sessionId}`
-- **Deterministic UID**: `userId`-аас CRC32-like hash → `Math.abs(hash) % 1000000`
-- Зөвхөн PostgreSQL — MongoDB шаардлагагүй
-- `@@unique([liveSessionId, userId])` — Session-д нэг хэрэглэгчид нэг attendance record (upsert)
-- `lessonId` unique on LiveSession — Нэг хичээлд нэг session
-- **Status flow**: SCHEDULED → LIVE → ENDED, SCHEDULED → CANCELLED (нэг чиглэлтэй)
-- **Attendance upsert**: Re-join хийхэд `joinedAt` шинэчлэгдэнэ, `leftAt` null болно
-- **Leave durationMinutes**: `markLeft` нь `joinedAt` → `leftAt` хоорондох минутыг тооцоолно
-- **Reminder delayed job**: Session товлоход Bull Queue delayed job (scheduledStart - 15 мин)
-- **Bull Processor 4 process**: `session-started` (enrolled notification), `session-ended` (markAllLeft + notification), `session-reminder` (15 мин сануулга), `recording-ready` (recordingUrl update + instructor notification)
-- Бүх processor graceful error handling — try/catch, log, exception шидэхгүй
-- **Webhook signature**: `x-agora-signature` header + HMAC-SHA256 verification (`agora.webhookSecret` config)
-- Redis кэш: `live-session:{id}`, `live-session:lesson:{lessonId}` (TTL 900s / 15 мин)
-- `agora.config.ts`: appId, appCertificate, tokenExpirySeconds, webhookSecret — env variables
-- Route дараалал: `/upcoming`, `/course/:courseId`, `/lesson/:lessonId`, `/webhook/recording` нь `/:id`-ээс ӨМНӨ
-
-**Тест**: 18 test suite, 88 unit тест (14 use-case + controller + cache service + agora service + processor)
+- Agora SDK — WebSocket шаардлагагүй, server зөвхөн RTC token үүсгэнэ
+- `AGORA_SERVICE` → `AgoraTokenService`, channel: `ocp-live-{sessionId}`, deterministic UID (CRC32-like hash)
+- Status: SCHEDULED → LIVE → ENDED | SCHEDULED → CANCELLED
+- `@@unique([liveSessionId, userId])` attendance upsert, `lessonId` unique
+- Bull: session-started, session-ended (markAllLeft), session-reminder (15 мин), recording-ready
+- Webhook: `x-agora-signature` HMAC-SHA256 verification
 
 ### Web App Setup (Phase 7 - Frontend)
 
-**Tech Stack**:
-
-- Next.js 16.1.0 (App Router) + React 19.2.0 + TypeScript 5.6
-- Tailwind CSS 4.0.0 (`@tailwindcss/postcss`) + shadcn/ui (new-york style)
-- TanStack React Query 5.62 (server state) + Zustand 5.0 (client state)
-- Lucide React (icons)
-
-**shadcn/ui тохиргоо**:
-
-- `apps/web/components.json` — shadcn CLI config (new-york style, RSC enabled, Tailwind v4, neutral base color)
-- `apps/web/src/app/globals.css` — Tailwind v4 + shadcn CSS variables (OKLCH colors, light/dark theme, sidebar variables)
-- `apps/web/src/lib/utils.ts` — `cn()` utility (`clsx` + `tailwind-merge`)
-- `apps/web/src/components/ui/` — 24 shadcn component файл
-- `apps/web/src/hooks/use-mobile.ts` — Mobile detection hook (shadcn sidebar-д ашиглагдана)
-
-**Суулгасан shadcn/ui components** (24):
-
-`alert`, `avatar`, `badge`, `breadcrumb`, `button`, `card`, `command`, `dialog`, `dropdown-menu`, `form`, `input`, `label`, `navigation-menu`, `pagination`, `progress`, `select`, `separator`, `sheet`, `sidebar`, `skeleton`, `sonner`, `table`, `tabs`, `tooltip`
-
-**Dependencies нэмэгдсэн**:
-
-- Runtime: `class-variance-authority`, `clsx`, `tailwind-merge`, `tw-animate-css`, `lucide-react`
-- Dev: `shadcn` (CLI tool)
-- shadcn-ээр автомат суулгагдсан: `@radix-ui/*`, `react-hook-form`, `@hookform/resolvers`, `zod`, `sonner`, `cmdk`, `next-themes`, `recharts`, `react-resizable-panels`, `input-otp`, `vaul`
-
-**Одоогийн route бүтэц** (placeholder pages):
-
-```
-app/
-  (auth)/      — login, register, forgot-password
-  (dashboard)/ — dashboard, profile, courses, courses/[slug], my-courses
-  (admin)/     — admin
-```
-
-**Shared packages**:
-
-- `@ocp/shared-types` — User, Course, Category, Enrollment, AuthTokens, PaginatedResponse, ApiResponse
-- `@ocp/validation` — Zod schemas (auth, user, course, common)
-- `@ocp/api-client` — Axios wrapper (ApiClient class, setAccessToken, getClient)
-- `@ocp/ui-components` — Энгийн Button component (shadcn/ui-д шилжих)
+- Next.js 16.1 + React 19.2 + Tailwind CSS 4 + shadcn/ui (new-york, 24 components) + React Query 5.62 + Zustand 5.0
+- `components.json`, `globals.css` (OKLCH, light/dark), `cn()` utility, 24 shadcn UI components
+- Routes: `(auth)/` login,register,forgot-password | `(dashboard)/` dashboard,profile,courses,my-courses | `(admin)/`
+- Shared: `@ocp/shared-types`, `@ocp/validation` (Zod), `@ocp/api-client` (Axios), `@ocp/ui-components`
