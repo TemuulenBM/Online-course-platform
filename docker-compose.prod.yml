@@ -73,6 +73,9 @@ services:
     image: mongo:7
     container_name: ocp-mongodb-prod
     restart: unless-stopped
+    # --auth: Баталгаажуулалтыг заавал шаарда — MONGO_INITDB_ROOT_* тохируулсан ч
+    # тусгайлан --auth нэмэхгүй бол зарим тохиолдолд нэвтрэлт алгасагдаж болно
+    command: mongod --auth
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-ocp_user}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}

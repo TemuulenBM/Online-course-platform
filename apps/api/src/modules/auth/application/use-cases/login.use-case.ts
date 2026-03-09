@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ForbiddenException, Logger } from '@nestjs/common';
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { TokenService } from '../../infrastructure/services/token.service';
 import { SessionRepository } from '../../infrastructure/repositories/session.repository';
@@ -33,6 +33,13 @@ export class LoginUseCase {
     const isPasswordValid = await comparePassword(dto.password, user.passwordHash);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Имэйл эсвэл нууц үг буруу байна');
+    }
+
+    // Имэйл баталгаажуулалт шалгах — баталгаажаагүй бол нэвтрэхийг хориглоно
+    if (!user.emailVerified) {
+      throw new ForbiddenException(
+        'Имэйл хаягаа баталгаажуулна уу. Баталгаажуулах захидлыг имэйлрүүгээ шалгаарай.',
+      );
     }
 
     // Access token үүсгэх

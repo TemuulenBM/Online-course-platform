@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { StaticFilesMiddleware } from './common/middleware/static-files.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -143,4 +144,9 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  // /uploads/ статик файлуудад extension whitelist + Content-Disposition middleware холбоно
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(StaticFilesMiddleware).forRoutes('/uploads/*');
+  }
+}

@@ -22,7 +22,8 @@ model User {
   profile        UserProfile?
   sessions       Session[]
   refreshTokens  RefreshToken[]
-  passwordResets PasswordReset[]
+  passwordResets      PasswordReset[]
+  emailVerifications  EmailVerification[]
   courses        Course[]
   enrollments    Enrollment[]
   userProgress   UserProgress[]
@@ -102,6 +103,21 @@ model PasswordReset {
   @@index([userId])
   @@index([token])
   @@map("password_resets")
+}
+
+model EmailVerification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("email_verifications")
 }
 
 enum Role {

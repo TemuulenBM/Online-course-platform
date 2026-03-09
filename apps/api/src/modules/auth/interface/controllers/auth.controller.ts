@@ -1,4 +1,14 @@
-import { Controller, Post, Get, Body, HttpCode, HttpStatus, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Query,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Request } from 'express';
@@ -15,6 +25,8 @@ import { LogoutUseCase } from '../../application/use-cases/logout.use-case';
 import { ForgotPasswordUseCase } from '../../application/use-cases/forgot-password.use-case';
 import { ResetPasswordUseCase } from '../../application/use-cases/reset-password.use-case';
 import { GetCurrentUserUseCase } from '../../application/use-cases/get-current-user.use-case';
+import { VerifyEmailUseCase } from '../../application/use-cases/verify-email.use-case';
+import { ResendVerificationEmailUseCase } from '../../application/use-cases/resend-verification-email.use-case';
 import { Public } from '../../../../common/decorators/public.decorator';
 import { CurrentUser } from '../../../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
@@ -26,7 +38,7 @@ import {
 /**
  * Баталгаажуулалтын controller.
  * Бүх auth endpoint-уудыг удирдана: бүртгэл, нэвтрэлт, токен шинэчлэл,
- * нууц үг сэргээх, гарах, одоогийн хэрэглэгч.
+ * нууц үг сэргээх, имэйл баталгаажуулах, гарах, одоогийн хэрэглэгч.
  */
 @ApiTags('Баталгаажуулалт')
 @Controller('auth')
@@ -40,6 +52,8 @@ export class AuthController {
     private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
     private readonly getCurrentUserUseCase: GetCurrentUserUseCase,
+    private readonly verifyEmailUseCase: VerifyEmailUseCase,
+    private readonly resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
   ) {}
 
   @Public()
@@ -103,6 +117,27 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Токен хүчингүй' })
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.resetPasswordUseCase.execute(dto.token, dto.password);
+  }
+
+  @Public()
+  @Get('verify-email')
+  @Throttle(AUTH_THROTTLE)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Имэйл хаяг баталгаажуулах' })
+  @ApiResponse({ status: 200, description: 'Имэйл амжилттай баталгаажлаа' })
+  @ApiResponse({ status: 400, description: 'Токен хүчингүй' })
+  async verifyEmail(@Query('token') token: string) {
+    return this.verifyEmailUseCase.execute(token);
+  }
+
+  @Public()
+  @Post('resend-verification')
+  @Throttle(AUTH_THROTTLE)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Баталгаажуулах захидлыг дахин илгээх' })
+  @ApiResponse({ status: 200, description: 'Хүсэлт хүлээн авлаа' })
+  async resendVerification(@Body() dto: ForgotPasswordDto) {
+    return this.resendVerificationEmailUseCase.execute(dto.email);
   }
 
   @Get('me')

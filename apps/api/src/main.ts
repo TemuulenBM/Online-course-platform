@@ -26,7 +26,7 @@ process.on('uncaughtException', (error: Error) => {
   process.exit(1);
 });
 
-// Production орчинд шаардлагатай env variable-уудыг эхлэлд шалгах
+// Production болон бүх орчинд шаардлагатай env variable-уудыг эхлэлд шалгах
 function validateRequiredEnvVars(): void {
   const required = [
     'DATABASE_URL',
@@ -35,6 +35,12 @@ function validateRequiredEnvVars(): void {
     'JWT_REFRESH_SECRET',
     'REDIS_HOST',
   ];
+
+  // Production орчинд Redis нууц үг заавал байх ёстой — auth-гүй Redis нь нийтийн сүлжээнд аюултай
+  if (process.env.NODE_ENV === 'production') {
+    required.push('REDIS_PASSWORD');
+  }
+
   const missing = required.filter((key) => !process.env[key]);
   if (missing.length > 0) {
     throw new Error(`Шаардлагатай env variable-ууд дутуу байна: ${missing.join(', ')}`);
