@@ -1,3 +1,5 @@
+// Sentry ЗААВАЛ хамгийн эхэнд import хийгдэх ёстой — бусад модулиас өмнө
+import './instrument';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, Logger } from '@nestjs/common';
@@ -48,6 +50,22 @@ function validateRequiredEnvVars(): void {
   if (missing.length > 0) {
     throw new Error(`Шаардлагатай env variable-ууд дутуу байна: ${missing.join(', ')}`);
   }
+
+  // JWT secret хүчтэй байдлын шалгалт — сул secret нь token хуурамчаар үүсгэх боломж өгнө
+  if (process.env.NODE_ENV === 'production') {
+    const jwtSecret = process.env.JWT_SECRET || '';
+    const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET || '';
+    if (jwtSecret.length < 32) {
+      throw new Error(
+        'JWT_SECRET хамгийн багадаа 32 тэмдэгт байх ёстой. Үүсгэх: openssl rand -base64 48',
+      );
+    }
+    if (jwtRefreshSecret.length < 32) {
+      throw new Error(
+        'JWT_REFRESH_SECRET хамгийн багадаа 32 тэмдэгт байх ёстой. Үүсгэх: openssl rand -base64 48',
+      );
+    }
+  }
 }
 
 async function bootstrap() {
@@ -72,6 +90,12 @@ async function bootstrap() {
     .split(',')
     .map((o) => o.trim())
     .filter(Boolean);
+
+  // Production-д CORS origin заавал тодорхойлогдсон байх ёстой
+  if (process.env.NODE_ENV === 'production' && allowedOrigins.length === 0) {
+    throw new Error('APP_URL тодорхойлогдоогүй — CORS бүх origin-г зөвшөөрөх эрсдэлтэй');
+  }
+
   app.enableCors({
     origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
     credentials: true,
@@ -89,6 +113,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new AllExceptionsFilter(), new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor());
+
+  // Graceful shutdown — SIGTERM авахад DB холболт, queue зэргийг зөв хаах
+  app.enableShutdownHooks();
 
   const port = configService.get<number>('app.port') || 3001;
   await app.listen(port);

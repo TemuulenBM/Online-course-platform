@@ -19,6 +19,7 @@
     "@ocp/shared-types": "workspace:*",
     "@ocp/ui-components": "workspace:*",
     "@ocp/validation": "workspace:*",
+    "@sentry/nextjs": "^10.42.0",
     "@tanstack/react-query": "^5.62.0",
     "@tiptap/extension-code-block-lowlight": "^3.20.0",
     "@tiptap/extension-image": "^3.20.0",

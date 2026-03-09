@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 /**
  * Global error boundary — root layout алдаатай болоход ажиллана.
@@ -15,6 +16,8 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
+    // Sentry-д алдааг бүртгэх
+    Sentry.captureException(error);
     console.error('[Global Error]', error);
   }, [error]);
 

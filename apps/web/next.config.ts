@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
@@ -25,4 +26,15 @@ const config: NextConfig = {
   },
 };
 
-export default withNextIntl(config);
+// Sentry wrapper — source map upload, error tracking
+// NEXT_PUBLIC_SENTRY_DSN тохируулаагүй бол source map upload хийхгүй
+export default withSentryConfig(withNextIntl(config), {
+  // Source map-г Sentry-д upload хийхгүй (CI/CD-д тусад нь тохируулна)
+  sourcemaps: {
+    disable: true,
+  },
+  // Telemetry унтраах
+  telemetry: false,
+  // Build log чимээгүй байлгах
+  silent: true,
+});

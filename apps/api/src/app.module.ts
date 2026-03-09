@@ -1,5 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_FILTER } from '@nestjs/core';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { StaticFilesMiddleware } from './common/middleware/static-files.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -45,6 +46,8 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
 
 @Module({
   imports: [
+    // Sentry — алдаа бүртгэл, гүйцэтгэлийн хяналт (SENTRY_DSN тохируулагдсан үед идэвхждэг)
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
@@ -113,6 +116,8 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
             backoff: { type: 'exponential', delay: 2000 },
             removeOnComplete: 100,
             removeOnFail: 500,
+            // Job-ийн хамгийн их ажиллах хугацаа — Puppeteer PDF зэрэг удаан job hang хийхээс хамгаалах
+            timeout: 120000, // 2 минут
           },
         };
       },
@@ -140,6 +145,8 @@ import { LiveClassesModule } from './modules/live-classes/live-classes.module';
   controllers: [AppController],
   providers: [
     AppService,
+    // Sentry global filter — бүх unhandled exception-г Sentry-д илгээнэ
+    { provide: APP_FILTER, useClass: SentryGlobalFilter },
     // ThrottlerGuard бүх endpoint-д автомат ажиллана
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

@@ -56,6 +56,7 @@ export class CreatePostDto {
   })
   @IsString({ message: 'Агуулга тэмдэгт мөр байх ёстой' })
   @MinLength(1, { message: 'Агуулга хоосон байж болохгүй' })
+  @MaxLength(50000, { message: 'Агуулга хамгийн ихдээ 50,000 тэмдэгт байна' })
   content!: string;
 
   @ApiProperty({
@@ -64,6 +65,7 @@ export class CreatePostDto {
   })
   @IsString({ message: 'HTML агуулга тэмдэгт мөр байх ёстой' })
   @MinLength(1, { message: 'HTML агуулга хоосон байж болохгүй' })
+  @MaxLength(100000, { message: 'HTML агуулга хамгийн ихдээ 100,000 тэмдэгт байна' })
   contentHtml!: string;
 
   @ApiProperty({
