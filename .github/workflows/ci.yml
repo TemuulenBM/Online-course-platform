@@ -172,7 +172,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker Buildx тохируулах
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: API Docker image build шалгах
         uses: docker/build-push-action@v6
