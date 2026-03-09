@@ -3,6 +3,7 @@ import { ForgotPasswordUseCase } from '../../application/use-cases/forgot-passwo
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { PasswordResetRepository } from '../../infrastructure/repositories/password-reset.repository';
 import { TokenService } from '../../infrastructure/services/token.service';
+import { NotificationService } from '../../../notifications/application/services/notification.service';
 import { UserEntity } from '../../domain/entities/user.entity';
 
 describe('ForgotPasswordUseCase', () => {
@@ -36,6 +37,10 @@ describe('ForgotPasswordUseCase', () => {
         {
           provide: TokenService,
           useValue: { hashToken: jest.fn().mockReturnValue('hashed-reset-token') },
+        },
+        {
+          provide: NotificationService,
+          useValue: { send: jest.fn().mockResolvedValue(undefined) },
         },
       ],
     }).compile();

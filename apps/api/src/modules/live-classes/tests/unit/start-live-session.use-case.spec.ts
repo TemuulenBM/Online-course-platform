@@ -5,6 +5,7 @@ import { StartLiveSessionUseCase } from '../../application/use-cases/start-live-
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { LiveClassesCacheService } from '../../infrastructure/services/live-classes-cache.service';
 import { LiveSessionEntity } from '../../domain/entities/live-session.entity';
+import { ConfigService } from '@nestjs/config';
 import { AGORA_SERVICE } from '../../domain/interfaces/agora-service.interface';
 
 describe('StartLiveSessionUseCase', () => {
@@ -64,6 +65,10 @@ describe('StartLiveSessionUseCase', () => {
           },
         },
         { provide: getQueueToken('live-classes'), useValue: mockQueue },
+        {
+          provide: ConfigService,
+          useValue: { get: jest.fn().mockReturnValue('mock-app-id') },
+        },
       ],
     }).compile();
 

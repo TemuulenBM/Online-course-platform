@@ -7,6 +7,8 @@ import { LogoutUseCase } from '../../application/use-cases/logout.use-case';
 import { ForgotPasswordUseCase } from '../../application/use-cases/forgot-password.use-case';
 import { ResetPasswordUseCase } from '../../application/use-cases/reset-password.use-case';
 import { GetCurrentUserUseCase } from '../../application/use-cases/get-current-user.use-case';
+import { VerifyEmailUseCase } from '../../application/use-cases/verify-email.use-case';
+import { ResendVerificationEmailUseCase } from '../../application/use-cases/resend-verification-email.use-case';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -48,6 +50,8 @@ describe('AuthController', () => {
         { provide: ForgotPasswordUseCase, useValue: { execute: jest.fn() } },
         { provide: ResetPasswordUseCase, useValue: { execute: jest.fn() } },
         { provide: GetCurrentUserUseCase, useValue: { execute: jest.fn() } },
+        { provide: VerifyEmailUseCase, useValue: { execute: jest.fn() } },
+        { provide: ResendVerificationEmailUseCase, useValue: { execute: jest.fn() } },
       ],
     }).compile();
 
