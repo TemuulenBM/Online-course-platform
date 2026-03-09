@@ -40,7 +40,12 @@ export class HandleRecordingWebhookUseCase {
       .createHmac('sha256', webhookSecret)
       .update(JSON.stringify(dto))
       .digest('hex');
-    if (signature !== expectedSignature) {
+    const sigBuffer = Buffer.from(signature, 'utf8');
+    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+    if (
+      sigBuffer.length !== expectedBuffer.length ||
+      !crypto.timingSafeEqual(sigBuffer, expectedBuffer)
+    ) {
       throw new BadRequestException('Webhook signature буруу байна');
     }
 

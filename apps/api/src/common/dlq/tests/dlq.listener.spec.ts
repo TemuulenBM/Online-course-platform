@@ -17,13 +17,16 @@ describe('DlqListenerService', () => {
   ];
 
   /** Queue mock — on() callback хадгалж, дараа нь дуудна */
-  const mockQueues: Record<string, { on: jest.Mock; handlers: Record<string, Function> }> = {};
+  const mockQueues: Record<
+    string,
+    { on: jest.Mock; handlers: Record<string, (...args: unknown[]) => void> }
+  > = {};
 
   beforeEach(async () => {
     for (const name of queueNames) {
-      const handlers: Record<string, Function> = {};
+      const handlers: Record<string, (...args: unknown[]) => void> = {};
       mockQueues[name] = {
-        on: jest.fn((event: string, handler: Function) => {
+        on: jest.fn((event: string, handler: (...args: unknown[]) => void) => {
           handlers[event] = handler;
         }),
         handlers,
@@ -52,6 +55,7 @@ describe('DlqListenerService', () => {
     listener.onModuleInit();
 
     for (const name of queueNames) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
       expect(mockQueues[name].on).toHaveBeenCalledWith('failed', expect.any(Function));
     }
   });

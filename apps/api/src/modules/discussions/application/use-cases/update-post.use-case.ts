@@ -56,10 +56,10 @@ export class UpdatePostUseCase {
 
     /** 5. Нийтлэл шинэчлэх */
     const updated = await this.postRepository.update(postId, {
-      title: dto.title,
+      title: dto.title ? sanitizePlainText(dto.title) : undefined,
       content: cleanContent,
       contentHtml: cleanContentHtml,
-      tags: dto.tags,
+      tags: dto.tags?.map((tag) => sanitizePlainText(tag)),
     });
 
     /** 5. Кэш устгах */

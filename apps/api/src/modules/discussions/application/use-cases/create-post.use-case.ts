@@ -90,10 +90,10 @@ export class CreatePostUseCase {
       lessonId: dto.lessonId,
       authorId: userId,
       postType: dto.postType,
-      title: dto.title,
+      title: dto.title ? sanitizePlainText(dto.title) : undefined,
       content: cleanContent,
       contentHtml: cleanContentHtml,
-      tags: dto.tags,
+      tags: dto.tags?.map((tag) => sanitizePlainText(tag)),
     });
 
     this.logger.log(

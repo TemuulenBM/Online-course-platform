@@ -108,7 +108,6 @@ export default function TeacherLiveSessionsPage({
       });
     }
     // activeSession.id өөрчлөгдөх эсвэл store хоосон болоход л ажиллана
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSession?.id]);
 
   /** Өнгөрсөн хугацаа format */
