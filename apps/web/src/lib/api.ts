@@ -104,10 +104,10 @@ function removeCookie() {
   }
 }
 
-/** Login хуудас руу redirect */
+/** Нүүр хуудас руу redirect */
 function redirectToLogin() {
   if (typeof window !== 'undefined') {
-    window.location.href = '/login';
+    window.location.href = '/';
   }
 }
 

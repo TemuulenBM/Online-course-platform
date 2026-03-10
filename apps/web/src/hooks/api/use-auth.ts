@@ -69,7 +69,7 @@ export function useLogout() {
       clearAuth();
       document.cookie = 'ocp-auth=; max-age=0; path=/';
       queryClient.clear();
-      router.push(ROUTES.LOGIN);
+      router.push('/');
     },
   });
 }
