@@ -53,6 +53,6 @@ export const config = {
      * _next/static, _next/image, favicon.ico, api зэрэг
      * системийн path-уудыг алгасна
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|uploads).*)',
+    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon-.*\\.png|apple-touch-icon\\.png|icon-.*\\.png|uploads).*)',
   ],
 };
