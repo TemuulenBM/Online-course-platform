@@ -4,7 +4,10 @@ import { StatsBar } from '@/components/landing/stats-bar';
 import { TopCategories } from '@/components/landing/top-categories';
 import { FeaturedCourses } from '@/components/landing/featured-courses';
 import { HowItWorks } from '@/components/landing/how-it-works';
+import { WhyLearnify } from '@/components/landing/why-learnify';
 import { Testimonials } from '@/components/landing/testimonials';
+import { PricingPreview } from '@/components/landing/pricing-preview';
+import { FaqSection } from '@/components/landing/faq-section';
 import { CtaSection } from '@/components/landing/cta-section';
 import { Footer } from '@/components/layout/footer';
 
@@ -19,7 +22,10 @@ export default function HomePage() {
         <TopCategories />
         <FeaturedCourses />
         <HowItWorks />
+        <WhyLearnify />
         <Testimonials />
+        <PricingPreview />
+        <FaqSection />
         <CtaSection />
       </main>
       <Footer />
