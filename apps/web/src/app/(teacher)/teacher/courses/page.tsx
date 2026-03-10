@@ -9,8 +9,10 @@ import type { Course } from '@ocp/shared-types';
 
 import { useMyCourses, usePublishCourse, useArchiveCourse } from '@/hooks/api';
 import { TeacherCoursesTable } from '@/components/teacher/teacher-courses-table';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FilterTabs } from '@/components/ui/filter-tabs';
+import { PageHeader } from '@/components/ui/page-header';
 import { ROUTES } from '@/lib/constants';
 
 type StatusFilter = 'all' | 'draft' | 'published' | 'archived';
@@ -67,54 +69,41 @@ export default function TeacherCoursesPage() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Sticky header */}
-      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden" />
-          <h2 className="text-xl font-bold">{t('myCourses')}</h2>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="relative w-64 hidden md:block">
-            <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              onChange={handleSearch}
-              placeholder={tc('search')}
-              className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 outline-none"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={() => router.push(ROUTES.TEACHER_COURSE_NEW)}
-            className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-sm"
-          >
-            <PlusCircle className="size-4" />
-            {t('createCourse')}
-          </button>
-        </div>
-      </header>
-
-      {/* Content */}
-      <div className="p-8">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        <PageHeader
+          icon={BookOpen}
+          title={t('myCourses')}
+          className="mb-6"
+          actions={
+            <div className="flex items-center gap-4">
+              <div className="relative w-64 hidden md:block">
+                <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  onChange={handleSearch}
+                  placeholder={tc('search')}
+                  className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 outline-none"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push(ROUTES.TEACHER_COURSE_NEW)}
+                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-sm"
+              >
+                <PlusCircle className="size-4" />
+                {t('createCourse')}
+              </button>
+            </div>
+          }
+        />
         {/* Filter tabs + тоо */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex gap-2 p-1 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
-            {filters.map((f) => (
-              <button
-                key={f.key}
-                type="button"
-                onClick={() => setStatusFilter(f.key)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                  statusFilter === f.key
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+          <FilterTabs
+            tabs={filters.map((f) => ({ value: f.key, label: f.label }))}
+            activeValue={statusFilter}
+            onChange={setStatusFilter}
+          />
           <div className="text-sm text-slate-500 dark:text-slate-400">
             {t('totalCoursesCount', { count: filteredCourses?.length ?? 0 })}
           </div>
@@ -135,11 +124,12 @@ export default function TeacherCoursesPage() {
             ))}
           </div>
         ) : !filteredCourses?.length ? (
-          <div className="text-center py-20 space-y-3">
-            <BookOpen className="size-12 text-slate-300 mx-auto" />
-            <p className="text-slate-500 font-medium">{t('noCourses')}</p>
-            <p className="text-sm text-slate-400">{t('noCoursesDesc')}</p>
-          </div>
+          <EmptyState
+            icon={BookOpen}
+            title={t('noCourses')}
+            description={t('noCoursesDesc')}
+            action={{ label: t('createCourse'), href: ROUTES.TEACHER_COURSE_NEW }}
+          />
         ) : (
           <TeacherCoursesTable
             courses={filteredCourses}

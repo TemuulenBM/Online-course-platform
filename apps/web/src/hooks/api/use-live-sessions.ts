@@ -1,6 +1,7 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { liveSessionsService } from '@/lib/api-services/live-sessions.service';
 import type {
   LiveSessionListParams,
@@ -159,4 +160,40 @@ export function useAllLiveSessions(params?: LiveSessionListParams) {
     queryKey: QUERY_KEYS.liveSessions.upcoming({ ...params, timeFilter: 'all' }),
     queryFn: () => liveSessionsService.listUpcoming({ ...params, timeFilter: 'all' }),
   });
+}
+
+/** Олон сургалтын sessions-г зэрэг авч нэгтгэнэ — Teacher overview-д */
+export function useAllCourseSessions(courseIds: string[]) {
+  const queries = useQueries({
+    queries: courseIds.map((id) => ({
+      queryKey: QUERY_KEYS.liveSessions.byCourse(id, { limit: 50 }),
+      queryFn: () => liveSessionsService.listByCourse(id, { limit: 50 }),
+      enabled: !!id,
+    })),
+  });
+
+  const isLoading = queries.some((q) => q.isLoading);
+
+  const { allSessions, liveSessions, upcomingSessions, stats } = useMemo(() => {
+    const all = queries.flatMap((q) => q.data?.data ?? []);
+    const live = all.filter((s) => s.status === 'live');
+    const upcoming = all
+      .filter((s) => s.status === 'scheduled')
+      .sort((a, b) => new Date(a.scheduledStart).getTime() - new Date(b.scheduledStart).getTime());
+    const ended = all.filter((s) => s.status === 'ended');
+
+    return {
+      allSessions: all,
+      liveSessions: live,
+      upcomingSessions: upcoming,
+      stats: {
+        liveCount: live.length,
+        scheduledCount: upcoming.length,
+        endedCount: ended.length,
+        totalCount: all.length,
+      },
+    };
+  }, [queries]);
+
+  return { queries, allSessions, liveSessions, upcomingSessions, stats, isLoading };
 }

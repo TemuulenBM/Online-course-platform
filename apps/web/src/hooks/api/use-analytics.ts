@@ -1,6 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { analyticsService } from '@/lib/api-services/analytics.service';
 import { QUERY_KEYS } from '@/lib/constants';
 import type { DateRangeParams, EventListParams } from '@ocp/shared-types';
@@ -107,4 +108,36 @@ export function useRecentActivity(limit?: number) {
     queryKey: QUERY_KEYS.analytics.recentActivity(limit),
     queryFn: () => analyticsService.getRecentActivity(limit),
   });
+}
+
+/* ======== Teacher Overview (Multi-course) ======== */
+
+/** Олон сургалтын stats-г зэрэг авч, нэгдсэн тоо тооцоолно */
+export function useMultipleCourseStats(courseIds: string[]) {
+  const queries = useQueries({
+    queries: courseIds.map((id) => ({
+      queryKey: QUERY_KEYS.analytics.courseStats(id),
+      queryFn: () => analyticsService.getCourseStats(id),
+      enabled: !!id,
+    })),
+  });
+
+  const isLoading = queries.some((q) => q.isLoading);
+
+  const aggregated = useMemo(() => {
+    const loaded = queries.filter((q) => q.data);
+    if (loaded.length === 0) {
+      return { totalStudents: 0, avgCompletionRate: 0, totalRevenue: 0, totalCertificates: 0 };
+    }
+    return {
+      totalStudents: loaded.reduce((s, q) => s + (q.data?.totalEnrollments ?? 0), 0),
+      avgCompletionRate: Math.round(
+        loaded.reduce((s, q) => s + (q.data?.completionRate ?? 0), 0) / loaded.length,
+      ),
+      totalRevenue: loaded.reduce((s, q) => s + (q.data?.totalRevenue ?? 0), 0),
+      totalCertificates: loaded.reduce((s, q) => s + (q.data?.totalCertificates ?? 0), 0),
+    };
+  }, [queries]);
+
+  return { queries, aggregated, isLoading };
 }

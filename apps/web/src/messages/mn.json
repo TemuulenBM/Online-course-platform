@@ -541,6 +541,9 @@
   },
   "teacher": {
     "myCourses": "Миний сургалтууд",
+    "analytics": "Аналитик",
+    "liveSessions": "Шууд хичээлүүд",
+    "dashboard": "Хяналтын самбар",
     "backToDashboard": "Хяналтын самбар руу буцах",
     "curriculum": "Хичээлийн агуулга",
     "createLesson": "Хичээл нэмэх",
@@ -703,7 +706,19 @@
     "addFileLabel": "Файл нэмэх",
     "saveInfoBar": "Бүх өөрчлөлтийг хийсний дараа хадгалах товчийг дарна уу.",
     "editContentTitle": "Контент засах",
-    "goBack": "Буцах"
+    "goBack": "Буцах",
+    "scheduleSession": "Хичээл товлох",
+    "selectCourse": "Сургалт сонгох",
+    "recentEndedSessions": "Сүүлийн дууссан хичээлүүд",
+    "noEndedSessions": "Дууссан хичээл байхгүй",
+    "noEndedSessionsDesc": "Шууд хичээл зохион байгуулснаар энд түүх харагдана",
+    "scheduleFirst": "Эхний хичээлээ товлоорой",
+    "scheduleFirstDesc": "Шууд хичээл товлож оюутнуудтайгаа бодит цагт холбогдоорой",
+    "weeklyOverview": "Энэ долоо хоног",
+    "participants": "оролцогч",
+    "sessionCreated": "Хичээл амжилттай товлогдлоо",
+    "sessionStarted": "Хичээл эхэллээ",
+    "sessionsCount": "{count} хичээл"
   },
   "admin": {
     "title": "Админ хэсэг",

@@ -3,24 +3,27 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Eye } from 'lucide-react';
+import { Eye, ShoppingCart } from 'lucide-react';
 import { usePendingOrders } from '@/hooks/api';
 import { OrderStatusBadge } from '@/components/payments/order-status-badge';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FilterTabs } from '@/components/ui/filter-tabs';
+import { PageHeader } from '@/components/ui/page-header';
 import { ROUTES } from '@/lib/constants';
 import { getFileUrl } from '@/lib/utils';
 import type { OrderStatus } from '@ocp/shared-types';
 
 const PAGE_LIMIT = 10;
 
-/** Төлөв tab-ууд */
-const STATUS_TABS: { value: string; labelKey: string }[] = [
+/** Төлөв tab-ийн labelKey-үүд */
+const STATUS_TAB_KEYS = [
   { value: '', labelKey: 'adminFilterAll' },
   { value: 'processing', labelKey: 'adminFilterProcessing' },
   { value: 'paid', labelKey: 'adminFilterApproved' },
   { value: 'failed', labelKey: 'adminFilterRejected' },
-];
+] as const;
 
 export default function AdminOrdersPage() {
   const t = useTranslations('payments');
@@ -58,32 +61,18 @@ export default function AdminOrdersPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
-            {t('adminPendingOrders')}
-          </h1>
-          <p className="text-slate-500 mt-1">
-            {t('adminPendingOrdersSubtitle', { count: totalCount })}
-          </p>
-        </div>
+        <PageHeader
+          icon={ShoppingCart}
+          title={t('adminPendingOrders')}
+          subtitle={t('adminPendingOrdersSubtitle', { count: totalCount })}
+        />
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => handleTabChange(tab.value)}
-              className={`px-5 py-2 text-sm font-semibold rounded-full transition-colors ${
-                statusFilter === tab.value
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-primary'
-              }`}
-            >
-              {t(tab.labelKey)}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          tabs={STATUS_TAB_KEYS.map((tab) => ({ value: tab.value, label: t(tab.labelKey) }))}
+          activeValue={statusFilter}
+          onChange={handleTabChange}
+        />
 
         {/* Table */}
         <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
@@ -222,15 +211,11 @@ export default function AdminOrdersPage() {
 
         {/* Empty state */}
         {!isLoading && orders.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="size-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Eye className="size-10 text-primary" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              {t('adminNoOrders')}
-            </h3>
-            <p className="text-sm text-slate-500">{t('adminNoOrdersDesc')}</p>
-          </div>
+          <EmptyState
+            icon={ShoppingCart}
+            title={t('adminNoOrders')}
+            description={t('adminNoOrdersDesc')}
+          />
         )}
       </div>
     </div>

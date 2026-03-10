@@ -510,6 +510,9 @@
   },
   "teacher": {
     "myCourses": "My Courses",
+    "analytics": "Analytics",
+    "liveSessions": "Live Sessions",
+    "dashboard": "Dashboard",
     "backToDashboard": "Back to dashboard",
     "curriculum": "Curriculum",
     "createLesson": "Add Lesson",
@@ -607,7 +610,19 @@
     "actions": "Actions",
     "publishing": "Publishing...",
     "archiving": "Archiving...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "scheduleSession": "Schedule Session",
+    "selectCourse": "Select Course",
+    "recentEndedSessions": "Recent Ended Sessions",
+    "noEndedSessions": "No ended sessions",
+    "noEndedSessionsDesc": "Schedule live sessions to see history here",
+    "scheduleFirst": "Schedule Your First Session",
+    "scheduleFirstDesc": "Schedule a live session to connect with students in real time",
+    "weeklyOverview": "This Week",
+    "participants": "participants",
+    "sessionCreated": "Session scheduled successfully",
+    "sessionStarted": "Session started",
+    "sessionsCount": "{count} sessions"
   },
   "admin": {
     "title": "Admin Panel",

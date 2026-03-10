@@ -12,7 +12,7 @@ import {
   useApproveFlaggedContent,
   useRejectFlaggedContent,
 } from '@/hooks/api';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -97,23 +97,12 @@ export default function AdminModerationPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1400px] mx-auto">
-        {/* Breadcrumb + Title */}
-        <div className="flex items-center gap-4 mb-6">
-          <SidebarTrigger className="lg:hidden" />
-          <div>
-            <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
-              <Link href="/admin/dashboard" className="hover:text-primary transition-colors">
-                Удирдлага
-              </Link>
-              <ChevronRight className="size-3" />
-              <span className="text-primary font-medium">Модерац</span>
-            </div>
-            <h1 className="text-3xl font-bold text-foreground">Контент модерац</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Тэмдэглэгдсэн нийтлэлүүдийг хянах, approve/reject хийх
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          icon={Flag}
+          title="Контент модерац"
+          subtitle="Тэмдэглэгдсэн нийтлэлүүдийг хянах, approve/reject хийх"
+          className="mb-6"
+        />
 
         {/* Stats cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">

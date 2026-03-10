@@ -13,11 +13,12 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
+import { BarChart3 } from 'lucide-react';
 import { usePlatformStats, useAnalyticsOverview, useEnrollmentTrend } from '@/hooks/api';
 import { StatCard, SecondaryStatCard } from '@/components/analytics/stat-card';
 import { GradientStatCard } from '@/components/analytics/gradient-stat-card';
 import { AnalyticsPageSkeleton } from '@/components/analytics/analytics-loading';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import { formatMNT, formatNumber } from '@/lib/utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -60,17 +61,12 @@ export default function AdminAnalyticsDashboardPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1400px] mx-auto">
-        {/* Breadcrumb + Title */}
-        <div className="flex items-center gap-4 mb-2">
-          <SidebarTrigger className="lg:hidden" />
-          <div className="flex items-center gap-2 text-sm text-slate-400">
-            <span>Аналитик</span>
-            <ChevronRight className="size-3" />
-            <span className="text-primary font-medium">Ерөнхий</span>
-          </div>
-        </div>
-        <h1 className="text-3xl font-bold tracking-tight mb-1">Хянах самбар</h1>
-        <p className="text-slate-500 mb-8">Learnify платформын ерөнхий статистик болон гүйцэтгэл</p>
+        <PageHeader
+          icon={BarChart3}
+          title="Хянах самбар"
+          subtitle="Learnify платформын ерөнхий статистик болон гүйцэтгэл"
+          className="mb-8"
+        />
 
         {/* 4 Үндсэн stat card-ууд */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

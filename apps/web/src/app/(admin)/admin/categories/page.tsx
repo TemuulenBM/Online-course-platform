@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Layers, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import type { Category } from '@ocp/shared-types';
@@ -14,6 +14,7 @@ import {
 import { CategoryTable } from '@/components/admin/category-table';
 import { CategoryForm, type CategoryFormValues } from '@/components/admin/category-form';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { PageHeader } from '@/components/ui/page-header';
 
 export default function AdminCategoriesPage() {
   const t = useTranslations('admin');
@@ -73,23 +74,23 @@ export default function AdminCategoriesPage() {
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('categoryManagement')}</h1>
-            <p className="text-slate-500 mt-1">{t('categoryManagementDesc')}</p>
-          </div>
-          <button
-            onClick={() => {
-              setEditingCategory(null);
-              setIsDialogOpen(true);
-            }}
-            className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20 w-fit"
-          >
-            <Plus className="size-5" />
-            <span>{t('addCategory')}</span>
-          </button>
-        </div>
+        <PageHeader
+          icon={Layers}
+          title={t('categoryManagement')}
+          subtitle={t('categoryManagementDesc')}
+          actions={
+            <button
+              onClick={() => {
+                setEditingCategory(null);
+                setIsDialogOpen(true);
+              }}
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20 w-fit"
+            >
+              <Plus className="size-5" />
+              <span>{t('addCategory')}</span>
+            </button>
+          }
+        />
 
         {/* Хүснэгт */}
         <CategoryTable categories={categories} onEdit={handleEdit} onDelete={handleDelete} />
