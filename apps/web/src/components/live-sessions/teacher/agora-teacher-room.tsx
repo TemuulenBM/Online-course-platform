@@ -121,8 +121,8 @@ function AgoraTeacherRoomInner({
             await client.publish(localCameraTrack);
           }
         }
-      } catch (err) {
-        console.warn('[Agora] Видео track солих алдаа:', err);
+      } catch {
+        // Видео track солих алдаа — recoverable, нэмэлт арга хэмжээ шаардлагагүй
       }
     };
 
