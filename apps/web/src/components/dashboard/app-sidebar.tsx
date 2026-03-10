@@ -53,7 +53,7 @@ const mainNavItems = [
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */
 const navItemBase =
-  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary active:scale-[0.97]';
 const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
 
 export function AppSidebar() {
