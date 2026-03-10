@@ -8,6 +8,8 @@ import { toast } from 'sonner';
 
 import { useMyProfile, useUpdateProfile } from '@/hooks/api';
 import { useAuthStore } from '@/stores/auth-store';
+import { PageLayout } from '@/components/ui/page-layout';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ProfileInfoCard } from '@/components/profile/profile-header';
 import { BasicInfoCard } from '@/components/profile/profile-form';
 import { LocationTimeCard } from '@/components/profile/location-time-card';
@@ -62,7 +64,10 @@ export default function ProfilePage() {
   });
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <PageLayout maxWidth="5xl">
+      {/* Mobile sidebar trigger */}
+      <SidebarTrigger className="md:hidden" />
+
       {/* Profile Info Card — gradient + avatar + buttons */}
       <ProfileInfoCard
         profile={profile}
@@ -100,6 +105,6 @@ export default function ProfilePage() {
           <UpcomingTasksCard />
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }

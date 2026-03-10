@@ -11,8 +11,10 @@ import {
 } from '@/components/live-sessions/upcoming/session-card-skeleton';
 import { CategoryFilterTabs } from '@/components/live-sessions/upcoming/category-filter-tabs';
 import { CtaCard } from '@/components/live-sessions/upcoming/cta-card';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { EmptyState } from '@/components/ui/empty-state';
+import { PageLayout } from '@/components/ui/page-layout';
+import { PageHeader } from '@/components/ui/page-header';
+import { ROUTES } from '@/lib/constants';
 
 /**
  * Удахгүй болох шууд хичээлүүд — /live-sessions
@@ -43,65 +45,56 @@ export default function LiveSessionsPage() {
   }, [sessions]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-7xl space-y-8">
-        {/* Header */}
-        <div className="flex items-center gap-3">
-          <SidebarTrigger className="md:hidden" />
-          <div>
-            <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
-              <Video className="size-8 text-primary" />
-              Шууд хичээлүүд
-            </h1>
-            <p className="mt-1 text-muted-foreground">
-              Удахгүй болох шууд хичээлүүдэд нэгдэж, мэдлэгээ бататгаарай.
-            </p>
-          </div>
-        </div>
+    <PageLayout>
+      <PageHeader
+        icon={Video}
+        title="Шууд хичээлүүд"
+        subtitle="Удахгүй болох шууд хичээлүүдэд нэгдэж, мэдлэгээ бататгаарай."
+      />
 
-        {/* Категори filter */}
-        {categoryNames.length > 0 && (
-          <CategoryFilterTabs
-            categories={categoryNames}
-            activeId={activeCategory}
-            onChange={setActiveCategory}
-          />
-        )}
+      {/* Категори filter */}
+      {categoryNames.length > 0 && (
+        <CategoryFilterTabs
+          categories={categoryNames}
+          activeId={activeCategory}
+          onChange={setActiveCategory}
+        />
+      )}
 
-        {/* Loading */}
-        {isLoading && (
-          <>
-            <FeaturedSessionCardSkeleton />
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <SessionCardSkeleton key={i} />
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Featured card */}
-        {!isLoading && featured && <FeaturedSessionCard session={featured} />}
-
-        {/* Grid */}
-        {!isLoading && rest.length > 0 && (
+      {/* Loading */}
+      {isLoading && (
+        <>
+          <FeaturedSessionCardSkeleton />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((s) => (
-              <SessionCard key={s.id} session={s} />
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SessionCardSkeleton key={i} />
             ))}
-            <CtaCard />
           </div>
-        )}
+        </>
+      )}
 
-        {/* Хоосон state */}
-        {!isLoading && filtered.length === 0 && (
-          <EmptyState
-            icon={Video}
-            title="Одоогоор шууд хичээл алга"
-            description="Удахгүй шинэ хичээлүүд нэмэгдэх болно."
-          />
-        )}
-      </div>
-    </div>
+      {/* Featured card */}
+      {!isLoading && featured && <FeaturedSessionCard session={featured} />}
+
+      {/* Grid */}
+      {!isLoading && rest.length > 0 && (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {rest.map((s) => (
+            <SessionCard key={s.id} session={s} />
+          ))}
+          <CtaCard />
+        </div>
+      )}
+
+      {/* Хоосон state — CTA товч нэмэгдсэн */}
+      {!isLoading && filtered.length === 0 && (
+        <EmptyState
+          icon={Video}
+          title="Одоогоор шууд хичээл алга"
+          description="Удахгүй шинэ хичээлүүд нэмэгдэх болно."
+          action={{ label: 'Сургалт үзэх', href: ROUTES.COURSES }}
+        />
+      )}
+    </PageLayout>
   );
 }
