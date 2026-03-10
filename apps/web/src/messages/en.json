@@ -1098,6 +1098,7 @@
     "pendingCount": "{count} orders",
     "noOrders": "No orders yet",
     "noOrdersDescription": "Your purchase history will appear here",
+    "browseCourses": "Browse courses",
     "statusPending": "Pending",
     "statusProcessing": "Processing",
     "statusPaid": "Paid",

@@ -1223,6 +1223,7 @@
     "pendingCount": "{count} захиалга",
     "noOrders": "Захиалга байхгүй",
     "noOrdersDescription": "Таны худалдан авалтын түүх энд харагдана",
+    "browseCourses": "Сургалт үзэх",
     "statusPending": "Хүлээгдэж буй",
     "statusProcessing": "Боловсруулагдаж буй",
     "statusPaid": "Амжилттай",
