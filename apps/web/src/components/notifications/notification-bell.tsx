@@ -57,11 +57,11 @@ export function NotificationBell() {
           {unreadCount > 0 && (
             <span
               className={cn(
-                'absolute -top-1 -right-1 flex items-center justify-center rounded-full bg-destructive text-white font-bold border-2 border-white dark:border-slate-900',
+                'absolute -top-1 -right-1 flex items-center justify-center rounded-full bg-primary text-white font-bold border-2 border-white dark:border-slate-900',
                 unreadCount < 10 ? 'w-5 h-5 text-[10px]' : 'min-w-[20px] h-5 px-1 text-[9px]',
               )}
             >
-              {unreadCount > 99 ? '99+' : unreadCount}
+              {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </button>

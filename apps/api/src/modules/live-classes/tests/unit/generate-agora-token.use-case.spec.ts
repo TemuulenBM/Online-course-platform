@@ -67,6 +67,7 @@ describe('GenerateAgoraTokenUseCase', () => {
           useValue: {
             generateRtcToken: jest.fn().mockReturnValue('agora-token'),
             generateChannelName: jest.fn().mockReturnValue('ocp-live-session-1'),
+            isReady: jest.fn().mockReturnValue(true),
           },
         },
       ],
@@ -77,14 +78,21 @@ describe('GenerateAgoraTokenUseCase', () => {
     enrollmentRepo = module.get(EnrollmentRepository);
   });
 
-  it('enrolled оюутанд token буцаана', async () => {
+  it('enrolled оюутанд publisher role-оор token буцаана', async () => {
     sessionRepo.findById.mockResolvedValue(mockLiveSession);
     enrollmentRepo.findByUserAndCourse.mockResolvedValue(mockEnrollment);
+    const agoraService = (useCase as any).agoraService;
 
     const result = await useCase.execute('session-1', 'student-1', 'STUDENT');
     expect(result.token).toBe('agora-token');
     expect(result.channelName).toBe('ocp-live-session-1');
     expect(result.appId).toBe('test-app-id');
+    /** Бүх оролцогч publisher — камер/микрофон ашиглах боломжтой */
+    expect(agoraService.generateRtcToken).toHaveBeenCalledWith(
+      'ocp-live-session-1',
+      expect.any(Number),
+      'publisher',
+    );
   });
 
   it('instructor-д enrollment шалгалтгүй token буцаана', async () => {

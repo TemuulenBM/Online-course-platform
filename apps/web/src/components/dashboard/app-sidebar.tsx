@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
 import {
   Award,
   BarChart3,
@@ -53,8 +54,11 @@ const mainNavItems = [
 
 /** Навигац item-ийн нийтлэг style — дизайнд тааруулсан */
 const navItemBase =
-  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
-const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
+  'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary active:scale-[0.97]';
+/** Active item: background-ийг motion indicator руу шилжүүлсэн, текст style л үлдэнэ */
+const navItemActive = 'text-white font-medium relative z-10 hover:bg-transparent hover:text-white';
+/** Active indicator-ийн spring transition — 400ms, бага bounce */
+const indicatorTransition = { type: 'spring' as const, bounce: 0.15, duration: 0.4 };
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -92,6 +96,14 @@ export function AppSidebar() {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
                 return (
                   <SidebarMenuItem key={item.href}>
+                    {/* Active indicator — layoutId-ээр item хооронд smooth slide хийнэ */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="dashboard-nav-indicator"
+                        className="absolute inset-0 rounded-xl bg-primary"
+                        transition={indicatorTransition}
+                      />
+                    )}
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
@@ -118,6 +130,13 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
                 <SidebarMenuItem>
+                  {pathname.startsWith('/teacher') && (
+                    <motion.div
+                      layoutId="dashboard-teacher-indicator"
+                      className="absolute inset-0 rounded-xl bg-primary"
+                      transition={indicatorTransition}
+                    />
+                  )}
                   <SidebarMenuButton
                     asChild
                     isActive={pathname.startsWith('/teacher')}
@@ -143,6 +162,13 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu className="gap-0.5">
                 <SidebarMenuItem>
+                  {pathname.startsWith('/admin') && (
+                    <motion.div
+                      layoutId="dashboard-admin-indicator"
+                      className="absolute inset-0 rounded-xl bg-primary"
+                      transition={indicatorTransition}
+                    />
+                  )}
                   <SidebarMenuButton
                     asChild
                     isActive={pathname.startsWith('/admin')}
@@ -164,6 +190,13 @@ export function AppSidebar() {
       <SidebarFooter className="px-3 pb-5">
         <SidebarMenu className="gap-0.5">
           <SidebarMenuItem>
+            {pathname === '/profile' && (
+              <motion.div
+                layoutId="dashboard-footer-indicator"
+                className="absolute inset-0 rounded-xl bg-primary"
+                transition={indicatorTransition}
+              />
+            )}
             <SidebarMenuButton
               asChild
               isActive={pathname === '/profile'}

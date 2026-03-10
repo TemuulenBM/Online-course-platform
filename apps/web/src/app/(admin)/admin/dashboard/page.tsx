@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Bell, Moon, Sun } from 'lucide-react';
+import { Bell, LayoutDashboard, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import {
@@ -12,7 +12,7 @@ import {
   useUnreadNotificationCount,
   useMyProfile,
 } from '@/hooks/api';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import { DashboardStatsGrid } from '@/components/admin/dashboard/dashboard-stats-grid';
 import { PendingActionsWidget } from '@/components/admin/dashboard/pending-actions-widget';
 import { SystemHealthWidget } from '@/components/admin/dashboard/system-health-widget';
@@ -38,37 +38,37 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-      {/* Title + Utility buttons */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="lg:hidden" />
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Хяналтын самбар</h1>
-            <p className="text-muted-foreground mt-1">
-              Сайн байна уу, {displayName}! Системийн ерөнхий төлөв байдал болон статистик
-            </p>
+      <PageHeader
+        icon={LayoutDashboard}
+        title="Хяналтын самбар"
+        subtitle={`Сайн байна уу, ${displayName}! Системийн ерөнхий төлөв байдал болон статистик`}
+        className="mb-8"
+        actions={
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="size-10 flex items-center justify-center rounded-xl bg-muted text-muted-foreground hover:bg-primary hover:text-white transition-all"
+            >
+              {theme === 'dark' ? (
+                <Sun className="size-[18px]" />
+              ) : (
+                <Moon className="size-[18px]" />
+              )}
+            </button>
+            <button
+              onClick={() => router.push(ROUTES.NOTIFICATIONS)}
+              className="relative size-10 flex items-center justify-center rounded-xl bg-muted text-muted-foreground hover:bg-primary hover:text-white transition-all"
+            >
+              <Bell className="size-[18px]" />
+              {(unreadCount ?? 0) > 0 && (
+                <span className="absolute -top-1 -right-1 size-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {unreadCount! > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
           </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="size-10 flex items-center justify-center rounded-xl bg-muted text-muted-foreground hover:bg-primary hover:text-white transition-all"
-          >
-            {theme === 'dark' ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-          </button>
-          <button
-            onClick={() => router.push(ROUTES.NOTIFICATIONS)}
-            className="relative size-10 flex items-center justify-center rounded-xl bg-muted text-muted-foreground hover:bg-primary hover:text-white transition-all"
-          >
-            <Bell className="size-[18px]" />
-            {(unreadCount ?? 0) > 0 && (
-              <span className="absolute -top-1 -right-1 size-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                {unreadCount! > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Stats Grid */}
       <div className="mb-8">

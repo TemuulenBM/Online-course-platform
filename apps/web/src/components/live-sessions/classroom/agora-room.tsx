@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AgoraRTC, {
   AgoraRTCProvider,
   LocalUser,
+  LocalVideoTrack,
   RemoteUser,
   useClientEvent,
   useConnectionState,
@@ -17,7 +18,7 @@ import AgoraRTC, {
   useRemoteAudioTracks,
   useRemoteUsers,
 } from 'agora-rtc-react';
-import { User } from 'lucide-react';
+import { AlertTriangle, RefreshCw, User } from 'lucide-react';
 
 interface AgoraRoomProps {
   appId: string;
@@ -55,13 +56,13 @@ function AgoraRoomInner({
   /** Агаарт нэгдэх */
   useJoin({ appid: appId, channel: channelName, token, uid }, true);
 
-  /** Локал медиа tracks — screen share идэвхтэй үед камерыг зогсооно (Agora нэг видео track л зөвшөөрнө) */
+  /** Локал медиа tracks — screen share үед camera track амьд байна, зүгээр publish хийхгүй */
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(!isMuted);
-  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff && !isScreenSharing);
+  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff);
   const { screenTrack } = useLocalScreenTrack(isScreenSharing, {}, 'disable');
 
-  /** Бичлэг publish хийх — screen share идэвхтэй бол camera-г оронд нь дамжуулна */
-  usePublish([localMicrophoneTrack, isScreenSharing ? screenTrack : localCameraTrack]);
+  /** Аудио track-г usePublish-ээр */
+  usePublish([localMicrophoneTrack]);
 
   /** Remote users */
   const remoteUsers = useRemoteUsers();
@@ -73,6 +74,68 @@ function AgoraRoomInner({
   /** Холболтын state */
   const isConnected = useIsConnected();
   const connectionState = useConnectionState();
+
+  /** Видео track-г гараар удирдах — camera ↔ screen share.
+   *  await unpublish → await publish дарааллаар race condition-г шийдэж байна. */
+  useEffect(() => {
+    if (connectionState !== 'CONNECTED') return;
+
+    let cancelled = false;
+
+    const switchVideoTrack = async () => {
+      try {
+        if (isScreenSharing) {
+          if (localCameraTrack) {
+            try {
+              await client.unpublish(localCameraTrack);
+            } catch {
+              /* аль хэдийн unpublish хийгдсэн */
+            }
+          }
+          if (screenTrack && !cancelled) {
+            await client.publish(screenTrack);
+          }
+        } else {
+          if (screenTrack) {
+            try {
+              await client.unpublish(screenTrack);
+            } catch {
+              /* аль хэдийн unpublish хийгдсэн */
+            }
+          }
+          if (localCameraTrack && !isCameraOff && !cancelled) {
+            await client.publish(localCameraTrack);
+          }
+        }
+      } catch (err) {
+        console.warn('[Agora] Видео track солих алдаа:', err);
+      }
+    };
+
+    switchVideoTrack();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isScreenSharing, screenTrack, localCameraTrack, connectionState, isCameraOff, client]);
+  const [connectionTimedOut, setConnectionTimedOut] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** CONNECTING state-д 15 сек-ээс илүү байвал timeout */
+  useEffect(() => {
+    if (connectionState === 'CONNECTING' || connectionState === 'RECONNECTING') {
+      timeoutRef.current = setTimeout(() => setConnectionTimedOut(true), 15_000);
+    } else {
+      setConnectionTimedOut(false);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [connectionState]);
 
   useEffect(() => {
     onConnectionChange?.(isConnected);
@@ -94,7 +157,20 @@ function AgoraRoomInner({
         <RemoteUser user={instructor} className="h-full w-full" style={{ objectFit: 'cover' }} />
       ) : (
         <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-          {connectionState === 'CONNECTING' || connectionState === 'RECONNECTING' ? (
+          {connectionTimedOut && connectionState !== 'CONNECTED' ? (
+            <>
+              <AlertTriangle className="size-16 text-red-400" />
+              <p className="text-sm font-medium text-white">Agora холболт амжилтгүй</p>
+              <p className="text-xs text-white/50">Сүлжээ эсвэл Agora тохиргоо шалгана уу</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-2 inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/20"
+              >
+                <RefreshCw className="size-3" />
+                Дахин оролдох
+              </button>
+            </>
+          ) : connectionState === 'CONNECTING' || connectionState === 'RECONNECTING' ? (
             <>
               <div className="relative">
                 <div className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
@@ -115,24 +191,33 @@ function AgoraRoomInner({
 
       {/* Self-view — баруун доод булан */}
       <div className="absolute bottom-20 right-4 h-20 w-28 overflow-hidden rounded-lg border-2 border-white/20 shadow-lg">
-        <LocalUser
-          cameraOn={!isCameraOff}
-          micOn={!isMuted}
-          videoTrack={localCameraTrack}
-          className="h-full w-full"
-        >
-          {/* Камер унтарсан үед placeholder */}
-          {isCameraOff && (
-            <div className="flex h-full w-full items-center justify-center bg-slate-800">
-              <div className="flex flex-col items-center gap-1">
-                <User className="size-6 text-white/40" />
-                <span className="truncate max-w-[80px] px-1 text-[10px] text-white/40">
-                  {userName ?? 'Та'}
-                </span>
+        {isScreenSharing ? (
+          <LocalVideoTrack
+            track={screenTrack}
+            play={true}
+            className="h-full w-full"
+            style={{ objectFit: 'contain' }}
+          />
+        ) : (
+          <LocalUser
+            cameraOn={!isCameraOff}
+            micOn={!isMuted}
+            videoTrack={localCameraTrack}
+            className="h-full w-full"
+          >
+            {/* Камер унтарсан үед placeholder */}
+            {isCameraOff && (
+              <div className="flex h-full w-full items-center justify-center bg-slate-800">
+                <div className="flex flex-col items-center gap-1">
+                  <User className="size-6 text-white/40" />
+                  <span className="truncate max-w-[80px] px-1 text-[10px] text-white/40">
+                    {userName ?? 'Та'}
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
-        </LocalUser>
+            )}
+          </LocalUser>
+        )}
       </div>
 
       {/* Бусад оролцогчид — баруун дээд */}

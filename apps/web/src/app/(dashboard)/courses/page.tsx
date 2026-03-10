@@ -9,7 +9,6 @@ import { CourseGrid } from '@/components/courses/course-grid';
 import { CourseGridSkeleton } from '@/components/courses/course-card-skeleton';
 import { CoursesEmptyState } from '@/components/courses/courses-empty-state';
 import { CoursesPagination } from '@/components/courses/courses-pagination';
-
 /** Courses listing page — useSearchParams ашигладаг тул Suspense-д ороох хэрэгтэй */
 function CoursesContent() {
   const { filters, setFilter, setSort, resetFilters } = useCourseFilters();

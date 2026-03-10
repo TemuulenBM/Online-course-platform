@@ -5,7 +5,7 @@ import { ScrollText, ChevronDown, ChevronRight, Filter, List, Clock } from 'luci
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAuditLogs } from '@/hooks/api';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -60,38 +60,38 @@ export default function AdminAuditLogsPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1400px] mx-auto">
-        {/* Title */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="lg:hidden" />
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Аудит лог</h1>
-              <p className="text-sm text-muted-foreground mt-1">Системийн бүх үйлдлийн бүртгэл</p>
+        <PageHeader
+          icon={ScrollText}
+          title="Аудит лог"
+          subtitle="Системийн бүх үйлдлийн бүртгэл"
+          className="mb-6"
+          actions={
+            <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-1">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  viewMode === 'table'
+                    ? 'bg-primary text-white'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <List className="size-4 inline mr-1" />
+                Хүснэгт
+              </button>
+              <button
+                onClick={() => setViewMode('timeline')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  viewMode === 'timeline'
+                    ? 'bg-primary text-white'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <Clock className="size-4 inline mr-1" />
+                Timeline
+              </button>
             </div>
-          </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-1">
-            <button
-              onClick={() => setViewMode('table')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                viewMode === 'table' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <List className="size-4 inline mr-1" />
-              Хүснэгт
-            </button>
-            <button
-              onClick={() => setViewMode('timeline')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                viewMode === 'timeline'
-                  ? 'bg-primary text-white'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <Clock className="size-4 inline mr-1" />
-              Timeline
-            </button>
-          </div>
-        </div>
+          }
+        />
 
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-primary/5 shadow-sm p-4 mb-6">

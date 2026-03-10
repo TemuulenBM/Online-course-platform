@@ -210,6 +210,25 @@ export class LiveSessionRepository {
     return this.toEntity(session);
   }
 
+  /**
+   * Stale LIVE session-уудыг олно.
+   * actualStart нь thresholdHours цагаас өмнө эхэлсэн, гэхдээ ENDED болоогүй session-ууд.
+   */
+  async findStaleLiveSessions(thresholdHours: number): Promise<LiveSessionEntity[]> {
+    const threshold = new Date();
+    threshold.setHours(threshold.getHours() - thresholdHours);
+
+    const sessions = await this.prisma.liveSession.findMany({
+      where: {
+        status: 'LIVE',
+        actualStart: { lt: threshold },
+      },
+      include: SESSION_INCLUDE,
+    });
+
+    return sessions.map((s) => this.toEntity(s));
+  }
+
   /** Устгах */
   async delete(id: string): Promise<void> {
     await this.prisma.liveSession.delete({ where: { id } });

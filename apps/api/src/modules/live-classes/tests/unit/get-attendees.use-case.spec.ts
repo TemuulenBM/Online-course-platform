@@ -3,13 +3,16 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { GetAttendeesUseCase } from '../../application/use-cases/get-attendees.use-case';
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { SessionAttendeeRepository } from '../../infrastructure/repositories/session-attendee.repository';
+import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { LiveSessionEntity } from '../../domain/entities/live-session.entity';
 import { SessionAttendeeEntity } from '../../domain/entities/session-attendee.entity';
+import { EnrollmentEntity } from '../../../enrollments/domain/entities/enrollment.entity';
 
 describe('GetAttendeesUseCase', () => {
   let useCase: GetAttendeesUseCase;
   let sessionRepo: jest.Mocked<LiveSessionRepository>;
   let attendeeRepo: jest.Mocked<SessionAttendeeRepository>;
+  let enrollmentRepo: jest.Mocked<EnrollmentRepository>;
 
   const now = new Date();
 
@@ -29,6 +32,7 @@ describe('GetAttendeesUseCase', () => {
     status: 'live',
     createdAt: now,
     updatedAt: now,
+    courseId: 'course-1',
   });
 
   const mockAttendee = new SessionAttendeeEntity({
@@ -40,6 +44,18 @@ describe('GetAttendeesUseCase', () => {
     durationMinutes: 0,
     createdAt: now,
     userName: 'Test',
+  });
+
+  const mockEnrollment = new EnrollmentEntity({
+    id: 'enr-1',
+    userId: 'student-1',
+    courseId: 'course-1',
+    status: 'active',
+    enrolledAt: now,
+    expiresAt: null,
+    completedAt: null,
+    createdAt: now,
+    updatedAt: now,
   });
 
   beforeEach(async () => {
@@ -54,12 +70,17 @@ describe('GetAttendeesUseCase', () => {
           provide: SessionAttendeeRepository,
           useValue: { findBySessionId: jest.fn() },
         },
+        {
+          provide: EnrollmentRepository,
+          useValue: { findByUserAndCourse: jest.fn() },
+        },
       ],
     }).compile();
 
     useCase = module.get(GetAttendeesUseCase);
     sessionRepo = module.get(LiveSessionRepository);
     attendeeRepo = module.get(SessionAttendeeRepository);
+    enrollmentRepo = module.get(EnrollmentRepository);
   });
 
   it('instructor жагсаалт амжилттай авна', async () => {
@@ -77,6 +98,8 @@ describe('GetAttendeesUseCase', () => {
     });
     expect(result.data).toHaveLength(1);
     expect(result.total).toBe(1);
+    /** Instructor нь enrollment шалгалтгүй */
+    expect(enrollmentRepo.findByUserAndCourse).not.toHaveBeenCalled();
   });
 
   it('ADMIN мөн адил хандах боломжтой', async () => {
@@ -93,6 +116,25 @@ describe('GetAttendeesUseCase', () => {
       limit: 50,
     });
     expect(result.data).toHaveLength(0);
+    expect(enrollmentRepo.findByUserAndCourse).not.toHaveBeenCalled();
+  });
+
+  it('enrolled оюутан оролцогчдыг харах боломжтой', async () => {
+    sessionRepo.findById.mockResolvedValue(mockSession);
+    enrollmentRepo.findByUserAndCourse.mockResolvedValue(mockEnrollment);
+    attendeeRepo.findBySessionId.mockResolvedValue({
+      data: [mockAttendee],
+      total: 1,
+      page: 1,
+      limit: 50,
+    });
+
+    const result = await useCase.execute('session-1', 'student-1', 'STUDENT', {
+      page: 1,
+      limit: 50,
+    });
+    expect(result.data).toHaveLength(1);
+    expect(enrollmentRepo.findByUserAndCourse).toHaveBeenCalledWith('student-1', 'course-1');
   });
 
   it('олдоогүй бол NotFoundException', async () => {
@@ -102,8 +144,9 @@ describe('GetAttendeesUseCase', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('эрхгүй бол ForbiddenException', async () => {
+  it('элсэлтгүй оюутан бол ForbiddenException', async () => {
     sessionRepo.findById.mockResolvedValue(mockSession);
+    enrollmentRepo.findByUserAndCourse.mockResolvedValue(null);
     await expect(
       useCase.execute('session-1', 'other-user', 'STUDENT', {
         page: 1,

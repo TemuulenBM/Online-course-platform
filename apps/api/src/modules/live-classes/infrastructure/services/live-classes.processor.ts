@@ -6,6 +6,7 @@ import { SessionAttendeeRepository } from '../repositories/session-attendee.repo
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { NotificationService } from '../../../notifications/application/services/notification.service';
 import { LiveClassesCacheService } from './live-classes-cache.service';
+import { CleanupStaleLiveSessionsUseCase } from '../../application/use-cases/cleanup-stale-live-sessions.use-case';
 
 /**
  * Live classes Bull Queue processor.
@@ -21,6 +22,7 @@ export class LiveClassesProcessor {
     private readonly enrollmentRepository: EnrollmentRepository,
     private readonly notificationService: NotificationService,
     private readonly liveClassesCacheService: LiveClassesCacheService,
+    private readonly cleanupStaleLiveSessionsUseCase: CleanupStaleLiveSessionsUseCase,
   ) {}
 
   /** Session эхлэхэд элсэлттэй оюутнуудад notification илгээх */
@@ -217,6 +219,22 @@ export class LiveClassesProcessor {
     } catch (error) {
       this.logger.error(
         `Recording-ready processor алдаа: ${sessionId}`,
+        error instanceof Error ? error.stack : String(error),
+      );
+    }
+  }
+
+  /** Stale LIVE session-уудыг автомат цэвэрлэх (repeatable job) */
+  @Process('cleanup-stale-sessions')
+  async handleCleanupStaleSessions(): Promise<void> {
+    this.logger.log('Stale session цэвэрлэгээ эхэллээ (repeatable job)');
+
+    try {
+      const cleanedCount = await this.cleanupStaleLiveSessionsUseCase.execute();
+      this.logger.log(`Stale session цэвэрлэгээ дууслаа: ${cleanedCount} session цэвэрлэгдсэн`);
+    } catch (error) {
+      this.logger.error(
+        'Cleanup-stale-sessions processor алдаа',
         error instanceof Error ? error.stack : String(error),
       );
     }

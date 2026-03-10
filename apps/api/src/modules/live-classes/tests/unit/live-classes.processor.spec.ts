@@ -5,6 +5,7 @@ import { SessionAttendeeRepository } from '../../infrastructure/repositories/ses
 import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { NotificationService } from '../../../notifications/application/services/notification.service';
 import { LiveClassesCacheService } from '../../infrastructure/services/live-classes-cache.service';
+import { CleanupStaleLiveSessionsUseCase } from '../../application/use-cases/cleanup-stale-live-sessions.use-case';
 import { LiveSessionEntity } from '../../domain/entities/live-session.entity';
 import { EnrollmentEntity } from '../../../enrollments/domain/entities/enrollment.entity';
 
@@ -15,6 +16,7 @@ describe('LiveClassesProcessor', () => {
   let enrollmentRepo: jest.Mocked<EnrollmentRepository>;
   let notificationService: jest.Mocked<NotificationService>;
   let cacheService: jest.Mocked<LiveClassesCacheService>;
+  let cleanupUseCase: jest.Mocked<CleanupStaleLiveSessionsUseCase>;
 
   const now = new Date();
 
@@ -73,6 +75,10 @@ describe('LiveClassesProcessor', () => {
           provide: LiveClassesCacheService,
           useValue: { invalidateSession: jest.fn().mockResolvedValue(undefined) },
         },
+        {
+          provide: CleanupStaleLiveSessionsUseCase,
+          useValue: { execute: jest.fn().mockResolvedValue(0) },
+        },
       ],
     }).compile();
 
@@ -82,6 +88,7 @@ describe('LiveClassesProcessor', () => {
     enrollmentRepo = module.get(EnrollmentRepository);
     notificationService = module.get(NotificationService);
     cacheService = module.get(LiveClassesCacheService);
+    cleanupUseCase = module.get(CleanupStaleLiveSessionsUseCase);
   });
 
   describe('handleSessionStarted', () => {
@@ -204,6 +211,22 @@ describe('LiveClassesProcessor', () => {
       } as any);
 
       expect(sessionRepo.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('handleCleanupStaleSessions', () => {
+    it('CleanupStaleLiveSessionsUseCase.execute дуудагдана', async () => {
+      cleanupUseCase.execute.mockResolvedValue(3);
+
+      await processor.handleCleanupStaleSessions();
+
+      expect(cleanupUseCase.execute).toHaveBeenCalled();
+    });
+
+    it('алдаа гарсан ч exception шидэхгүй', async () => {
+      cleanupUseCase.execute.mockRejectedValue(new Error('DB error'));
+
+      await expect(processor.handleCleanupStaleSessions()).resolves.not.toThrow();
     });
   });
 });

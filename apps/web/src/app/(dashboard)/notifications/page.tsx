@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Settings } from 'lucide-react';
 import { toast } from 'sonner';
+import { PageLayout } from '@/components/ui/page-layout';
+import { PageHeader } from '@/components/ui/page-header';
 import {
   useNotifications,
   useUnreadNotificationCount,
@@ -83,19 +85,18 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto flex flex-col gap-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
-            {unreadCount > 0 && (
-              <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-destructive text-white">
-                {t('unreadCount', { count: unreadCount })}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-4">
+    <PageLayout maxWidth="4xl" gap={6}>
+      <PageHeader
+        title={t('title')}
+        titleExtra={
+          unreadCount > 0 ? (
+            <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-destructive text-white">
+              {t('unreadCount', { count: unreadCount })}
+            </span>
+          ) : undefined
+        }
+        actions={
+          <>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
@@ -112,52 +113,52 @@ export default function NotificationsPage() {
               <Settings className="size-4" />
               {t('preferencesLink')}
             </Link>
-          </div>
+          </>
+        }
+      />
+
+      {/* Filter tabs */}
+      <NotificationsFilterTabs activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {/* Контент */}
+      {isLoading ? (
+        <NotificationsListSkeleton count={5} variant="full" />
+      ) : notifications.length === 0 ? (
+        <NotificationsEmpty filter={activeTab} />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              variant="full"
+              onMarkRead={handleItemClick}
+              onDelete={handleDelete}
+              onClick={() => handleItemClick(notification.id)}
+            />
+          ))}
         </div>
+      )}
 
-        {/* Filter tabs */}
-        <NotificationsFilterTabs activeTab={activeTab} onTabChange={handleTabChange} />
-
-        {/* Контент */}
-        {isLoading ? (
-          <NotificationsListSkeleton count={5} variant="full" />
-        ) : notifications.length === 0 ? (
-          <NotificationsEmpty filter={activeTab} />
-        ) : (
-          <div className="flex flex-col gap-2">
-            {notifications.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-                variant="full"
-                onMarkRead={handleItemClick}
-                onDelete={handleDelete}
-                onClick={() => handleItemClick(notification.id)}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Pagination footer */}
-        {!isLoading && totalCount > 0 && notifications.length > 0 && (
-          <div className="flex items-center justify-between mt-2">
-            <p className="text-sm text-primary font-medium">
-              {t('showingOf', {
-                shown: notifications.length,
-                total: totalCount,
-              })}
-            </p>
-            {totalCount > PAGE_LIMIT && (
-              <CoursesPagination
-                page={page}
-                total={totalCount}
-                limit={PAGE_LIMIT}
-                onPageChange={setPage}
-              />
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+      {/* Pagination footer */}
+      {!isLoading && totalCount > 0 && notifications.length > 0 && (
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm text-primary font-medium">
+            {t('showingOf', {
+              shown: notifications.length,
+              total: totalCount,
+            })}
+          </p>
+          {totalCount > PAGE_LIMIT && (
+            <CoursesPagination
+              page={page}
+              total={totalCount}
+              limit={PAGE_LIMIT}
+              onPageChange={setPage}
+            />
+          )}
+        </div>
+      )}
+    </PageLayout>
   );
 }

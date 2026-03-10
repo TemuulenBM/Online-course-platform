@@ -10,7 +10,7 @@ import { authService } from '@/lib/api-services/auth.service';
  * Cookie тавих/устгах замаар middleware-д auth төлөв дамжуулна.
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { tokens, isHydrated, setAuth, clearAuth } = useAuthStore();
+  const { tokens, isHydrated, setAuth, setTokens, clearAuth } = useAuthStore();
   const [isValidating, setIsValidating] = useState(true);
 
   useEffect(() => {
@@ -21,6 +21,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!tokens?.accessToken && tokens?.refreshToken) {
         try {
           const newTokens = await authService.refresh(tokens.refreshToken);
+          // Store-д шинэ token-г ӨМНӨ нь тавина — getMe() дуудахад interceptor шинэ accessToken ашиглана
+          setTokens(newTokens);
           const user = await authService.getMe();
           setAuth(user, newTokens);
           setCookie();

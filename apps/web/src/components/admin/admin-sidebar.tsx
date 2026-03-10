@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
   Settings,
@@ -18,19 +18,14 @@ import {
   Trophy,
   Activity,
   Video,
-  LogOut,
-  ArrowLeft,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/stores/auth-store';
-import { useLogout, useMyProfile } from '@/hooks/api';
 import { LearnifyLogo } from '@/components/layout/learnify-logo';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { SidebarUserFooter } from '@/components/ui/sidebar-user-footer';
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -38,7 +33,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
 /** Удирдлагын навигац */
@@ -70,12 +64,16 @@ const analyticsItems = [
 /** Main sidebar-тай нийцсэн nav item стиль */
 const navItemBase =
   'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
-const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
+/** Active item: background-ийг motion indicator руу шилжүүлсэн */
+const navItemActive = 'text-white font-medium relative z-10 hover:bg-transparent hover:text-white';
+/** Active indicator-ийн spring transition */
+const indicatorTransition = { type: 'spring' as const, bounce: 0.15, duration: 0.4 };
 
-/** Навигацийн бүлэг рендерлэх */
+/** Навигацийн бүлэг рендерлэх — groupId-ээр group дотор slide хийнэ */
 function NavGroup({
   items,
   pathname,
+  groupId,
 }: {
   items: ReadonlyArray<{
     href: string;
@@ -83,6 +81,7 @@ function NavGroup({
     label: string;
   }>;
   pathname: string;
+  groupId: string;
 }) {
   return (
     <SidebarMenu className="gap-0.5">
@@ -93,6 +92,13 @@ function NavGroup({
             : pathname === item.href || pathname.startsWith(item.href + '/');
         return (
           <SidebarMenuItem key={item.href}>
+            {isActive && (
+              <motion.div
+                layoutId={`admin-nav-${groupId}`}
+                className="absolute inset-0 rounded-xl bg-primary"
+                transition={indicatorTransition}
+              />
+            )}
             <SidebarMenuButton
               asChild
               isActive={isActive}
@@ -112,38 +118,19 @@ function NavGroup({
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const tRoles = useTranslations('roles');
-  const logoutMutation = useLogout();
-  const user = useAuthStore((s) => s.user);
-  const { data: profile } = useMyProfile();
-
-  const displayName = profile?.firstName
-    ? `${profile.firstName} ${profile.lastName || ''}`.trim()
-    : user?.email?.split('@')[0] || '';
-
-  const initials = profile?.firstName
-    ? `${profile.firstName[0]}${profile.lastName?.[0] || ''}`.toUpperCase()
-    : (user?.email?.[0] || 'U').toUpperCase();
-
-  const roleName = tRoles(user?.role || 'student');
 
   return (
     <Sidebar collapsible="offcanvas" className="border-none bg-background">
-      {/* Лого — LearnifyLogo + ADMIN PANEL badge */}
+      {/* Лого — бусад sidebar-тай ижил */}
       <SidebarHeader className="px-5 pt-7 pb-4">
-        <div>
-          <LearnifyLogo href="/admin/dashboard" />
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-semibold mt-1 pl-[46px]">
-            Admin Panel
-          </p>
-        </div>
+        <LearnifyLogo href="/admin/dashboard" />
       </SidebarHeader>
 
       <SidebarContent className="px-3">
         {/* Удирдлага */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <NavGroup items={controlItems} pathname={pathname} />
+            <NavGroup items={controlItems} pathname={pathname} groupId="control" />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -153,7 +140,7 @@ export function AdminSidebar() {
             Менежмент
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <NavGroup items={managementItems} pathname={pathname} />
+            <NavGroup items={managementItems} pathname={pathname} groupId="management" />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -163,55 +150,13 @@ export function AdminSidebar() {
             Аналитик
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <NavGroup items={analyticsItems} pathname={pathname} />
+            <NavGroup items={analyticsItems} pathname={pathname} groupId="analytics" />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Доод хэсэг — main sidebar-тай нийцсэн */}
-      <SidebarFooter className="px-3 pb-5">
-        <SidebarMenu className="gap-0.5">
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <Link href="/dashboard">
-                <ArrowLeft className="size-[18px]" />
-                <span>Хяналтын самбар руу</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => logoutMutation.mutate()}
-              disabled={logoutMutation.isPending}
-              className="h-11 rounded-xl px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <LogOut className="size-[18px]" />
-              <span>Гарах</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-
-        <SidebarSeparator className="my-2" />
-
-        {/* Хэрэглэгчийн мэдээлэл — main sidebar-тай ижил */}
-        <Link
-          href="/profile"
-          className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted"
-        >
-          <Avatar className="size-9 shrink-0">
-            <AvatarFallback className="bg-purple-100 text-purple-700 text-xs font-bold">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-foreground">{displayName}</p>
-            <p className="text-[11px] text-muted-foreground">{roleName}</p>
-          </div>
-        </Link>
-      </SidebarFooter>
+      {/* Нэгдсэн footer — буцах + гарах + хэрэглэгчийн мэдээлэл */}
+      <SidebarUserFooter backLink={{ href: '/dashboard', label: 'Хяналтын самбар руу' }} />
     </Sidebar>
   );
 }

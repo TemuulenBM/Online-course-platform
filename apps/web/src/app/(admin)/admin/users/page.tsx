@@ -7,6 +7,7 @@ import { useAdminUsers } from '@/hooks/api/use-admin';
 import { UsersTable } from '@/components/admin/users-table';
 import { UsersFilterBar } from '@/components/admin/role-filter-tabs';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/ui/page-header';
 
 export default function AdminUsersPage() {
   const [page, setPage] = useState(1);
@@ -23,37 +24,30 @@ export default function AdminUsersPage() {
 
   return (
     <div className="p-6 lg:p-10 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-            <Users className="w-6 h-6 text-primary" />
+      <PageHeader
+        icon={Users}
+        title="Хэрэглэгчийн удирдлага"
+        subtitle="Бүртгэлтэй хэрэглэгчдийг удирдаж, эрх зөвшөөрлийг тохируулна"
+        className="mb-8"
+        actions={
+          <div className="flex gap-3">
+            <button
+              disabled
+              className="flex items-center gap-2 px-4 py-2.5 bg-muted text-slate-600 font-semibold rounded-xl text-sm hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Download className="w-4 h-4" />
+              Экспорт
+            </button>
+            <button
+              disabled
+              className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-sm shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Plus className="w-4 h-4" />
+              Шинэ хэрэглэгч
+            </button>
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Хэрэглэгчийн удирдлага</h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Бүртгэлтэй хэрэглэгчдийг удирдаж, эрх зөвшөөрлийг тохируулна
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            disabled
-            className="flex items-center gap-2 px-4 py-2.5 bg-muted text-slate-600 font-semibold rounded-xl text-sm hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Download className="w-4 h-4" />
-            Экспорт
-          </button>
-          <button
-            disabled
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-sm shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Plus className="w-4 h-4" />
-            Шинэ хэрэглэгч
-          </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Шүүлтүүр */}
       <UsersFilterBar

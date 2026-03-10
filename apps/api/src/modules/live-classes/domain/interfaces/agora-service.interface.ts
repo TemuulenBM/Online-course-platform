@@ -14,6 +14,9 @@ export interface IAgoraService {
 
   /** Сессийн ID-аас суваг нэр үүсгэх */
   generateChannelName(sessionId: string): string;
+
+  /** Agora credentials зөв тохируулагдсан эсэх */
+  isReady(): boolean;
 }
 
 /** NestJS DI token */

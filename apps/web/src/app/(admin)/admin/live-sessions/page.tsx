@@ -17,7 +17,7 @@ import { useAllLiveSessions, useSessionAttendees, useCancelLiveSession } from '@
 import { CoursesPagination } from '@/components/courses/courses-pagination';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import type { LiveSession, SessionAttendee, LiveSessionStatus } from '@ocp/shared-types';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -198,24 +198,11 @@ export default function AdminLiveSessionsPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="mx-auto max-w-6xl space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-3">
-          <SidebarTrigger className="md:hidden" />
-          <div>
-            <nav className="mb-1 flex items-center gap-1 text-sm text-slate-500">
-              <Link href="/admin/dashboard" className="hover:text-primary">
-                Хяналтын самбар
-              </Link>
-              <ChevronRight className="size-3.5" />
-              <span className="font-medium text-primary">Шууд хичээлүүд</span>
-            </nav>
-            <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
-              <Video className="size-8 text-primary" />
-              Шууд хичээлүүд
-            </h1>
-            <p className="mt-1 text-slate-500">Бүх шууд хичээлүүдийг хянах, удирдах</p>
-          </div>
-        </div>
+        <PageHeader
+          icon={Video}
+          title="Шууд хичээлүүд"
+          subtitle="Бүх шууд хичээлүүдийг хянах, удирдах"
+        />
 
         {/* Stats cards */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

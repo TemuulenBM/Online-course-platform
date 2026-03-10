@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --font-sans: var(--font-geist-sans);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -132,6 +133,11 @@
     --info-foreground: oklch(0.95 0.03 250);
 }
 
+@keyframes flicker {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15) rotate(3deg); opacity: 0.85; }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -149,6 +155,7 @@
     }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     }
 
   .animation-fade-in {

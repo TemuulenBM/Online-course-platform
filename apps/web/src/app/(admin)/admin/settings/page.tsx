@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 
 import { useSettings, useUpsertSetting, useDeleteSetting } from '@/hooks/api';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -93,32 +93,21 @@ export default function AdminSettingsPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-8">
       <div className="max-w-[1200px] mx-auto">
-        {/* Breadcrumb + Title + Actions */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="lg:hidden" />
-            <div>
-              <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
-                <Link href="/admin/dashboard" className="hover:text-primary transition-colors">
-                  Удирдлага
-                </Link>
-                <ChevronRight className="size-3" />
-                <span className="text-primary font-medium">Тохиргоо</span>
-              </div>
-              <h1 className="text-3xl font-bold text-foreground">Системийн тохиргоо</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Платформын ерөнхий тохиргоог удирдах
-              </p>
-            </div>
-          </div>
-          <Button
-            onClick={() => setIsAddOpen(true)}
-            className="bg-primary hover:bg-primary/90 text-white rounded-xl"
-          >
-            <Plus className="size-4 mr-2" />
-            Тохиргоо нэмэх
-          </Button>
-        </div>
+        <PageHeader
+          icon={Settings}
+          title="Системийн тохиргоо"
+          subtitle="Платформын ерөнхий тохиргоог удирдах"
+          className="mb-6"
+          actions={
+            <Button
+              onClick={() => setIsAddOpen(true)}
+              className="bg-primary hover:bg-primary/90 text-white rounded-xl"
+            >
+              <Plus className="size-4 mr-2" />
+              Тохиргоо нэмэх
+            </Button>
+          }
+        />
 
         {/* Category tabs + Search */}
         <div className="flex items-center gap-4 mb-6">

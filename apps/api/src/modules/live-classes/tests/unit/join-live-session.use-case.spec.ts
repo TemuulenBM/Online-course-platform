@@ -69,6 +69,7 @@ describe('JoinLiveSessionUseCase', () => {
           useValue: {
             generateRtcToken: jest.fn().mockReturnValue('mock-token'),
             generateChannelName: jest.fn().mockReturnValue('ocp-live-session-1'),
+            isReady: jest.fn().mockReturnValue(true),
           },
         },
         {
@@ -94,11 +95,25 @@ describe('JoinLiveSessionUseCase', () => {
     expect(attendeeRepo.upsert).toHaveBeenCalled();
   });
 
-  it('instructor subscriber биш publisher role-оор нэгдэнэ', async () => {
+  it('бүх оролцогч publisher role-оор нэгдэнэ (instructor)', async () => {
     sessionRepo.findById.mockResolvedValue(mockLiveSession);
     const agoraService = (useCase as any).agoraService;
 
     await useCase.execute('session-1', 'instructor-1', 'TEACHER');
+
+    expect(agoraService.generateRtcToken).toHaveBeenCalledWith(
+      'ocp-live-session-1',
+      expect.any(Number),
+      'publisher',
+    );
+  });
+
+  it('оюутан мөн publisher role-оор нэгдэнэ (камер/микрофон)', async () => {
+    sessionRepo.findById.mockResolvedValue(mockLiveSession);
+    enrollmentRepo.findByUserAndCourse.mockResolvedValue(mockEnrollment);
+    const agoraService = (useCase as any).agoraService;
+
+    await useCase.execute('session-1', 'student-1', 'STUDENT');
 
     expect(agoraService.generateRtcToken).toHaveBeenCalledWith(
       'ocp-live-session-1',

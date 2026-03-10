@@ -1,17 +1,19 @@
 import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LiveSessionRepository } from '../../infrastructure/repositories/live-session.repository';
 import { SessionAttendeeRepository } from '../../infrastructure/repositories/session-attendee.repository';
+import { EnrollmentRepository } from '../../../enrollments/infrastructure/repositories/enrollment.repository';
 import { SessionAttendeeEntity } from '../../domain/entities/session-attendee.entity';
 
 /**
  * Session-ийн оролцогчдын жагсаалт авах use case.
- * Зөвхөн instructor/ADMIN хандах боломжтой.
+ * Instructor/ADMIN эсвэл enrolled student хандах боломжтой.
  */
 @Injectable()
 export class GetAttendeesUseCase {
   constructor(
     private readonly liveSessionRepository: LiveSessionRepository,
     private readonly sessionAttendeeRepository: SessionAttendeeRepository,
+    private readonly enrollmentRepository: EnrollmentRepository,
   ) {}
 
   async execute(
@@ -31,9 +33,18 @@ export class GetAttendeesUseCase {
       throw new NotFoundException('Шууд хичээл олдсонгүй');
     }
 
-    /** 2. Эрхийн шалгалт — instructor / ADMIN */
-    if (userRole !== 'ADMIN' && session.instructorId !== userId) {
-      throw new ForbiddenException('Зөвхөн багш эсвэл админ оролцогчдыг харах боломжтой');
+    /** 2. Эрхийн шалгалт — instructor / ADMIN / enrolled student */
+    const isInstructor = session.instructorId === userId;
+    const isAdmin = userRole === 'ADMIN';
+
+    if (!isInstructor && !isAdmin) {
+      const enrollment = await this.enrollmentRepository.findByUserAndCourse(
+        userId,
+        session.courseId!,
+      );
+      if (!enrollment || enrollment.status !== 'active') {
+        throw new ForbiddenException('Зөвхөн элсэлттэй хэрэглэгч оролцогчдыг харах боломжтой');
+      }
     }
 
     return this.sessionAttendeeRepository.findBySessionId(sessionId, options);

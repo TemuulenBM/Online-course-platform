@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { GraduationCap, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMyCourses, useCourseEnrollments } from '@/hooks/api';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FilterTabs } from '@/components/ui/filter-tabs';
+import { PageHeader } from '@/components/ui/page-header';
 import { ROUTES } from '@/lib/constants';
 import type { EnrollmentStatus } from '@ocp/shared-types';
 import { cn } from '@/lib/utils';
@@ -84,18 +87,12 @@ export default function AdminEnrollmentsPage() {
 
   return (
     <div className="p-6 lg:p-10 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex items-center gap-4">
-        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-          <GraduationCap className="w-6 h-6 text-primary" />
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Элсэлтийн удирдлага</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Сургалт сонгон оюутнуудын элсэлтийг удирдана
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon={GraduationCap}
+        title="Элсэлтийн удирдлага"
+        subtitle="Сургалт сонгон оюутнуудын элсэлтийг удирдана"
+        className="mb-8"
+      />
 
       {/* Сургалт сонгох */}
       <div className="mb-6">
@@ -116,36 +113,21 @@ export default function AdminEnrollmentsPage() {
 
       {/* Статус filter tabs */}
       {selectedCourseId && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.label}
-              type="button"
-              onClick={() => handleStatusChange(tab.value)}
-              className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-medium transition-colors',
-                statusFilter === tab.value
-                  ? 'bg-primary text-white'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary',
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          tabs={STATUS_TABS}
+          activeValue={statusFilter}
+          onChange={handleStatusChange}
+          className="mb-6"
+        />
       )}
 
       {/* Сургалт сонгоогүй үе */}
       {!selectedCourseId && (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-white dark:bg-slate-900 rounded-xl border border-dashed border-primary/30">
-          <div className="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
-            <GraduationCap className="size-8" />
-          </div>
-          <h3 className="text-lg font-semibold text-foreground">Сургалт сонгоно уу</h3>
-          <p className="text-sm text-muted-foreground mt-2 max-w-xs">
-            Дээрхи dropdown-оос сургалт сонгоход тухайн сургалтын оюутнуудын элсэлтийг харна
-          </p>
-        </div>
+        <EmptyState
+          icon={GraduationCap}
+          title="Сургалт сонгоно уу"
+          description="Дээрхи dropdown-оос сургалт сонгоход тухайн сургалтын оюутнуудын элсэлтийг харна"
+        />
       )}
 
       {/* Loading skeleton */}
@@ -153,17 +135,15 @@ export default function AdminEnrollmentsPage() {
 
       {/* Хоосон жагсаалт */}
       {selectedCourseId && !enrollmentsLoading && enrollments.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 text-center bg-white dark:bg-slate-900 rounded-xl border border-border">
-          <div className="size-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 mb-3">
-            <GraduationCap className="size-6" />
-          </div>
-          <h3 className="text-base font-semibold text-foreground">Элсэлт олдсонгүй</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            {statusFilter
+        <EmptyState
+          icon={GraduationCap}
+          title="Элсэлт олдсонгүй"
+          description={
+            statusFilter
               ? 'Энэ статустай элсэлт байхгүй байна'
-              : 'Энэ сургалтад одоогоор элссэн оюутан байхгүй'}
-          </p>
-        </div>
+              : 'Энэ сургалтад одоогоор элссэн оюутан байхгүй'
+          }
+        />
       )}
 
       {/* Элсэлтийн хүснэгт */}

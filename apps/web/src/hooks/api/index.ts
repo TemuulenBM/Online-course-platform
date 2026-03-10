@@ -189,6 +189,7 @@ export {
   useLeaveLiveSession,
   useRefreshAgoraToken,
   useAllLiveSessions,
+  useAllCourseSessions,
 } from './use-live-sessions';
 
 // Analytics hooks
@@ -204,4 +205,5 @@ export {
   usePlatformStats,
   usePendingItems,
   useRecentActivity,
+  useMultipleCourseStats,
 } from './use-analytics';

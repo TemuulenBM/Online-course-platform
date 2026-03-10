@@ -1,6 +1,7 @@
 'use client';
 
-import { VideoOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AlertTriangle, VideoOff } from 'lucide-react';
 import { AgoraTeacherRoom } from './agora-teacher-room';
 
 interface AgoraPlaceholderProps {
@@ -54,6 +55,16 @@ export function AgoraPlaceholder({
   /** Agora-д шаардлагатай бүх параметр бэлэн */
   const canConnect = isLive && !!(appId && channelName && token && uid != null);
 
+  /** isLive=true гэхдээ Agora params 10 сек-д ирэхгүй бол timeout */
+  const [connectingTimedOut, setConnectingTimedOut] = useState(false);
+  useEffect(() => {
+    if (isLive && !canConnect) {
+      const timer = setTimeout(() => setConnectingTimedOut(true), 10_000);
+      return () => clearTimeout(timer);
+    }
+    setConnectingTimedOut(false);
+  }, [isLive, canConnect]);
+
   if (canConnect) {
     return (
       <AgoraTeacherRoom
@@ -81,7 +92,15 @@ export function AgoraPlaceholder({
       <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-slate-900">
         <div className="text-center">
           <VideoOff className="mx-auto mb-4 size-16 text-white/50" />
-          {isLive ? (
+          {isLive && connectingTimedOut ? (
+            <>
+              <AlertTriangle className="mx-auto mb-2 size-10 text-red-400" />
+              <p className="font-medium text-white">Agora холболт амжилтгүй</p>
+              <p className="mt-1 text-sm text-white/60">
+                Agora тохиргоо шалгана уу. Хуудсаа refresh хийж дахин оролдоно уу.
+              </p>
+            </>
+          ) : isLive ? (
             <>
               <p className="font-medium text-white">Холбогдож байна...</p>
               <p className="text-sm text-white/60">Agora session эхлэж байна</p>
