@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/admin-sidebar';
+import { PageTransition } from '@/components/ui/page-transition';
 import { useAuthStore } from '@/stores/auth-store';
 import { ROUTES } from '@/lib/constants';
 
@@ -38,7 +39,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider className="bg-background">
       <AdminSidebar />
       <SidebarInset className="overflow-y-auto bg-white lg:m-4 lg:ml-0 lg:rounded-3xl lg:shadow-[0_2px_20px_-5px_rgba(0,0,0,0.06)]">
-        {children}
+        <PageTransition>{children}</PageTransition>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -5,16 +5,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-/** Хуудас хоорондын шилжилтийн animation variants */
+/**
+ * Хуудас хоорондын шилжилтийн animation variants.
+ * popLayout mode: exit + enter зэрэг тоглож, perceived delay багасна.
+ * blur: layout shift-ийг нүдэнд мэдэгдэхгүй болгоно.
+ */
 const variants = {
-  hidden: { opacity: 0, y: 6 },
+  hidden: { opacity: 0, y: 4, filter: 'blur(2px)' },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] as const },
+    filter: 'blur(0px)',
+    transition: { duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
   exit: {
     opacity: 0,
+    y: -4,
+    filter: 'blur(2px)',
     transition: { duration: 0.15, ease: 'easeIn' as const },
   },
 };
@@ -37,7 +44,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="popLayout" initial={false}>
       <motion.div
         key={pathname}
         variants={variants}
@@ -45,6 +52,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         animate="visible"
         exit="exit"
         className="flex flex-col flex-1"
+        style={{ willChange: 'transform, opacity, filter' }}
       >
         <FrozenRouter>{children}</FrozenRouter>
       </motion.div>

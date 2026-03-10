@@ -83,19 +83,21 @@ export function useAnalyticsEvents(params?: EventListParams) {
 
 /* ======== Admin Dashboard ======== */
 
-/** Платформын статистик */
+/** Платформын статистик — удаан өөрчлөгддөг тул 10 мин кэш */
 export function usePlatformStats() {
   return useQuery({
     queryKey: QUERY_KEYS.analytics.platformStats,
     queryFn: () => analyticsService.getPlatformStats(),
+    staleTime: 10 * 60 * 1000,
   });
 }
 
-/** Хүлээгдэж буй зүйлүүд */
+/** Хүлээгдэж буй зүйлүүд — dynamic тул 2 мин кэш */
 export function usePendingItems() {
   return useQuery({
     queryKey: QUERY_KEYS.analytics.pendingItems,
     queryFn: () => analyticsService.getPendingItems(),
+    staleTime: 2 * 60 * 1000,
   });
 }
 

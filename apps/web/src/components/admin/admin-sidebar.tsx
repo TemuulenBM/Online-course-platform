@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
   Settings,
@@ -70,12 +71,16 @@ const analyticsItems = [
 /** Main sidebar-тай нийцсэн nav item стиль */
 const navItemBase =
   'h-11 rounded-xl px-4 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:bg-primary/10 hover:text-primary';
-const navItemActive = 'bg-primary text-white font-medium hover:bg-primary hover:text-white';
+/** Active item: background-ийг motion indicator руу шилжүүлсэн */
+const navItemActive = 'text-white font-medium relative z-10 hover:bg-transparent hover:text-white';
+/** Active indicator-ийн spring transition */
+const indicatorTransition = { type: 'spring' as const, bounce: 0.15, duration: 0.4 };
 
-/** Навигацийн бүлэг рендерлэх */
+/** Навигацийн бүлэг рендерлэх — groupId-ээр group дотор slide хийнэ */
 function NavGroup({
   items,
   pathname,
+  groupId,
 }: {
   items: ReadonlyArray<{
     href: string;
@@ -83,6 +88,7 @@ function NavGroup({
     label: string;
   }>;
   pathname: string;
+  groupId: string;
 }) {
   return (
     <SidebarMenu className="gap-0.5">
@@ -93,6 +99,13 @@ function NavGroup({
             : pathname === item.href || pathname.startsWith(item.href + '/');
         return (
           <SidebarMenuItem key={item.href}>
+            {isActive && (
+              <motion.div
+                layoutId={`admin-nav-${groupId}`}
+                className="absolute inset-0 rounded-xl bg-primary"
+                transition={indicatorTransition}
+              />
+            )}
             <SidebarMenuButton
               asChild
               isActive={isActive}
@@ -143,7 +156,7 @@ export function AdminSidebar() {
         {/* Удирдлага */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <NavGroup items={controlItems} pathname={pathname} />
+            <NavGroup items={controlItems} pathname={pathname} groupId="control" />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -153,7 +166,7 @@ export function AdminSidebar() {
             Менежмент
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <NavGroup items={managementItems} pathname={pathname} />
+            <NavGroup items={managementItems} pathname={pathname} groupId="management" />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -163,7 +176,7 @@ export function AdminSidebar() {
             Аналитик
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <NavGroup items={analyticsItems} pathname={pathname} />
+            <NavGroup items={analyticsItems} pathname={pathname} groupId="analytics" />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
