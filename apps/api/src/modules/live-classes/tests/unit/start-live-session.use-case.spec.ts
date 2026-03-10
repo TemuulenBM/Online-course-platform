@@ -62,6 +62,7 @@ describe('StartLiveSessionUseCase', () => {
           useValue: {
             generateRtcToken: jest.fn().mockReturnValue('mock-token'),
             generateChannelName: jest.fn().mockReturnValue('ocp-live-session-1'),
+            isReady: jest.fn().mockReturnValue(true),
           },
         },
         { provide: getQueueToken('live-classes'), useValue: mockQueue },

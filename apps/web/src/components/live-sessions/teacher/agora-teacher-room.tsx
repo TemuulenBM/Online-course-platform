@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AgoraRTC, {
   AgoraRTCProvider,
   LocalUser,
+  LocalVideoTrack,
   RemoteUser,
   useClientEvent,
   useConnectionState,
@@ -16,7 +17,18 @@ import AgoraRTC, {
   useRemoteAudioTracks,
   useRemoteUsers,
 } from 'agora-rtc-react';
-import { Mic, MicOff, MonitorUp, User, Video, VideoOff } from 'lucide-react';
+import {
+  AlertTriangle,
+  Maximize,
+  Mic,
+  MicOff,
+  Minimize,
+  MonitorUp,
+  RefreshCw,
+  User,
+  Video,
+  VideoOff,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AgoraTeacherRoomProps {
@@ -61,13 +73,13 @@ function AgoraTeacherRoomInner({
   /** Channel-д нэгдэх */
   useJoin({ appid: appId, channel: channelName, token, uid }, true);
 
-  /** Локал медиа tracks — screen share идэвхтэй үед камерыг зогсооно (Agora нэг видео track л зөвшөөрнө) */
+  /** Локал медиа tracks — screen share үед camera track амьд байна, зүгээр publish хийхгүй */
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(!isMuted);
-  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff && !isScreenSharing);
+  const { localCameraTrack } = useLocalCameraTrack(!isCameraOff);
   const { screenTrack } = useLocalScreenTrack(isScreenSharing, {}, 'disable');
 
-  /** Бичлэг publish — screen share идэвхтэй бол camera оронд нь */
-  usePublish([localMicrophoneTrack, isScreenSharing ? screenTrack : localCameraTrack]);
+  /** Аудио track-г usePublish-ээр (олон audio зөвшөөрөгддөг) */
+  usePublish([localMicrophoneTrack]);
 
   /** Remote оролцогчдын аудио */
   const remoteUsers = useRemoteUsers();
@@ -75,6 +87,69 @@ function AgoraTeacherRoomInner({
   audioTracks.forEach((track) => track.play());
 
   const connectionState = useConnectionState();
+
+  /** Видео track-г гараар удирдах — camera ↔ screen share (Agora нэг видео track л зөвшөөрнө).
+   *  usePublish нь unpublish/publish async дарааллыг баталгаажуулдаггүй тул
+   *  await client.unpublish() → await client.publish() гэж дараалал хангана. */
+  useEffect(() => {
+    if (connectionState !== 'CONNECTED') return;
+
+    let cancelled = false;
+
+    const switchVideoTrack = async () => {
+      try {
+        if (isScreenSharing) {
+          if (localCameraTrack) {
+            try {
+              await client.unpublish(localCameraTrack);
+            } catch {
+              /* аль хэдийн unpublish хийгдсэн */
+            }
+          }
+          if (screenTrack && !cancelled) {
+            await client.publish(screenTrack);
+          }
+        } else {
+          if (screenTrack) {
+            try {
+              await client.unpublish(screenTrack);
+            } catch {
+              /* аль хэдийн unpublish хийгдсэн */
+            }
+          }
+          if (localCameraTrack && !isCameraOff && !cancelled) {
+            await client.publish(localCameraTrack);
+          }
+        }
+      } catch (err) {
+        console.warn('[Agora] Видео track солих алдаа:', err);
+      }
+    };
+
+    switchVideoTrack();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isScreenSharing, screenTrack, localCameraTrack, connectionState, isCameraOff, client]);
+  const [connectionTimedOut, setConnectionTimedOut] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** CONNECTING state-д 15 сек-ээс илүү байвал timeout гэж тооцно */
+  useEffect(() => {
+    if (connectionState === 'CONNECTING' || connectionState === 'RECONNECTING') {
+      timeoutRef.current = setTimeout(() => setConnectionTimedOut(true), 15_000);
+    } else {
+      setConnectionTimedOut(false);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [connectionState]);
 
   useEffect(() => {
     const isConnected = connectionState === 'CONNECTED';
@@ -85,30 +160,154 @@ function AgoraTeacherRoomInner({
     onTokenWillExpire?.();
   });
 
+  /** PiP камер preview — screen share үед camera track-г жижиг div-д тоглуулна.
+   *  Agora-д publish хийхгүй, зөвхөн локал preview.
+   *  Cleanup-д stop() биш DOM element цэвэрлэнэ — track дахин ашиглах боломжтой. */
+  const pipRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = pipRef.current;
+    if (!el) return;
+    if (isScreenSharing && localCameraTrack && !isCameraOff) {
+      localCameraTrack.play(el);
+      return () => {
+        while (el.firstChild) {
+          el.removeChild(el.firstChild);
+        }
+      };
+    }
+  }, [isScreenSharing, localCameraTrack, isCameraOff]);
+
+  /** PiP drag — pointer events-ээр чирж зөөх боломж.
+   *  CSS transform ашиглана, layout reflow-гүй. */
+  const [pipPos, setPipPos] = useState({ x: 0, y: 0 });
+  const dragState = useRef<{ startX: number; startY: number; origX: number; origY: number } | null>(
+    null,
+  );
+
+  const onPipPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      dragState.current = {
+        startX: e.clientX,
+        startY: e.clientY,
+        origX: pipPos.x,
+        origY: pipPos.y,
+      };
+    },
+    [pipPos],
+  );
+
+  const onPipPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current) return;
+    const dx = e.clientX - dragState.current.startX;
+    const dy = e.clientY - dragState.current.startY;
+    setPipPos({ x: dragState.current.origX + dx, y: dragState.current.origY + dy });
+  }, []);
+
+  const onPipPointerUp = useCallback(() => {
+    dragState.current = null;
+  }, []);
+
+  /** Fullscreen — native Fullscreen API ашиглана */
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      el.requestFullscreen();
+    }
+  }, []);
+
+  useEffect(() => {
+    const handler = () => {
+      const fs = !!document.fullscreenElement;
+      setIsFullscreen(fs);
+      /** Fullscreen-ээс гарахад PiP байрлалыг reset — container жижирсэн тул хуучин координат тохирохгүй */
+      if (!fs) setPipPos({ x: 0, y: 0 });
+    };
+    document.addEventListener('fullscreenchange', handler);
+    return () => document.removeEventListener('fullscreenchange', handler);
+  }, []);
+
   const isLive = connectionState === 'CONNECTED';
 
-  return (
-    <div className="relative aspect-video overflow-hidden rounded-xl border-4 border-white bg-slate-900 shadow-2xl">
-      {/* Багшийн камер / screen share */}
-      <LocalUser
-        cameraOn={!isCameraOff}
-        micOn={!isMuted}
-        videoTrack={localCameraTrack}
-        className="absolute inset-0"
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-      >
-        {/* Камер унтарсан үед placeholder */}
-        {isCameraOff && (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-slate-900">
-            <div className="flex flex-col items-center gap-3">
-              <User className="size-16 text-white/40" />
-              <p className="text-sm text-white/60">
-                {connectionState === 'CONNECTING' ? 'Холбогдож байна...' : 'Камер унтарсан байна'}
-              </p>
-            </div>
+  /** Холболт амжилтгүй болсон үед — timeout state */
+  if (connectionTimedOut && connectionState !== 'CONNECTED') {
+    return (
+      <div className="relative aspect-video overflow-hidden rounded-xl border-4 border-white bg-slate-900 shadow-2xl">
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-red-500/20 to-slate-900">
+          <div className="text-center">
+            <AlertTriangle className="mx-auto mb-4 size-16 text-red-400" />
+            <p className="text-lg font-medium text-white">Agora холболт амжилтгүй</p>
+            <p className="mt-1 text-sm text-white/60">
+              Agora credentials буруу эсвэл сүлжээний алдаа байж болзошгүй
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20"
+            >
+              <RefreshCw className="size-4" />
+              Дахин оролдох
+            </button>
           </div>
-        )}
-      </LocalUser>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        'relative overflow-hidden bg-slate-900 shadow-2xl',
+        isFullscreen ? 'h-screen w-screen' : 'aspect-video rounded-xl border-4 border-white',
+      )}
+    >
+      {/* Багшийн камер / screen share — LocalVideoTrack нь screen track-д зориулагдсан */}
+      {isScreenSharing ? (
+        <LocalVideoTrack
+          track={screenTrack}
+          play={true}
+          className="absolute inset-0"
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        />
+      ) : (
+        <LocalUser
+          cameraOn={!isCameraOff}
+          micOn={!isMuted}
+          videoTrack={localCameraTrack}
+          className="absolute inset-0"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        >
+          {/* Камер унтарсан үед placeholder */}
+          {isCameraOff && (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-slate-900">
+              <div className="flex flex-col items-center gap-3">
+                <User className="size-16 text-white/40" />
+                <p className="text-sm text-white/60">
+                  {connectionState === 'CONNECTING' ? 'Холбогдож байна...' : 'Камер унтарсан байна'}
+                </p>
+              </div>
+            </div>
+          )}
+        </LocalUser>
+      )}
+
+      {/* PiP камер — screen share үед чирж зөөх боломжтой жижиг камер */}
+      {isScreenSharing && !isCameraOff && (
+        <div
+          ref={pipRef}
+          onPointerDown={onPipPointerDown}
+          onPointerMove={onPipPointerMove}
+          onPointerUp={onPipPointerUp}
+          className="absolute bottom-20 left-4 z-20 h-[120px] w-[160px] cursor-grab overflow-hidden rounded-xl border-2 border-white/30 shadow-2xl active:cursor-grabbing"
+          style={{ transform: `translate(${pipPos.x}px, ${pipPos.y}px)`, touchAction: 'none' }}
+        />
+      )}
 
       {/* Оролцогчдын жижиг preview — баруун дээд */}
       {remoteUsers.length > 0 && (
@@ -182,6 +381,13 @@ function AgoraTeacherRoomInner({
             title={isScreenSharing ? 'Дэлгэц хуваалцахаа зогсоох' : 'Дэлгэц хуваалцах'}
           >
             <MonitorUp className="size-5" />
+          </button>
+          <button
+            onClick={toggleFullscreen}
+            className="flex size-10 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/40"
+            title={isFullscreen ? 'Бүтэн дэлгэцээс гарах' : 'Бүтэн дэлгэц'}
+          >
+            {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
           </button>
         </div>
         <button

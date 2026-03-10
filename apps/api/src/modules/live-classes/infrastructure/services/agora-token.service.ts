@@ -15,10 +15,37 @@ export class AgoraTokenService implements IAgoraService {
   private readonly appCertificate: string;
   private readonly defaultExpiry: number;
 
+  /** Agora credentials зөв тохируулагдсан эсэх */
+  private readonly configured: boolean;
+
+  /** Placeholder утгууд — .env-д бодит утга оруулаагүй үед илрүүлнэ */
+  private static readonly PLACEHOLDER_VALUES = [
+    'your-agora-app-id',
+    'your-agora-app-certificate',
+    '',
+  ];
+
   constructor(private readonly configService: ConfigService) {
     this.appId = this.configService.get<string>('agora.appId') || '';
     this.appCertificate = this.configService.get<string>('agora.appCertificate') || '';
     this.defaultExpiry = this.configService.get<number>('agora.tokenExpirySeconds') || 3600;
+
+    /** Credentials placeholder эсвэл хоосон бол анхааруулга */
+    this.configured =
+      !AgoraTokenService.PLACEHOLDER_VALUES.includes(this.appId) &&
+      !AgoraTokenService.PLACEHOLDER_VALUES.includes(this.appCertificate);
+
+    if (!this.configured) {
+      this.logger.warn(
+        'Agora credentials тохируулагдаагүй! AGORA_APP_ID, AGORA_APP_CERTIFICATE ' +
+          '.env файлд бодит утга оруулна уу. Шууд хичээл эхлүүлэх боломжгүй.',
+      );
+    }
+  }
+
+  /** Agora тохиргоо бэлэн эсэх */
+  isReady(): boolean {
+    return this.configured;
   }
 
   /** RTC токен үүсгэх */

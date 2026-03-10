@@ -67,10 +67,18 @@ export class JoinLiveSessionUseCase {
       userId,
     });
 
-    /** 4. Agora token үүсгэх */
+    /** 4. Agora тохиргоо бэлэн эсэх шалгах */
+    if (!this.agoraService.isReady()) {
+      throw new BadRequestException(
+        'Agora тохиргоо хийгдээгүй байна. AGORA_APP_ID, AGORA_APP_CERTIFICATE .env файлд тохируулна уу.',
+      );
+    }
+
+    /** 5. Agora token үүсгэх */
     const channelName = this.agoraService.generateChannelName(sessionId);
     const uid = this.generateUid(userId);
-    const role = isInstructor ? 'publisher' : 'subscriber';
+    /** Бүх оролцогч publisher — камер/микрофон ашиглах боломжтой */
+    const role = 'publisher';
     const token = this.agoraService.generateRtcToken(channelName, uid, role);
 
     const appId = this.configService.get<string>('agora.appId') || '';

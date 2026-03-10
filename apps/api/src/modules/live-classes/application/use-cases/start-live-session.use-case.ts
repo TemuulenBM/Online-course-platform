@@ -54,11 +54,18 @@ export class StartLiveSessionUseCase {
       throw new ForbiddenException('Зөвхөн шууд хичээлийн багш эхлүүлэх боломжтой');
     }
 
-    /** 4. Agora channel + token */
+    /** 4. Agora тохиргоо бэлэн эсэх шалгах */
+    if (!this.agoraService.isReady()) {
+      throw new BadRequestException(
+        'Agora тохиргоо хийгдээгүй байна. AGORA_APP_ID, AGORA_APP_CERTIFICATE .env файлд тохируулна уу.',
+      );
+    }
+
+    /** 5. Agora channel + token */
     const channelName = this.agoraService.generateChannelName(sessionId);
     const token = this.agoraService.generateRtcToken(channelName, 0, 'publisher');
 
-    /** 5. DB шинэчлэх — LIVE */
+    /** 6. DB шинэчлэх — LIVE */
     const updated = await this.liveSessionRepository.update(sessionId, {
       status: 'LIVE',
       actualStart: new Date(),
@@ -66,10 +73,10 @@ export class StartLiveSessionUseCase {
       meetingUrl: channelName,
     });
 
-    /** 6. Кэш invalidate */
+    /** 7. Кэш invalidate */
     await this.liveClassesCacheService.invalidateSession(sessionId, session.lessonId);
 
-    /** 7. Notification queue job */
+    /** 8. Notification queue job */
     await this.liveClassesQueue.add('session-started', {
       sessionId: session.id,
       courseId: session.courseId,
