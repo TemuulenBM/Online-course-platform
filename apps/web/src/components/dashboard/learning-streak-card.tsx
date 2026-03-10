@@ -16,7 +16,7 @@ const WEEKLY_GOAL = 7;
 
 /** Heatmap нүдний intensity-г тодорхойлох */
 function getIntensityClass(count: number): string {
-  if (count === 0) return 'bg-muted';
+  if (count === 0) return 'bg-muted/60 border border-border/40';
   if (count === 1) return 'bg-primary/25';
   if (count === 2) return 'bg-primary/50';
   return 'bg-primary/80';
@@ -38,6 +38,18 @@ const gridContainer = {
 };
 
 /**
+ * Date объектыг local timezone-д 'YYYY-MM-DD' формат руу хөрвүүлнэ.
+ * toISOString() нь UTC ашигладаг тул timezone offset-тэй орнуудад
+ * 1 хоногийн алдаа гардаг — энэ функц local огноог зөв буцаана.
+ */
+function toLocalDateStr(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
  * Сүүлийн 28 хоногийн (4 долоо хоног) completedAt огноогоор бүлэглэнэ.
  * { '2026-03-08': 3, '2026-03-07': 1, ... }
  */
@@ -47,7 +59,7 @@ function groupByDate(
   const map = new Map<string, number>();
   progressList.forEach((p) => {
     if (!p.completed || !p.completedAt) return;
-    const dateStr = new Date(p.completedAt).toISOString().slice(0, 10);
+    const dateStr = toLocalDateStr(new Date(p.completedAt));
     map.set(dateStr, (map.get(dateStr) ?? 0) + 1);
   });
   return map;
@@ -72,7 +84,7 @@ function getLast28Days(): string[] {
   for (let i = 0; i < 28; i++) {
     const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
-    days.push(d.toISOString().slice(0, 10));
+    days.push(toLocalDateStr(d));
   }
   return days;
 }
@@ -98,8 +110,8 @@ export function LearningStreakCard() {
   const thisWeekTotal = thisWeekDays.reduce((sum, d) => sum + (dateMap.get(d) ?? 0), 0);
   const goalPercent = Math.min(Math.round((thisWeekTotal / WEEKLY_GOAL) * 100), 100);
 
-  /** Өнөөдрийн огноо */
-  const todayStr = new Date().toISOString().slice(0, 10);
+  /** Өнөөдрийн огноо (local timezone) */
+  const todayStr = toLocalDateStr(new Date());
 
   if (isLoading) {
     return (
@@ -173,19 +185,37 @@ export function LearningStreakCard() {
         ))}
       </div>
 
+      {/* Heatmap intensity тайлбар (legend) */}
+      <div className="flex items-center justify-end gap-1.5 mb-4">
+        <span className="text-[9px] text-muted-foreground/60">{t('less')}</span>
+        <div className="w-3 h-3 rounded-[3px] bg-muted/60 border border-border/40" />
+        <div className="w-3 h-3 rounded-[3px] bg-primary/25" />
+        <div className="w-3 h-3 rounded-[3px] bg-primary/50" />
+        <div className="w-3 h-3 rounded-[3px] bg-primary/80" />
+        <span className="text-[9px] text-muted-foreground/60">{t('more')}</span>
+      </div>
+
       {/* Долоо хоногийн зорилгын progress */}
       <div className="mt-auto">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[11px] font-medium text-muted-foreground">
-            {t('weeklyGoal')}: {thisWeekTotal}/{WEEKLY_GOAL}
-          </span>
-          <span className="text-[11px] font-bold text-primary">{goalPercent}%</span>
-        </div>
+        {goalPercent === 0 ? (
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-[11px] font-medium text-muted-foreground">
+              {t('startLearning')}
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[11px] font-medium text-muted-foreground">
+              {t('weeklyGoal')}: {thisWeekTotal}/{WEEKLY_GOAL}
+            </span>
+            <span className="text-[11px] font-bold text-primary">{goalPercent}%</span>
+          </div>
+        )}
         <div className="h-1.5 bg-muted rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-primary rounded-full"
+            className={`h-full rounded-full ${goalPercent === 0 ? 'bg-muted-foreground/20' : 'bg-primary'}`}
             initial={{ width: 0 }}
-            animate={{ width: `${goalPercent}%` }}
+            animate={{ width: goalPercent === 0 ? '5%' : `${goalPercent}%` }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
           />
         </div>

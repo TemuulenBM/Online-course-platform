@@ -169,7 +169,19 @@
     "searchCourses": "Сургалт хайх",
     "myProgress": "Ахиц",
     "myCertificates": "Сертификат",
-    "activeCourses": "Идэвхтэй сургалтууд"
+    "activeCourses": "Идэвхтэй сургалтууд",
+    "morningGreeting": "Өглөөний мэнд ☀️",
+    "afternoonGreeting": "Өдрийн мэнд 🌤️",
+    "eveningGreeting": "Оройн мэнд 🌙",
+    "coursesInProgress": "Танд {count} сургалт үргэлжилж байна",
+    "noCourseYet": "Сургалтанд элсээд суралцаж эхлээрэй!",
+    "less": "Бага",
+    "more": "Их",
+    "recommendedCourses": "Санал болгох сургалтууд",
+    "startLearning": "Эхлээд үзээрэй! 🚀",
+    "searchCoursesDesc": "Шинэ сургалт олох",
+    "myProgressDesc": "Ахицаа хянах",
+    "myCertificatesDesc": "Гэрчилгээ үзэх"
   },
   "courses": {
     "title": "Сургалтууд",

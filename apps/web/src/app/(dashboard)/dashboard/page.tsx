@@ -54,7 +54,7 @@ export default function DashboardPage() {
     >
       {/* Мэндчилгээ + хайлт + мэдэгдэл */}
       <motion.div variants={section}>
-        <WelcomeHeader />
+        <WelcomeHeader activeCount={activeEnrollments?.meta?.total ?? undefined} />
       </motion.div>
 
       {/* Үргэлжлүүлэх banner */}

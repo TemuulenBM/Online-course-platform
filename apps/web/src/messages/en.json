@@ -169,7 +169,19 @@
     "searchCourses": "Find Courses",
     "myProgress": "Progress",
     "myCertificates": "Certificates",
-    "activeCourses": "Active Courses"
+    "activeCourses": "Active Courses",
+    "morningGreeting": "Good morning ☀️",
+    "afternoonGreeting": "Good afternoon 🌤️",
+    "eveningGreeting": "Good evening 🌙",
+    "coursesInProgress": "You have {count} courses in progress",
+    "noCourseYet": "Enroll in a course to start learning!",
+    "less": "Less",
+    "more": "More",
+    "recommendedCourses": "Recommended Courses",
+    "startLearning": "Start learning! 🚀",
+    "searchCoursesDesc": "Find new courses",
+    "myProgressDesc": "Track your progress",
+    "myCertificatesDesc": "View certificates"
   },
   "courses": {
     "title": "Courses",

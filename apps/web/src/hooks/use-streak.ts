@@ -4,18 +4,26 @@ import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'ocp-streak';
 
+/** Local timezone-д 'YYYY-MM-DD' огноо буцаана (UTC биш) */
+function toLocalDateStr(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 /** localStorage-д streak тоолуур хадгалах hook */
 export function useStreak(): number {
   const [streakCount, setStreakCount] = useState(0);
 
   useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+    const today = toLocalDateStr(new Date());
     const raw = localStorage.getItem(STORAGE_KEY);
     const data: { count: number; lastDate: string } = raw
       ? (JSON.parse(raw) as { count: number; lastDate: string })
       : { count: 0, lastDate: '' };
 
-    const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+    const yesterday = toLocalDateStr(new Date(Date.now() - 86_400_000));
 
     let newCount: number;
     if (data.lastDate === today) {

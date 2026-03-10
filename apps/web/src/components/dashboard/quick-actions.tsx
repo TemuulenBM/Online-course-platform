@@ -18,21 +18,43 @@ const item = {
 };
 
 /**
- * QuickActions — 3 shortcut товч.
+ * QuickActions — 3 shortcut CTA card.
  * Сургалт хайх, ахиц харах, сертификат хуудас руу шууд очих.
+ * Өнгөт icon background + тайлбар текст + decorative арын icon-тэй.
  */
 export function QuickActions() {
   const t = useTranslations('dashboard');
 
   const actions = [
-    { label: t('searchCourses'), href: ROUTES.COURSES, icon: Search },
-    { label: t('myProgress'), href: ROUTES.PROGRESS, icon: BarChart3 },
-    { label: t('myCertificates'), href: ROUTES.CERTIFICATES, icon: Award },
+    {
+      label: t('searchCourses'),
+      description: t('searchCoursesDesc'),
+      href: ROUTES.COURSES,
+      icon: Search,
+      bgColor: 'bg-blue-500/10 dark:bg-blue-500/15',
+      iconColor: 'text-blue-500',
+    },
+    {
+      label: t('myProgress'),
+      description: t('myProgressDesc'),
+      href: ROUTES.PROGRESS,
+      icon: BarChart3,
+      bgColor: 'bg-emerald-500/10 dark:bg-emerald-500/15',
+      iconColor: 'text-emerald-500',
+    },
+    {
+      label: t('myCertificates'),
+      description: t('myCertificatesDesc'),
+      href: ROUTES.CERTIFICATES,
+      icon: Award,
+      bgColor: 'bg-amber-500/10 dark:bg-amber-500/15',
+      iconColor: 'text-amber-500',
+    },
   ];
 
   return (
     <motion.div
-      className="grid grid-cols-3 gap-2"
+      className="grid grid-cols-1 sm:grid-cols-3 gap-2"
       variants={container}
       initial="hidden"
       animate="show"
@@ -43,14 +65,27 @@ export function QuickActions() {
           <motion.div key={action.href} variants={item}>
             <Link
               href={action.href}
-              className="flex flex-col items-center gap-2 p-3 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-sm transition-all group"
+              className="flex flex-col gap-2.5 p-4 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-md transition-all group relative overflow-hidden"
             >
-              <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center group-hover:bg-primary/12 transition-colors">
-                <Icon className="w-4 h-4 text-primary" />
+              {/* Decorative арын том icon */}
+              <Icon className="absolute -bottom-2 -right-2 w-16 h-16 text-primary/[0.04] rotate-12 pointer-events-none" />
+
+              {/* Icon badge */}
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center ${action.bgColor} transition-colors`}
+              >
+                <Icon className={`w-5 h-5 ${action.iconColor}`} />
               </div>
-              <span className="text-[10px] font-semibold text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">
-                {action.label}
-              </span>
+
+              {/* Label + description */}
+              <div>
+                <span className="text-xs font-bold text-foreground block group-hover:text-primary transition-colors">
+                  {action.label}
+                </span>
+                <span className="text-[10px] text-muted-foreground leading-tight">
+                  {action.description}
+                </span>
+              </div>
             </Link>
           </motion.div>
         );
