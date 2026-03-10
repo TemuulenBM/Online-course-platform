@@ -1,12 +1,31 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { WelcomeHeader } from '@/components/dashboard/welcome-header';
 import { HeroBanner } from '@/components/dashboard/hero-banner';
 import { StatsCards } from '@/components/dashboard/stats-cards';
 import { ClassListTable } from '@/components/dashboard/class-list-table';
-import { ProfileCard } from '@/components/dashboard/profile-card';
 import { TaskList } from '@/components/dashboard/task-list';
+import { LearningStreakCard } from '@/components/dashboard/learning-streak-card';
+import { QuickActions } from '@/components/dashboard/quick-actions';
 import { useMyEnrollments, useCourseProgress } from '@/hooks/api';
+
+/** Хуудасны бүх section-ийг дараалуулан гарч ирүүлэх stagger variants */
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+  },
+};
+
+const section = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+};
 
 export default function DashboardPage() {
   /** Сүүлийн идэвхтэй элсэлтийг HeroBanner-д дамжуулах */
@@ -27,26 +46,42 @@ export default function DashboardPage() {
       : null;
 
   return (
-    <div className="flex flex-col xl:flex-row min-h-full">
-      {/* Үндсэн контент */}
-      <div className="flex-1 flex flex-col gap-8 p-6 lg:p-10">
+    <motion.div
+      className="flex flex-col gap-5 p-6 lg:p-8 xl:p-10 max-w-[1400px] mx-auto w-full min-h-full"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      {/* Мэндчилгээ + хайлт + мэдэгдэл */}
+      <motion.div variants={section}>
         <WelcomeHeader />
+      </motion.div>
+
+      {/* Үргэлжлүүлэх banner */}
+      <motion.div variants={section}>
         <HeroBanner enrollment={heroBannerEnrollment} />
-        <StatsCards />
-        <ClassListTable />
+      </motion.div>
 
-        {/* Mobile/Tablet — xl доогуур ProfileCard, TaskList доор харагдана */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 xl:hidden">
-          <ProfileCard />
-          <TaskList />
+      {/* Статистик + Learning Streak heatmap */}
+      <motion.div variants={section} className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="lg:col-span-3">
+          <StatsCards />
         </div>
-      </div>
+        <div className="lg:col-span-2">
+          <LearningStreakCard />
+        </div>
+      </motion.div>
 
-      {/* Баруун sidebar — xl дээр харагдана */}
-      <aside className="hidden xl:flex w-[320px] shrink-0 flex-col gap-8 p-6 pt-10 border-l border-border overflow-y-auto">
-        <ProfileCard />
-        <TaskList />
-      </aside>
-    </div>
+      {/* Идэвхтэй сургалтууд + Upcoming sessions + Quick actions */}
+      <motion.div variants={section} className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2">
+          <ClassListTable />
+        </div>
+        <div className="flex flex-col gap-5">
+          <TaskList />
+          <QuickActions />
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }

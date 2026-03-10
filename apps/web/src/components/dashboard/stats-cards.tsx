@@ -1,8 +1,27 @@
 'use client';
 
+import { BookOpen, CheckCircle2, Award } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useMyEnrollments, useMyProgress, useMyCertificates } from '@/hooks/api';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AnimatedCounter } from '@/components/ui/animated-counter';
+
+/** Card-level stagger variants */
+const cardContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const cardItem = {
+  hidden: { opacity: 0, y: 16, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.35 },
+  },
+};
 
 export function StatsCards() {
   const t = useTranslations('dashboard');
@@ -17,88 +36,70 @@ export function StatsCards() {
     limit: 1,
   });
 
+  const certCount = certificates?.total ?? 0;
+
   /** Статистик карт бүрийн тохиргоо */
   const statsConfig = [
     {
       labelKey: 'enrolledCourse' as const,
       value: enrollments?.meta?.total ?? 0,
       loading: loadingEnrollments,
-      bg: 'bg-green-50',
-      border: 'border-[#C8E6C9]/50',
-      iconStroke: '#66BB6A',
-      iconPath: (
-        <>
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </>
-      ),
+      icon: BookOpen,
     },
     {
       labelKey: 'lesson' as const,
       value: progress?.total ?? 0,
       loading: loadingProgress,
-      bg: 'bg-purple-50',
-      border: 'border-[#E9D5FF]/50',
-      iconStroke: '#A78BFA',
-      iconPath: (
-        <>
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-          <rect x="7" y="7" width="3" height="9" />
-          <rect x="14" y="7" width="3" height="5" />
-        </>
-      ),
+      icon: CheckCircle2,
     },
     {
       labelKey: 'certificate' as const,
-      value: certificates?.total ?? 0,
+      value: certCount,
       loading: loadingCertificates,
-      bg: 'bg-amber-50',
-      border: 'border-[#FFECB3]/50',
-      iconStroke: '#FFA726',
-      iconPath: (
-        <>
-          <circle cx="12" cy="8" r="7" />
-          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-        </>
-      ),
+      icon: Award,
+      /** Сертификат 0 бол retention micro-CTA харуулна */
+      hint: certCount === 0 && !loadingCertificates ? t('earnCertificate') : undefined,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-      {statsConfig.map((stat) => (
-        <div
-          key={stat.labelKey}
-          className={`${stat.bg} rounded-2xl p-6 flex flex-col border ${stat.border} shadow-sm relative overflow-hidden group`}
-        >
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 z-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke={stat.iconStroke}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {stat.iconPath}
-            </svg>
-          </div>
-          <div className="flex flex-col z-10">
-            {stat.loading ? (
-              <Skeleton className="h-8 w-12 mb-1 rounded-lg" />
-            ) : (
-              <span className="text-[28px] font-bold text-foreground leading-none mb-1">
-                {stat.value}
-              </span>
-            )}
-            <span className="text-xs font-semibold text-muted-foreground">{t(stat.labelKey)}</span>
-          </div>
-          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/40 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
-        </div>
-      ))}
-    </div>
+    <motion.div
+      className="grid grid-cols-3 lg:grid-cols-1 gap-3 h-full"
+      variants={cardContainer}
+      initial="hidden"
+      animate="show"
+    >
+      {statsConfig.map((stat) => {
+        const Icon = stat.icon;
+        return (
+          <motion.div
+            key={stat.labelKey}
+            variants={cardItem}
+            className="bg-card rounded-2xl p-4 flex flex-col border border-border hover:border-primary/20 hover:shadow-md transition-all group flex-1"
+          >
+            <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center mb-2">
+              <Icon className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex flex-col">
+              {stat.loading ? (
+                <Skeleton className="h-8 w-12 mb-1 rounded-lg" />
+              ) : (
+                <AnimatedCounter
+                  value={stat.value}
+                  className="text-[28px] font-bold text-foreground leading-none mb-1"
+                />
+              )}
+              <span className="text-xs font-medium text-muted-foreground">{t(stat.labelKey)}</span>
+              {/* Retention micro-CTA */}
+              {'hint' in stat && stat.hint && (
+                <span className="text-[10px] font-medium text-primary/60 mt-2 leading-tight">
+                  {stat.hint}
+                </span>
+              )}
+            </div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
   );
 }

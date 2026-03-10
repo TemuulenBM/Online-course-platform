@@ -156,7 +156,20 @@
     "noUpcomingSessions": "Товлогдсон хичээл байхгүй",
     "lessonsThisWeek": "хичээл",
     "done": "Дуусгасан",
-    "progress": "Ахиц"
+    "progress": "Ахиц",
+    "streakDays": "{count} хоног дараалан!",
+    "learningActivity": "Суралцах идэвхи",
+    "lessonsCompleted": "{count} хичээл дуусгасан",
+    "weeklyGoal": "Долоо хоногийн зорилго",
+    "nextMilestone": "Дараагийн зорилго: {percent}%",
+    "earnCertificate": "Сургалт дуусгаад сертификат аваарай!",
+    "lastSeen": "Сүүлд {days} хоногийн өмнө",
+    "lastSeenToday": "Өнөөдөр үзсэн",
+    "lastSeenYesterday": "Өчигдөр үзсэн",
+    "searchCourses": "Сургалт хайх",
+    "myProgress": "Ахиц",
+    "myCertificates": "Сертификат",
+    "activeCourses": "Идэвхтэй сургалтууд"
   },
   "courses": {
     "title": "Сургалтууд",

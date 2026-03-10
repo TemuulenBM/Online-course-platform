@@ -156,7 +156,20 @@
     "noUpcomingSessions": "No upcoming sessions",
     "lessonsThisWeek": "lessons",
     "done": "Done",
-    "progress": "Progress"
+    "progress": "Progress",
+    "streakDays": "{count} day streak!",
+    "learningActivity": "Learning Activity",
+    "lessonsCompleted": "{count} lessons completed",
+    "weeklyGoal": "Weekly Goal",
+    "nextMilestone": "Next goal: {percent}%",
+    "earnCertificate": "Complete a course to earn a certificate!",
+    "lastSeen": "Last seen {days} days ago",
+    "lastSeenToday": "Viewed today",
+    "lastSeenYesterday": "Viewed yesterday",
+    "searchCourses": "Find Courses",
+    "myProgress": "Progress",
+    "myCertificates": "Certificates",
+    "activeCourses": "Active Courses"
   },
   "courses": {
     "title": "Courses",
