@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --font-sans: var(--font-geist-sans);
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -149,6 +150,7 @@
     }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     }
 
   .animation-fade-in {
