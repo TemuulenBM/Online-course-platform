@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pnpm суулгах
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
 
@@ -110,7 +110,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pnpm суулгах
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
 
@@ -141,7 +141,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pnpm суулгах
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
 
